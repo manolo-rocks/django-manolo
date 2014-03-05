@@ -7,6 +7,7 @@ import sys
 import os
 import codecs
 from bs4 import BeautifulSoup
+from datetime import date, timedelta as td
 
 def html_to_csv(html):
     # taken from http://stackoverflow.com/a/14167916
@@ -68,5 +69,15 @@ try:
 except OSError:
     pass
 
-fecha = "05/03/2014"
-buscar(fecha)
+# Use this format for dates
+# fecha = "DD/MM/YYYY"
+
+# Days between two dates
+# taken from http://stackoverflow.com/a/7274316
+d1 = date(2011,7,28)
+d2 = date(2014,3,8)
+delta = d2 - d1
+for i in range(delta.days + 1):
+    my_date = d1 + td(days=i)
+
+#buscar(fecha)
