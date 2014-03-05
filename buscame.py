@@ -13,11 +13,11 @@ def html_to_csv(html):
     # taken from http://stackoverflow.com/a/14167916
     soup = BeautifulSoup(html)
     table = soup.find('table', attrs={'class': 'items'})
-    headers = [header.text.encode('utf8') for header in table.find_all('th')]
+    headers = [header.text.encode('latin1') for header in table.find_all('th')]
 
     rows = []
     for row in table.find_all('tr'):
-        rows.append([val.text.encode('utf8') for val in row.find_all('td')])
+        rows.append([val.text.encode('latin1') for val in row.find_all('td')])
 
     with open("output.csv", "a") as f:
         writer = csv.writer(f)
@@ -79,5 +79,6 @@ d2 = date(2014,3,8)
 delta = d2 - d1
 for i in range(delta.days + 1):
     my_date = d1 + td(days=i)
+    fecha = my_date.strftime("%m/%d/%Y")
 
-#buscar(fecha)
+    buscar(fecha)
