@@ -80,8 +80,8 @@ except OSError:
 
 # Days between two dates
 # taken from http://stackoverflow.com/a/7274316
-d1 = date(2012,12,28)
-d2 = date(2014,3,6)
+d1 = date(2011,7,28)
+d2 = date(2012,12,27)
 delta = d2 - d1
 for i in range(delta.days + 1):
     my_date = d1 + td(days=i)
