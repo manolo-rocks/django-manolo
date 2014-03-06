@@ -3,7 +3,22 @@
 import dataset
 import os
 import config
-import hashlib
+
+def prettify(item):
+    out = "<tr>"
+    out += "<td><a href='search.py?q=" + item['date'] + "'>" + item['date'] + "</a></td>"
+    out += "<td><a href='search.py?q=" + item['visitor'] + "'>" + item['visitor'] + "</a></td>"
+    out += "<td><a href='search.py?q=" + item['id_document'] + "'>" + item['id_document'] + "</a></td>"
+    out += "<td><a href='search.py?q=" + item['entity'] + "'>" + item['entity'] +"</a></td>"
+    out += "<td><a href='search.py?q=" + item['objective'] + "'>" + item['objective'] + "</a></td>"
+    out += "<td><a href='search.py?q=" + item['host'] + "'>" + item['host'] + "</a></td>"
+    out += "<td><a href='search.py?q=" + item['office'] + "'>" + item['office'] +"</a></td>"
+    out += "<td><a href='search.py?q=" + item['meeting_place'] + "'>" + item['meeting_place'] + "</a></td>"
+    out += "<td>" + item['time_start'] + "</td>"
+    out += "<td>" + item['time_end'] + "</td>"
+    out += "</tr>\n"
+    return out
+
 
 def insert_to_db(line):
     db = dataset.connect("sqlite:///visitas.db")
@@ -23,15 +38,8 @@ def insert_to_db(line):
     item['time_start'] = i[8]
     item['time_end'] = i[9]
 
-    my_string = str(item['date']) + str(item['id_document']) + str(item['time_start'])
-    m = hashlib.md5()
-    m.update(my_string)
-    
-    item['md5_hash'] = str(m.hexdigest())
-
-    if not table.find_one(md5_hash=item['md5_hash']):
-        print "uploading %s" % str(item['md5_hash'])
-        table.insert(item)
+    print "uploading %s" % str(item['date']) + "_" + str(item['time_start'])
+    table.insert(item)
 
 def create_database():
     print "Creating database"
@@ -40,7 +48,6 @@ def create_database():
         try:
             db = dataset.connect('sqlite:///visitas.db')
             table = db.create_table("visitas")
-            table.create_column('md5_hash', sqlalchemy.Text)
             table.create_column('date', sqlalchemy.String)
             table.create_column('visitor', sqlalchemy.Text)
             table.create_column('id_document', sqlalchemy.String)

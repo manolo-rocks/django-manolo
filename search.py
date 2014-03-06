@@ -1,11 +1,12 @@
-#!/usr/bin/env python
+#!/usr/bin/python
+# -*- coding: utf8 -*-
 
 import json
 import cgi
 import cgitb
 import dataset
+import lib
 import sys
-import scrape
 import codecs
 import string
 import config
@@ -13,11 +14,11 @@ cgitb.enable()
 
 data = cgi.FieldStorage()
 
+
 def sanitize(s):
     s = s.replace("'", "")
     s = s.replace("-", "")
     s = s.replace('"', "")
-    s = s.replace("/", "")
     s = s.replace("\\", "")
     s = s.replace(";", "")
     s = s.replace("=", "")
@@ -25,64 +26,37 @@ def sanitize(s):
     s = s.replace("%", "")
     return s
 
-if 'get' in data and data['get'].value == "number_of_pages":
-    db = dataset.connect("sqlite:///leyes.db")
-    table = db['proyectos']
-    rows = table.all()
-    i = 0
-    for row in rows:
-        i += 1
-    result = {"number_of_pages": i}
-    
-    print "Content-Type: application/json\n"
-    print json.dumps(result)
-elif 'start' in data:
-    start = sanitize(data['start'].value)
-    end = sanitize(data['end'].value)
+if 'q' in data:
+    q = sanitize(data['q'].value)
 
-    db = dataset.connect("sqlite:///leyes.db")
+    db = dataset.connect("sqlite:///visitas.db")
     # We will limit to show only 20 results per page
-    query = "SELECT * FROM proyectos ORDER BY codigo DESC LIMIT %s OFFSET %s" % (20, start)
+    query = "SELECT * FROM visitas WHERE "
+    query += " date like '%" + q + "%' OR"
+    query += " visitor like '%" + q + "%' OR"
+    query += " id_document like '%" + q + "%' OR"
+    query += " entity like '%" + q + "%' OR"
+    query += " objective like '%" + q + "%' OR"
+    query += " host like '%" + q + "%' OR"
+    query += " office like '%" + q + "%' OR"
+    query += " meeting_place like '%" + q + "%' "
     res = db.query(query)
-    out = ""
+    out = "<table class='table table-hover table-striped table-bordered table-responsive table-condensed' "
+    out += " style='font-size: 12px;'>"
+    out += "<th>Fecha</th><th>Visitante</th><th>Documento</th><th>Entidad</th>"
+    out += u"<th>Motivo</th><th>Empleado público</th><th>Oficina/Cargo</th>"
+    out += u"<th>Lugar de reunión</th><th>Hora ing.</th><th>Hora sal.</th>\n"
     for i in res:
-        out += scrape.prettify(i)
-    print "Content-Type: application/json\n"
-    print json.dumps({"output": out})
-elif 'search' in data:
-    keyword = sanitize(data['search'].value)
+        out += lib.prettify(i)
+    out += "\n</table>"
 
-    db = dataset.connect("sqlite:///leyes.db")
-    query = "SELECT short_url, codigo, titulo, pdf_url, link_to_pdf FROM proyectos WHERE "
-    query += "titulo like '%" + keyword + "%' ORDER BY codigo DESC" 
-    res = db.query(query)
-    out = []
-    for i in res:
-        out.append(i)
-    print "Content-Type: application/json\n"
-    print json.dumps(out)
-elif 'codigo' in data:
-    # This is not codigo, it is actually short_url
-    keyword = sanitize(data['codigo'].value)
+    f = codecs.open("base.html", "r", "utf8")
+    html = f.read()
+    f.close()
 
-    db = dataset.connect("sqlite:///leyes.db")
-    table = db['proyectos']
-    res = table.find_one(short_url=keyword)
-    if res:
-        out = scrape.prettify(res)
+    out = html.replace("{% content %}", out)
 
-        f = codecs.open("base.html", "r", "utf-8")
-        base_html = f.read()
-        f.close()
-
-        html = string.replace(base_html, "{% base_url %}", config.base_url)
-        html = string.replace(html, "{% titulo %}", "<h1 id='proyectos_de_ley'>Proyecto de ley</h1>")
-        html = string.replace(html, 'contenido" class="container">',
-                'contenido" class="container">' + out)
-
-        print "Content-Type: text/html; charset=utf-8\n"
-        print html.encode("utf-8")
-    else:
-        pass
+    print "Content-Type: text/html\n"
+    print out.encode("utf8")
 else:
     pass

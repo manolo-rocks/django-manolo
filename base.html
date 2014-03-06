@@ -1,0 +1,104 @@
+<!--
+
+Webapplication creada por AniversarioPeru 
+
+webpage: http://aniversarioperu.wordpress.com
+twitter: @aniversarioperu
+email: aniversarioperu1@gmail.com
+
+
+rss icon by: http://glyphicons.com/
+-->
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="AniversarioPeru. Buscador de visitas,
+    organismo de contrataciones PCM">
+    <meta name="author" content="AniversarioPeru">
+    <!-- <link rel="shortcut icon" href="../../docs-assets/ico/favicon.png"> -->
+
+    <title>Buscador de visitas, organismo de contrataciones PCM</title>
+    
+
+    <!-- Bootstrap core CSS -->
+    <link href="bootstrap.min.css" rel="stylesheet">
+    <link href="jumbotron-narrow.css" rel="stylesheet">
+
+
+    <style type="text/css">
+        .highlight { background-color: yellow }
+        .navbar .divider-vertical {
+            min-height: 50px;
+            margin: 0 9px;
+            border-right: 1px solid #ffffff;
+            border-left: 1px solid #f2f2f2;
+        }
+    </style>
+
+    <!-- Custom styles for this template -->
+
+    <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+      <script src="https://oss.maxcdn.com/libs/respond.js/1.3.0/respond.min.js"></script>
+    <![endif]-->
+  </head>
+
+  <body>
+
+  <div class="container">
+
+    <nav class="navbar navbar-default" role="navigation">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse"
+                data-target="#this_bar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <h3><a href="http://aniversarioperu.me/">AniversarioPerú</a></h3>
+        </div>
+
+        <div class="collapse navbar-collapse" id="this_bar">
+            <ul class="nav nav-pills pull-right" style="margin-top: 10px;">
+                <li><a href="..">Inicio</a></li>
+                <li class="active"><a href="../proyectos">Proyectos</a></li>
+                <li><a href="../cv">CV</a></li>
+                <li><a href="../contacto">Contacto</a></li>
+                <li><a href="http://aniversarioperu.utero.pe">Blog</a></li>
+            </ul>
+        </div>
+    </nav>
+
+
+    </div> <!-- /container -->
+
+    <div class="container" style="max-width:1200px;"> 
+
+        {% content %}
+
+
+        <div class="footer">
+            <small class="pull-right">&copy; AniversarioPeru 2014</small>
+        </div>
+    </div> <!-- /container -->
+
+    
+
+
+    <!-- Bootstrap core JavaScript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script src="https://code.jquery.com/jquery-1.10.2.min.js"></script>
+    <script src="http://{% base_url %}current_tab.js"></script>
+    <script src="http://netdna.bootstrapcdn.com/bootstrap/3.0.1/js/bootstrap.min.js"></script>
+    <script src="http://{% base_url %}jquery.bootpag.js"></script>
+    <script src="http://{% base_url %}paginator.js"></script>
+    <script src="http://{% base_url %}search.js"></script>
+    <script src="http://{% base_url %}highlighter.js"></script>
+  </body>
+</html>
