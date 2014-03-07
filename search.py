@@ -83,6 +83,8 @@ if 'q' in data:
     f.close()
 
     out = html.replace("{% content %}", out)
+    out = out.replace("{% base_url %}", config.base_url)
+    out = out.replace("{% keyword %}", "'" + q + "'")
 
     print "Content-Type: text/html\n"
     print out.encode("utf8")
@@ -93,6 +95,7 @@ else:
 
     out = message
     out = html.replace("{% content %}", out)
+    out = out.replace("{% base_url %}", config.base_url)
 
     print "Content-Type: text/html\n"
     print out.encode("utf8")
