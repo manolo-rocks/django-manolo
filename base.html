@@ -79,6 +79,8 @@ rss icon by: http://glyphicons.com/
 
     <div class="container" style="text-align:center; max-width:1200px;"> 
 
+        {% intro_message %}
+
         <div class="row">
             <div class="col-xs-12 col-md-12 col-lg-12">
                 <form action="search"  class="form-inline" role="form">
@@ -119,7 +121,7 @@ rss icon by: http://glyphicons.com/
     <script src="http://netdna.bootstrapcdn.com/bootstrap/3.0.1/js/bootstrap.min.js"></script>
     <script src="http://{% base_url %}highlighter.js"></script>
     <script>
-        $("#contenido").highlight({% keyword %});
+        $("#contenido").highlight('{% keyword %}');
     </script>
   </body>
 </html>

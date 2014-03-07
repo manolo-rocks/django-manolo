@@ -34,7 +34,7 @@ def sanitize(s):
     return s
 
 
-message = u"""<p>Este es un buscador de personas que visitan las instalaciones del
+message = u"""<p>Este es <b>Manolo</b>. Un buscador de personas que visitan las instalaciones del
             Organismo Supervisor de las Contrataciones del Estado.
             <br />
             <a href="http://visitas.osce.gob.pe/controlVisitas/index.php?r=consultas/visitaConsulta/index">
@@ -76,15 +76,22 @@ if 'q' in data:
         out += "\n</table>"
 
         if j < 1:
-            out = message
+            out = False
 
     f = codecs.open("base.html", "r", "utf8")
     html = f.read()
     f.close()
 
-    out = html.replace("{% content %}", out)
-    out = out.replace("{% base_url %}", config.base_url)
-    out = out.replace("{% keyword %}", "'" + q + "'")
+    if out:
+        out = html.replace("{% content %}", out)
+        out = out.replace("{% intro_message %}", "")
+        out = out.replace("{% base_url %}", config.base_url)
+        out = out.replace("{% keyword %}", q.decode("utf-8"))
+    else:
+        out = html.replace("{% intro_message %}", message)
+        out = out.replace("{% content %}", "")
+        out = out.replace("{% base_url %}", config.base_url)
+        out = out.replace("{% keyword %}", q.decode("utf-8"))
 
     print "Content-Type: text/html\n"
     print out.encode("utf8")
@@ -93,8 +100,8 @@ else:
     html = f.read()
     f.close()
 
-    out = message
-    out = html.replace("{% content %}", out)
+    out = html.replace("{% intro_message %}", message)
+    out = out.replace("{% content %}", "")
     out = out.replace("{% base_url %}", config.base_url)
 
     print "Content-Type: text/html\n"
