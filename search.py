@@ -37,8 +37,8 @@ def sanitize(s):
 message = u"""<p>Este es <b>Manolo</b>. Un buscador de personas que visitan las instalaciones del
             Organismo Supervisor de las Contrataciones del Estado.
             <br />
-            <a href="http://visitas.osce.gob.pe/controlVisitas/index.php?r=consultas/visitaConsulta/index">
-            http://visitas.osce.gob.pe/controlVisitas/index.php?r=consultas/visitaConsulta/index</a>
+            Todos los datos son descargados diariamente de aquí: <b><a href="http://visitas.osce.gob.pe/controlVisitas/index.php?r=consultas/visitaConsulta/index">
+            http://visitas.osce.gob.pe/controlVisitas/index.php?r=consultas/visitaConsulta/index</a></b>
             </p>
             <p>
             Puedes buscar por nombre o palabra clave. 
