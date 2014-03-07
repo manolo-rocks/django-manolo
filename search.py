@@ -40,6 +40,7 @@ if 'q' in data:
     query += " host like '%" + q + "%' OR"
     query += " office like '%" + q + "%' OR"
     query += " meeting_place like '%" + q + "%' "
+    query += " limit 100 "
     res = db.query(query)
     out = "<table class='table table-hover table-striped table-bordered table-responsive table-condensed' "
     out += " style='font-size: 12px;'>"
