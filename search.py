@@ -34,7 +34,8 @@ def sanitize(s):
     return s
 
 
-message = u"""<p>Este es <b>Manolo</b>. Un buscador de personas que visitan las instalaciones del
+message = u"""<h2>Este es Manolo</h2>
+            <b>Manolo</b> es un buscador de personas que visitan las instalaciones del
             Organismo Supervisor de las Contrataciones del Estado.
             <br />
             Todos los datos son descargados diariamente de aquí: <b><a href="http://visitas.osce.gob.pe/controlVisitas/index.php?r=consultas/visitaConsulta/index">
