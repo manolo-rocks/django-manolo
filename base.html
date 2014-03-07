@@ -81,11 +81,11 @@ rss icon by: http://glyphicons.com/
 
         <div class="row">
             <div class="col-xs-12 col-md-12 col-lg-12">
-                <form class="form-inline" role="form">
+                <form action="search.py"  class="form-inline" role="form">
                     <div class="form-group">
                         <div class="col-lg-8 col-xs-8 col-md-8">
                             <label class="sr-only" for="query">Keyword</label>
-                            <input type="text" id="query" class="form-control" placeholder="Tipea persona o palabra clave">
+                            <input type="text" id="query" name="q" class="form-control" placeholder="Tipea persona o palabra clave">
                         </div>
                         <button type="submit" class="btn btn-info" id="search_button">
                             <span class="glyphicon glyphicon-search"></span>
@@ -95,12 +95,17 @@ rss icon by: http://glyphicons.com/
                 </form>
             </div>
         </div><!-- row -->
+    </div><!-- container -->
 
+
+    <br />
+
+    <div class="container" style="max-width:1200px;"> 
         {% content %}
 
 
         <div class="footer">
-            <small class="pull-right">&copy; AniversarioPeru 2014</small>
+            <small class="pull-right">Desarrollado por AniversarioPeru 2014</small>
         </div>
     </div> <!-- /container -->
 

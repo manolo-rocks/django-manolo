@@ -7,6 +7,7 @@ import cgitb
 import dataset
 import lib
 import sys
+import re
 import codecs
 import string
 import config
@@ -24,32 +25,58 @@ def sanitize(s):
     s = s.replace("=", "")
     s = s.replace("*", "")
     s = s.replace("%", "")
+    try:
+        res = re.search("([0-9]{2,}/[0-9]{2,}/[0-9]{4,})", s)
+        if res:
+            s = res.groups()[0]
+    except:
+        s = ""
     return s
+
+
+message = u"""<p>Este es un buscador de personas que visitan las instalaciones del
+            Organismo Supervisor de las Contrataciones del Estado.
+            <br />
+            <a href="http://visitas.osce.gob.pe/controlVisitas/index.php?r=consultas/visitaConsulta/index">
+            http://visitas.osce.gob.pe/controlVisitas/index.php?r=consultas/visitaConsulta/index</a>
+            </p>
+            <p>
+            Puedes buscar por nombre o palabra clave. 
+            También puedes hacer búsquedas haciendo click sobre cada uno de los resultados.
+            </p>
+            """
 
 if 'q' in data:
     q = sanitize(data['q'].value)
 
-    db = dataset.connect("sqlite:///visitas.db")
-    # We will limit to show only 20 results per page
-    query = "SELECT * FROM visitas WHERE "
-    query += " date like '%" + q + "%' OR"
-    query += " visitor like '%" + q + "%' OR"
-    query += " id_document like '%" + q + "%' OR"
-    query += " entity like '%" + q + "%' OR"
-    query += " objective like '%" + q + "%' OR"
-    query += " host like '%" + q + "%' OR"
-    query += " office like '%" + q + "%' OR"
-    query += " meeting_place like '%" + q + "%' "
-    query += " limit 100 "
-    res = db.query(query)
-    out = "<table class='table table-hover table-striped table-bordered table-responsive table-condensed' "
-    out += " style='font-size: 12px;'>"
-    out += "<th>Fecha</th><th>Visitante</th><th>Documento</th><th>Entidad</th>"
-    out += u"<th>Motivo</th><th>Empleado público</th><th>Oficina/Cargo</th>"
-    out += u"<th>Lugar de reunión</th><th>Hora ing.</th><th>Hora sal.</th>\n"
-    for i in res:
-        out += lib.prettify(i)
-    out += "\n</table>"
+    if q != "":
+        db = dataset.connect("sqlite:///visitas.db")
+        # We will limit to show only 20 results per page
+        query = "SELECT * FROM visitas WHERE "
+        query += " date like '%" + q + "%' OR"
+        query += " visitor like '%" + q + "%' OR"
+        query += " id_document like '%" + q + "%' OR"
+        query += " entity like '%" + q + "%' OR"
+        query += " objective like '%" + q + "%' OR"
+        query += " host like '%" + q + "%' OR"
+        query += " office like '%" + q + "%' OR"
+        query += " meeting_place like '%" + q + "%' "
+        query += " limit 100 "
+        res = db.query(query)
+        out = u"<p>También puedes hacer búsquedas haciendo click sobre cada uno de los resultados.</p>"
+        out += "<table class='table table-hover table-striped table-bordered table-responsive table-condensed' "
+        out += " style='font-size: 12px;'>"
+        out += "<th>Fecha</th><th>Visitante</th><th>Documento</th><th>Entidad</th>"
+        out += u"<th>Motivo</th><th>Empleado público</th><th>Oficina/Cargo</th>"
+        out += u"<th>Lugar de reunión</th><th>Hora ing.</th><th>Hora sal.</th>\n"
+        j = 0
+        for i in res:
+            out += lib.prettify(i)
+            j += 1
+        out += "\n</table>"
+
+        if j < 1:
+            out = message
 
     f = codecs.open("base.html", "r", "utf8")
     html = f.read()
@@ -60,4 +87,12 @@ if 'q' in data:
     print "Content-Type: text/html\n"
     print out.encode("utf8")
 else:
-    pass
+    f = codecs.open("base.html", "r", "utf8")
+    html = f.read()
+    f.close()
+
+    out = message
+    out = html.replace("{% content %}", out)
+
+    print "Content-Type: text/html\n"
+    print out.encode("utf8")
