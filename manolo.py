@@ -2,6 +2,7 @@
 
 import dataset
 import requests
+import config
 import csv
 import lib
 import re
@@ -21,7 +22,8 @@ def html_to_csv(html):
     for row in table.find_all('tr'):
         rows.append([val.text for val in row.find_all('td')])
 
-    f = codecs.open("output.csv", "a", "utf8")
+    filename = os.path.join(config.base_folder, "output.csv")
+    f = codecs.open(filename, "a", "utf8")
     for i in rows:
         if len(i) > 1:
             out  = i[0] + "," + i[1] + "," + i[2] + "," + i[3] + ","
@@ -83,7 +85,8 @@ def buscar(fecha):
 
 def last_date_in_db():
     lib.create_database()
-    db = dataset.connect("sqlite:///visitas.db")
+    filename = os.path.join(config.base_folder, "visitas.db")
+    db = dataset.connect("sqlite:///" + filename)
     res = db.query("select date from visitas")
 
     dates = []
@@ -98,7 +101,8 @@ def last_date_in_db():
 
 # clean our outfile
 try:
-    os.remove("output.csv")
+    filename = os.path.join(config.base_folder, "output.csv")
+    os.remove(filename)
 except OSError:
     pass
 
@@ -121,7 +125,8 @@ for i in range(delta.days + 1):
 
 # upload data from our csv file
 items = lib.get_data()
-db = dataset.connect("sqlite:///visitas.db")
+filename = os.path.join(config.base_folder, "visitas.db")
+db = dataset.connect("sqlite:///" + filename)
 table = db['visitas']
 
 for i in items:
@@ -129,3 +134,4 @@ for i in items:
         print i['sha512'], i['date']
         table.insert(i)
 
+lib.recreate_website()

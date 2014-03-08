@@ -5,14 +5,32 @@ import os
 import config
 import codecs
 import hashlib
+import shutil
+
+
+def recreate_website():
+    orig = config.base_folder
+    dest = config.www_folder
+
+    shutil.copy2(os.path.join(orig,"jumbotron-narrow.css"), os.path.join(dest,"jumbotron-narrow.css"))
+    shutil.copy2(os.path.join(orig,"config.py"), os.path.join(dest,"config.py"))
+    shutil.copy2(os.path.join(orig,"lib.py"), os.path.join(dest,"lib.py"))
+    shutil.copy2(os.path.join(orig,"visitas.db"), os.path.join(dest,"visitas.db"))
+    shutil.copy2(os.path.join(orig,"bootstrap.min.css"), os.path.join(dest,"bootstrap.min.css"))
+    shutil.copy2(os.path.join(orig,"highlighter.js"), os.path.join(dest,"highlighter.js"))
+    shutil.copy2(os.path.join(orig,"index.html"), os.path.join(dest,"index.html"))
+    shutil.copy2(os.path.join(orig,"search.py"), os.path.join(dest,"search.py"))
+    shutil.copy2(os.path.join(orig,"base.html"), os.path.join(dest,"base.html"))
 
 
 def get_data():
     # get data from csv file
-    db = dataset.connect("sqlite:///visitas.db")
+    filename = os.path.join(config.base_folder, "visitas.db")
+    db = dataset.connect("sqlite:///" + filename)
     table = db['visitas']
     
-    f = codecs.open("output.csv", "r", "utf8")
+    filename = os.path.join(config.base_folder, "output.csv")
+    f = codecs.open(filename, "r", "utf8")
     data = f.readlines()
     f.close()
     
@@ -60,7 +78,8 @@ def prettify(item):
 
 
 def insert_to_db(line):
-    db = dataset.connect("sqlite:///visitas.db")
+    filename = os.path.join(config.base_folder, "visitas.db")
+    db = dataset.connect("sqlite:///" + filename)
     table = db['visitas']
     
     # line is a line of downloaded data
@@ -87,10 +106,10 @@ def insert_to_db(line):
 
 def create_database():
     print "Creating database"
-    database_file = os.path.join(config.base_folder, "visitas.db")
-    if not os.path.isfile(database_file):
+    filename = os.path.join(config.base_folder, "visitas.db")
+    if not os.path.isfile(filename):
         try:
-            db = dataset.connect('sqlite:///visitas.db')
+            db = dataset.connect('sqlite:///' + filename)
             table = db.create_table("visitas")
             table.create_column('sha512', sqlalchemy.String)
             table.create_column('date', sqlalchemy.String)
