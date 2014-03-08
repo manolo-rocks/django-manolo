@@ -4,7 +4,6 @@ Presento un buscador de personas que ingresan las oficinas del **Organismo
 Supervisor de las Contrataciones del Estado**.
 <http://aniversarioperu.me/manolo/>
 
-![](images/manolo.png)
 
 # Motivación
 Todo aquel que visita el Organismo de Contrataciones debe
@@ -35,4 +34,4 @@ Más información en un post en el blog Útero de Marita:
 Esta es la dirección web de **Manolo, buscador de personas**:
 <http://aniversarioperu.me/manolo/>
 
-![Aniversario Perú programando a Manolo](images/manolo2.png)
+![](manolo.png)
