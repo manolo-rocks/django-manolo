@@ -41,8 +41,11 @@ message = u"""<h2>Este es Manolo</h2>
             Todos los datos son descargados diariamente de aquí: <b><a href="http://visitas.osce.gob.pe/controlVisitas/index.php?r=consultas/visitaConsulta/index">
             http://visitas.osce.gob.pe/controlVisitas/index.php?r=consultas/visitaConsulta/index</a></b>
             </p>
+            <div class='well'>
+            Puedes buscar por nombre o palabra clave. Por ejemplo tipea
+            <b>MIGUEL</b> y hacer click en "Buscar".
+            </div>
             <p>
-            Puedes buscar por nombre o palabra clave. 
             También puedes hacer búsquedas haciendo click sobre cada uno de los resultados.
             </p>
             """
