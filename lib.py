@@ -21,7 +21,8 @@ def recreate_website():
     shutil.copy2(os.path.join(orig,"index.html"), os.path.join(dest,"index.html"))
     shutil.copy2(os.path.join(orig,"search.py"), os.path.join(dest,"search.py"))
     shutil.copy2(os.path.join(orig,"base.html"), os.path.join(dest,"base.html"))
-
+    shutil.copy2(os.path.join(orig,"jquery-1.10.2.min.js"), os.path.join(dest,"jquery-1.10.2.min.js"))
+    shutil.copy2(os.path.join(orig,"bootstrap.min.js"), os.path.join(dest,"bootstrap.min.js"))
 
 def get_data():
     # get data from csv file
