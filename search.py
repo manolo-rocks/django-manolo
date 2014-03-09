@@ -43,7 +43,7 @@ message = u"""<h2>Este es Manolo</h2>
             </p>
             <div class='well'>
             Puedes buscar por nombre o palabra clave. Por ejemplo tipea
-            <b>MIGUEL</b> y hacer click en "Buscar".
+            <b>ROMULO</b> y hacer click en "Buscar".
             </div>
             <p>
             También puedes hacer búsquedas haciendo click sobre cada uno de los resultados.
