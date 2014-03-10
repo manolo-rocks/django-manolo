@@ -33,6 +33,13 @@ def sanitize(s):
         s = ""
     return s
 
+def sanitize_page(s):
+    res = re.search("([0-9]+)", s)
+    if res:
+        s = res.groups()[0]
+    else:
+        s = ""
+    return s
 
 message = u"""<h2>Este es Manolo</h2>
             <b>Manolo es un buscador de las personas</b> que visitan las instalaciones del
@@ -71,10 +78,14 @@ if 'q' in data:
         for i in res:
             count += 1
 
+        # do we need to create a paginator?
         if 'page' in data:
-            page = sanitize(data['page'].value)
-            page = int(page)
-            count -= (page - 1)*200
+            page = sanitize_page(data['page'].value)
+            if page != "":
+                page = int(page)
+                count -= (page - 1)*200
+            else:
+                page = 1
         else:
             page = 1
 
@@ -94,6 +105,7 @@ if 'q' in data:
 
 
         if page > 1:
+            # Slice results for paginator
             # LIMIT skip, count
             query += " LIMIT " + str((page - 1)*200) + ", 200 "
         else:
