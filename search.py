@@ -65,18 +65,47 @@ if 'q' in data:
         query += " host like '%" + q + "%' OR"
         query += " office like '%" + q + "%' OR"
         query += " meeting_place like '%" + q + "%' "
-        query += " order by visitor limit 200"
         res = db.query(query)
-        out = u"<p>También puedes hacer búsquedas haciendo click sobre cada uno de los resultados.</p>"
+
+        count = 0
+        for i in res:
+            count += 1
+
+        if 'page' in data:
+            page = sanitize(data['page'].value)
+            page = int(page)
+            count -= (page - 1)*200
+        else:
+            page = 1
+
+        out = ""
+        out += u"También puedes hacer búsquedas haciendo click sobre cada uno de los resultados."
+
+        # show simple paginator if needed
+        if count > 200:
+            out += "<div class='pull-right'><a href='http://" 
+            out += config.base_url + "search?q=" + q + "&page=" + str(page + 1) + u"'>Más resultados>></a></div>"
+
         out += "<table class='table table-hover table-striped table-bordered table-responsive table-condensed' "
         out += " style='font-size: 12px;'>"
         out += "<th>Fecha</th><th>Visitante</th><th>Documento</th><th>Entidad</th>"
         out += u"<th>Motivo</th><th>Empleado público</th><th>Oficina/Cargo</th>"
         out += u"<th>Lugar de reunión</th><th>Hora ing.</th><th>Hora sal.</th>\n"
+
+
+        if page > 1:
+            # LIMIT skip, count
+            query += " LIMIT " + str((page - 1)*200) + ", 200 "
+        else:
+            query += " LIMIT 200 " 
+
+        res = db.query(query)
         j = 0
         for i in res:
             out += lib.prettify(i)
             j += 1
+            if i == 200:
+                break
         out += "\n</table>"
 
         if j < 1:
