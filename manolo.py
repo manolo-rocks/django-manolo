@@ -113,12 +113,13 @@ except OSError:
 # taken from http://stackoverflow.com/a/7274316
 #d1 = date(2012,12,1)
 #d2 = date(2014,3,7)
-d1 = last_date_in_db()
-d2 = d1 + td(days=3)
+d1 = last_date_in_db() - td(days=3)
+d2 = d1 + td(days=6)
 delta = d2 - d1
 for i in range(delta.days + 1):
     my_date = d1 + td(days=i)
     fecha = my_date.strftime("%d/%m/%Y")
+    print fecha
 
     buscar(fecha)
 

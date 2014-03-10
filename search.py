@@ -65,7 +65,7 @@ if 'q' in data:
         query += " host like '%" + q + "%' OR"
         query += " office like '%" + q + "%' OR"
         query += " meeting_place like '%" + q + "%' "
-        query += " limit 200 "
+        query += " order by visitor limit 200"
         res = db.query(query)
         out = u"<p>También puedes hacer búsquedas haciendo click sobre cada uno de los resultados.</p>"
         out += "<table class='table table-hover table-striped table-bordered table-responsive table-condensed' "
