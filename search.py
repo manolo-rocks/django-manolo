@@ -1,6 +1,7 @@
 #!/usr/bin/python
 # -*- coding: utf8 -*-
 
+from urllib import urlencode
 import json
 import cgi
 import cgitb
@@ -95,7 +96,8 @@ if 'q' in data:
         # show simple paginator if needed
         if count > 200:
             out += "<div class='pull-right'><a href='http://" 
-            out += config.base_url + "search?q=" + q + "&page=" + str(page + 1) + u"'>Más resultados>></a></div>"
+            out += config.base_url + "search?"
+            out += urlencode({'q': q}) + "&page=" + str(page + 1) + u"'>Más resultados>></a></div>"
 
         out += "<table class='table table-hover table-striped table-bordered table-responsive table-condensed' "
         out += " style='font-size: 12px;'>"
