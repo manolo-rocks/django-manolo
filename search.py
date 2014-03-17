@@ -27,11 +27,12 @@ def sanitize(s):
     s = s.replace("*", "")
     s = s.replace("%", "")
 
-    res = re.search("([0-9]{2,}/[0-9]{2,}/[0-9]{4,})", s)
-    if res:
-        s = res.groups()[0]
-    else:
-        s = ""
+    if "/" in s:
+        res = re.search("([0-9]{2,}/[0-9]{2,}/[0-9]{4,})", s)
+        if res:
+            s = res.groups()[0]
+        else:
+            s = ""
     return s
 
 def sanitize_page(s):
@@ -129,12 +130,12 @@ if 'q' in data:
     html = f.read()
     f.close()
 
-    if out:
+    try:
         out = html.replace("{% content %}", out)
         out = out.replace("{% intro_message %}", "")
         out = out.replace("{% base_url %}", config.base_url)
         out = out.replace("{% keyword %}", q.decode("utf-8"))
-    else:
+    except:
         out = html.replace("{% intro_message %}", message)
         out = out.replace("{% content %}", "")
         out = out.replace("{% base_url %}", config.base_url)
