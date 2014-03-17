@@ -26,11 +26,11 @@ def sanitize(s):
     s = s.replace("=", "")
     s = s.replace("*", "")
     s = s.replace("%", "")
-    try:
-        res = re.search("([0-9]{2,}/[0-9]{2,}/[0-9]{4,})", s)
-        if res:
-            s = res.groups()[0]
-    except:
+
+    res = re.search("([0-9]{2,}/[0-9]{2,}/[0-9]{4,})", s)
+    if res:
+        s = res.groups()[0]
+    else:
         s = ""
     return s
 
