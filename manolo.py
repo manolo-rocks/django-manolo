@@ -71,7 +71,7 @@ def get_number_of_page_results(html):
     pages = []
     for i in res:
         page = re.search("_page=([0-9]+)", str(i)).groups()[0]
-        pages.append(page)
+        pages.append(int(page))
     pages = set(pages)
     print pages
     if len(pages) > 0:
