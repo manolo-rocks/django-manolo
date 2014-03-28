@@ -1,5 +1,7 @@
 # -*- coding: utf8 -*-
 
+from random import randint
+from time import sleep
 import dataset
 import requests
 import config
@@ -56,6 +58,8 @@ def get_number_of_page_results(html):
 
 
 def buscar(fecha):
+    sleep(randint(5,15))
+
     url = "http://visitas.osce.gob.pe/controlVisitas/index.php"
     url += "?r=consultas/visitaConsulta/index"
 
@@ -77,6 +81,7 @@ def buscar(fecha):
             url += str(i)
             print url
             try:
+                sleep(randint(5,15))
                 r = requests.post(url, data=payload)
                 r.encoding = "utf8"
                 csv = html_to_csv(r.text)
@@ -114,7 +119,7 @@ except OSError:
 #d1 = date(2012,12,1)
 #d2 = date(2014,3,7)
 d1 = last_date_in_db() - td(days=3)
-d2 = d1 + td(days=6)
+d2 = d1 + td(days=8)
 delta = d2 - d1
 for i in range(delta.days + 1):
     my_date = d1 + td(days=i)

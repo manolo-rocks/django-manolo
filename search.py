@@ -12,7 +12,7 @@ import re
 import codecs
 import string
 import config
-cgitb.enable()
+#cgitb.enable()
 
 data = cgi.FieldStorage()
 
