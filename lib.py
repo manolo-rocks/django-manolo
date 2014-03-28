@@ -106,6 +106,8 @@ def insert_to_db(line):
     table.insert(item)
 
 def create_database():
+    import sqlalchemy
+
     print "Creating database"
     filename = os.path.join(config.base_folder, "visitas.db")
     if not os.path.isfile(filename):
