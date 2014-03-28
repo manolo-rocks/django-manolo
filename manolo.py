@@ -14,6 +14,9 @@ import codecs
 from bs4 import BeautifulSoup
 from datetime import date, timedelta as td
 
+CRAWLERA_USER = config.CRAWLERA_USER
+CRAWLERA_PASS = config.CRAWLERA_PASS
+
 USER_AGENTS = [
 	"Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.1; SV1; Crazy Browser 1.0.5)",
 	"curl/7.7.2 (powerpc-apple-darwin6.0) libcurl 7.7.2 (OpenSSL 0.9.6b)",
@@ -30,6 +33,10 @@ USER_AGENTS = [
 	"Mozilla/5.0 (Windows NT 5.1) AppleWebKit/535.2 (KHTML, like Gecko) Chrome/15.0.872.0 Safari/535.2",
 	"Mozilla/5.0 (Windows NT 6.1) AppleWebKit/535.1 (KHTML, like Gecko) Chrome/14.0.812.0 Safari/535.1",
 	]
+
+proxies = {
+        "http": "http://" + CRAWLERA_USER + ":" + CRAWLERA_PASS + "@proxy.crawlera.com:8010/",
+}
 
 def html_to_csv(html):
     # taken from http://stackoverflow.com/a/14167916
@@ -84,7 +91,7 @@ def buscar(fecha):
             "VisitaConsultaQueryForm[feConsulta]": fecha
             }
     headers = { "User-Agent": USER_AGENTS[randint(0, len(USER_AGENTS))-1]}
-    r = requests.post(url, data=payload, headers=headers)
+    r = requests.post(url, data=payload, headers=headers, proxies=proxies)
     r.encoding = "utf8"
     csv = html_to_csv(r.text)
     print url
@@ -100,7 +107,7 @@ def buscar(fecha):
             print url
             try:
                 sleep(randint(5,15))
-                r = requests.post(url, data=payload, headers=headers)
+                r = requests.post(url, data=payload, headers=headers, proxies=proxies)
                 r.encoding = "utf8"
                 csv = html_to_csv(r.text)
             except:
