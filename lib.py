@@ -41,7 +41,7 @@ def get_data():
             pass
         else:
             line = line.strip()
-            i = line.split(",")
+            i = line.split("|")
             item = dict()
             item['date'] = i[0]
             item['visitor'] = i[1]

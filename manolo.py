@@ -41,6 +41,9 @@ USER_AGENTS = [
 	"Mozilla/5.0 (Windows NT 6.1) AppleWebKit/535.1 (KHTML, like Gecko) Chrome/14.0.812.0 Safari/535.1",
 	]
 
+proxies = {
+        "http": "http://" + CRAWLERA_USER + ":" + CRAWLERA_PASS + "@proxy.crawlera.com:8010/",
+}
 
 def html_to_csv(html):
     # taken from http://stackoverflow.com/a/14167916
@@ -56,9 +59,9 @@ def html_to_csv(html):
     f = codecs.open(filename, "a", "utf8")
     for i in rows:
         if len(i) > 1:
-            out  = i[0] + "," + i[1] + "," + i[2] + "," + i[3] + ","
-            out += i[4] + "," + i[5] + "," + i[6] + "," + i[7] + ","
-            out += i[8] + "," + i[9] + "\n"
+            out  = i[0] + "|" + i[1] + "|" + i[2] + "|" + i[3] + "|"
+            out += i[4] + "|" + i[5] + "|" + i[6] + "|" + i[7] + "|"
+            out += i[8] + "|" + i[9] + "\n"
             f.write(out)
         else:
             print i
