@@ -63,54 +63,39 @@ def html_to_json(html):
 
 
 def get_data():
-    import re
-    # get data from csv file
+    # get data from json file
     filename = os.path.join(config.base_folder, "visitas.db")
     db = dataset.connect("sqlite:///" + filename)
     table = db['visitas']
     
-    filename = os.path.join(config.base_folder, "output.csv")
+    filename = os.path.join(config.base_folder, "output.json")
     f = codecs.open(filename, "r", "utf8")
     data = f.readlines()
     f.close()
     
     items = []
     for line in data:
-        if line.startswith("No se encontraron resultados"):
-            pass
-        else:
-            line = line.strip()
-            i = line.split("|")
-            item = dict()
-            item['date'] = i[0]
-            item['visitor'] = i[1]
-            item['id_document'] = i[2]
-            item['entity'] = i[3]
-            item['objective'] = i[4]
-            item['host'] = i[5]
-            item['office'] = i[6]
-            item['meeting_place'] = i[7]
-            item['time_start'] = i[8]
-            try:
-                item['time_end'] = i[9]
-            except:
-                item['time_end'] = ""
+       line = line.strip()
+       item = json.loads(line)
     
-            id_document_number = re.search("([0-9]+)", item['id_document'])
-            if id_document_number:
-                id_document_number = id_document_number.groups()[0]
-            else:
-                id_document_number = ""
+       if 'id_document' in item:
+           id_doc_number = re.search("([0-9]+)", item['id_document'])
+           if id_doc_number:
+               id_doc_number = id_doc_number.groups()[0]
+           else:
+               id_doc_number = ""
+       else:
+           id_doc_number = ""
 
-            string  = str(item['date'])
-            string += str(id_document_number)
-            string += str(item['time_start'])
-            m = hashlib.sha1()
-            m.update(string)
-            item['sha512'] = m.hexdigest()
+       string  = str(item['date']) + str(id_doc_number) + str(item['time_start'])
+       m = hashlib.sha1()
+       m.update(string)
+       item['sha512'] = m.hexdigest()
     
-            items.append(item)
+       items.append(item)
     return items
+
+
 
 def prettify(item):
     out = "<tr>"
