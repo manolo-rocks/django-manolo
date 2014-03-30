@@ -1,11 +1,16 @@
 # -*- coding: utf8 -*-
 
-import dataset
-import os
-import config
 import codecs
 import hashlib
+import json
+import os
+import re
 import shutil
+
+from bs4 import BeautifulSoup
+import dataset
+
+import config
 
 
 def recreate_website():
@@ -26,8 +31,6 @@ def recreate_website():
 
 
 def html_to_json(html):
-    import json
-
     ###
     # taken from http://stackoverflow.com/a/14167916
     soup = BeautifulSoup(html)

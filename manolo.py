@@ -74,7 +74,7 @@ def buscar(fecha):
     headers = { "User-Agent": USER_AGENTS[randint(0, len(USER_AGENTS))-1]}
     r = requests.post(url, data=payload, headers=headers, proxies=proxies)
     r.encoding = "utf8"
-    csv = html_to_json(r.text)
+    myjson = lib.html_to_json(r.text)
     print url
 
     number_of_pages = get_number_of_page_results(r.text)
@@ -90,7 +90,7 @@ def buscar(fecha):
                 sleep(randint(5,15))
                 r = requests.post(url, data=payload, headers=headers, proxies=proxies)
                 r.encoding = "utf8"
-                csv = html_to_csv(r.text)
+                myjson = lib.html_to_json(r.text)
             except:
                 pass
 
@@ -112,7 +112,7 @@ def last_date_in_db():
 
 # clean our outfile
 try:
-    filename = os.path.join(config.base_folder, "output.csv")
+    filename = os.path.join(config.base_folder, "output.json")
     os.remove(filename)
 except OSError:
     pass
@@ -135,15 +135,18 @@ for i in range(delta.days + 1):
     buscar(fecha)
 
 
-# upload data from our csv file
-items = lib.get_data()
 filename = os.path.join(config.base_folder, "visitas.db")
 db = dataset.connect("sqlite:///" + filename)
 table = db['visitas']
 
+print "Getting data from our json file"
+items = lib.get_data()
+
+print "Uploading data from our json file"
 for i in items:
     if not table.find_one(sha512=i['sha512']):
         print i['sha512'], i['date']
         table.insert(i)
 
+print "Recreating website"
 lib.recreate_website()
