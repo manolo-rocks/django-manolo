@@ -59,8 +59,6 @@ def html_to_json(html):
                 out['time_end'] = ""
 
             f.write(json.dumps(out) + "\n")
-        else:
-            print ""
     f.close()
 
 
