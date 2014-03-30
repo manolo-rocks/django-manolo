@@ -65,7 +65,7 @@ def get_data():
                 id_document_number = ""
 
             string  = str(item['date'])
-            string += id_document_number
+            string += str(id_document_number)
             string += str(item['time_start'])
             m = hashlib.sha1()
             m.update(string)
