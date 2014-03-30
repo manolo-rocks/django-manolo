@@ -7,16 +7,17 @@ Supervisor de las Contrataciones del Estado**.
 
 # Motivación
 Todo aquel que visita el Organismo de Contrataciones debe
-registrarse dejando su **nombre, DNI, motivo de visita, empleado público que lo
-recibe, hora de ingreso, salida y fecha**. Toda esta información está
-disponible en la Internet en esta dirección:
+registrarse dejando su **nombre, documento de indentidad, motivo de visita,
+empleado público que lo recibe, hora de ingreso, salida y fecha**.
+Toda esta información está disponible en la Internet en esta
+dirección:
 <http://visitas.osce.gob.pe/controlVisitas/index.php?r=consultas/visitaConsulta/index>
 
 El problema es que la interfaz no es muy amigable y sólo se pueden buscar
 visitantes a la institución por día. Seleccionas cualquier día del menú y veras
 todos los visitantes que de esa fecha. Si quieres saber cuántas veces ha visitado
 el lugar una determinada persona, debes buscar día por día, página por página,
-   revisar línea por línea en búsqueda de la persona de interés.
+revisar línea por línea en búsqueda de la persona de interés.
 
 Obviamente este tipo de búsqueda es muy tedioso, aburrido, inexacto (se presta
 a errores de conteo) además que toma demasiado tiempo hacer una simple
