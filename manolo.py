@@ -18,7 +18,7 @@ if config.CRAWLERA_USER != "":
     CRAWLERA_USER = config.CRAWLERA_USER
     CRAWLERA_PASS = config.CRAWLERA_PASS
     proxies = {
-        "http": "http://" + CRAWLERA_USER + ":" + CRAWLERA_PASS + "@proxy.crawlera.com:8010/",
+            "http": "http://" + CRAWLERA_USER + ":" + CRAWLERA_PASS + "@proxy.crawlera.com:8010/",
     }
     crawlera = True
 else:
@@ -40,10 +40,6 @@ USER_AGENTS = [
 	"Mozilla/5.0 (Windows NT 5.1) AppleWebKit/535.2 (KHTML, like Gecko) Chrome/15.0.872.0 Safari/535.2",
 	"Mozilla/5.0 (Windows NT 6.1) AppleWebKit/535.1 (KHTML, like Gecko) Chrome/14.0.812.0 Safari/535.1",
 	]
-
-proxies = {
-        "http": "http://" + CRAWLERA_USER + ":" + CRAWLERA_PASS + "@proxy.crawlera.com:8010/",
-}
 
 
 def get_number_of_page_results(html):
@@ -72,7 +68,11 @@ def buscar(fecha):
             "VisitaConsultaQueryForm[feConsulta]": fecha
             }
     headers = { "User-Agent": USER_AGENTS[randint(0, len(USER_AGENTS))-1]}
-    r = requests.post(url, data=payload, headers=headers, proxies=proxies)
+
+    if crawlera:
+        r = requests.post(url, data=payload, headers=headers, proxies=proxies)
+    else:
+        r = requests.post(url, data=payload, headers=headers)
     r.encoding = "utf8"
     myjson = lib.html_to_json(r.text)
     print url
@@ -88,7 +88,10 @@ def buscar(fecha):
             print url
             try:
                 sleep(randint(5,15))
-                r = requests.post(url, data=payload, headers=headers, proxies=proxies)
+                if crawlera:
+                    r = requests.post(url, data=payload, headers=headers, proxies=proxies)
+                else:
+                    r = requests.post(url, data=payload, headers=headers)
                 r.encoding = "utf8"
                 myjson = lib.html_to_json(r.text)
             except:
@@ -105,7 +108,10 @@ def last_date_in_db():
         i = i['date'].split("/")
         dates.append(date(int(i[2]), int(i[1]), int(i[0])))
     dates.sort()
-    return dates[-1]
+    if dates:
+        return dates[-1]
+    else:
+        return False
 
 
 
@@ -117,6 +123,7 @@ try:
 except OSError:
     pass
 
+
 # Use this format for dates
 # fecha = "DD/MM/YYYY"
 
@@ -124,7 +131,11 @@ except OSError:
 # taken from http://stackoverflow.com/a/7274316
 #d1 = date(2012,12,1)
 #d2 = date(2014,3,7)
-d1 = last_date_in_db() - td(days=3)
+if last_date_in_db():
+    d1 = last_date_in_db() - td(days=3)
+else:
+    d1 = date(2011,7,28)
+
 d2 = d1 + td(days=8)
 delta = d2 - d1
 for i in range(delta.days + 1):
