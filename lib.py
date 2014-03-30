@@ -25,6 +25,7 @@ def recreate_website():
     shutil.copy2(os.path.join(orig,"bootstrap.min.js"), os.path.join(dest,"bootstrap.min.js"))
 
 def get_data():
+    import re
     # get data from csv file
     filename = os.path.join(config.base_folder, "visitas.db")
     db = dataset.connect("sqlite:///" + filename)
@@ -52,10 +53,21 @@ def get_data():
             item['office'] = i[6]
             item['meeting_place'] = i[7]
             item['time_start'] = i[8]
-            item['time_end'] = i[9]
+            try:
+                item['time_end'] = i[9]
+            except:
+                item['time_end'] = ""
     
-            string = str(item['date']) + str(item['id_document']) + str(item['time_start'])
-            m = hashlib.sha512()
+            id_document_number = re.search("([0-9]+)", item['id_document'])
+            if id_document_number:
+                id_document_number = id_document_number.groups()[0]
+            else:
+                id_document_number = ""
+
+            string  = str(item['date'])
+            string += id_document_number
+            string += str(item['time_start'])
+            m = hashlib.sha1()
             m.update(string)
             item['sha512'] = m.hexdigest()
     
