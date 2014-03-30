@@ -45,32 +45,6 @@ proxies = {
         "http": "http://" + CRAWLERA_USER + ":" + CRAWLERA_PASS + "@proxy.crawlera.com:8010/",
 }
 
-def html_to_csv(html):
-    # taken from http://stackoverflow.com/a/14167916
-    soup = BeautifulSoup(html)
-    table = soup.find('table', attrs={'class': 'items'})
-    headers = [header.text for header in table.find_all('th')]
-
-    rows = []
-    for row in table.find_all('tr'):
-        rows.append([val.text for val in row.find_all('td')])
-
-    filename = os.path.join(config.base_folder, "output.csv")
-    f = codecs.open(filename, "a", "utf8")
-    for i in rows:
-        if len(i) > 1:
-            out  = i[0] + "|" + i[1] + "|" + i[2] + "|" + i[3] + "|"
-            out += i[4] + "|" + i[5] + "|" + i[6] + "|" + i[7] + "|"
-            out += i[8] + "|" + i[9] + "\n"
-            f.write(out)
-        else:
-            print i
-    f.close()
-
-    #with codecs.open("output.csv", "a", "utf8") as f:
-        #writer = csv.writer(f)
-        #writer.writerow(headers)
-        #writer.writerows(row for row in rows if row)
 
 def get_number_of_page_results(html):
     soup = BeautifulSoup(html)
@@ -100,7 +74,7 @@ def buscar(fecha):
     headers = { "User-Agent": USER_AGENTS[randint(0, len(USER_AGENTS))-1]}
     r = requests.post(url, data=payload, headers=headers, proxies=proxies)
     r.encoding = "utf8"
-    csv = html_to_csv(r.text)
+    csv = html_to_json(r.text)
     print url
 
     number_of_pages = get_number_of_page_results(r.text)
