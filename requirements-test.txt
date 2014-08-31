@@ -8,3 +8,6 @@ flake8>=2.1.0
 tox>=1.7.0
 
 # Additional test requirements go here
+
+beautifulsoup4==4.3.2
+requests==2.3.0
