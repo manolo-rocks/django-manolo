@@ -44,3 +44,6 @@ Esta es la dirección web de **Manolo, buscador de personas**:
 <http://aniversarioperu.me/manolo/>
 
 ![](manolo.png)
+
+# Documentation
+The full documentation is at https://django-manolo.readthedocs.org.
