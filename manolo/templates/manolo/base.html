@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="es" xmlns="http://www.w3.org/1999/html">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Manolo. Buscador de visitas al
+    Organismo Supervisor de las Contrataciones del Estado Peruano">
+    <meta name="author" content="AniversarioPeru">
+
+    <title>Manolo. Buscador de visitas, organismo de contrataciones PCM</title>
+
+    <link href="//maxcdn.bootstrapcdn.com/bootswatch/3.2.0/readable/bootstrap.min.css" rel="stylesheet">
+    <style type="text/css">
+        .highlight { background-color: yellow }
+        .navbar .divider-vertical {
+            min-height: 50px;
+            margin: 0 9px;
+            border-right: 1px solid #ffffff;
+            border-left: 1px solid #f2f2f2;
+        }
+        footer {
+            padding-bottom: 20px;
+            margin-bottom: 20px;
+        }
+    </style>
+
+
+  </head>
+
+  <body>
+
+    <div class="container">
+    <h2>Este es Manolo</h2>
+        <b>Manolo es un buscador de personas</b>
+        que visitan las instalaciones de entidades estatales peruanas.
+        Manolo extrae la información del registro en línea, almacena los
+        registros en una base de datos local y provee un buscador muy simple
+        pero más poderoso que el de las instituciones estatales.
+    </div>
+
+    <br />
+
+  {% block content %}{% endblock %}
+
+
+    <br />
+
+
+
+
+            <div class="well"><b>Disclaimer:</b> La info presentada
+                en esta herramienta web (o sea <b>Manolo</b>) es referencial y no tiene valor legal.
+                Para denuncias y otras cuestiones legales debes verificar con las fuentes originales
+                (ej. el registro en línea de la
+                <a href="#">institución estatal correspondiente.</a>).
+            </div>
+
+
+        <hr>
+        <footer>
+            <small class="pull-right">Desarrollado por AniversarioPeru 2014</small>
+        </footer>
+    </div> <!-- /container -->
+
+
+  {% load staticfiles %}
+  <script src="//code.jquery.com/jquery-1.11.0.min.js"></script>
+  <script src='{% static "js/highlighter.js" %}'></script>
+  <script>$("#contenido").highlight('{{ keyword }}');</script>
+  </body>
+</html>

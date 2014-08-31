@@ -1,0 +1,69 @@
+{% extends 'manolo/base.html' %}
+
+{% block content %}
+     <div class="container">
+       <div class="row">
+         <div class="col-xs-12 col-md-12 col-lg-12">
+           <form action="{% url 'manolo:search' %}" method="get" class="form-inline" role="form">
+             <div class="form-group">
+               <div class="col-lg-8 col-xs-8 col-md-8">
+                 <label class="sr-only" for="query">Keyword</label>
+                   <input type="text" id="query" name="q"
+                                   class="form-control"
+                                   placeholder="Tipea persona o palabra clave">
+               </div>
+               <button type="submit" class="btn btn-info" id="search_button">
+                            <span class="glyphicon glyphicon-search"></span>
+                            Buscar
+               </button>
+             </div>
+           </form>
+         </div>
+       </div><!-- row -->
+     </div>
+
+     <br />
+
+     <div id="contenido" class="container" style="max-width:1200px;">
+         También puedes hacer búsquedas haciendo click sobre cada uno de los
+         resultados.
+     <table class='table table-hover table-striped table-bordered
+         table-responsive table-condensed' style='font-size: 12px;'>
+         <th>Fecha</th><th>Visitante</th><th>Documento</th><th>Entidad</th>
+         <th>Motivo</th><th>Empleado público</th><th>Oficina/Cargo</th>
+         <th>Lugar de reunión</th><th>Hora ing.</th><th>Hora sal.</th>
+
+        {{ content }}
+        {% for i in items %}
+            <tr>
+                <td><a href='/manolo/search?q={{ i.date|date:"d/m/Y" }}'>
+                        {{ i.date|date:"d/m/Y" }}
+                        </a></td>
+                <td><a href='/manolo/search?q={{ i.visitor|upper }}'>
+                        {{ i.visitor|upper }}
+                        </a></td>
+                <td><a href='/manolo/search?q={{ i.id_document }}'>
+                        {{ i.id_document }}
+                        </a></td>
+                <td><a href='/manolo/search?q={{ i.entity }}'>
+                        {{ i.entity }}
+                        </a></td>
+                <td><a href='/manolo/search?q={{ i.objective }}'>
+                        {{ i.objective }}
+                        </a></td>
+                <td><a href='/manolo/search?q={{ i.host }}'>
+                        {{ i.host }}
+                        </a></td>
+                <td><a href='/manolo/search?q={{ i.office }}'>
+                        {{ i.office }}
+                        </a></td>
+                <td><a href='/manolo/search?q={{ i.meeting_place }}'>
+                        {{ i.meeting_place }}
+                        </a></td>
+                <td>{{ i.time_start }}</td>
+                <td>{{ i.time_end }}</td>
+            </tr>
+        {% endfor %}
+
+     </table>
+{% endblock %}

@@ -1,0 +1,42 @@
+{% extends 'manolo/base.html' %}
+
+{% block content %}
+     <div class="container">
+       <h2>Este es Manolo</h2>
+            <p>
+            <b>Manolo es un buscador de las personas</b> que visitan las instalaciones del
+            Organismo Supervisor de las Contrataciones del Estado.
+            <br />
+            Todos los datos son descargados diariamente de aquí: <b>
+            <a href="http://visitas.osce.gob.pe/controlVisitas/index.php?r=consultas/visitaConsulta/index">
+            http://visitas.osce.gob.pe/controlVisitas/index.php?r=consultas/visitaConsulta/index</a></b>
+            </p>
+            <div class='well'>
+            Puedes buscar por nombre o palabra clave. Por ejemplo tipea
+            <b>ROMULO</b> y hacer click en "Buscar".
+            </div>
+            <p>
+            También puedes hacer búsquedas haciendo click sobre cada uno de los resultados.
+            </p>
+
+
+       <div class="row">
+         <div class="col-xs-12 col-md-12 col-lg-12">
+           <form action="{% url 'manolo:search' %}" method="get" class="form-inline" role="form">
+             <div class="form-group">
+               <div class="col-lg-8 col-xs-8 col-md-8">
+                 <label class="sr-only" for="query">Keyword</label>
+                   <input type="text" id="query" name="q"
+                                   class="form-control"
+                                   placeholder="Tipea persona o palabra clave">
+               </div>
+               <button type="submit" class="btn btn-info" id="search_button">
+                            <span class="glyphicon glyphicon-search"></span>
+                            Buscar
+               </button>
+             </div>
+           </form>
+         </div>
+       </div><!-- row -->
+     </div>
+{% endblock %}
