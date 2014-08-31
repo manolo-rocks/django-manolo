@@ -33,7 +33,7 @@ test-all:
 	tox
 
 coverage:
-	coverage run --source django-manolo setup.py test
+	coverage run --source manolo setup.py test
 	coverage report -m
 	coverage html
 	open htmlcov/index.html

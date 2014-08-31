@@ -31,7 +31,7 @@ class Command(BaseCommand):
 
     def __init__(self, *args, **options):
         super(Command, self).__init__(*args, **options)
-        if settings.CRAWLERA_USER != "":
+        if settings.CRAWLERA_USER and settings.CRAWLERA_USER != "":
             self.CRAWLERA_USER = settings.CRAWLERA_USER
             self.CRAWLERA_PASS = settings.CRAWLERA_PASS
             self.proxies = {
@@ -42,8 +42,6 @@ class Command(BaseCommand):
             print("Using Crawlera as proxy.")
         else:
             self.crawlera = False
-
-
 
         # location for output.json containing scrapped data
         self.OUTPUT_JSON = os.path.join(settings.BASE_DIR, "output.json")
@@ -68,11 +66,7 @@ class Command(BaseCommand):
         user_url = options.get('url')
 
         # last date in database
-        l_date = Manolo.objects.exclude(date=None).order_by('date').last()
-        if l_date:
-            d1 = l_date.date - td(days=3)
-        else:
-            d1 = date(2011, 7, 28)
+        d1 = self.get_last_date_in_db()
 
         # remove output.json file
         if os.path.isfile(self.OUTPUT_JSON):
@@ -227,3 +221,11 @@ class Command(BaseCommand):
 
             items.append(item)
         return items
+
+    def get_last_date_in_db(self):
+            l_date = Manolo.objects.exclude(date=None).order_by('date').last()
+            if l_date:
+                d1 = l_date.date - td(days=3)
+            else:
+                d1 = date(2011, 7, 28)
+            return d1
