@@ -3,10 +3,10 @@
    You can adapt this file completely to your liking, but it should at least
    contain the root `toctree` directive.
 
-Welcome to django-manolo's documentation!
-=================================================================
+Bienvenido a la documentación de django-manolo
+==============================================
 
-Contents:
+Contenido:
 
 .. toctree::
    :maxdepth: 2
