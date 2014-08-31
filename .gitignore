@@ -2,6 +2,7 @@
 *.json
 *.csv
 config.py
+.idea
 
 *.py[cod]
 
