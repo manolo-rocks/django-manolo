@@ -1,8 +1,6 @@
 # django-manolo
 [![Build Status](https://badge.fury.io/py/django-manolo.png)](https://badge.fury.io/py/django-manolo)
-
 [![Build Status](https://travis-ci.org/aniversarioperu/django-manolo.png?branch=master)](https://travis-ci.org/aniversarioperu/django-manolo)
-
 [![Build Status](https://coveralls.io/repos/aniversarioperu/django-manolo/badge.png?branch=master)](https://coveralls.io/r/aniversarioperu/django-manolo?branch=master)
     
 # Manolo, buscador de lobistas
