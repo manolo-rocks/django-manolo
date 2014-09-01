@@ -43,5 +43,9 @@ Esta es la dirección web de **Manolo, buscador de personas**:
 
 ![](manolo.png)
 
-# Documentation
-The full documentation is at https://django-manolo.readthedocs.org.
+# Documentación
+"Manolo" es un paquete o *app* para Django y puede ser agregado fácilmente a
+algún projecto de Django a manera de plugin.
+
+La documentación completa está en este enlace:
+https://django-manolo.readthedocs.org.
