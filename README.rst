@@ -1,4 +1,4 @@
-mjango-manolo
+Django-manolo
 =============
 
 |Pypi index| |Build Status| |Cover alls|
@@ -50,6 +50,11 @@ fácilmente a algún projecto de Django a manera de plugin.
 
 La documentación completa está en este enlace:
 https://django-manolo.readthedocs.org.
+
+Fork from Gihub
+==================
+Aqui puedes seguir el desarrollo de Manolo
+https://github.com/aniversarioperu/django-manolo
 
 .. |Pypi index| image:: https://badge.fury.io/py/django-manolo.png
    :target: https://badge.fury.io/py/django-manolo
