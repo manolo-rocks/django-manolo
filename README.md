@@ -5,7 +5,6 @@
     
 # Manolo, buscador de lobistas
 
-### Version 1.0.0
 Presento un buscador de personas que ingresan las oficinas del **Organismo
 Supervisor de las Contrataciones del Estado**.
 <http://aniversarioperu.me/manolo/>
@@ -40,8 +39,6 @@ Más información en un post en el blog Útero de Marita:
 
 Esta es la dirección web de **Manolo, buscador de personas**:
 <http://aniversarioperu.me/manolo/>
-
-![](manolo.png)
 
 # Documentación
 "Manolo" es un paquete o *app* para Django y puede ser agregado fácilmente a
