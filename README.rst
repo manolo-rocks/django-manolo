@@ -1,7 +1,7 @@
 mjango-manolo
 =============
 
-|Build Status| |Build Status| |Build Status|
+|Pypi index| |Cover alls| |Build Status|
 
 Manolo, buscador de lobistas
 ============================
@@ -51,9 +51,9 @@ fácilmente a algún projecto de Django a manera de plugin.
 La documentación completa está en este enlace:
 https://django-manolo.readthedocs.org.
 
-.. |Build Status| image:: https://badge.fury.io/py/django-manolo.png
+.. |Pypi index| image:: https://badge.fury.io/py/django-manolo.png
    :target: https://badge.fury.io/py/django-manolo
 .. |Build Status| image:: https://travis-ci.org/aniversarioperu/django-manolo.png?branch=master
    :target: https://travis-ci.org/aniversarioperu/django-manolo
-.. |Build Status| image:: https://coveralls.io/repos/aniversarioperu/django-manolo/badge.png?branch=master
+.. |Cover alls| image:: https://coveralls.io/repos/aniversarioperu/django-manolo/badge.png?branch=master
    :target: https://coveralls.io/r/aniversarioperu/django-manolo?branch=master
