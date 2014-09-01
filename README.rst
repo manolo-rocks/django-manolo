@@ -1,7 +1,7 @@
 mjango-manolo
 =============
 
-|Pypi index| |Cover alls| |Build Status|
+|Pypi index| |Build Status| |Cover alls|
 
 Manolo, buscador de lobistas
 ============================
