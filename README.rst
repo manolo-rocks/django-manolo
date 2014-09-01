@@ -56,7 +56,7 @@ Fork from Gihub
 Aqui puedes seguir el desarrollo de Manolo
 https://github.com/aniversarioperu/django-manolo
 
-.. |Pypi index| image:: https://badge.fury.io/py/django-manolo.png
+.. |Pypi index| image:: https://badge.fury.io/py/django-manolo.svg
    :target: https://badge.fury.io/py/django-manolo
 .. |Build Status| image:: https://travis-ci.org/aniversarioperu/django-manolo.png?branch=master
    :target: https://travis-ci.org/aniversarioperu/django-manolo
