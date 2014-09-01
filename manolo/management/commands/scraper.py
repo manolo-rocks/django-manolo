@@ -31,7 +31,7 @@ class Command(BaseCommand):
 
     def __init__(self, *args, **options):
         super(Command, self).__init__(*args, **options)
-        if settings.CRAWLERA_USER and settings.CRAWLERA_USER != "":
+        if hasattr(settings, 'CRAWLERA_USER') and settings.CRAWLERA_USER != "":
             self.CRAWLERA_USER = settings.CRAWLERA_USER
             self.CRAWLERA_PASS = settings.CRAWLERA_PASS
             self.proxies = {

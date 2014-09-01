@@ -4,6 +4,7 @@ try:
     from django.conf import settings
 
     settings.configure(
+        BASE_DIR='',
         DEBUG=True,
         USE_TZ=True,
         DATABASES={
