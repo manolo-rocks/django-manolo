@@ -64,7 +64,26 @@ Ejemplo::
         }
     }
 
-En progreso
------------
+Configurar los *views*
+----------------------
+En tu URLconf debes agregar la siguiente línea::
 
-continuará...
+    (r'^manolo/', include('manolo.urls', namespace='manolo')),
+
+Esta configuración hará que "Manolo" funcione en el URL
+``http://TUDOMINIO.com/manolo`` y funcione el buscador en la dirección
+``http://TUDOMINIO.com/manolo/search``.
+
+Ejecutar el *scraper* para jalar los registros de la institucion Estatal
+------------------------------------------------------------------------
+"Manolo" tiene un *scraper* que se encarga de jalar las visitas registradas en
+la web de la institución estatal. Para esto es necesario utilizar la línea
+de comandos de un terminal y además se necesita especificar la dirección URL
+del registro de visitas en línea.
+
+Ejemplo para *scrappear* el registro de visitas de la OSCE::
+
+    python manage.py scraper --url http://visitas.osce.gob.pe/controlVisitas/index.php?r=consultas/visitaConsulta/index
+
+Puedes hacer que este script funcione una vez al día, todos los días si usas
+un [cronjob](https://help.ubuntu.com/community/CronHowto).
