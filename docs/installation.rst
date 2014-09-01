@@ -57,8 +57,8 @@ Ejemplo::
         'default': {
             'ENGINE': 'django.db.backends.postgresql_psycopg2',
             'NAME': 'manolo',
-            'USER': 'ani',
-            'PASSWORD': get_secret("POSTGRESQL_PASSWORD"),
+            'USER': 'INGRESAR EL NOMBRE DE USUARIO PARA POSTGRESQL',
+            'PASSWORD': u'PONER LA CONTRASEÑA PARA POSTGRESQL',
             'HOST': 'localhost',
             'PORT': '',
         }
