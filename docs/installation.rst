@@ -2,9 +2,14 @@
 Instalación
 ===========
 
-En un terminal tipear lo siguiente::
+Lo más fácil es copiar el folder django-manolo/manolo dentro de tu proyecto
+Django, como si fuera una *app* adicional::
 
-    $ pip install django-manolo
+    - django_project
+       - manage.py
+       - djando_project
+       - manolo
+       - otra_app
 
 También puedes usar un ambiente virtual::
 
