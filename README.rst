@@ -6,7 +6,8 @@ Django-manolo
 Manolo, buscador de lobistas
 ============================
 
-Presento un buscador de personas que ingresan las oficinas del
+Presento un buscador de personas que ingresan las oficinas de
+entidades del Estado peruano. Aquí puedes ver un ejemplo para el 
 **Organismo Supervisor de las Contrataciones del Estado**.
 http://aniversarioperu.me/manolo/
 
