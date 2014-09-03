@@ -1,7 +1,7 @@
 Django-manolo
 =============
 
-|Pypi index| |Build Status| |Dependencies status| |Cover alls|
+|Pypi index| |Build Status| |Dependencies status| |Cover alls| |Download  numbers|
 
 Manolo, buscador de lobistas
 ============================
@@ -66,3 +66,6 @@ https://github.com/aniversarioperu/django-manolo
 
 .. |Dependencies status| image:: https://gemnasium.com/aniversarioperu/django-manolo.svg
    :target: https://gemnasium.com/aniversarioperu/django-manolo
+.. |Download numbers| image:: https://pypip.in/download/django-manolo/badge.svg
+   :target: https://crate.io/packages/django-manolo
+   :alt: Downloads
