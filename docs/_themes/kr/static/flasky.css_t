@@ -11,16 +11,22 @@
 
 @import url("basic.css");
 
+@font-face {
+  font-family: 'Antic Slab';
+  font-style: normal;
+  font-weight: 400;
+  src: local('Antic Slab'), local('AnticSlab-Regular'), url(https://fonts.gstatic.com/s/anticslab/v4/8c9q46CAcsp9TiRX9KLgZBsxEYwM7FgeyaSgU71cLG0.woff) format('woff');
+}
 /* -- page layout ----------------------------------------------------------- */
 
 body {
-    font-family: "Georgia", "Open Sans", OpenSansRegular, sans-serif;
+    font-family: Georgia, 'Hiragino Mincho Pro';
     font-size: 16px;
-    background: #fff;
-    font-weight: 400;
+    background-color: white;
     color: #000;
     margin: 0;
     padding: 0;
+    font-weight: 400;
 }
 
 div.document {
@@ -46,7 +52,7 @@ hr {
 }
 
 div.body {
-    background-color: white;
+    background-color: #ffffff;
     color: #3E4349;
     padding: 0 30px 0 30px;
 }
@@ -99,11 +105,11 @@ div.sphinxsidebarwrapper p.logo {
 
 div.sphinxsidebar h3,
 div.sphinxsidebar h4 {
-    font-family: 'Antic Slab' ,'Garamond', 'Georgia', serif;
-    color: #000;
+    font-family: 'Antic Slab', 'Garamond', 'Georgia', serif;
+    color: #444;
     font-size: 24px;
     font-weight: normal;
-    margin: 30px 0 5px 0;
+    margin: 0 0 5px 0;
     padding: 0;
 }
 
@@ -112,7 +118,7 @@ div.sphinxsidebar h4 {
 }
 
 div.sphinxsidebar h3 a {
-    color: #000;
+    color: #444;
 }
 
 div.sphinxsidebar p.logo a,
@@ -128,7 +134,7 @@ div.sphinxsidebar p {
 }
 
 div.sphinxsidebar ul {
-    margin: 10px 0px;
+    margin: 10px 0;
     padding: 0;
     color: #000;
 }
@@ -157,20 +163,18 @@ div.body h3,
 div.body h4,
 div.body h5,
 div.body h6 {
-    font-family: 'Antic Slab', serif;
+    font-family: 'Antic Slab', 'Garamond', 'Georgia', serif;
     font-weight: normal;
     margin: 30px 0px 10px 0px;
     padding: 0;
-    text-shadow: 1px 1px 3px #ddd;
-    color: #000;
 }
 
-div.body h1 { margin-top: 0; padding-top: 0; font-size: 250%; }
-div.body h2 { font-size: 190%; }
-div.body h3 { font-size: 160%; }
-div.body h4 { font-size: 140%; }
-div.body h5 { font-size: 110%; }
-div.body h6 { font-size: 110%; }
+div.body h1 { margin-top: 0; padding-top: 0; font-size: 240%; }
+div.body h2 { font-size: 180%; }
+div.body h3 { font-size: 150%; }
+div.body h4 { font-size: 130%; }
+div.body h5 { font-size: 100%; }
+div.body h6 { font-size: 100%; }
 
 a.headerlink {
     color: #ddd;
@@ -184,7 +188,7 @@ a.headerlink:hover {
 }
 
 div.body p, div.body dd, div.body li {
-    line-height: 1.4em;
+    line-height: 1.5em;
 }
 
 div.admonition {
@@ -247,14 +251,9 @@ p.admonition-title:after {
     content: ":";
 }
 
-pre {
+pre, tt {
     font-family: 'Consolas', 'Menlo', 'Deja Vu Sans Mono', 'Bitstream Vera Sans Mono', monospace;
-    font-size: 0.88em;
-}
-
-tt {
-    font-family: 'Consolas', 'Menlo', 'Deja Vu Sans Mono', 'Bitstream Vera Sans Mono', monospace;
-    font-size: 0.95em;
+    font-size: 0.9em;
 }
 
 img.screenshot {
@@ -350,13 +349,13 @@ pre {
 }
 
 dl pre, blockquote pre, li pre {
-    margin-left: 0px;
-    padding-left: 15px;
+    margin-left: -60px;
+    padding-left: 60px;
 }
 
 dl dl pre {
-    margin-left: 0px;
-    padding-left: 15px;
+    margin-left: -90px;
+    padding-left: 90px;
 }
 
 tt {
@@ -367,7 +366,6 @@ tt {
 
 tt.xref, a tt {
     background-color: #FBFBFB;
-    color: #2277bb;
     border-bottom: 1px solid white;
 }
 
@@ -395,12 +393,8 @@ a:hover tt {
     background: #EEE;
 }
 
-li {
-  margin-bottom: 0.3em;
-}
 
-
-@media screen and (max-width: 870px) {
+@media screen and (max-width: 600px) {
 
     div.sphinxsidebar {
     	display: none;
@@ -449,111 +443,10 @@ li {
         display: none;
     }
 
-
-
 }
-
-
-
-@media screen and (max-width: 875px) {
-
-    body {
-        margin: 0;
-        padding: 20px 30px;
-    }
-
-    div.documentwrapper {
-        float: none;
-        background: white;
-    }
-
-    div.sphinxsidebar {
-        display: block;
-        float: none;
-        width: 102.5%;
-        margin: 50px -30px -20px -30px;
-        padding: 10px 20px;
-        background: #333;
-        color: white;
-    }
-
-    div.sphinxsidebar h3, div.sphinxsidebar h4, div.sphinxsidebar p,
-    div.sphinxsidebar h3 a {
-        color: white;
-    }
-
-    div.sphinxsidebar a {
-        color: #aaa;
-    }
-
-    div.sphinxsidebar p.logo {
-        display: none;
-    }
-
-    div.document {
-        width: 100%;
-        margin: 0;
-    }
-
-    div.related {
-        display: block;
-        margin: 0;
-        padding: 10px 0 20px 0;
-    }
-
-    div.related ul,
-    div.related ul li {
-        margin: 0;
-        padding: 0;
-    }
-
-    div.footer {
-        display: none;
-    }
-
-    div.bodywrapper {
-        margin: 0;
-    }
-
-    div.body {
-        min-height: 0;
-        padding: 0;
-    }
-
-
-    .rtd_doc_footer {
-        display: none;
-    }
-
-    .document {
-        width: auto;
-    }
-
-    .footer {
-        width: auto;
-    }
-
-    .footer {
-        width: auto;
-    }
-
-    .github {
-        display: none;
-    }
-}
-
 
 /* misc. */
 
 .revsys-inline {
     display: none!important;
-}
-
-div.sphinxsidebar #searchbox input[type="text"] {
-    width: 140px;
-    padding: 4px 3px;
-}
-
-.highlight .nv {
-    color: #C65D09!important;
 }

@@ -1,30 +1,34 @@
 {%- extends "basic/layout.html" %}
 {%- block extrahead %}
   {{ super() }}
-  <link href="//fonts.googleapis.com/css?family=Open+Sans:400|Antic+Slab" rel="stylesheet" type="text/css">
   {% if theme_touch_icon %}
     <link rel="apple-touch-icon" href="{{ pathto('_static/' ~ theme_touch_icon, 1) }}" />
   {% endif %}
+  <link media="only screen and (max-device-width: 480px)" href="{{
+    pathto('_static/small_flask.css', 1) }}" type= "text/css" rel="stylesheet" />
   <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9">
 {% endblock %}
 
+{%- block sidebarlogo %}
+<p>
+<a style="border:0" href="index.html"><img src="{{ pathto('_static/manolo-logo.png', 1) }}" alt="Manolo" /></a>
+<iframe width="200px" scrolling="0" height="20px" frameborder="0"
+        allowtransparency="true" src="http://ghbtns.com/github-btn.html?user=aniversarioperu&amp;repo=django-manolo&amp;type=watch&amp;count=true&amp;size=small"></iframe>
+</p>
 
-{% block sidebar2 %}
-  {{ sidebar() }}
+{% endblock %}
+
+
+{%- block relbar2 %}
 {% endblock %}
 
 {%- block footer %}
-    <div class="footer" style="position:relative">
-
+    <div class="footer">
       &copy; Copyright {{ copyright }}.
     </div>
-    <div>
 
-    </div>
-    <a style="position: absolute; top: 0; right: 0; border: 0;" href="https://github.com/aniversarioperu/django-manolo"
-       class="github">
+ <a style="position: absolute; top: 0; right: 0; border: 0;"
+    href="https://github.com/aniversarioperu/django-manolo" class="github">
         <img src="http://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png" alt="Fork me on GitHub"  class="github"/>
     </a>
-
-
 {%- endblock %}

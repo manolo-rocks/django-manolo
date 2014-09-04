@@ -20,8 +20,9 @@ import sys, os
 
 cwd = os.getcwd()
 parent = os.path.dirname(cwd)
-sys.path.append(parent)
-
+sys.path.append(os.path.abspath(parent))
+sys.path.append(os.path.abspath('_themes'))
+print sys.path
 import manolo
 
 # -- General configuration -----------------------------------------------------
