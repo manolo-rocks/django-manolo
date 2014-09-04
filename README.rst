@@ -36,6 +36,13 @@ dicha institución estatal. La función de este buscador simple: **Tipeas
 un nombre y aparecerán en pantalla todas las veces que la persona tenga
 ingresos registrados al Organismo de Contrataciones.**
 
+Crea tu propio buscador de lobistas
+===================================
+Ahora "Manolo" es un plugin para Django. Puedes crear rápidamente un
+buscador de lobistas para tu institución estatal favorita. Para eso
+necesitas conseguir el link donde esté alojado el registro de visitas de la
+institución. Se lo das a Manolo y él hará lo suyo.
+
 Más información en un post en el blog Útero de Marita:
 
 http://aniversarioperu.utero.pe/2014/03/08/manolo-buscador-de-lobistas/
