@@ -1,12 +1,13 @@
 Django-manolo
 =============
 
-|Pypi index| |Build Status| |Cover alls|
+|Pypi index| |Build Status| |Dependencies status| |Cover alls| |Download numbers|
 
 Manolo, buscador de lobistas
 ============================
 
-Presento un buscador de personas que ingresan las oficinas del
+Presento un buscador de personas que ingresan las oficinas de
+entidades del Estado peruano. Aquí puedes ver un ejemplo para el 
 **Organismo Supervisor de las Contrataciones del Estado**.
 http://aniversarioperu.me/manolo/
 
@@ -62,3 +63,9 @@ https://github.com/aniversarioperu/django-manolo
    :target: https://travis-ci.org/aniversarioperu/django-manolo
 .. |Cover alls| image:: https://coveralls.io/repos/aniversarioperu/django-manolo/badge.png?branch=master
    :target: https://coveralls.io/r/aniversarioperu/django-manolo?branch=master
+
+.. |Dependencies status| image:: https://gemnasium.com/aniversarioperu/django-manolo.svg
+   :target: https://gemnasium.com/aniversarioperu/django-manolo
+.. |Download numbers| image:: https://pypip.in/download/django-manolo/badge.svg
+   :target: https://crate.io/packages/django-manolo
+   :alt: Downloads
