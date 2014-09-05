@@ -7,7 +7,7 @@ Django, como si fuera una *app* adicional::
 
     - django_project
        - manage.py
-       - djando_project
+       - django_project
        - manolo
        - otra_app
 
@@ -24,7 +24,7 @@ Configuración
 Agregar django-manolo a ``INSTALLED_APPS``
 ------------------------------------------
 
-Al igual que la mayoría de apps para Django, es necesario que agreges a
+Al igual que la mayoría de apps para Django, es necesario que agregues a
 ``manolo`` en la lista de ``INSTALLED_APPS`` dentro de tu archivo
 ``settings.py``.
 
@@ -54,7 +54,7 @@ datos relacional ``Postgresql``.
 
 Es necesario instalar ``Postgresql`` en tu computadora y crear una base de
 datos llamada ``manolo``. Luego debes agregar los datos necesarios en la
-seccion de ``DATABASES`` del archivo ``settings.py``:
+sección de ``DATABASES`` del archivo ``settings.py``:
 
 Ejemplo::
 
@@ -79,7 +79,7 @@ Esta configuración hará que "Manolo" funcione en el URL
 ``http://TUDOMINIO.com/manolo`` y funcione el buscador en la dirección
 ``http://TUDOMINIO.com/manolo/search``.
 
-Ejecutar el *scraper* para jalar los registros de la institucion Estatal
+Ejecutar el *scraper* para jalar los registros de la institución Estatal
 ------------------------------------------------------------------------
 "Manolo" tiene un *scraper* que se encarga de jalar las visitas registradas en
 la web de la institución estatal. Para esto es necesario utilizar la línea

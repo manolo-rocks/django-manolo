@@ -15,7 +15,7 @@ Motivación
 ==========
 
 Todo aquel que visita el Organismo de Contrataciones debe registrarse
-dejando su **nombre, documento de indentidad, motivo de visita, empleado
+dejando su **nombre, documento de identidad, motivo de visita, empleado
 público que lo recibe, hora de ingreso, salida y fecha**. Toda esta
 información está disponible en la Internet en esta dirección:
 http://visitas.osce.gob.pe/controlVisitas/index.php?r=consultas/visitaConsulta/index
@@ -54,14 +54,14 @@ Documentación
 =============
 
 "Manolo" es un paquete o *app* para Django y puede ser agregado
-fácilmente a algún projecto de Django a manera de plugin.
+fácilmente a algún proyecto de Django a manera de plugin.
 
 La documentación completa está en este enlace:
 https://django-manolo.readthedocs.org.
 
 Fork from Gihub
 ==================
-Aqui puedes seguir el desarrollo de Manolo
+Aquí puedes seguir el desarrollo de Manolo
 https://github.com/aniversarioperu/django-manolo
 
 .. |Pypi index| image:: https://badge.fury.io/py/django-manolo.svg
