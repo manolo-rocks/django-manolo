@@ -1,41 +1,56 @@
 {% extends 'manolo/base.html' %}
-
 {% block content %}
-     <div class="container">
+     </div><!-- container -->
+
+
+
+
+     <div class="container" style="text-align:center; max-width:1200px;">
         <h2>Este es Manolo</h2>
-          <p>
-            <b>Manolo es un buscador de personas</b>
-            que visitan las instalaciones de entidades estatales peruanas.
-            Manolo extrae la información del registro en línea, almacena los
-            registros en una base de datos local y provee un buscador muy simple
-            pero más poderoso que el de las instituciones estatales.
+            <b>Manolo es un buscador de las personas</b> que visitan las instalaciones del
+            Estado peruano.
+            <br />
+            Los datos pueden ser descargados de instituciones que tengan sus
+            registro de visita en línea y que usen esta plantilla: <b><a href="http://visitas.osce.gob.pe/controlVisitas/index.php?r=consultas/visitaConsulta/index">
+            http://visitas.osce.gob.pe/controlVisitas/index.php?r=consultas/visitaConsulta/index</a></b>
+            </p>
             <div class='well'>
             Puedes buscar por nombre o palabra clave. Por ejemplo tipea
             <b>ROMULO</b> y hacer click en "Buscar".
             </div>
-          </p>
-          <p>
+            <p>
             También puedes hacer búsquedas haciendo click sobre cada uno de los resultados.
-          </p>
+            </p>
 
 
        <div class="row">
          <div class="col-xs-12 col-md-12 col-lg-12">
-           <form action="{% url 'manolo:search' %}" method="get" class="form-inline" role="form">
+           <form action="{% url 'manolo:search' %}" method="get" class="form-inline" role="search">
              <div class="form-group">
-               <div class="col-lg-8 col-xs-8 col-md-8">
                  <label class="sr-only" for="query">Keyword</label>
-                   <input type="text" id="query" name="q"
+                 <input style="width:250px;" type="text" id="query" name="q"
                                    class="form-control"
-                                   placeholder="Tipea persona o palabra clave">
-               </div>
+                                   placeholder="Tipea persona o palabra clave" />
+             </div>
                <button type="submit" class="btn btn-info" id="search_button">
                             <span class="glyphicon glyphicon-search"></span>
                             Buscar
                </button>
-             </div>
            </form>
          </div>
        </div><!-- row -->
-     </div>
+     </div><!-- container -->
+
+     <br />
+
+     <div id="contenido" class="container" style="max-width:1200px;">
+
+
+
 {% endblock %}
+
+{% block disclaimer %}
+{% include 'site/disclaimer.html' %}
+{% endblock %}
+
+{% block footer %}Desarrollado por {% endblock %}

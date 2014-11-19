@@ -1,0 +1,41 @@
+    <div style="text-align: center;">
+      <div id="page-selection">
+          <ul class="pagination pagination-mg">
+            <li>
+              <a href="/manolo/search/?q={{ pagination_keyword }}&page={{ first_page }}" rel="page"
+                 class="endless_page_link">&laquo;</a>
+            </li>
+
+            {% if items.has_previous %}
+              <li><a href="/manolo/search/?q={{ pagination_keyword }}&page={{ items.previous_page_number }}" rel="page"
+                 class="endless_page_link">&lsaquo;</a></li>
+            {% endif %}
+
+            {% for i in first_half %}
+              <li><a href="/manolo/search/?q={{ pagination_keyword }}&page={{ i }}" rel="page"
+                   class="endless_page_link">{{ i }}</a></li>
+            {% endfor %}
+
+              <li><a href="#" rel="page" class="endless_page_link">
+                <b>{{ current }}</b></a></li>
+
+            {% for i in second_half %}
+            <li><a href="/manolo/search/?q={{ pagination_keyword }}&page={{ i }}" rel="page"
+                   class="endless_page_link">{{ i }}</a></li>
+            {% endfor %}
+
+            {% if items.has_next %}
+            <li><a href="/manolo/search/?q={{ pagination_keyword }}&page={{ items.next_page_number }}" rel="page"
+               class="endless_page_link">&rsaquo;</a></li>
+            {% endif %}
+
+            {{ page_range }}
+
+
+            <li>
+              <a href="/manolo/search/?q={{ pagination_keyword }}&page={{ last_page }}" rel="page"
+                 class="endless_page_link">&raquo;</a>
+            </li>
+          </ul>
+      </div>
+    </div>
