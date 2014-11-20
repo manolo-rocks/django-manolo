@@ -1,6 +1,6 @@
-=======
+===
 Uso
-=======
+===
 
 Ejecutar el *scraper* para jalar los registros de la institución Estatal
 ------------------------------------------------------------------------

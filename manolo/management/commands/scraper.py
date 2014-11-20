@@ -83,10 +83,12 @@ class Command(BaseCommand):
             self.search(my_date, user_url)
 
         # scrapped data has been written to a file as jsonlines
-        self.stdout.write("Getting data from our json file")
+        now = datetime.datetime.strftime(datetime.datetime.now(), '%Y-%m-%d %H:%M:%S')
+        self.stdout.write("%s:Getting data from our json file" % now)
         items = self.get_data()
 
-        self.stdout.write("Uploading data from our json file")
+        now = datetime.datetime.strftime(datetime.datetime.now(), '%Y-%m-%d %H:%M:%S')
+        self.stdout.write("%s:Uploading data from our json file" % now)
         for i in items:
             try:
                 Manolo.objects.get(sha512=i['sha512'])
@@ -102,8 +104,9 @@ class Command(BaseCommand):
                 m.save()
 
     def search(self, my_date, user_url):
-        print("Searching for date: %s" % str(my_date))
-        print("Requesting URL %s" % str(user_url))
+        now = datetime.datetime.strftime(datetime.datetime.now(), '%Y-%m-%d %H:%M:%S')
+        print("%s:Searching for date: %s" % (now, str(my_date)))
+        print("%s:Requesting URL %s" % (now, str(user_url)))
 
         payload = {"VisitaConsultaQueryForm[feConsulta]": my_date}
         headers = {
@@ -132,7 +135,8 @@ class Command(BaseCommand):
                 try:
                     sleep(randint(5, 15))
                     if self.crawlera:
-                        print("Requesting URL %s" % str(url))
+                        now = datetime.datetime.strftime(datetime.datetime.now(), '%Y-%m-%d %H:%M:%S')
+                        print("%s:Requesting URL %s" % (now, str(url)))
                         r = requests.post(url=url, data=payload,
                                           headers=headers,
                                           proxies=self.proxies,
