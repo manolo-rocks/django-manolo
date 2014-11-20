@@ -1,4 +1,3 @@
-#!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
 """
@@ -38,7 +37,7 @@ class TestManolo(unittest.TestCase):
         table.create_column('time_end', sqlalchemy.String(length=100))
 
         Manolo.objects.get_or_create(date=None)
-        Manolo.objects.get_or_create(date=datetime.date(2011, 07, 28))
+        Manolo.objects.get_or_create(date=datetime.date(2011, 7, 28))
         Manolo.objects.get_or_create(date=datetime.date.today())
 
     def test_get_last_date_in_db(self):
