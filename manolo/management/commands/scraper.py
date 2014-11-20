@@ -216,7 +216,7 @@ class Command(BaseCommand):
             string = str(item['date']) + str(id_doc_number)
             string += str(item['time_start'])
             m = hashlib.sha1()
-            m.update(string)
+            m.update(string.encode("utf-8")
             item['sha512'] = m.hexdigest()
 
             items.append(item)
