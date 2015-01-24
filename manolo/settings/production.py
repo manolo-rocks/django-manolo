@@ -7,7 +7,6 @@ from .base import *
 
 DEBUG = False
 TEMPLATE_DEBUG = DEBUG
-PREPEND_WWW = True
 
 ADMINS = (
     ('AniversarioPeru', 'aniversarioperu1@gmail.com'),
