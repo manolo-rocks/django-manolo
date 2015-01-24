@@ -100,8 +100,7 @@ class Importer(object):
         if 'id_number' in item:
             item['id_document'], item['id_number'] = self.get_dni(item['id_number'])
         else:
-            item['id_document'] = 'DNI'
-            item['id_number'] = ''
+            item['id_document'], item['id_number'] = self.get_dni(item['id_document'])
 
         if 'meeting_place' not in item:
             item['meeting_place'] = ''
