@@ -13,6 +13,7 @@ help:
 	@echo "migrations - apply Django model migrations"
 	@echo "rebuild_index - rebuild whoosh database index"
 	@echo "serve - serve Django project for local development"
+	@echo "serve-production - serve Django project for production database postgreSQL"
 
 clean: clean-build clean-pyc
 
@@ -64,8 +65,16 @@ migrations:
 	python manage.py makemigrations --settings=manolo.settings.local
 	python manage.py migrate --settings=manolo.settings.local
 
+migrations-production:
+	python manage.py makemigrations --settings=manolo.settings.production
+	python manage.py migrate --settings=manolo.settings.production
+
 rebuild_index:
 	python manage.py rebuild_index --settings=manolo.settings.local
 
 serve: rebuild_index
 	python manage.py runserver --settings=manolo.settings.local
+
+serve-production:
+	python manage.py rebuild_index --settings=manolo.settings.production
+	python manage.py runserver --settings=manolo.settings.production
