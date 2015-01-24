@@ -1,4 +1,6 @@
-{% extends 'manolo/base.html' %}
+{% extends 'base.html' %}
+{% block title %}Manolo | Buscador de visitas, organismo de contrataciones PCM
+{% endblock %}
 {% block content %}
      </div><!-- container -->
 
@@ -8,10 +10,9 @@
      <div class="container" style="text-align:center; max-width:1200px;">
         <h2>Este es Manolo</h2>
             <b>Manolo es un buscador de las personas</b> que visitan las instalaciones del
-            Estado peruano.
+            Organismo Supervisor de las Contrataciones del Estado.
             <br />
-            Los datos pueden ser descargados de instituciones que tengan sus
-            registro de visita en línea y que usen esta plantilla: <b><a href="http://visitas.osce.gob.pe/controlVisitas/index.php?r=consultas/visitaConsulta/index">
+            Todos los datos son descargados diariamente de aquÃ­: <b><a href="http://visitas.osce.gob.pe/controlVisitas/index.php?r=consultas/visitaConsulta/index">
             http://visitas.osce.gob.pe/controlVisitas/index.php?r=consultas/visitaConsulta/index</a></b>
             </p>
             <div class='well'>
@@ -19,7 +20,7 @@
             <b>ROMULO</b> y hacer click en "Buscar".
             </div>
             <p>
-            También puedes hacer búsquedas haciendo click sobre cada uno de los resultados.
+            TambiÃ©n puedes hacer bÃºsquedas haciendo click sobre cada uno de los resultados.
             </p>
 
 
@@ -53,4 +54,7 @@
 {% include 'site/disclaimer.html' %}
 {% endblock %}
 
-{% block footer %}Desarrollado por {% endblock %}
+
+{% block footer %}
+  {% include 'site/footer.html' %}
+{% endblock footer %}

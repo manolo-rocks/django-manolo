@@ -1,0 +1,125 @@
+{% extends 'base.html' %}
+
+
+
+{% block content %}
+
+
+     <div class="container" style="text-align:center; max-width:1200px;">
+       <h2>Este es <a href="/">Manolo</a></h2>
+       <h4>Manolo es un buscador de personas que visitan entidades del Estado peruano</h4>
+       <br />
+       <div class="row">
+         <div class="col-xs-12 col-md-12 col-lg-12">
+           <form action="/search" method="get" class="form-inline" role="form">
+             <div class="form-group">
+               <label class="sr-only" for="query">Keyword</label>
+                 <input style="width:250px;" type="text" id="query" name="q"
+                                 class="form-control"
+                                 placeholder="Tipea persona o palabra clave">
+             </div>
+               <button type="submit" class="btn btn-info" id="search_button">
+                            <span class="glyphicon glyphicon-search"></span>
+                            Buscar
+               </button>
+           </form>
+         </div>
+       </div><!-- row -->
+     </div><!-- container -->
+
+     <br />
+
+     <div id="contenido" class="container" style="max-width:1200px;">
+     {% if query %}
+
+       También puedes hacer búsquedas haciendo click sobre cada uno de los
+       resultados.
+       <table class='table table-hover table-striped table-bordered
+         table-responsive table-condensed' style='font-size: 12px;'>
+         <th>Institución</th></th><th>Fecha</th><th>Visitante</th><th>Documento</th><th>Entidad</th>
+         <th>Motivo</th><th>Empleado público</th><th>Oficina/Cargo</th>
+         <th>Lugar de reunión</th><th>Hora ing.</th><th>Hora sal.</th>
+
+         {% for i in page.object_list %}
+         <tr>
+           <td>
+             <a href='/search?q={{ i.object.institution }}'>
+               {{ i.object.institution|upper }}
+             </a>
+           </td>
+           <td>
+             <a href='/search?q={{ i.object.date|date:"d/m/Y" }}'>
+               {{ i.object.date|date:"d/m/Y" }}
+             </a>
+           </td>
+           <td>
+             <a href='/search?q={{ i.object.full_name }}'>
+               {{ i.object.full_name }}
+             </a>
+           </td>
+           <td><a href='/search?q={{ i.object.id_number }}'>
+             {{ i.object.id_document }}: {{ i.object.id_number }}
+           </a></td>
+           <td><a href='/search?q={{ i.object.entity }}'>
+             {{ i.object.entity }}
+           </a></td>
+           <td><a href='/search?q={{ i.object.reason }}'>
+             {{ i.object.reason }}
+           </a></td>
+           <td><a href='/search?q={{ i.object.host_name }}'>
+             {{ i.object.host_name }}
+           </a></td>
+           <td><a href='/search?q={{ i.object.office }}'>
+             {{ i.object.office }}
+           </a></td>
+           <td><a href='/search?q={{ i.object.meeting_place }}'>
+             {{ i.object.meeting_place }}
+           </a></td>
+           <td>{{ i.object.time_start }}</td>
+           <td>{{ i.object.time_end }}</td>
+         </tr>
+         {% endfor %}
+       </table>
+
+       {% if page.has_previous or page.has_next %}
+       <div class="text-center">
+         <nav>
+           <ul class="pagination">
+             {% if page.has_previous %}
+             <li>
+               <a aria-label="Previous" href="?q={{ query }}&amp;page={{ page.previous_page_number }}">
+                 <span aria-hidden="true">&laquo;</span>
+               </a>
+             </li>
+             {% endif %}
+
+             {% for i in page.paginator.page_range %}
+               {% if i < 20 %}
+                 {% if page.number == i %}
+                   <li class="active"><a href="?q={{ query }}&amp;page={{ i }}">{{ i }}</a></li>
+                 {% else %}
+                   <li><a href="?q={{ query }}&amp;page={{ i }}">{{ i }}</a></li>
+                 {% endif %}
+               {% endif %}
+             {% endfor %}
+
+             {% if page.has_next %}
+             <li>
+               <a aria-label="Next" href="?q={{ query }}&amp;page={{ page.next_page_number }}">
+                 <span aria-hidden="true">&raquo;</span>
+               </a>
+             </li>
+             {% endif %}
+
+           </ul>
+         </nav>
+       </div>
+       {% endif %}
+
+     {% else %}
+       {# Show some example queries to run, maybe query syntax, something else? #}
+     {% endif %}
+
+     </div><!-- container contenido -->
+
+{% endblock content %}

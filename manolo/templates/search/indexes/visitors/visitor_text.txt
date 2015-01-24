@@ -1,0 +1,9 @@
+{{ object.full_name }}
+{{ object.id_number }}
+{{ object.date }}
+{{ object.entity }}
+{{ object.reason }}
+{{ object.location }}
+{{ object.host_name }}
+{{ object.office }}
+{{ object.institution }}
