@@ -33,7 +33,7 @@
      {% if paginator.object_list|length > 0 %}
 
        También puedes hacer búsquedas haciendo click sobre cada uno de los
-       resultados.
+       resultados <span class="badge"><b>{{ paginator.object_list|length }}</b></span>
        <table class='table table-hover table-striped table-bordered
          table-responsive table-condensed' style='font-size: 12px;'>
          <th>Institución</th></th><th>Fecha</th><th>Visitante</th><th>Documento</th><th>Entidad</th>
