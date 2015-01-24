@@ -1,7 +1,7 @@
 from .base import *
 
 ADMINS = (
-    ('Manuel Bellido', 'manubellido@gmail.com'),
+    ('AniversarioPeru', 'aniversarioperu1@gmail.com'),
 )
 
 LOCAL_APPS = (
