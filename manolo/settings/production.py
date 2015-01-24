@@ -5,8 +5,9 @@ from django.core.exceptions import ImproperlyConfigured
 
 from .base import *
 
-DEBUG = True
+DEBUG = False
 TEMPLATE_DEBUG = DEBUG
+PREPEND_WWW = True
 
 ADMINS = (
     ('AniversarioPeru', 'aniversarioperu1@gmail.com'),
@@ -14,6 +15,10 @@ ADMINS = (
 
 MANAGERS = ADMINS
 
+ALLOWED_HOSTS = [
+    '.manolo.rocks',  # Allow domain and subdomains
+    '.manolo.rocks.',  # Also allow FQDN and subdomains
+]
 
 BASE_DIR = os.path.dirname(os.path.dirname(__file__))
 SECRETS_FILE = os.path.join(BASE_DIR, '..', 'config.json')
@@ -28,6 +33,8 @@ def get_secret(setting, secrets=secrets):
     except KeyError:
         error_msg = "Set the {0} environment variable".format(setting)
         raise ImproperlyConfigured(error_msg)
+
+SECRET_KEY = get_secret('SECRET_KEY')
 
 DATABASES = {
     'default': {
