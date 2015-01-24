@@ -10,6 +10,9 @@ help:
 	@echo "docs - generate Sphinx HTML documentation, including API docs"
 	@echo "release - package and upload a release"
 	@echo "sdist - package"
+	@echo "migrations - apply Django model migrations"
+	@echo "rebuild_index - rebuild whoosh database index"
+	@echo "serve - serve Django project for local development"
 
 clean: clean-build clean-pyc
 
@@ -53,3 +56,16 @@ release: clean
 sdist: clean
 	python setup.py sdist
 	ls -l dist
+
+
+# import database from django-manolo
+
+migrations:
+	python manage.py makemigrations --settings=manolo.settings.local
+	python manage.py migrate --settings=manolo.settings.local
+
+rebuild_index:
+	python manage.py rebuild_index --settings=manolo.settings.local
+
+serve: rebuild_index
+	python manage.py runserver --settings=manolo.settings.local
