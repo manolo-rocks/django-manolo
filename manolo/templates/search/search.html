@@ -30,7 +30,7 @@
      <br />
 
      <div id="contenido" class="container" style="max-width:1200px;">
-     {% if query %}
+     {% if paginator.object_list|length > 0 %}
 
        También puedes hacer búsquedas haciendo click sobre cada uno de los
        resultados.
@@ -117,7 +117,7 @@
        {% endif %}
 
      {% else %}
-       {# Show some example queries to run, maybe query syntax, something else? #}
+       <h4>No se encontraron resultados. Intenta con otra palabra clave.</h4>
      {% endif %}
 
      </div><!-- container contenido -->
