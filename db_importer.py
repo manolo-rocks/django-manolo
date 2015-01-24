@@ -76,6 +76,9 @@ class Importer(object):
         if 'id' in item:
             del item['id']
 
+        if 'num_visit' in item:
+            del item['num_visit']
+
         item['full_name'] = re.sub("\s+", " ", item['visitor']).strip()
         del item['visitor']
 
