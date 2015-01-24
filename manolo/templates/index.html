@@ -8,18 +8,13 @@
       Estado peruano.
       <br />
       Los datos pueden ser descargados de instituciones que tengan sus
-      registro de visita en línea y que usen esta plantilla: <b><a href="http://visitas.osce.gob.pe/controlVisitas/index.php?r=consultas/visitaConsulta/index">
-      http://visitas.osce.gob.pe/controlVisitas/index.php?r=consultas/visitaConsulta/index</a></b>
+      registro de visita en línea.
     </p>
 
     <div class='well'>
       Puedes buscar por nombre o palabra clave. Por ejemplo tipea
       <b>ROMULO</b> y hacer click en "Buscar".
     </div>
-
-    <p>
-      También puedes hacer búsquedas haciendo click sobre cada uno de los resultados.
-    </p>
 
 
   <div class="row">
@@ -32,17 +27,37 @@
                              placeholder="Tipea persona o palabra clave" />
         </div>
           <button type="submit" class="btn btn-info" id="search_button">
-                      <span class="glyphicon glyphicon-search"></span>
+                      <i class="fa fa-search"></i>
                       Buscar
           </button>
       </form>
     </div>
   </div><!-- row -->
+
+  <br />
+  <hr>
+
+
+  <div class="row">
+    <div class="col-xs-9 col-xs-offset-1  col-sm-8 col-sm-offset-2  col-md-6 col-md-offset-3">
+      <h3 class="text-left">La base de datos de Manolo <i class="fa fa-database"></i></h3>
+
+      <p class="text-left">Contiene registros de visitas de las siguientes instituciones:</p>
+      <ol class="list-group text-left">
+        <li class="list-group-item">1. Organismo Supervisor de las Contrataciones del Estado, <a href="http://visitas.osce.gob.pe/controlVisitas/index.php?r=consultas/visitaConsulta/index">OSCE</a></li>
+        <li class=list-group-item>2. Ministerio de <a href="http://www.mindef.gob.pe/visitas/qryvisitas.php">Defensa</a></li>
+        <li class=list-group-item>3. <a href="http://www.peru.gob.pe/transparencia/pep_transparencia_citas.asp?cod_institucion=182">INPE</a></li>
+        <li class=list-group-item>4. Ministerio <a href="http://webapp.mimp.gob.pe:8080/visitaweb/ListarVisitas.do">de la Mujer</a></li>
+        <li class=list-group-item>5. Presidencia del <a href="http://hera.pcm.gob.pe/Visitas/controlVisitas/index.php?r=consultas/visitaConsulta/index">Consejo de Ministros</a></li>
+        <li class=list-group-item>6. <a href="http://www.presidencia.gob.pe/visitas/consulta_visitas.php">Presidencia</a></li>
+        <li class=list-group-item>7. Ministerio <a href="http://geo.vivienda.gob.pe/Visitas/controlVisitas/index.php?r=consultas/visitaConsulta/index">de Vivienda</a></li>
+      </ol>
+    </div>
+  </div><!-- row -->
+
+
 </div><!-- container -->
 
 <br />
 
-<div id="contenido" class="container" style="max-width:1200px;">
-
-</div>
 {% endblock content %}
