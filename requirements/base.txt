@@ -1,0 +1,23 @@
+# Versions are left out on purpose in order for you to use the latest ones.
+# After the first "pip install -r", just run "pip freeze" and add the version
+# to each package in each requirements/*.txt.
+
+
+Whoosh==2.6.0
+psycopg2==2.5.4
+Django==1.7.3
+Jinja2==2.7.3
+MarkupSafe==0.23
+Pillow==2.6.1
+PyYAML==3.11
+Pygments==2.0.1
+Unidecode==0.04.16
+binaryornot==0.3.0
+bpython==0.13.1
+django-bootstrap-themes==3.1.2
+django-bootstrap3==5.0.2
+django-haystack==2.3.1
+django-model-utils==2.2
+docutils==0.12
+python-slugify==0.1.0
+six==1.7.3
