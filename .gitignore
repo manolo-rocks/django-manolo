@@ -6,6 +6,9 @@ config.py
 manolo.settings.rst
 *bz2
 
+# whoosh indexing
+manolo/settings/whoosh_index/*
+
 *.py[cod]
 
 # C extensions
