@@ -75,33 +75,32 @@ Troubleshooting
 If error in pickle version appears. Remove contents of whoosh index folder and
 rebuild the index:
 
-```
-python manage.py rebuild_index  --settings=manolo.settings.local
-```
+::
+
+    python manage.py rebuild_index  --settings=manolo.settings.local
 
 Configure
 =========
 Create a `config.json` file to keep private credentials to use by settings
 files:
 
-```
-{
-    "SECRET_KEY": "hola",
-    "DB_USER": "postgres",
-    "DB_PASS": "password",
-    "DB_NAME": "manolo",
-    "DB_PORT": "5432",
-    "DB_HOST": "localhost"
-}
+::
 
-```
+    {
+        "SECRET_KEY": "hola",
+        "DB_USER": "postgres",
+        "DB_PASS": "password",
+        "DB_NAME": "manolo",
+        "DB_PORT": "5432",
+        "DB_HOST": "localhost"
+    }
+
 .. |Pypi index| image:: https://badge.fury.io/py/django-manolo.svg
    :target: https://badge.fury.io/py/django-manolo
 .. |Build Status| image:: https://travis-ci.org/aniversarioperu/django-manolo.png?branch=master
    :target: https://travis-ci.org/aniversarioperu/django-manolo
 .. |Cover alls| image:: https://coveralls.io/repos/aniversarioperu/django-manolo/badge.png?branch=master
    :target: https://coveralls.io/r/aniversarioperu/django-manolo?branch=master
-
 .. |Dependencies status| image:: https://gemnasium.com/aniversarioperu/django-manolo.svg
    :target: https://gemnasium.com/aniversarioperu/django-manolo
 .. |Download numbers| image:: https://pypip.in/download/django-manolo/badge.svg
