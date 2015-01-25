@@ -75,10 +75,10 @@ rebuild_index:
 	python manage.py rebuild_index --settings=manolo.settings.local
 
 rebuild_index-production:
-	python manage.py rebuild_index --workers 8 --settings=manolo.settings.production
+	python manage.py rebuild_index --noinput --workers 8 --settings=manolo.settings.production
 
 update_index-production:
-	python manage.py update_index --workers 8 --settings=manolo.settings.production
+	python manage.py update_index --noinput --workers 8 --settings=manolo.settings.production
 
 serve: rebuild_index
 	python manage.py runserver --settings=manolo.settings.local
