@@ -8,4 +8,8 @@ class TestViews(TestCase):
 
     def test_index(self):
         c = self.client.get('/')
-        self.assertEqual(405, c.status_code)
+        self.assertEqual(200, c.status_code)
+
+    def test_search(self):
+        c = self.client.get('/search/?q=romulo')
+        self.assertEqual(200, c.status_code)

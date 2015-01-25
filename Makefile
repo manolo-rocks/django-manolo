@@ -34,7 +34,7 @@ lint:
 
 test:
 	rm -rf htmlcov
-	coverage run --source manolo setup.py test
+	coverage run --source manolo manage.py test -v 2 visitors --settings=manolo.settings.testing
 
 test-all:
 	tox
@@ -42,7 +42,6 @@ test-all:
 coverage: test
 	coverage report -m
 	coverage html
-	open htmlcov/index.html
 
 docs:
 	rm -f docs/django-manolo.rst
