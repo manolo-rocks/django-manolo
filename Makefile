@@ -47,10 +47,9 @@ coverage:
 docs:
 	rm -f docs/django-manolo.rst
 	rm -f docs/modules.rst
-	sphinx-apidoc -o docs/ django-manolo
+	sphinx-apidoc -o docs/ manolo
 	$(MAKE) -C docs clean
 	$(MAKE) -C docs html
-	open docs/_build/html/index.html
 
 release: clean
 	python setup.py sdist upload
