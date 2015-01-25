@@ -1,5 +1,4 @@
 -r testing.txt
 
-dataset==0.5.5
 Sphinx==1.2.3
 django-debug-toolbar==1.2.2
