@@ -1,7 +1,7 @@
 Django-manolo
 =============
 
-|Pypi index| |Build Status| |Dependencies status| |Cover alls| |Download numbers|
+|Pypi index| |Build Status| |Dependencies status| |Download numbers|
 
 Manolo, buscador de lobistas
 ============================
