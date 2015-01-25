@@ -78,14 +78,3 @@ class Visitor(models.Model):
     time_end = models.CharField(
         max_length=250
     )
-
-    # Overriding
-    def save(self, *args, **kwargs):
-        if not self.pk:
-            hash_input = str(self.id_number) + \
-                         self.date + \
-                         self.time_start
-            hash_output = hashlib.sha1()
-            hash_output.update(hash_input.encode('utf-8'))
-            self.sha1 = hash_output.hexdigest()
-            super(Visitor, self).save(*args, **kwargs)
