@@ -7,9 +7,8 @@ Manolo, buscador de lobistas
 ============================
 
 Presento un buscador de personas que ingresan las oficinas de
-entidades del Estado peruano. Aquí puedes ver un ejemplo para el 
-**Organismo Supervisor de las Contrataciones del Estado**.
-http://aniversarioperu.me/manolo/
+entidades del Estado peruano.
+http://manolo.rocks
 
 Motivación
 ==========
@@ -36,6 +35,10 @@ dicha institución estatal. La función de este buscador simple: **Tipeas
 un nombre y aparecerán en pantalla todas las veces que la persona tenga
 ingresos registrados al Organismo de Contrataciones.**
 
+A partir de Manolo versión 2.0.0, la versión online (en http://manolo.rocks)
+contiene una base de datos unificada conteniendo registro de visitas de 7
+entidades del Estado peruano.
+
 Crea tu propio buscador de lobistas
 ===================================
 Ahora "Manolo" es un plugin para Django. Puedes crear rápidamente un
@@ -48,7 +51,7 @@ Más información en un post en el blog Útero de Marita:
 http://aniversarioperu.utero.pe/2014/03/08/manolo-buscador-de-lobistas/
 
 Esta es la dirección web de **Manolo, buscador de personas**:
-http://aniversarioperu.me/manolo/
+http://manolo.rocks
 
 Documentación
 =============
