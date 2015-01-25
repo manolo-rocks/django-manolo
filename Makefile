@@ -33,13 +33,13 @@ lint:
 	flake8 django-manolo tests
 
 test:
-	python runtests.py test
+	rm -rf htmlcov
+	coverage run --source manolo setup.py test
 
 test-all:
 	tox
 
-coverage:
-	coverage run --source manolo setup.py test
+coverage: test
 	coverage report -m
 	coverage html
 	open htmlcov/index.html

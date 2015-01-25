@@ -71,7 +71,7 @@ https://github.com/aniversarioperu/django-manolo
 Install
 =======
 
-* python3.3
+* python3.4
 
 Troubleshooting
 ===============
