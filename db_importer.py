@@ -98,16 +98,18 @@ class Importer(object):
         if 'num_visit' in item:
             del item['num_visit']
 
-        item['full_name'] = re.sub("\s+", " ", item['visitor']).strip()
-        del item['visitor']
+        if 'visitor' in item:
+            item['full_name'] = re.sub("\s+", " ", item['visitor']).strip()
+            del item['visitor']
 
         if 'procedence' in item:
             if item['procedence'] != '':
                 item['entity'] = item['procedence']
             del item['procedence']
 
-        item['host_name'] = re.sub("\s+", " ", item['host']).strip()
-        del item['host']
+        if 'host' in item:
+            item['host_name'] = re.sub("\s+", " ", item['host']).strip()
+            del item['host']
 
         item['location'] = ''
         if 'sede' in item:
@@ -115,7 +117,10 @@ class Importer(object):
                 item['location'] = item['sede']
             del item['sede']
 
-        item['reason'] = item['objective']
+        if 'objective' in item:
+            item['reason'] = item['objective']
+            del item['objective']
+
         if 'observation' in item:
             del item['observation']
 
