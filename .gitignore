@@ -4,6 +4,7 @@
 config.py
 .idea
 manolo.settings.rst
+*bz2
 
 *.py[cod]
 
