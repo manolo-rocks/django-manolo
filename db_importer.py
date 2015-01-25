@@ -31,13 +31,32 @@ def get_tables_from_source_db(input_db):
 
 class Importer(object):
     def __init__(self, input_db, settings, limit, verbosity):
-        self.ids_seen = set()
         self.items = []
         self.mytable = ''
         self.verbosity = verbosity
         self.limit = limit
         self.input_db = input_db
         self.settings = settings
+        self.ids_seen = self.get_ids_from_db()
+
+    def get_ids_from_db(self):
+        ids_seen = set()
+
+        credentials = get_db_credentials(self.settings)
+        if 'sqlite3' in credentials['ENGINE']:
+            db = dataset.connect("sqlite:///" + os.path.basename(credentials['NAME']))
+        if 'postgresql' in credentials['ENGINE']:
+            db = dataset.connect('postgresql://' +
+                                 credentials['USER'] + ':' +
+                                 credentials['PASSWORD'] + '@' +
+                                 credentials['HOST'] + ':' +
+                                 credentials['PORT'] + '/' +
+                                 credentials['NAME'])
+        res = db.query("select sha1 from visitors_visitor")
+        if res:
+            for i in res:
+                ids_seen.add(i['sha1'])
+        return ids_seen
 
     def get_table(self, mytable):
         self.mytable = mytable
@@ -157,26 +176,24 @@ class Importer(object):
         table = db['visitors_visitor']
 
         print("Starting checks to see if we have this item in our database.")
-        for i in pyprind.prog_bar(range(len(self.items))):
-            item = self.items[i]
-            res = table.find_one(sha1=item['sha1'])
-            if res is None:
+        if len(self.items) == 0:
+            print("Nothing to upload")
+        else:
+            for i in pyprind.prog_bar(range(len(self.items))):
+                item = self.items[i]
                 try:
                     item['date'] = datetime.datetime.strptime(
-                                                              item['date'],
-                                                              '%Y-%m-%d',
-                                                              )
+                        item['date'],
+                        '%Y-%m-%d',
+                        )
                 except ValueError:
                     item['date'] = None
 
                 append(item)
-            else:
-                if self.verbosity:
-                    print("already in db %s" % item['sha1'])
 
-        print("uploading %i records for table %s" % (len(items_to_upload), self.mytable))
+            print("uploading %i records for table %s" % (len(items_to_upload), self.mytable))
 
-        table.insert_many(items_to_upload)
+            table.insert_many(items_to_upload)
 
 
 def make_hash(institution, full_name, id_document, id_number, date, time_start):
