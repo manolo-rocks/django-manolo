@@ -3,13 +3,13 @@
 language: python
 
 python:
-  - "3.3"
+  - "3.4"
 
 # command to install dependencies, e.g. pip install -r requirements.txt --use-mirrors
-install: pip install -r requirements-test.txt
+install: pip install -r requirements/testing.txt
 
 # command to run tests using coverage, e.g. python setup.py test
-script: coverage run --source manolo runtests.py
+script: coverage run --source manolo setup.py test
 
 # report coverage to coveralls.io
 after_success: coveralls
