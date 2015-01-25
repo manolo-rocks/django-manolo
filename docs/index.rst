@@ -17,3 +17,5 @@ Contenido:
    contributing
    authors
    history
+   license
+   modules

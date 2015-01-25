@@ -3,6 +3,7 @@
 *.csv
 config.py
 .idea
+manolo.settings.rst
 
 *.py[cod]
 

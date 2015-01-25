@@ -11,7 +11,8 @@
 # All configuration values have a default; values that are commented out
 # serve to show the default.
 
-import sys, os
+import sys
+import os
 
 # If extensions (or modules to document with autodoc) are in another directory,
 # add these directories to sys.path here. If the directory is relative to the
@@ -22,7 +23,7 @@ cwd = os.getcwd()
 parent = os.path.dirname(cwd)
 sys.path.append(os.path.abspath(parent))
 sys.path.append(os.path.abspath('_themes'))
-print sys.path
+print(sys.path)
 import manolo
 
 # -- General configuration -----------------------------------------------------
@@ -48,7 +49,7 @@ master_doc = 'index'
 
 # General information about the project.
 project = u'django-manolo'
-copyright = u'2014, aniversarioperu'
+copyright = u'2015, AniversarioPeru'
 
 # The version info for the project you're documenting, acts as replacement for
 # |version| and |release|, also used in various other places throughout the
@@ -77,7 +78,7 @@ exclude_patterns = ['_build']
 #default_role = None
 
 # If true, '()' will be appended to :func: etc. cross-reference text.
-#add_function_parentheses = True
+add_function_parentheses = True
 
 # If true, the current module name will be prepended to all description
 # unit titles (such as .. function::).
@@ -91,7 +92,7 @@ exclude_patterns = ['_build']
 pygments_style = 'sphinx'
 
 # A list of ignored prefixes for module index sorting.
-#modindex_common_prefix = []
+#modindex_common_prefix = ['settings']
 
 # If true, keep warnings as "system message" paragraphs in the built documents.
 #keep_warnings = False
