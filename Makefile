@@ -13,6 +13,7 @@ help:
 	@echo "migrations - apply Django model migrations"
 	@echo "rebuild_index - rebuild whoosh database index"
 	@echo "rebuild_index-production - rebuild whoosh database index in production"
+	@echo "update_index-production - update whoosh database index in production"
 	@echo "serve - serve Django project for local development"
 	@echo "serve-production - serve Django project for production database postgreSQL"
 
@@ -74,7 +75,10 @@ rebuild_index:
 	python manage.py rebuild_index --settings=manolo.settings.local
 
 rebuild_index-production:
-	python manage.py rebuild_index --settings=manolo.settings.production
+	python manage.py rebuild_index --workers 8 --settings=manolo.settings.production
+
+update_index-production:
+	python manage.py update_index --workers 8 --settings=manolo.settings.production
 
 serve: rebuild_index
 	python manage.py runserver --settings=manolo.settings.local
