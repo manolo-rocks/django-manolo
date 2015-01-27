@@ -13,3 +13,31 @@ class TestViews(TestCase):
     def test_search(self):
         c = self.client.get('/search/?q=romulo')
         self.assertEqual(200, c.status_code)
+
+    def test_search_date(self):
+        c = self.client.get('/search_date/?q=30/05/2014')
+        self.assertEqual(200, c.status_code)
+
+    def test_search_date_empty(self):
+        c = self.client.get('/search_date/?q=')
+        self.assertEqual(302, c.status_code)
+
+    def test_search_date_empty2(self):
+        c = self.client.get('/search_date/')
+        self.assertEqual(302, c.status_code)
+
+    def test_search_date_invalid(self):
+        c = self.client.get('/search_date/?q=30/05/20120302')
+        self.assertEqual(200, c.status_code)
+
+    def test_search_date_invalid2(self):
+        c = self.client.get('/search_date/?q=30/05/2012&page=10')
+        self.assertEqual(404, c.status_code)
+
+    def test_search_date_invalid3(self):
+        c = self.client.get('/search_date/?q=30/05/2012&page=0')
+        self.assertEqual(404, c.status_code)
+
+    def test_search_date_invalid4(self):
+        c = self.client.get('/search_date/?q=30/05/2012&page=abadca')
+        self.assertEqual(404, c.status_code)

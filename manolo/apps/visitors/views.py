@@ -24,7 +24,7 @@ def search_date(request):
             results = "No se encontraron resultados."
             return render(
                 request,
-                "manolo/search_result.html",
+                "search/search.html",
                 {'items': results, 'keyword': query, }
             )
 

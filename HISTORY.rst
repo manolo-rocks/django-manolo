@@ -3,6 +3,10 @@
 History
 -------
 
+2.3.2 (2015-01-27)
+==================
+* Corregir bug en template, `search_result.html`
+
 2.3.1 (2015-01-27)
 ==================
 * Corregir páginas 404 y 500.
