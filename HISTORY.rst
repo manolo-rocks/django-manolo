@@ -3,6 +3,10 @@
 History
 -------
 
+2.3.1 (2015-01-27)
+==================
+* Corregir páginas 404 y 500.
+
 2.3.0 (2015-01-27)
 ==================
 * Posibilidad de retornar resultados al hacer click sobre fechas.
