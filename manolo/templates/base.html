@@ -13,7 +13,9 @@
     {% load staticfiles %}
     <link rel="shortcut icon" href="{% static 'img/favicon.ico' %}">
 
-    <title>Manolo. Buscador de visitas a instituciones del Estado</title>
+    {% block title %}
+      <title>Manolo. Buscador de visitas a instituciones del Estado</title>
+    {% endblock title %}
 
     <link href="//maxcdn.bootstrapcdn.com/bootswatch/3.2.0/readable/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">

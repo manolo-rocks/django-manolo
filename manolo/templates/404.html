@@ -1,7 +1,29 @@
 {% extends "base.html" %}
 
-{% block title %}Page Not found{% endblock %}
+{% block title %}Manolo. Página no encontrada{% endblock %}
 
 {% block content %}
-<p>This is not the page you were looking for.</p>
+<div class="container" style="text-align:center; max-width:1200px;">
+  <h2>Este es Manolo</h2>
+    <p>
+      Y esa página no existe.
+    </p>
+
+  <div class="row">
+    <div class="col-xs-12 col-md-12 col-lg-12">
+      <form action="/search" method="get" class="form-inline" role="search">
+        <div class="form-group">
+           <label class="sr-only" for="query">Keyword</label>
+           <input style="width:250px;" type="text" id="query" name="q"
+                             class="form-control"
+                             placeholder="Tipea persona o palabra clave" />
+        </div>
+          <button type="submit" class="btn btn-info" id="search_button">
+                      <i class="fa fa-search"></i>
+                      Buscar
+          </button>
+      </form>
+    </div>
+  </div><!-- row -->
+</div>
 {% endblock content %}
