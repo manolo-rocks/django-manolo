@@ -2,16 +2,10 @@ import datetime
 
 from django.shortcuts import render
 from django.shortcuts import redirect
-from django.template import RequestContext
-from django.template import loader
 from django.core.paginator import Paginator
 from django.core.paginator import InvalidPage
-from django.core.paginator import PageNotAnInteger
-from django.core.paginator import EmptyPage
 from django.http import Http404
 from haystack.query import SearchQuerySet
-
-from .models import Visitor
 
 
 def index(request):
@@ -37,22 +31,17 @@ def search_date(request):
         date_str = datetime.datetime.strftime(date_obj, '%Y-%m-%d')
         results = SearchQuerySet().filter(date=date_str)
 
-        if results == "No se encontraron resultados.":
-            return render(request,
-                          "manolo/search_result.html",
-                          {'items': results, 'keyword': query, }
-                          )
-        else:
-            all_items = results
-            paginator, page = do_pagination(request, all_items)
-            return render(request, "search/search.html",
-                          {
-                              "paginator": paginator,
-                              "page": page,
-                          }
-                          )
+        all_items = results
+        paginator, page = do_pagination(request, all_items)
+        return render(request, "search/search.html",
+                      {
+                          "paginator": paginator,
+                          "page": page,
+                          "query": query,
+                      }
+                      )
     else:
-        return redirect('/manolo/')
+        return redirect('/')
 
 
 def do_pagination(request, all_items):
@@ -71,9 +60,6 @@ def do_pagination(request, all_items):
 
     if page_no < 1:
         raise Http404("Pages should be 1 or greater.")
-
-    start_offset = (page_no - 1) * results_per_page
-    results = results[start_offset:start_offset + results_per_page]
 
     paginator = Paginator(results, results_per_page)
 
