@@ -1,5 +1,5 @@
 {% extends 'base.html' %}
-
+{% load humanize %}
 
 {% block additional_meta %}
 <meta name="robots" content="noindex">
@@ -36,7 +36,7 @@
      {% if paginator.object_list|length > 0 %}
 
        También puedes hacer búsquedas haciendo click sobre cada uno de los
-       resultados <span class="badge"><b>{{ paginator.object_list|length }}</b></span>
+       resultados <span class="badge"><b>{{ paginator.object_list|length|intcomma }}</b></span>
        <table class='table table-hover table-striped table-bordered
          table-responsive table-condensed' style='font-size: 12px;'>
          <th>Institución</th></th><th>Fecha</th><th>Visitante</th><th>Documento</th><th>Entidad</th>
