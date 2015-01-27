@@ -2,6 +2,8 @@
 
 History
 -------
+* 2.1.0 (2015-01-27) Ahora usando `elasticseach` para indexar la base de datos.
+                     Es más rápido que `whoosh`.
 * 2.0.0 (2015-01-25) Gran reorganización de `models`. Manolo unificado, usando
                      base de datos indexada via `whoosh`.
 * 1.1.0 (2014-11-19) Ahora con paginación de la búsqueda de resultados.
