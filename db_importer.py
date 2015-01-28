@@ -107,6 +107,12 @@ class Importer(object):
                 item['entity'] = item['procedence']
             del item['procedence']
 
+        if 'entity' not in item:
+            item['entity'] = ''
+
+        if 'office' not in item:
+            item['office'] = ''
+
         if 'host' in item:
             item['host_name'] = re.sub("\s+", " ", item['host']).strip()
             del item['host']
@@ -205,8 +211,8 @@ def make_hash(institution, full_name, id_document, id_number, date, time_start):
     hash_input = str(
         str(institution) +
         str(unidecode(full_name)) +
-        str(id_document) +
-        str(id_number) +
+        str(unidecode(id_document)) +
+        str(unidecode(id_number)) +
         str(date) +
         str(time_start)
     )
@@ -233,9 +239,6 @@ def import_from_json(input_db, settings, limit, verbosity):
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description='Imports manolo_v1 database into v2')
-    parser.add_argument('-i', '--input_db', metavar='input_db',
-                        required=False,
-                        help='SQlite3 database from Manolo_v1 to import')
     parser.add_argument('-j', '--json', metavar='json',
                         required=False,
                         help='Import from JSONlines file')
@@ -263,8 +266,8 @@ if __name__ == '__main__':
     else:
         limit = int(args.limit)
 
-    if args.json is None and args.input_db is None:
-        print("You need to enter either a Sqlite3 database file or Jsonlines file.")
+    if args.json is None:
+        print("You need to enter either a Jsonlines file.")
         sys.exit(1)
 
-    import_from_json(args.input_db, args.settings, limit, verbosity)
+    import_from_json(args.json, args.settings, limit, verbosity)
