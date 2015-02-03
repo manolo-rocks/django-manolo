@@ -2,7 +2,7 @@
 # After the first "pip install -r", just run "pip freeze" and add the version
 # to each package in each requirements/*.txt.
 
-PyPrind==2.9.1
+pyprind==2.9.1
 Whoosh==2.6.0
 psycopg2==2.5.4
 Django==1.7.3
