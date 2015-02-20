@@ -3,6 +3,12 @@
 History
 -------
 
+2.3.3 (2015-02-21)
+==================
+* Agregado Produce a lista de entidades estatales.
+* Resultados se muestran ordenados según fecha orden descendente.
+* Import script asume datos limpios y normalizados.
+
 2.3.2 (2015-01-27)
 ==================
 * Corregir bug en template, `search_result.html`
