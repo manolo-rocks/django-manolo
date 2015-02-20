@@ -7,9 +7,25 @@ from django.core.paginator import InvalidPage
 from django.http import Http404
 from haystack.query import SearchQuerySet
 
+from visitors.forms import ManoloForm
+
 
 def index(request):
     return render(request, "index.html")
+
+
+def search(request):
+    form = ManoloForm(request.GET)
+    query = request.GET['q']
+    all_items = form.search()
+    paginator, page = do_pagination(request, all_items)
+    return render(request, "search/search.html",
+                  {
+                      "paginator": paginator,
+                      "page": page,
+                      "query": query,
+                  }
+                  )
 
 
 def search_date(request):
