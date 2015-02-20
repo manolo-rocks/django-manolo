@@ -17,6 +17,7 @@ def index(request):
 def search(request):
     form = ManoloForm(request.GET)
     results = form.search()
+    print(results)
     return render(request, "search/search.html", {'items': results})
 
 
