@@ -16,9 +16,16 @@ def index(request):
 
 def search(request):
     form = ManoloForm(request.GET)
-    results = form.search()
-    print(results)
-    return render(request, "search/search.html", {'items': results})
+    query = request.GET['q']
+    all_items = form.search()
+    paginator, page = do_pagination(request, all_items)
+    return render(request, "search/search.html",
+                  {
+                      "paginator": paginator,
+                      "page": page,
+                      "query": query,
+                  }
+                  )
 
 
 def search_date(request):
