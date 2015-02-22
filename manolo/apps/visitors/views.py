@@ -98,6 +98,10 @@ def search_date(request):
         return redirect('/')
 
 
+def api(request):
+    return render(request, "api.html")
+
+
 def do_pagination(request, all_items):
     """
     :param request: contains the current page requested by user

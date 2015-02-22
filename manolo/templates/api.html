@@ -1,0 +1,119 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container" style="text-align:center; max-width:1200px;">
+  <h3>Este es el API de <a href="/">Manolo</a></h3>
+
+  <div class="row text-left">
+    <div class="col-md-9 col-lg-8">
+      <h4>REST APIs</h4>
+
+      <p>
+        La interfaz conocida como API permite que puedas acceder a la información
+        contenida en "Manolo" en un lenguaje que pueda ser entendido por computadoras.
+        Esto te permitirá procesar rápidamente la información para que puedas hacer
+        cálculos estadísticos, gráficos, etc.
+      </p>
+
+      <p>
+        Se acostumbra usar el lenguaje JSON el cual puede ser importado por herramientas
+        como OpenRefine para hacer limpieza y normalización de datos. Luego es posible
+        exportar los datos desde OpenRefine a otros formatos como CSV, TSV, MS Excel, etc.
+      </p>
+
+      <p>
+        <b>1. GET</b> <code>search/?q=ROMULO&json</code>
+      </p>
+
+      <p>
+      Devuelve hasta 20 resultados al buscar visitas con la palabra ROMULO en formato JSON:
+        <pre class="pre-scrollable">
+[
+    {
+        "id": 439724,
+        "sha1": "f33806f07941011109c822ba4e04caaf71c35a9d",
+        "full_name": "Romulo Edmundo Martinez Talledo",
+        "entity": "COMPANIA CONSTRUCTORA ATLAS",
+        "meeting_place": "Sala Visitas Piso 3",
+        "office": "[Sub Director de Informacion Registral]",
+        "host_name": "Fernando Francisco Palomino Peralta",
+        "reason": "REUNION DE TRABAJO",
+        "institution": "osce",
+        "location": "",
+        "id_number": "07843241",
+        "id_document": "DNI",
+        "date": "2014-07-16",
+        "time_start": "10:24",
+        "time_end": "10:33"
+    },
+    {
+        "id": 186560,
+        "sha1": "6a181af4414d6c6040901d6a8ec3a21ff4fe842c",
+        "full_name": "ROMULO CARGUAS MARCELO",
+        "entity": "SEDAPAL",
+        "meeting_place": "Sala Sipan",
+        "office": "[Especialista Legal]",
+        "host_name": "Natalia Modali Berrocal Gonzalez",
+        "reason": "REUNION DE TRABAJO",
+        "institution": "osce",
+        "location": "",
+        "id_number": "04016558",
+        "id_document": "DNI",
+        "date": "2014-03-27",
+        "time_start": "14:36",
+        "time_end": "16:49"
+    }
+]</pre>
+      </p>
+
+      <p>
+        <b>2. GET</b> <code>/search/?q=ARBITRO&page=2&json</code>
+      </p>
+      <p>
+        Devuelve siguientes 20 resultados (del 21 al 40) al buscar visitas con
+        la palabra ARBITRO en formato JSON. Puedes ir incrementando el número de
+        página para poder descargar todos los resultados.
+        La próxima versión del <i>rest_framework</i> (3.1) incluirá mejores herramientas
+        para incluir el campo "next" en los resultados.
+        <pre class="pre-scrollable">
+[
+    {
+        "id": 405999,
+        "sha1": "78c95ef6ecebe3b0be1f5d03d3443e44741d0eb3",
+        "full_name": "GUILLERMO ZEGARRA PINTO",
+        "entity": "ARBITRO",
+        "meeting_place": "Sala de Espera",
+        "office": "[Secretario Abitral]",
+        "host_name": "Jose Rodrigo Rosales Rodrigo",
+        "reason": "REUNION DE TRABAJO",
+        "institution": "osce",
+        "location": "",
+        "id_number": "09671494",
+        "id_document": "DNI",
+        "date": "2014-11-19",
+        "time_start": "11:01",
+        "time_end": "12:05"
+    },
+    {
+        "id": 406125,
+        "sha1": "f4688a7113eb9b51f22638b3bbcf64e71e404700",
+        "full_name": "HOOWER FAUSTO OLIVAS VALVERDE",
+        "entity": "ARBITRO",
+        "meeting_place": "Sala Mochica",
+        "office": "[Secretario Abitral]",
+        "host_name": "Rider Ali Vera Moreno",
+        "reason": "REUNION DE TRABAJO",
+        "institution": "osce",
+        "location": "",
+        "id_number": "10271050",
+        "id_document": "DNI",
+        "date": "2014-11-19",
+        "time_start": "10:27",
+        "time_end": "10:53"
+    }
+]</pre>
+      </p>
+    </div>
+  </div>
+</div>
+{% endblock content %}
