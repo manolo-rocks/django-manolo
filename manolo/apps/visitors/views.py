@@ -53,9 +53,9 @@ def search(request):
             # If page is out of range, deliver last page
             articles = paginator.page(paginator.num_pages)
 
+        items = [i.object for i in articles]
         serializer_context = {'request': request}
-        serializer = VisitorSerializer(articles, context=serializer_context, many=True)
-        print(serializer.data)
+        serializer = VisitorSerializer(items, context=serializer_context,  many=True)
         return JSONResponse(serializer.data)
 
     return render(request, "search/search.html",
