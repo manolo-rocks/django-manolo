@@ -5,6 +5,7 @@ from django.shortcuts import redirect
 from django.core.paginator import Paginator
 from django.core.paginator import InvalidPage
 from django.http import Http404
+from rest_framework.pagination import PaginationSerializer
 from haystack.query import SearchQuerySet
 
 from visitors.forms import ManoloForm
@@ -17,8 +18,14 @@ def index(request):
 def search(request):
     form = ManoloForm(request.GET)
     query = request.GET['q']
+
     all_items = form.search()
     paginator, page = do_pagination(request, all_items)
+
+    if 'json' in request.GET:
+        serializer = PaginationSerializer(instance=page, context={'request': request})
+        print(serializer.data)
+
     return render(request, "search/search.html",
                   {
                       "paginator": paginator,
