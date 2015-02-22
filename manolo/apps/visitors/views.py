@@ -38,12 +38,14 @@ def search(request):
     query = request.GET['q']
 
     all_items = form.search()
+    paginator, page = do_pagination(request, all_items)
 
     if 'json' in request.GET:
-        paginator = Paginator(all_items, 20)
-
         # simplified filtering of an SQS
-        page = request.GET['page']
+        if 'page' in request.GET:
+            page = request.GET['page']
+        else:
+            page = ''
         try:
             articles = paginator.page(page)
         except PageNotAnInteger:

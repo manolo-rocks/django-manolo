@@ -10,7 +10,6 @@ class VisitorSerializer(serializers.ModelSerializer):
     """
     class Meta:
         model = Visitor
-        fields = ('full_name',)
 
 
 class PaginatedVisitorSerializer(pagination.PaginationSerializer):
