@@ -56,7 +56,6 @@ def search(request):
             articles = paginator.page(paginator.num_pages)
 
         items = [i.object for i in articles]
-        print(len(items))
         serializer_context = {'request': request}
         serializer = VisitorSerializer(items, context=serializer_context, many=True)
         return JSONResponse(serializer.data)
