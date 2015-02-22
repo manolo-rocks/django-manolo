@@ -10,15 +10,24 @@ class VisitorSerializer(serializers.ModelSerializer):
     """
     class Meta:
         model = Visitor
-        fields = ('full_name', 'entity', 'meeting_place', 'office', 'host_name',
-                  'reason', 'institution', 'location', 'id_number', 'id_document',
-                  'date', 'time_start', 'time_end',
-                  )
 
 
-class PaginatedBasicSearchSerializer(pagination.PaginationSerializer):
+class PaginatedVisitorSerializer(pagination.PaginationSerializer):
     """
     Serializes page objects of querysets.
     """
+    start_index = serializers.SerializerMethodField('get_start_index')
+    end_index = serializers.SerializerMethodField('get_end_index')
+    num_pages = serializers.Field(source='paginator.num_pages')
+
     class Meta:
         object_serializer_class = VisitorSerializer
+
+    def get_start_index(self, page):
+        return page.start_index()
+
+    def get_end_index(self, page):
+        return page.end_index()
+
+    def get_curr_index(self, page):
+        return page.number

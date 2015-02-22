@@ -2,13 +2,14 @@ import datetime
 
 from django.shortcuts import render
 from django.shortcuts import redirect
-from django.core.paginator import Paginator
+from django.core.paginator import Paginator, PageNotAnInteger
 from django.core.paginator import InvalidPage
 from django.http import Http404
 from django.http import HttpResponse
 from rest_framework.renderers import JSONRenderer
 from rest_framework.parsers import JSONParser
 from haystack.query import SearchQuerySet
+from django.views.decorators.csrf import csrf_exempt
 
 from visitors.models import Visitor
 from visitors.forms import ManoloForm
@@ -29,15 +30,30 @@ def index(request):
     return render(request, "index.html")
 
 
+@csrf_exempt
 def search(request):
     form = ManoloForm(request.GET)
     query = request.GET['q']
 
     all_items = form.search()
-    paginator, page = do_pagination(request, all_items)
 
     if 'json' in request.GET:
-        serializer = VisitorSerializer(all_items, many=True)
+        paginator = Paginator([q.object for q in all_items], 20)
+
+        # simplified filtering of an SQS
+        page = request.GET['page']
+        try:
+            articles = paginator.page(page)
+            print(articles)
+        except PageNotAnInteger:
+            # If page is not an integer, deliver first page
+            articles = paginator.page(1)
+        except PageNotAnInteger:
+            # If page is out of range, deliver last page
+            articles = paginator.page(paginator.num_pages)
+
+        serializer_context = {'request': request}
+        serializer = VisitorSerializer(articles, context=serializer_context)
         return JSONResponse(serializer.data)
 
     return render(request, "search/search.html",
