@@ -117,6 +117,7 @@ DJANGO_APPS = (
     'bootstrap3',
     'bootstrap_themes',
 
+    'rest_framework',
     'haystack',
 )
 
@@ -167,3 +168,8 @@ LOGGING = {
 # importing test settings file if necessary (TODO could be done better)
 if len(sys.argv) > 1 and 'test' in sys.argv[1]:
     from .testing import *
+
+REST_FRAMEWORK = {
+    'DEFAULT_PERMISSION_CLASSES': ('rest_framework.permissions.IsAdminUser',),
+    'PAGINATE_BY': 10
+}

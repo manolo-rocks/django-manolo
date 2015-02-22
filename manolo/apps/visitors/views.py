@@ -5,10 +5,24 @@ from django.shortcuts import redirect
 from django.core.paginator import Paginator
 from django.core.paginator import InvalidPage
 from django.http import Http404
-from rest_framework.pagination import PaginationSerializer
+from django.http import HttpResponse
+from rest_framework.renderers import JSONRenderer
+from rest_framework.parsers import JSONParser
 from haystack.query import SearchQuerySet
 
+from visitors.models import Visitor
 from visitors.forms import ManoloForm
+from visitors.serializer import VisitorSerializer
+
+
+class JSONResponse(HttpResponse):
+    """
+    An HttpResponse that renders its content into JSON.
+    """
+    def __init__(self, data, **kwargs):
+        content = JSONRenderer().render(data)
+        kwargs['content_type'] = 'application/json'
+        super(JSONResponse, self).__init__(content, **kwargs)
 
 
 def index(request):
@@ -23,8 +37,8 @@ def search(request):
     paginator, page = do_pagination(request, all_items)
 
     if 'json' in request.GET:
-        serializer = PaginationSerializer(instance=page, context={'request': request})
-        print(serializer.data)
+        serializer = VisitorSerializer(all_items, many=True)
+        return JSONResponse(serializer.data)
 
     return render(request, "search/search.html",
                   {
