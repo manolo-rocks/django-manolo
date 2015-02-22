@@ -2,23 +2,61 @@ import datetime
 
 from django.shortcuts import render
 from django.shortcuts import redirect
-from django.core.paginator import Paginator
+from django.core.paginator import Paginator, PageNotAnInteger
 from django.core.paginator import InvalidPage
 from django.http import Http404
+from django.http import HttpResponse
+from rest_framework.renderers import JSONRenderer
 from haystack.query import SearchQuerySet
+from django.views.decorators.csrf import csrf_exempt
 
 from visitors.forms import ManoloForm
+from visitors.serializer import VisitorSerializer
+
+
+class JSONResponse(HttpResponse):
+    """
+    An HttpResponse that renders its content into JSON.
+    """
+    def __init__(self, data, **kwargs):
+        content = JSONRenderer().render(data)
+        kwargs['content_type'] = 'application/json'
+        super(JSONResponse, self).__init__(content, **kwargs)
 
 
 def index(request):
     return render(request, "index.html")
 
 
+@csrf_exempt
 def search(request):
     form = ManoloForm(request.GET)
     query = request.GET['q']
+
     all_items = form.search()
     paginator, page = do_pagination(request, all_items)
+
+    if 'json' in request.GET:
+        # simplified filtering of an SQS
+        if 'page' in request.GET:
+            page = request.GET['page']
+        else:
+            page = ''
+
+        try:
+            articles = paginator.page(page)
+        except PageNotAnInteger:
+            # If page is not an integer, deliver first page
+            articles = paginator.page(1)
+        except PageNotAnInteger:
+            # If page is out of range, deliver last page
+            articles = paginator.page(paginator.num_pages)
+
+        items = [i.object for i in articles]
+        serializer_context = {'request': request}
+        serializer = VisitorSerializer(items, context=serializer_context, many=True)
+        return JSONResponse(serializer.data)
+
     return render(request, "search/search.html",
                   {
                       "paginator": paginator,
