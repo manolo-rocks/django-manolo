@@ -7,14 +7,11 @@ from django.core.paginator import InvalidPage
 from django.http import Http404
 from django.http import HttpResponse
 from rest_framework.renderers import JSONRenderer
-from rest_framework.parsers import JSONParser
 from haystack.query import SearchQuerySet
 from django.views.decorators.csrf import csrf_exempt
 
-from visitors.models import Visitor
 from visitors.forms import ManoloForm
 from visitors.serializer import VisitorSerializer
-from visitors.serializer import PaginatedVisitorSerializer
 
 
 class JSONResponse(HttpResponse):
