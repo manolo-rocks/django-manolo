@@ -78,3 +78,6 @@ class Visitor(models.Model):
     time_end = models.CharField(
         max_length=250
     )
+
+    def object(self):
+        return self

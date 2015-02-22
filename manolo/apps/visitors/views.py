@@ -30,6 +30,8 @@ def index(request):
     return render(request, "index.html")
 
 
+
+
 @csrf_exempt
 def search(request):
     form = ManoloForm(request.GET)
@@ -38,13 +40,12 @@ def search(request):
     all_items = form.search()
 
     if 'json' in request.GET:
-        paginator = Paginator([q.object for q in all_items], 20)
+        paginator = Paginator(all_items, 20)
 
         # simplified filtering of an SQS
         page = request.GET['page']
         try:
             articles = paginator.page(page)
-            print(articles)
         except PageNotAnInteger:
             # If page is not an integer, deliver first page
             articles = paginator.page(1)
@@ -53,7 +54,8 @@ def search(request):
             articles = paginator.page(paginator.num_pages)
 
         serializer_context = {'request': request}
-        serializer = VisitorSerializer(articles, context=serializer_context)
+        serializer = VisitorSerializer(articles, context=serializer_context, many=True)
+        print(serializer.data)
         return JSONResponse(serializer.data)
 
     return render(request, "search/search.html",
