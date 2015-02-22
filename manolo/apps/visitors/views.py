@@ -14,6 +14,7 @@ from django.views.decorators.csrf import csrf_exempt
 from visitors.models import Visitor
 from visitors.forms import ManoloForm
 from visitors.serializer import VisitorSerializer
+from visitors.serializer import PaginatedVisitorSerializer
 
 
 class JSONResponse(HttpResponse):
@@ -30,8 +31,6 @@ def index(request):
     return render(request, "index.html")
 
 
-
-
 @csrf_exempt
 def search(request):
     form = ManoloForm(request.GET)
@@ -46,6 +45,7 @@ def search(request):
             page = request.GET['page']
         else:
             page = ''
+
         try:
             articles = paginator.page(page)
         except PageNotAnInteger:
@@ -56,8 +56,9 @@ def search(request):
             articles = paginator.page(paginator.num_pages)
 
         items = [i.object for i in articles]
+        print(len(items))
         serializer_context = {'request': request}
-        serializer = VisitorSerializer(items, context=serializer_context,  many=True)
+        serializer = VisitorSerializer(items, context=serializer_context, many=True)
         return JSONResponse(serializer.data)
 
     return render(request, "search/search.html",

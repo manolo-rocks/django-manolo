@@ -170,6 +170,5 @@ if len(sys.argv) > 1 and 'test' in sys.argv[1]:
     from .testing import *
 
 REST_FRAMEWORK = {
-    'DEFAULT_PERMISSION_CLASSES': ('rest_framework.permissions.IsAdminUser',),
-    'PAGINATE_BY': 10
+    'PAGINATE_BY': 20
 }
