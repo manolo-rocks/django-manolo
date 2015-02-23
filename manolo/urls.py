@@ -21,6 +21,7 @@ urlpatterns = patterns(
     url(r'^api/', views.api, name='api'),
     # url(r'^search/', include('haystack.urls')),
     url(r'^$', include('visitors.urls', namespace="visitors")),
+    url(r'robots.txt$', views.robots, name='robots'),
 ) + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
 # TODO: rewrite build_page method of haystack.views SearchView to

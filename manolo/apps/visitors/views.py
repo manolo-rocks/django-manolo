@@ -102,6 +102,10 @@ def api(request):
     return render(request, "api.html")
 
 
+def robots(request):
+    return render(request, "robots.txt")
+
+
 def do_pagination(request, all_items):
     """
     :param request: contains the current page requested by user
