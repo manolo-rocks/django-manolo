@@ -2,10 +2,10 @@
 
 {% block content %}
 <div class="container" style="text-align:center; max-width:1200px;">
-  <h3>Este es el API de <a href="/">Manolo</a></h3>
-
   <div class="row text-left">
     <div class="col-md-9 col-lg-8">
+      <h3 class="text-center">Este es el API de <a href="/">Manolo</a></h3>
+
       <h4>REST APIs</h4>
 
       <p>
@@ -16,13 +16,44 @@
       </p>
 
       <p>
-        Se acostumbra usar el lenguaje JSON el cual puede ser importado por herramientas
+        Se acostumbra usar el <b>formato JSON</b> el cual puede ser importado por herramientas
         como OpenRefine para hacer limpieza y normalización de datos. Luego es posible
         exportar los datos desde OpenRefine a otros formatos como CSV, TSV, MS Excel, etc.
+        Solo es cuestión de agregar <code>&json</code> a los resultados de búsqueda.
       </p>
 
       <p>
-        <b>1. GET</b> <code><a href="http://manolo.rocks/search/?q=ROMULO&json">http://manolo.rocks/search/?q=ROMULO&json</a></code>
+        Si quieres obtener los datos listos para importar a Excel puedes descargarlos en
+        <b>formato TSV</b> (con las columnas separadas por Tabs).
+        Solo es cuestión de agregar <code>&tsv</code> a los resultados de búsqueda.
+      </p>
+
+      <p>
+        <b>1. GET</b> <code><a href="http://manolo.rocks/search/?q=ROMULO&tsv">http://manolo.rocks/search/?q=ROMULO&tsv</a></code>
+      </p>
+
+      <p>
+        Devuelve hasta 20 resultados al buscar visitas con la palabra ROMULO en formato TSV, listos para
+        importar a MS Excel:
+
+        {% load staticfiles %}
+        <a href="{% static 'img/results_tsv.png' %}" class="thumbnail">
+          <img src="{% static 'img/results_tsv.png' %}" /></a>
+      </p>
+
+      <p>
+        <b>2.</b> También puedes hacer click sobre los íconos TSV y JSON en la página de
+          <a href="http://manolo.rocks/search/?q=ROMULO">resultados de búsqueda</a>.
+      </p>
+
+      <p>
+        {% load staticfiles %}
+        <a href="{% static 'img/results_search.png' %}" class="thumbnail">
+          <img src="{% static 'img/results_search.png' %}" /></a>
+      </p>
+
+      <p>
+        <b>3. GET</b> <code><a href="http://manolo.rocks/search/?q=ROMULO&json">http://manolo.rocks/search/?q=ROMULO&json</a></code>
       </p>
 
       <p>
@@ -67,7 +98,7 @@
       </p>
 
       <p>
-        <b>2. GET</b> <code><a href="http://manolo.rocks/search/?q=ARBITRO&page=2&json">http://manolo.rocks/search/?q=ARBITRO&page=2&json</a></code>
+        <b>4. GET</b> <code><a href="http://manolo.rocks/search/?q=ARBITRO&page=2&json">http://manolo.rocks/search/?q=ARBITRO&page=2&json</a></code>
       </p>
       <p>
         Devuelve siguientes 20 resultados (del 21 al 40) al buscar visitas con
