@@ -73,6 +73,13 @@ def search_date(request):
 
         all_items = results
         paginator, page = do_pagination(request, all_items)
+
+        if 'json' in request.GET:
+            return data_as_json(request, paginator)
+
+        if 'tsv' in request.GET:
+            return data_as_csv(request, paginator)
+
         return render(request, "search/search.html",
                       {
                           "paginator": paginator,
