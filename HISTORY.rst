@@ -3,6 +3,10 @@
 History
 -------
 
+2.4.0 (2015-02-24)
+==================
+* Ahora tiene API y devuelve resultados en TSV y JSON.
+
 2.3.3 (2015-02-21)
 ==================
 * Agregado Produce a lista de entidades estatales.
