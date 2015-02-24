@@ -1,8 +1,9 @@
 import datetime
+import csv
 
 from django.shortcuts import render
 from django.shortcuts import redirect
-from django.core.paginator import Paginator, PageNotAnInteger
+from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 from django.core.paginator import InvalidPage
 from django.http import Http404
 from django.http import HttpResponse
@@ -37,25 +38,10 @@ def search(request):
     paginator, page = do_pagination(request, all_items)
 
     if 'json' in request.GET:
-        # simplified filtering of an SQS
-        if 'page' in request.GET:
-            page = request.GET['page']
-        else:
-            page = ''
+        return data_as_json(request, paginator)
 
-        try:
-            articles = paginator.page(page)
-        except PageNotAnInteger:
-            # If page is not an integer, deliver first page
-            articles = paginator.page(1)
-        except PageNotAnInteger:
-            # If page is out of range, deliver last page
-            articles = paginator.page(paginator.num_pages)
-
-        items = [i.object for i in articles]
-        serializer_context = {'request': request}
-        serializer = VisitorSerializer(items, context=serializer_context, many=True)
-        return JSONResponse(serializer.data)
+    if 'tsv' in request.GET:
+        return data_as_csv(request, paginator)
 
     return render(request, "search/search.html",
                   {
@@ -96,6 +82,56 @@ def search_date(request):
                       )
     else:
         return redirect('/')
+
+
+def data_as_json(request, paginator):
+    # simplified filtering of an SQS
+    if 'page' in request.GET:
+        page = request.GET['page']
+    else:
+        page = ''
+
+    try:
+        articles = paginator.page(page)
+    except PageNotAnInteger:
+        # If page is not an integer, deliver first page
+        articles = paginator.page(1)
+    except EmptyPage:
+        # If page is out of range, deliver last page
+        articles = paginator.page(paginator.num_pages)
+
+    items = [i.object for i in articles]
+    serializer_context = {'request': request}
+    serializer = VisitorSerializer(items, context=serializer_context, many=True)
+    return JSONResponse(serializer.data)
+
+
+def data_as_csv(request, paginator):
+    if 'page' in request.GET:
+        page = request.GET['page']
+    else:
+        page = ''
+
+    try:
+        articles = paginator.page(page)
+    except PageNotAnInteger:
+        # If page is not an integer, deliver first page
+        articles = paginator.page(1)
+    except EmptyPage:
+        # If page is out of range, deliver last page
+        articles = paginator.page(paginator.num_pages)
+
+    items = [i.object for i in articles]
+    response = HttpResponse(content_type='text/csv')
+    response['Content-Disposition'] = 'attachment; filename="manolo_data.csv"'
+
+    writer = csv.writer(response, dialect='excel-tab')
+    for i in items:
+        writer.writerow([i.id, i.institution, i.date, i.full_name,
+                         i.id_document, i.id_number, i.entity, i.reason,
+                         i.host_name, i.office, i.meeting_place,
+                         i.time_start, i.time_end])
+    return response
 
 
 def api(request):
