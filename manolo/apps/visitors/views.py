@@ -43,11 +43,15 @@ def search(request):
     if 'tsv' in request.GET:
         return data_as_csv(request, paginator)
 
+    json_path = request.get_full_path() + '&json'
+    tsv_path = request.get_full_path() + '&tsv'
     return render(request, "search/search.html",
                   {
                       "paginator": paginator,
                       "page": page,
                       "query": query,
+                      "json_path": json_path,
+                      "tsv_path": tsv_path,
                   }
                   )
 
@@ -80,11 +84,15 @@ def search_date(request):
         if 'tsv' in request.GET:
             return data_as_csv(request, paginator)
 
+        json_path = request.get_full_path() + '&json'
+        tsv_path = request.get_full_path() + '&tsv'
         return render(request, "search/search.html",
                       {
                           "paginator": paginator,
                           "page": page,
                           "query": query,
+                          "json_path": json_path,
+                          "tsv_path": tsv_path,
                       }
                       )
     else:

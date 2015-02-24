@@ -38,6 +38,16 @@
 
        También puedes hacer búsquedas haciendo click sobre cada uno de los
        resultados <span class="badge"><b>{{ paginator.object_list|length|intcomma }}</b></span>
+
+       {% load staticfiles %}
+       <p class="pull-right">
+         <a href="{{ tsv_path }}">
+           <img title="Descarga datos en formato TSV" width="32px" src="{% static 'img/tsv.svg' %}" /></a>
+
+         <a href="{{ json_path }}">
+           <img title="Descarga datos en formato JSON" width="32px" src="{% static 'img/json.svg' %}" /></a>
+       </p>
+
        <table class='table table-hover table-striped table-bordered
          table-responsive table-condensed' style='font-size: 12px;'>
          <th>Institución</th></th><th>Fecha</th><th>Visitante</th><th>Documento</th><th>Entidad</th>
