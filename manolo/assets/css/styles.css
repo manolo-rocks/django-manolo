@@ -1,11 +1,11 @@
-@import url(http://fonts.googleapis.com/css?family=Open+Sans+Condensed:300,700);
+@import url(http://fonts.googleapis.com/css?family=Oswald:400,300);
 
 body {
     font-family: "Raleway", Arial, sans-serif;
 }
 
 #contenido {
-    font-family: "Open Sans Condensed", "Raleway", Arial, sans-serif;
+    font-family: "Oswald", "Raleway", Arial, sans-serif;
 }
 
 .form-group { display: inline-block; }
