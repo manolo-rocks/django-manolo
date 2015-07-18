@@ -1,1 +1,25 @@
-/*! project specific CSS goes here. */
+@import url(http://fonts.googleapis.com/css?family=Open+Sans+Condensed:300,700);
+
+body {
+    font-family: "Raleway", Arial, sans-serif;
+}
+
+#contenido {
+    font-family: "Open Sans Condensed", "Raleway", Arial, sans-serif;
+}
+
+.form-group { display: inline-block; }
+
+.highlight { background-color: yellow }
+
+.navbar .divider-vertical {
+    min-height: 50px;
+    margin: 0 9px;
+    border-right: 1px solid #ffffff;
+    border-left: 1px solid #f2f2f2;
+}
+
+footer {
+    padding-bottom: 20px;
+    margin-bottom: 20px;
+}
