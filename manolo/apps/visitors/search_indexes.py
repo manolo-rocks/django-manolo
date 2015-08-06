@@ -8,3 +8,6 @@ class VisitorIndex(indexes.SearchIndex, indexes.Indexable):
 
     def get_model(self):
         return Visitor
+
+    def get_updated_field(self):
+        return "modified"
