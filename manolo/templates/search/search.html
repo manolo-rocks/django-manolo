@@ -107,13 +107,13 @@
              </li>
              {% endif %}
 
-             {% for i in page.paginator.page_range %}
-               {% if i < 20 %}
-                 {% if page.number == i %}
-                   <li class="active"><a href="?q={{ query }}&amp;page={{ i }}">{{ i }}</a></li>
-                 {% else %}
-                   <li><a href="?q={{ query }}&amp;page={{ i }}">{{ i }}</a></li>
-                 {% endif %}
+             {% for i in page.paginator.paginate_sections %}
+               {% if page.number == i %}
+                 <li class="active"><a href="?q={{ query }}&amp;page={{ i }}">{{ i }}</a></li>
+               {% elif i == None %}
+                 <li class="disabled"><a href="#">…</a></li>
+               {% else %}
+                 <li><a href="?q={{ query }}&amp;page={{ i }}">{{ i }}</a></li>
                {% endif %}
              {% endfor %}
 
