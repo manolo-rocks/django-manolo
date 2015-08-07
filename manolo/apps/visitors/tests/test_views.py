@@ -1,10 +1,30 @@
 from django.test import TestCase
 from django.test.client import Client
+from django.core.management import call_command
+from django.test.utils import override_settings
+
+import haystack
+
+from visitors.models import Visitor
 
 
+TEST_INDEX = {
+    'default': {
+        'ENGINE': 'haystack.backends.elasticsearch_backend.ElasticsearchSearchEngine',
+        'URL': 'http://127.0.0.1:9200/',
+        'INDEX_NAME': 'test_haystack',
+        'INCLUDE_SPELLING': True,
+    }
+}
+
+
+@override_settings(HAYSTACK_CONNECTIONS=TEST_INDEX)
 class TestViews(TestCase):
     def setUp(self):
         self.client = Client()
+        # self.user = User.objects.get(username='admin')
+        # self.user.set_password('pass')
+        # self.user.save()
 
     def test_index(self):
         c = self.client.get('/')
@@ -13,6 +33,22 @@ class TestViews(TestCase):
     def test_search(self):
         c = self.client.get('/search/?q=romulo')
         self.assertEqual(200, c.status_code)
+
+    def test_pagination(self):
+        data = []
+        for i in range(500):
+            m = Visitor(full_name='Romulo', id=i)
+            data.append(m)
+        Visitor.objects.bulk_create(data)
+
+        # build index with our test data
+        haystack.connections.reload('default')
+        call_command('rebuild_index', interactive=False, verbosity=0)
+        super(TestViews, self).setUp()
+
+        c = self.client.get('/search/?q=romulo')
+        expected = 'q=romulo&amp;page=25'
+        self.assertTrue(expected in str(c.content))
 
     def test_search_date(self):
         c = self.client.get('/search_date/?q=30/05/2014')
