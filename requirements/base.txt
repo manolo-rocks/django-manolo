@@ -5,7 +5,7 @@
 pyprind==2.9.1
 Whoosh==2.6.0
 psycopg2==2.6.0
-Django==1.7.4
+Django==1.8.3
 Jinja2==2.7.3
 MarkupSafe==0.23
 Pillow==2.7.0

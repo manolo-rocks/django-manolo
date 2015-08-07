@@ -3,7 +3,7 @@ import csv
 
 from django.shortcuts import render
 from django.shortcuts import redirect
-from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
+from django.core.paginator import PageNotAnInteger, EmptyPage
 from django.core.paginator import InvalidPage
 from django.http import Http404
 from django.http import HttpResponse
@@ -13,6 +13,7 @@ from django.views.decorators.csrf import csrf_exempt
 
 from visitors.forms import ManoloForm
 from visitors.serializer import VisitorSerializer
+from visitors.utils import Paginator
 
 
 class JSONResponse(HttpResponse):
