@@ -11,6 +11,7 @@ from rest_framework.renderers import JSONRenderer
 from haystack.query import SearchQuerySet
 from django.views.decorators.csrf import csrf_exempt
 
+from visitors.models import Visitor
 from visitors.forms import ManoloForm
 from visitors.serializer import VisitorSerializer
 from visitors.utils import Paginator
@@ -27,7 +28,8 @@ class JSONResponse(HttpResponse):
 
 
 def index(request):
-    return render(request, "index.html")
+    count = Visitor.objects.count()
+    return render(request, "index.html", {'count': count})
 
 
 @csrf_exempt
