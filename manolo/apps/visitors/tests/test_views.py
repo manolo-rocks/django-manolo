@@ -25,10 +25,16 @@ class TestViews(TestCase):
         # self.user = User.objects.get(username='admin')
         # self.user.set_password('pass')
         # self.user.save()
+        self.maxDiff = None
 
     def test_index(self):
         c = self.client.get('/')
-        self.assertEqual(200, c.status_code)
+        self.assertEqual(200, c.status_code, 'Status code')
+        self.assertTrue('0</b></span> registros de visitas' in str(c.content), 'Number of records in db.')
+
+    def test_about(self):
+        c = self.client.get('/about/')
+        self.assertEqual(200, c.status_code, 'Status code')
 
     def test_search(self):
         c = self.client.get('/search/?q=romulo')

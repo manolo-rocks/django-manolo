@@ -15,10 +15,11 @@ from visitors import views
 urlpatterns = patterns(
     '',
     # Uncomment the next line to enable the admin:
-    url(r'^admin/', include(admin.site.urls)),
+    # url(r'^admin/', include(admin.site.urls)),
     url(r'^search_date/$', views.search_date),
     url(r'^search/', views.search, name='search_view'),
     url(r'^api/', views.api, name='api'),
+    url(r'^about/', views.about, name='about'),
     # url(r'^search/', include('haystack.urls')),
     url(r'^$', include('visitors.urls', namespace="visitors")),
     url(r'robots.txt$', views.robots, name='robots'),

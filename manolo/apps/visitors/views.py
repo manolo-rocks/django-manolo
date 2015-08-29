@@ -32,6 +32,10 @@ def index(request):
     return render(request, "index.html", {'count': count})
 
 
+def about(request):
+    return render(request, "about.html")
+
+
 @csrf_exempt
 def search(request):
     form = ManoloForm(request.GET)

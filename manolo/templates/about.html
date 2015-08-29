@@ -1,0 +1,86 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+
+{% block content %}
+
+<div class="container">
+  <div class="row">
+    <div class="col-sm-10 col-md-7">
+
+      <h1>About Manolo</h1>
+
+      <p>Manolo es desarrollado por varios voluntarios que contribuyen durante
+      sus horas libres.</p>
+
+    </div>
+  </div><!-- row -->
+
+  <div class="row">
+    <div class="col-sm-10 col-md-7">
+      <h2>Programadores</h2>
+    </div>
+  </div><!-- row -->
+
+
+  <div class="row">
+    <div class="col-xs-7 col-sm-6 col-md-5 col-lg-4">
+      <div class="panel panel-default">
+        <div class="panel-body">
+
+          <div class="media">
+            <div class="media-left media-middle">
+              <a href="#">
+                <img class="media-object img-circle" src="{% static 'img/avatar_aniversarioperu.png' %}" alt="AniversarioPeru" />
+              </a>
+            </div>
+            <div class="media-body">
+              <h4 class="media-heading">AniversarioPeru</h4>
+                <small>Troll.</small>
+              <p>
+                <br />
+                <a href="https://github.com/aniversarioperu/"><i class="fa fa-github-alt fa-lg fa-fw"></i></a>
+                <a href="https://twitter.com/aniversarioperu"><i class="fa fa-twitter fa-lg fa-fw"></i></a>
+                <a href="http://aniversarioperu.me/"><i class="fa fa-external-link fa-lg fa-fw"></i></a>
+              </p>
+
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div><!-- col -->
+
+    <div class="col-xs-7 col-sm-6 col-md-5 col-lg-4">
+      <div class="panel panel-default">
+        <div class="panel-body">
+
+          <div class="media">
+            <div class="media-left media-middle">
+              <a href="#">
+                <img class="media-object img-circle" src="{% static 'img/avatar_matiskay.png' %}"
+                     alt="Edgar Mara @matiskay" />
+              </a>
+            </div>
+            <div class="media-body">
+              <h4 class="media-heading">Edgar Marca</h4>
+              <small>MSc. candidate in Computational Modeling at LNCC
+                (<a href="http://www.lncc.br/">http://www.lncc.br/</a>)
+                where I do research in Machine Learning.</small>
+              <p>
+                <br />
+                <a href="https://github.com/matiskay/"><i class="fa fa-github-alt fa-lg fa-fw"></i></a>
+                <a href="https://twitter.com/matiskay"><i class="fa fa-twitter fa-lg fa-fw"></i></a>
+              </p>
+
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div><!-- col -->
+  </div><!-- row -->
+
+
+</div><!-- container -->
+
+{% endblock content %}
