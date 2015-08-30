@@ -68,7 +68,7 @@
            </td>
            <td>
              <a href='/search?q={{ i.object.full_name }}'>
-               {{ i.object.full_name }}
+               {{ i.object.full_name|upper }}
              </a>
            </td>
            <td><a href='/search?q={{ i.object.id_number }}'>
@@ -81,7 +81,7 @@
              {{ i.object.reason }}
            </a></td>
            <td><a href='/search?q={{ i.object.host_name }}'>
-             {{ i.object.host_name }}
+             {{ i.object.host_name|upper }}
            </a></td>
            <td><a href='/search?q={{ i.object.office }}'>
              {{ i.object.office }}
