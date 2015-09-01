@@ -16,55 +16,64 @@ class Visitor(models.Model):
 
     full_name = models.CharField(
         max_length=250,
-        help_text='Full name of visitor'
+        help_text='Full name of visitor',
     )
 
     entity = models.CharField(
         max_length=250,
-        help_text='Entity that the visitor represents'
+        help_text='Entity that the visitor represents',
+        null=True,
     )
 
     meeting_place = models.CharField(
         max_length=250,
-        help_text='Location where meeting takes place'
+        help_text='Location where meeting takes place',
+        null=True,
     )
 
     office = models.CharField(
         max_length=250,
         help_text='Office that visitor visits. Some peruvian institutions have'
-                  'it as `unidad`.'
+                  'it as `unidad`.',
+        null=True,
     )
 
     host_name = models.CharField(
         max_length=250,
-        help_text='Name of person that receives visitor'
+        help_text='Name of person that receives visitor',
+        null=True,
     )
 
     reason = models.CharField(
         max_length=250,
         help_text='Reason behind the meeting. Some peruvian institutions have'
-                  'it as `observación`.'
+                  'it as `observación`.',
+        null=True,
     )
 
     institution = models.CharField(
         max_length=250,
-        help_text='Institution visited'
+        help_text='Institution visited',
+        null=True,
     )
 
     location = models.CharField(
         max_length=250,
         help_text='Location of Institution. Some institution have several'
-                  'locations. In PCM is know as `sede`.'
+                  'locations. In PCM is know as `sede`.',
+        null=True,
     )
 
     id_number = models.CharField(
         max_length=250,
-        help_text='Id number. It should be char field as some numbers begin with zero.'
+        help_text='Id number. It should be char field as some numbers begin with zero.',
+        null=True,
     )
 
     id_document = models.CharField(
         max_length=250,
-        help_text='Identification document'
+        help_text='Identification document',
+        null=True,
     )
 
     date = models.DateField(
@@ -72,11 +81,13 @@ class Visitor(models.Model):
     )
 
     time_start = models.CharField(
-        max_length=250
+        max_length=250,
+        null=True,
     )
 
     time_end = models.CharField(
-        max_length=250
+        max_length=250,
+        null=True,
     )
 
     created = models.DateTimeField(auto_now_add=True)
