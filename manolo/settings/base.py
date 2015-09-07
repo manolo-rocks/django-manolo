@@ -119,10 +119,12 @@ DJANGO_APPS = (
 
     'rest_framework',
     'haystack',
+    'rest_framework_swagger',
 )
 
 PROJECT_APPS = (
     'visitors',
+    'api',
 )
 
 INSTALLED_APPS = DJANGO_APPS + PROJECT_APPS
