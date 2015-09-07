@@ -19,6 +19,13 @@ def search(request, query):
     results = [i.object for i in form.search()]
     serializer = ManoloSerializer(results, many=True)
 
-    page = PageNumberPagination()
-    results = page.paginate_queryset(serializer.data, request)
-    return JSONResponse(results)
+    pagination = PageNumberPagination()
+    results = pagination.paginate_queryset(serializer.data, request)
+
+    data = {
+        'count': pagination.page.paginator.count,
+        'next': pagination.get_next_link(),
+        'previous': pagination.get_previous_link(),
+        'results': results,
+    }
+    return JSONResponse(data)
