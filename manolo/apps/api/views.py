@@ -1,4 +1,5 @@
 from django.http.request import QueryDict
+from django.shortcuts import render
 
 from rest_framework.decorators import api_view
 from rest_framework.decorators import permission_classes
@@ -18,17 +19,19 @@ from visitors.views import do_pagination, data_as_csv
 def search(request, query):
     query_request = QueryDict('q={}'.format(query))
     form = ApiForm(query_request)
-    results = [i.object for i in form.search()]
-    serializer = ManoloSerializer(results, many=True)
+    all_items = form.search()
 
     pagination = PageNumberPagination()
-    results = pagination.paginate_queryset(serializer.data, request)
+    paginated_results = pagination.paginate_queryset(all_items, request)
+    paginated_results = [i.object for i in paginated_results]
+
+    serializer = ManoloSerializer(paginated_results, many=True)
 
     data = {
         'count': pagination.page.paginator.count,
         'next': pagination.get_next_link(),
         'previous': pagination.get_previous_link(),
-        'results': results,
+        'results': serializer.data,
     }
     return JSONResponse(data)
 
