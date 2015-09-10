@@ -8,7 +8,6 @@ from rest_framework.decorators import renderer_classes
 
 from .forms import ApiForm
 from .serializers import ManoloSerializer
-from .api_responses import CSVResponse
 from .api_responses import CSVRenderer
 from .api_responses import JSONResponse
 from visitors.views import do_pagination, data_as_csv

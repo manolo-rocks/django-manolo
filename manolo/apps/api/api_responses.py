@@ -3,16 +3,6 @@ from rest_framework_csv import renderers
 from rest_framework.renderers import JSONRenderer
 
 
-class CSVResponse(HttpResponse):
-    """
-    An HttpResponse that renders its content into CSV.
-    """
-    def __init__(self, data, **kwargs):
-        content = CSVRenderer().render(data)
-        kwargs['content_type'] = 'text/csv'
-        super(CSVResponse, self).__init__(content, **kwargs)
-
-
 class CSVRenderer(renderers.CSVRenderer):
     media_type = 'text/csv'
     format = 'csv'
