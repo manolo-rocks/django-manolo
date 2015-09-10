@@ -1,15 +1,12 @@
 from django.http.request import QueryDict
-from django.shortcuts import render
 
 from rest_framework.decorators import api_view
 from rest_framework.decorators import permission_classes
 from rest_framework.permissions import AllowAny
 from rest_framework.pagination import PageNumberPagination
-from rest_framework.decorators import renderer_classes
 
 from .forms import ApiForm
 from .serializers import ManoloSerializer
-from .api_responses import CSVRenderer
 from .api_responses import JSONResponse
 from visitors.views import do_pagination, data_as_csv
 
@@ -37,7 +34,6 @@ def search(request, query):
 
 
 @permission_classes((AllowAny, ))
-@renderer_classes((CSVRenderer,))
 def search_csv(request, query):
     query_request = QueryDict('q={}'.format(query))
     form = ApiForm(query_request)
