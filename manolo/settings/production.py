@@ -5,7 +5,7 @@ from django.core.exceptions import ImproperlyConfigured
 
 from .base import *
 
-DEBUG = True
+DEBUG = False
 TEMPLATE_DEBUG = DEBUG
 
 ADMINS = (
