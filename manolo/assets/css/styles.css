@@ -33,3 +33,7 @@ footer {
 .navbar-default {
     background-color: #EEE;
 }
+
+.navbar-brand {
+    padding: 0px;
+}
