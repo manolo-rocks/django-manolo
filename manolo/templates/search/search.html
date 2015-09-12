@@ -12,23 +12,9 @@
        <h2>Este es <a href="/">Manolo</a></h2>
        <h4>Manolo es un buscador de personas que visitan entidades del Estado peruano</h4>
        <br />
-       <div class="row">
-         <div class="col-xs-12 col-md-12 col-lg-12">
-           <form action="/search" method="get" class="form-inline" role="form">
-             <div class="form-group">
-               <label class="sr-only" for="query">Keyword</label>
-                 <input style="width:250px;" type="text" id="query" name="q"
-                                 class="form-control"
-                                 value="{{ query }}"
-                                 placeholder="Tipea persona o palabra clave">
-             </div>
-               <button type="submit" class="btn btn-info" id="search_button">
-                            <i class="fa fa-search"></i>
-                            Buscar
-               </button>
-           </form>
-         </div>
-       </div><!-- row -->
+
+       {% include 'search_box.html' %}
+
      </div><!-- container -->
 
      <br />
