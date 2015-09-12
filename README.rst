@@ -102,8 +102,8 @@ files:
    :target: https://badge.fury.io/py/django-manolo
 .. |Build Status| image:: https://travis-ci.org/aniversarioperu/django-manolo.png?branch=master
    :target: https://travis-ci.org/aniversarioperu/django-manolo
-.. |Cover alls| image:: https://coveralls.io/repos/aniversarioperu/django-manolo/badge.png?branch=master
-   :target: https://coveralls.io/r/aniversarioperu/django-manolo?branch=master
+.. |Cover alls| image:: https://coveralls.io/repos/manolo-rocks/django-manolo/badge.svg?branch=master&service=github
+   :target: https://coveralls.io/github/manolo-rocks/django-manolo?branch=master
 .. |Dependencies status| image:: https://gemnasium.com/aniversarioperu/django-manolo.svg
    :target: https://gemnasium.com/aniversarioperu/django-manolo
 .. |Download numbers| image:: https://pypip.in/download/django-manolo/badge.svg
