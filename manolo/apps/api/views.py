@@ -25,9 +25,19 @@ def search(request, query):
     (fácil de importar a MS Excel)
 
     Solo es necesario usar la dirección `search.tsv`:
-    * <http://manolo.rocks/api/search.tsv/materiales/>
-    ---
 
+    * <http://manolo.rocks/api/search.tsv/romulo/>
+    ---
+    type:
+      query:
+        required: true
+        type: string
+    parameters:
+      - name: query
+        description: nombre o palabra clave a busar, por ejemplo Romulo
+        type: string
+        paramType: path
+        required: true
     """
     query_request = QueryDict('q={}'.format(query))
     form = ApiForm(query_request)
@@ -49,7 +59,7 @@ def search(request, query):
 
 
 @permission_classes((AllowAny, ))
-def search_csv(request, query):
+def search_tsv(request, query):
     query_request = QueryDict('q={}'.format(query))
     form = ApiForm(query_request)
     results = form.search()

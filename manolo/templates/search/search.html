@@ -27,7 +27,7 @@
 
        {% load staticfiles %}
        <p class="pull-right">
-         <a href="/api/search.csv/{{ query }}/?page={{ page.number }}">
+         <a href="/api/search.tsv/{{ query }}/?page={{ page.number }}">
            <img title="Descarga datos en formato TSV" width="32px" src="{% static 'img/tsv.svg' %}" /></a>
 
          <a href="/api/search.json/{{ query }}/?page={{ page.number }}">
