@@ -7,6 +7,7 @@ History
 ========
 * Mejor página 404
 * Brand logo
+* API usando rest_framework
 
 2.4.0 (2015-02-24)
 ==================
