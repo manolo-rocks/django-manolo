@@ -13,7 +13,6 @@ from django.views.decorators.csrf import csrf_exempt
 
 from visitors.models import Visitor
 from visitors.forms import ManoloForm
-from visitors.serializer import VisitorSerializer
 from visitors.utils import Paginator
 
 

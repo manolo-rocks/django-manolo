@@ -21,7 +21,7 @@ urlpatterns = patterns(
     url(r'^api/', include('api.urls')),
     url(r'^docs/', include('rest_framework_swagger.urls')),
     url(r'^about/', views.about, name='about'),
-    # url(r'^search/', include('haystack.urls')),
+    url(r'^search/', include('haystack.urls')),
     url(r'^$', include('visitors.urls', namespace="visitors")),
     url(r'robots.txt$', views.robots, name='robots'),
 ) + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
