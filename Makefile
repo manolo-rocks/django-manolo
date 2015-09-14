@@ -34,7 +34,7 @@ lint:
 
 test:
 	rm -rf htmlcov
-	coverage run --source manolo manage.py test -v 2 visitors --settings=manolo.settings.testing
+	coverage run --source manolo manage.py test -v 2 api visitors  --settings=manolo.settings.testing
 
 test-all:
 	tox

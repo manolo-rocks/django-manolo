@@ -25,6 +25,8 @@
     <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
     <link rel="stylesheet" href="{% static 'css/styles.css' %}">
 
+    {% block additional_css %}
+    {% endblock additional_css %}
 
   </head>
 
@@ -46,6 +48,7 @@
         </div>
         <div id="navbar" class="navbar-collapse collapse">
           <ul class="nav navbar-nav navbar-right">
+            <li><a href="/docs/">Developers</a></li>
             <li><a href="/about/">About Manolo</a></li>
           </ul>
         </div><!--/.nav-collapse -->
@@ -90,5 +93,9 @@
   <script src='{% static "js/bootstrap.min.js" %}'></script>
   <script src='{% static "js/highlighter.js" %}'></script>
   <script>$("#contenido").highlight('{{ query }}');</script>
+
+  {% block additional_javascript %}
+  {% endblock additional_javascript %}
+
   </body>
 </html>

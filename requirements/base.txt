@@ -7,6 +7,7 @@ psycopg2==2.6.0
 Django==1.8.4
 Jinja2==2.7.3
 MarkupSafe==0.23
+Markdown==2.6.2
 Pillow==2.7.0
 PyYAML==3.11
 Pygments==2.0.2
@@ -17,7 +18,8 @@ django-bootstrap-themes==3.1.2
 django-bootstrap3==5.1
 django-haystack==2.3.1
 django-model-utils==2.2
-djangorestframework==3.0.5
+djangorestframework==3.2.3
+django-rest-swagger==0.3.4
 docutils==0.12
 python-slugify==0.1.0
 six==1.9

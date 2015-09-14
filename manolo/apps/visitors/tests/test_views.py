@@ -83,15 +83,3 @@ class TestViews(TestCase):
     def test_search_date_invalid4(self):
         c = self.client.get('/search_date/?q=30/05/2012&page=abadca')
         self.assertEqual(404, c.status_code)
-
-    def test_search_return_json(self):
-        c = self.client.get('/search/?q=romulo&json')
-        self.assertEqual(200, c.status_code)
-
-    def test_search_return_json_with_pagination(self):
-        c = self.client.get('/search/?q=romulo&page=1&json')
-        self.assertEqual(200, c.status_code)
-
-    def test_search_return_json_with_invalid_pagination(self):
-        c = self.client.get('/search/?q=romulo&page=100&json')
-        self.assertEqual(404, c.status_code)

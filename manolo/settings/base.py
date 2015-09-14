@@ -119,10 +119,12 @@ DJANGO_APPS = (
 
     'rest_framework',
     'haystack',
+    'rest_framework_swagger',
 )
 
 PROJECT_APPS = (
     'visitors',
+    'api',
 )
 
 INSTALLED_APPS = DJANGO_APPS + PROJECT_APPS
@@ -165,10 +167,28 @@ LOGGING = {
     }
 }
 
-# importing test settings file if necessary (TODO could be done better)
-if len(sys.argv) > 1 and 'test' in sys.argv[1]:
-    from .testing import *
-
 REST_FRAMEWORK = {
-    'PAGINATE_BY': 20
+    # Use Django's standard `django.contrib.auth` permissions,
+    # or allow read-only access for unauthenticated users.
+    'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
+    'PAGE_SIZE': 20,
+    'DEFAULT_PERMISSION_CLASSES': [
+        'rest_framework.permissions.DjangoModelPermissionsOrAnonReadOnly'
+    ],
+    'DEFAULT_THROTTLE_CLASSES': (
+        'rest_framework.throttling.AnonRateThrottle',
+        'rest_framework.throttling.UserRateThrottle'
+    ),
+    'DEFAULT_THROTTLE_RATES': {
+        'anon': '1000/day',
+        'user': '1000/day'
+    },
+    'DEFAULT_RENDERER_CLASSES': (
+        'rest_framework.renderers.JSONRenderer',
+    ),
+    'UNICODE_JSON': True,
+}
+
+SWAGGER_SETTINGS = {
+    'doc_expansion': 'list',
 }

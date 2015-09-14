@@ -13,7 +13,6 @@ from django.views.decorators.csrf import csrf_exempt
 
 from visitors.models import Visitor
 from visitors.forms import ManoloForm
-from visitors.serializer import VisitorSerializer
 from visitors.utils import Paginator
 
 
@@ -85,47 +84,15 @@ def search_date(request):
         all_items = results
         paginator, page = do_pagination(request, all_items)
 
-        if 'json' in request.GET:
-            return data_as_json(request, paginator)
-
-        if 'tsv' in request.GET:
-            return data_as_csv(request, paginator)
-
-        json_path = request.get_full_path() + '&json'
-        tsv_path = request.get_full_path() + '&tsv'
         return render(request, "search/search.html",
                       {
                           "paginator": paginator,
                           "page": page,
                           "query": query,
-                          "json_path": json_path,
-                          "tsv_path": tsv_path,
                       }
                       )
     else:
         return redirect('/')
-
-
-def data_as_json(request, paginator):
-    # simplified filtering of an SQS
-    if 'page' in request.GET:
-        page = request.GET['page']
-    else:
-        page = ''
-
-    try:
-        articles = paginator.page(page)
-    except PageNotAnInteger:
-        # If page is not an integer, deliver first page
-        articles = paginator.page(1)
-    except EmptyPage:
-        # If page is out of range, deliver last page
-        articles = paginator.page(paginator.num_pages)
-
-    items = [i.object for i in articles]
-    serializer_context = {'request': request}
-    serializer = VisitorSerializer(items, context=serializer_context, many=True)
-    return JSONResponse(serializer.data)
 
 
 def data_as_csv(request, paginator):

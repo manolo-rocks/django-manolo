@@ -12,7 +12,7 @@ class VisitorSerializer(serializers.ModelSerializer):
         model = Visitor
 
 
-class PaginatedVisitorSerializer(pagination.PaginationSerializer):
+class PaginatedVisitorSerializer(pagination.PageNumberPagination):
     """
     Serializes page objects of querysets.
     """
