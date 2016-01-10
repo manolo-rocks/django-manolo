@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 from django.http.request import QueryDict
 
 from rest_framework.decorators import api_view
