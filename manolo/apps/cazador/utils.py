@@ -1,5 +1,6 @@
 from elasticsearch import Elasticsearch
 
+
 def search(name):
     es = Elasticsearch()
     res = es.search(index="great_db", q=name)

@@ -1,5 +1,7 @@
 from django.shortcuts import render_to_response, redirect
-from utils import search
+
+from .utils import search
+
 
 def index(request):
     if 'q' in request.GET:
@@ -9,4 +11,3 @@ def index(request):
         return render_to_response('cazador/results.html', {'results': results})
 
     return render_to_response('cazador/index.html')
-
