@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 # This piece of code has lines from the repository "Amy".
 # Copyright (c) 2014-2015 Software Carpentry and contributors
 from django.core.paginator import Paginator as DjangoPaginator

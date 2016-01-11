@@ -71,7 +71,12 @@ https://github.com/aniversarioperu/django-manolo
 Install
 =======
 
-* python3.4
+1. `pip install -r requirements.txt`.
+2. Create a config file called `config.json`. See Configure section.
+3. `python manage.py syncdb --settings=manolo.settings.local`
+4. `python manage.py runserver --settings=manolo.settings.local`.
+
+Note: This project uses python 3.4
 
 Troubleshooting
 ===============

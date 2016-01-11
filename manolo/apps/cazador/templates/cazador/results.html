@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <div class="container">
+
+    {% include "cazador/forms/search-form.html" %}
+
+    {% if results|length > 1 %}
+        <div class="row results-notice">
+            Manolo Cazador ha encontrado <strong>{{ results|length }}</strong> resultados.
+        </div>
+
+        <div class="row">
+            <div class="table-responsive">
+                <table class="table">
+                    <thead>
+                    <tr>
+                        <th>Source</th>
+                        <th>Raw Data</th>
+                    </tr>
+                    </thead>
+
+                    <tbody>
+                    {% for result in results %}
+                    <tr>
+                        <td>{{ result.1 }}</td>
+                        <td>{{ result.3 }}</td>
+                    </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    {% else %}
+        <div class="row results-notice">
+            <strong>No se encontraron resultados. Intenta con otra palabra clave.</strong>
+        </div>
+    {% endif %}
+    </div>
+{% endblock %}
