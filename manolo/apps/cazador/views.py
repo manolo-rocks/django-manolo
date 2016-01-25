@@ -1,13 +1,19 @@
-from django.shortcuts import render_to_response, redirect
+from django.shortcuts import render_to_response
 
-from .utils import search
+from cazador.forms import CazadorForm
+from django.views.decorators.csrf import csrf_exempt
 
 
+@csrf_exempt
 def index(request):
-    if 'q' in request.GET:
-        name = request.GET['q'].strip()
-        results = search(name)
+    form = CazadorForm(request.GET)
+    query = request.GET['q']
 
-        return render_to_response('cazador/results.html', {'results': results})
+    all_items = form.search()
+    all_items = [i.object for i in all_items]
 
-    return render_to_response('cazador/index.html')
+    return render_to_response("cazador/results.html",
+                  {
+                      "results": all_items,
+                  }
+                  )
