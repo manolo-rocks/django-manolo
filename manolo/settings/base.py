@@ -135,6 +135,13 @@ HAYSTACK_CONNECTIONS = {
         'ENGINE': 'haystack.backends.elasticsearch_backend.ElasticsearchSearchEngine',
         'URL': 'http://127.0.0.1:9200/',
         'INDEX_NAME': 'haystack',
+        'EXCLUDED_INDEXES': ['cazador.search_indexes.CazadorIndex'],
+    },
+    'cazador': {
+        'ENGINE': 'haystack.backends.elasticsearch_backend.ElasticsearchSearchEngine',
+        'URL': 'http://127.0.0.1:9200/',
+        'INDEX_NAME': 'cazador',
+        'EXCLUDED_INDEXES': ['visitors.search_indexes.VisitorIndex'],
     }
 }
 HAYSTACK_DEFAULT_OPERATOR = 'AND'
