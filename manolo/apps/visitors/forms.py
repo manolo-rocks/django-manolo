@@ -11,7 +11,7 @@ class ManoloForm(HighlightedSearchForm):
         if not self.cleaned_data.get('q'):
             return self.no_query_found()
 
-        sqs = self.searchqueryset.auto_query(self.cleaned_data['q']).order_by('-date')
+        sqs = self.searchqueryset.using('default').auto_query(self.cleaned_data['q']).order_by('-date')
 
         if self.load_all:
             sqs = sqs.load_all()

@@ -14,6 +14,12 @@ TEST_INDEX = {
         'URL': 'http://127.0.0.1:9200/',
         'INDEX_NAME': 'test_haystack',
         'INCLUDE_SPELLING': True,
+    },
+    'cazador': {
+        'ENGINE': 'haystack.backends.elasticsearch_backend.ElasticsearchSearchEngine',
+        'URL': 'http://127.0.0.1:9200/',
+        'INDEX_NAME': 'test_cazador',
+        'INCLUDE_SPELLING': True,
     }
 }
 

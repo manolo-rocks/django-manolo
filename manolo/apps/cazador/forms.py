@@ -11,7 +11,7 @@ class CazadorForm(HighlightedSearchForm):
         if not self.cleaned_data.get('q'):
             return self.no_query_found()
 
-        sqs = self.searchqueryset.auto_query(self.cleaned_data['q'])
+        sqs = self.searchqueryset.using('cazador').auto_query(self.cleaned_data['q'])
 
         if self.load_all:
             sqs = sqs.load_all()
