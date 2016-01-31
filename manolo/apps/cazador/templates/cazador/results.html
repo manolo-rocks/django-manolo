@@ -10,7 +10,7 @@
 
     {% include "cazador/forms/search-form.html" %}
 
-    {% if results|length > 1 %}
+    {% if results|length > 0 %}
         <div class="row results-notice">
             Manolo Cazador ha encontrado <strong>{{ results|length }}</strong> resultados.
         </div>
