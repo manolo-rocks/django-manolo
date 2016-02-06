@@ -4,6 +4,8 @@ from tqdm import tqdm
 from django.core.management.base import BaseCommand, CommandError
 
 from cazador.models import Cazador
+from manolo.apps.cazador.utils import shrink_url_in_string
+
 
 
 DBS = ['deudores', 'candidato_2014', 'narcoindultos', 'redam']
@@ -44,14 +46,10 @@ class Command(BaseCommand):
             line = raw_line.strip()
             fields = line.split("\t")
             if database == 'candidato_2014':
+                raw_data = " ".join([fields[2], fields[3], fields[4], fields[1], fields[7]])
                 c = Cazador(
-                        raw_data=" ".join([
-                            fields[2],
-                            fields[3],
-                            fields[4],
-                            fields[1],
-                            fields[7],
-                        ]),
+                        raw_data=raw_data,
+                        raw_data_with_short_links=shrink_url_in_string(raw_data),
                         source=database,
                 )
             elif database == 'redam':
@@ -65,8 +63,10 @@ class Command(BaseCommand):
                         source=database,
                 )
             else:
+                raw_data = " ".join([fields[2], fields[10], fields[1]])
                 c = Cazador(
-                        raw_data=" ".join([fields[2], fields[10], fields[1]]),
+                        raw_data=raw_data,
+                        raw_data_with_short_links=shrink_url_in_string(raw_data),
                         source=database,
                 )
             entries.append(c)
