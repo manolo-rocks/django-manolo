@@ -18,5 +18,6 @@ def index(request):
     return render_to_response("cazador/results.html",
                   {
                       "results": all_items,
+                      "query": query,
                   }
                   )
