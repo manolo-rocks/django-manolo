@@ -33,7 +33,7 @@
                     <tr>
                         <td>{{ i.object.source }}</td>
                         <td>{{ query }}</td>
-                        <td>{{ i.object.raw_data|safe }}</td>
+                        <td>{{ i.object.raw_data_with_short_links|safe }}</td>
                     </tr>
                     {% endfor %}
                     </tbody>
