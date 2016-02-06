@@ -31,7 +31,7 @@
                     <tr>
                         <td>{{ result.source }}</td>
                         <td>{{ query }}</td>
-                        <td>{{ result.raw_data }}</td>
+                        <td>{{ result.raw_data|safe }}</td>
                     </tr>
                     {% endfor %}
                     </tbody>
