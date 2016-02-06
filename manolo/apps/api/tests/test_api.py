@@ -1,8 +1,9 @@
+import datetime
+
 from django.test import TestCase
 from django.test.client import Client
 from django.test.utils import override_settings
 from django.core.management import call_command
-
 import haystack
 
 from visitors.models import Visitor
@@ -25,7 +26,7 @@ class TestAPI(TestCase):
 
         data = []
         for i in range(500):
-            m = Visitor(full_name='Romulo', id=i)
+            m = Visitor(full_name='Romulo', id=i, date=datetime.date.today())
             data.append(m)
         Visitor.objects.bulk_create(data)
 
