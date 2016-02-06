@@ -21,7 +21,8 @@
                     <thead>
                     <tr>
                         <th>Source</th>
-                        <th>Raw Data</th>
+                        <th>Query</th>
+                        <th>Match (raw data)</th>
                     </tr>
                     </thead>
 
@@ -29,6 +30,7 @@
                     {% for result in results %}
                     <tr>
                         <td>{{ result.source }}</td>
+                        <td>{{ query }}</td>
                         <td>{{ result.raw_data }}</td>
                     </tr>
                     {% endfor %}
