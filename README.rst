@@ -1,7 +1,7 @@
 Django-manolo
 =============
 
-|Pypi index| |Build Status| |Dependencies status| |Cover alls| |Download numbers|
+|Pypi index| |Build Status| |Dependencies status| |Cover alls|
 
 Manolo, buscador de lobistas
 ============================
@@ -111,6 +111,3 @@ files:
    :target: https://coveralls.io/github/manolo-rocks/django-manolo?branch=master
 .. |Dependencies status| image:: https://gemnasium.com/carlosp420/django-manolo.svg
    :target: https://gemnasium.com/carlosp420/django-manolo
-.. |Download numbers| image:: https://pypip.in/download/django-manolo/badge.svg
-   :target: https://crate.io/packages/django-manolo
-   :alt: Downloads
