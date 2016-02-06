@@ -109,8 +109,8 @@ files:
    :target: https://travis-ci.org/manolo-rocks/django-manolo
 .. |Cover alls| image:: https://coveralls.io/repos/manolo-rocks/django-manolo/badge.svg?branch=master&service=github
    :target: https://coveralls.io/github/manolo-rocks/django-manolo?branch=master
-.. |Dependencies status| image:: https://gemnasium.com/manolo-rocks/django-manolo.svg
-   :target: https://gemnasium.com/manolo-rocks/django-manolo
+.. |Dependencies status| image:: https://gemnasium.com/carlosp420/django-manolo.svg
+   :target: https://gemnasium.com/carlosp420/django-manolo
 .. |Download numbers| image:: https://pypip.in/download/django-manolo/badge.svg
    :target: https://crate.io/packages/django-manolo
    :alt: Downloads
