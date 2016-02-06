@@ -5,7 +5,7 @@
                 <textarea name="q" class="form-control" autofocus
                           placeholder="Copia/Pega lista de nombres de candidatos..."
                           form="cazador-form"
-                          style="width: 450px;"></textarea>
+                          style="width: 450px;">{% if original_query %}{{ original_query }}{% endif %}</textarea>
                 <span class="input-group-btn">
                     <button class="btn btn-info" type="submit"><i class="fa fa-search"></i> Cazar!</button>
                 </span>

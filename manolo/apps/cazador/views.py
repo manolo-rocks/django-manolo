@@ -29,6 +29,8 @@ def index(request):
                   {
                       "paginator": paginator,
                       "page": page,
+                      "query": "; ".join(query_list),
+                      "original_query": original_query,
                       "encoded_query": urllib.parse.quote_plus(original_query.strip()),
                   }
                   )
