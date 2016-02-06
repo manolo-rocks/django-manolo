@@ -36,7 +36,7 @@ test:
 	rm -rf htmlcov
 	python manage.py makemigrations --settings=manolo.settings.testing
 	python manage.py migrate --settings=manolo.settings.testing
-	coverage run --source manolo manage.py test -v 2 api visitors  --settings=manolo.settings.testing
+	coverage run --source manolo manage.py test -v 2 api visitors cazador --settings=manolo.settings.testing
 
 test-all:
 	tox
