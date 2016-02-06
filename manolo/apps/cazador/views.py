@@ -1,29 +1,33 @@
 from django.shortcuts import render_to_response
 from django.views.decorators.csrf import csrf_exempt
 
-from cazador.forms import CazadorForm
-from .utils import shrink_url_in_string
+from manolo.apps.cazador.forms import CazadorForm
+from manolo.apps.visitors.views import do_pagination
 
 
 @csrf_exempt
 def index(request):
-    form = CazadorForm(request.GET)
     try:
         query = request.GET['q']
     except:
         return render_to_response("cazador/index.html")
 
-    all_items = form.search()
+    all_items = []
+    query_list = query.splitlines()
+    for query in query_list:
+        request_query = {'q': query}
+        form = CazadorForm(request_query)
+        query_results = form.search()
+        all_items += query_results
 
-    django_items = []
-    for i in all_items:
-        raw_data = i.object.raw_data
-        i.object.raw_data = shrink_url_in_string(raw_data)
-        django_items.append(i.object)
+    search_queryset = list(set(all_items))
+    paginator, page = do_pagination(request, search_queryset)
 
     return render_to_response("cazador/results.html",
                   {
-                      "results": django_items,
+                      "paginator": paginator,
+                      "page": page,
+                      "results": search_queryset,
                       "query": query,
                   }
                   )

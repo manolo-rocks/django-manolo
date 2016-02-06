@@ -1,4 +1,5 @@
 {% extends "base.html" %}
+{% load humanize %}
 
 {% block title %}
 <title>Manolo-cazador | Base de datos para encontrar candidatos pendex</title>
@@ -10,9 +11,9 @@
 
     {% include "cazador/forms/search-form.html" %}
 
-    {% if results|length > 0 %}
+    {% if paginator.object_list|length > 0 %}
         <div class="row results-notice">
-            Manolo Cazador ha encontrado <strong>{{ results|length }}</strong> resultados.
+            Manolo Cazador ha encontrado <strong>{{ paginator.object_list|length|intcomma }}</strong> resultados.
         </div>
 
         <div class="row">
@@ -27,15 +28,51 @@
                     </thead>
 
                     <tbody>
-                    {% for result in results %}
+                    {% for i in page.object_list %}
                     <tr>
-                        <td>{{ result.source }}</td>
+                        <td>{{ i.object.source }}</td>
                         <td>{{ query }}</td>
-                        <td>{{ result.raw_data|safe }}</td>
+                        <td>{{ i.object.raw_data|safe }}</td>
                     </tr>
                     {% endfor %}
                     </tbody>
                 </table>
+
+                 {% if page.has_previous or page.has_next %}
+                 <div class="text-center">
+                   <nav>
+                     <ul class="pagination">
+                       {% if page.has_previous %}
+                       <li>
+                         <a aria-label="Previous" href="?q={{ query }}&amp;page={{ page.previous_page_number }}">
+                           <span aria-hidden="true">&laquo;</span>
+                         </a>
+                       </li>
+                       {% endif %}
+
+                       {% for i in page.paginator.paginate_sections %}
+                         {% if page.number == i %}
+                           <li class="active"><a href="?q={{ query }}&amp;page={{ i }}">{{ i }}</a></li>
+                         {% elif i == None %}
+                           <li class="disabled"><a href="#">…</a></li>
+                         {% else %}
+                           <li><a href="?q={{ query }}&amp;page={{ i }}">{{ i }}</a></li>
+                         {% endif %}
+                       {% endfor %}
+
+                       {% if page.has_next %}
+                       <li>
+                         <a aria-label="Next" href="?q={{ query }}&amp;page={{ page.next_page_number }}">
+                           <span aria-hidden="true">&raquo;</span>
+                         </a>
+                       </li>
+                       {% endif %}
+
+                     </ul>
+                   </nav>
+                 </div>
+                 {% endif %}
+
             </div>
         </div>
     {% else %}
