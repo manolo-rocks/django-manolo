@@ -28,18 +28,6 @@ TEST_INDEX = {
 @override_settings(HAYSTACK_CONNECTIONS=TEST_INDEX)
 class TestViews(TestCase):
     def setUp(self):
-        data = []
-        for i in range(500):
-            m = Visitor(full_name='Romulo', id=i, date=datetime.date.today())
-            data.append(m)
-        Visitor.objects.bulk_create(data)
-
-        # build index with our test data
-        haystack.connections.reload('default')
-        haystack.connections.reload('cazador')
-        call_command('rebuild_index', interactive=False, verbosity=0)
-        super(TestViews, self).setUp()
-
         self.client = Client()
         # self.user = User.objects.get(username='admin')
         # self.user.set_password('pass')
@@ -60,6 +48,18 @@ class TestViews(TestCase):
         self.assertEqual(200, c.status_code)
 
     def test_pagination(self):
+        data = []
+        for i in range(500):
+            m = Visitor(full_name='Romulo', id=i, date=datetime.date.today())
+            data.append(m)
+        Visitor.objects.bulk_create(data)
+
+        # build index with our test data
+        haystack.connections.reload('default')
+        haystack.connections.reload('cazador')
+        call_command('rebuild_index', interactive=False, verbosity=0)
+        super(TestViews, self).setUp()
+
         c = self.client.get('/search/?q=romulo')
         expected = 'q=romulo&amp;page=25'
         self.assertTrue(expected in str(c.content))
