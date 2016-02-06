@@ -1,14 +1,15 @@
 <div class="row search-form">
-    <form method="get" class="form-horizontal" role="search" action="/cazador">
+    <form method="get" class="form-horizontal" role="search" action="/cazador" id="cazador-form">
         <div class="col-lg-offset-3 col-lg-6">
             <div class="input-group">
-                <input type="text" class="form-control" value="{{ query }}"
-                       placeholder="Tipea Persona. Ejemplo: Raffo" name="q" autofocus />
-            <span class="input-group-btn">
-                <button class="btn btn-info" type="submit"><i class="fa fa-search"></i> Cazar!</button>
-            </span>
-            </div><!-- /input-group -->
-
+                <textarea name="q" class="form-control" autofocus
+                          placeholder="Copia/Pega lista de nombres de candidatos..."
+                          form="cazador-form"
+                          style="width: 450px;"></textarea>
+                <span class="input-group-btn">
+                    <button class="btn btn-info" type="submit"><i class="fa fa-search"></i> Cazar!</button>
+                </span>
+            </div><!-- /form-group -->
         </div>
     </form>
 </div>
