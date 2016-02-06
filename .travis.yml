@@ -14,7 +14,7 @@ services:
 install: pip install -r requirements/testing.txt
 
 # command to run tests using coverage, e.g. python setup.py test
-script: coverage run --source manolo manage.py test -v 2 visitors --settings=manolo.settings.testing
+script: coverage run --source manolo manage.py test -v 2 visitors api cazador --settings=manolo.settings.testing
 
 # report coverage to coveralls.io
 after_success: coveralls

@@ -1,8 +1,9 @@
+import datetime
+
 from django.test import TestCase
 from django.test.client import Client
 from django.core.management import call_command
 from django.test.utils import override_settings
-
 import haystack
 
 from visitors.models import Visitor
@@ -13,13 +14,13 @@ TEST_INDEX = {
         'ENGINE': 'haystack.backends.elasticsearch_backend.ElasticsearchSearchEngine',
         'URL': 'http://127.0.0.1:9200/',
         'INDEX_NAME': 'test_haystack',
-        'INCLUDE_SPELLING': True,
+        'EXCLUDED_INDEXES': ['cazador.search_indexes.CazadorIndex'],
     },
     'cazador': {
         'ENGINE': 'haystack.backends.elasticsearch_backend.ElasticsearchSearchEngine',
         'URL': 'http://127.0.0.1:9200/',
         'INDEX_NAME': 'test_cazador',
-        'INCLUDE_SPELLING': True,
+        'EXCLUDED_INDEXES': ['visitors.search_indexes.VisitorIndex'],
     }
 }
 
@@ -49,12 +50,13 @@ class TestViews(TestCase):
     def test_pagination(self):
         data = []
         for i in range(500):
-            m = Visitor(full_name='Romulo', id=i)
+            m = Visitor(full_name='Romulo', id=i, date=datetime.date.today())
             data.append(m)
         Visitor.objects.bulk_create(data)
 
         # build index with our test data
         haystack.connections.reload('default')
+        haystack.connections.reload('cazador')
         call_command('rebuild_index', interactive=False, verbosity=0)
         super(TestViews, self).setUp()
 
