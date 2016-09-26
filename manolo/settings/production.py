@@ -6,7 +6,6 @@ from django.core.exceptions import ImproperlyConfigured
 from .base import *
 
 DEBUG = False
-TEMPLATE_DEBUG = DEBUG
 
 ADMINS = (
     ('AniversarioPeru', 'aniversarioperu1@gmail.com'),
