@@ -41,10 +41,10 @@ class Paginator(DjangoPaginator):
 
         if D1 and D2:
             # L…M…R
-            pagination = L + [None] + M + [None] + R
+            pagination = L + [None] + M + [None] + list(R)
         elif not D1 and D2:
             # LM…R
-            pagination = sorted(L_s | M_s) + [None] + R
+            pagination = sorted(L_s | M_s) + [None] + list(R)
         elif D1 and not D2:
             # L…MR
             pagination = L + [None] + sorted(M_s | R_s)

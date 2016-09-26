@@ -11,7 +11,6 @@ sys.path.insert(0, root('apps'))
 
 
 DEBUG = True
-TEMPLATE_DEBUG = DEBUG
 
 ADMINS = ()
 
@@ -78,11 +77,24 @@ STATICFILES_FINDERS = (
 # Make this unique, and don't share it with anybody.
 SECRET_KEY = 'CHANGE THIS!!!'
 
-# List of callables that know how to import templates from various sources.
-TEMPLATE_LOADERS = (
-    'django.template.loaders.filesystem.Loader',
-    'django.template.loaders.app_directories.Loader',
-)
+TEMPLATES = [
+    {
+        'BACKEND': 'django.template.backends.django.DjangoTemplates',
+        'DIRS': ['manolo/templates'],
+        'OPTIONS': {
+            'context_processors': [
+                'django.template.context_processors.request',
+                'django.contrib.auth.context_processors.auth',
+            ],
+            # needed for building sitemaps
+            'loaders': [
+                'django.template.loaders.filesystem.Loader',
+                'django.template.loaders.app_directories.Loader',
+            ],
+            'debug': True,
+        },
+    }
+]
 
 MIDDLEWARE_CLASSES = (
     'django.contrib.sessions.middleware.SessionMiddleware',
@@ -99,10 +111,6 @@ TEST_RUNNER = 'django.test.runner.DiscoverRunner'
 
 # Python dotted path to the WSGI application used by Django's runserver.
 WSGI_APPLICATION = 'manolo.wsgi.application'
-
-TEMPLATE_DIRS = (
-    root('templates'),
-)
 
 DJANGO_APPS = (
     'django.contrib.auth',

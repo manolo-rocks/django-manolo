@@ -1,15 +1,25 @@
 # -*- coding: utf-8 -*-
 from django.http.request import QueryDict
 
-from rest_framework.decorators import api_view
+from rest_framework.decorators import api_view, renderer_classes
 from rest_framework.decorators import permission_classes
 from rest_framework.permissions import AllowAny
 from rest_framework.pagination import PageNumberPagination
+from rest_framework_swagger.renderers import OpenAPIRenderer, SwaggerUIRenderer
+from rest_framework import response, schemas
 
 from .forms import ApiForm
 from .serializers import ManoloSerializer
 from .api_responses import JSONResponse
 from visitors.views import do_pagination, data_as_csv
+
+
+@api_view()
+@permission_classes((AllowAny, ))
+@renderer_classes([OpenAPIRenderer, SwaggerUIRenderer])
+def schema_view(request):
+    generator = schemas.SchemaGenerator(title='Documentación del API de Manolo.')
+    return response.Response(generator.get_schema(request=request))
 
 
 @api_view(['GET'])
@@ -59,6 +69,7 @@ def search(request, query):
     return JSONResponse(data)
 
 
+@api_view(['GET'])
 @permission_classes((AllowAny, ))
 def search_tsv(request, query):
     query_request = QueryDict('q={}'.format(query))
