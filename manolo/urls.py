@@ -15,7 +15,8 @@ from api.views import schema_view
 
 urlpatterns = [
     # Uncomment the next line to enable the admin:
-    # url(r'^admin/', include(admin.site.urls)),
+    url(r'^administramelo/', include(admin.site.urls)),
+    url(r'^accounts/', include('registration.backends.default.urls')),
     url(r'^search_date/$', views.search_date),
     url(r'^search/', views.search, name='search_view'),
     url(r'^api/', include('api.urls')),

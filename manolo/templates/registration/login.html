@@ -1,0 +1,54 @@
+{% extends 'base.html' %}
+{% load i18n %}
+{% load crispy_forms_tags %}
+
+{% block content %}
+<div class="container-fluid">
+
+  <div class='row'>
+    <div class='col-xs-12 col-sm-6 col-sm-offset-3'>
+      <h1>Manolo - Premium</h1>
+      <p>
+        Subscríbete a Manolo Premium para acceder a registros actualizados.
+      </p>
+      <p>
+        Escribe un email a
+        <a href="mailto:aniversarioperu1@gmail.com?Subject=Subscripción a Manolo Premium">
+          aniversarioperu1@gmail.com
+        </a>
+        o
+        <a href="mailto:mycalesis@gmail.com?Subject=Subscripción a Manolo Premium">
+          mycalesis@gmail.com
+        </a>
+        para coordinar tu subscripción mensual y clave de acceso.
+      </p>
+      <p>
+        Puedes acceder a <a href="/">Manolo (versión gratuita)</a> pero los datos no son
+        actualizados tan frecuentemente (6 meses en el pasado).
+
+      </p>
+    </div>
+  </div>
+
+
+  <div class='row'>
+    <div class='col-xs-8 col-sm-4 col-lg-4 col-sm-offset-3'>
+      <h1>Login</h1>
+
+      <form method="post" action=".">
+        {% csrf_token %}
+        {{ form|crispy }}
+
+        <br />
+        <input class='btn btn-block btn-primary' type="submit" value="{% trans 'Submit' %}" />
+        <input type="hidden" name="next" value="{{ next }}" />
+      </form>
+    </div>
+
+  </div><!-- row -->
+  <hr/>
+
+
+
+</div><!-- container -->
+{% endblock content %}
