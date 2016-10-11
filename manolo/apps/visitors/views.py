@@ -40,18 +40,23 @@ def search(request):
     form = ManoloForm(request.GET)
     query = request.GET['q']
 
-    if request.user.is_authenticated():
-        premium = True
-    else:
-        premium = False
+    all_items_premium = form.search(premium=True)
+    all_items_standard = form.search(premium=False)
 
-    all_items = form.search(premium)
+    if request.user.is_authenticated():
+        all_items = all_items_premium
+        extra_premium_results = 0
+    else:
+        all_items = all_items_standard
+        extra_premium_results = len(all_items_premium) - len(all_items_standard)
+
     paginator, page = do_pagination(request, all_items)
 
     json_path = request.get_full_path() + '&json'
     tsv_path = request.get_full_path() + '&tsv'
     return render(request, "search/search.html",
                   {
+                      "extra_premium_results": extra_premium_results,
                       "paginator": paginator,
                       "page": page,
                       "query": query,
