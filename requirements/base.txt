@@ -4,7 +4,7 @@
 
 pyprind==2.9.1
 psycopg2==2.6
-Django==1.10.1
+Django==1.10.2
 Jinja2==2.7.3
 MarkupSafe==0.23
 Markdown==2.6.2
@@ -19,6 +19,8 @@ django-bootstrap3==7.1.0
 django-haystack==2.5.0
 django-model-utils==2.2
 djangorestframework==3.4.7
+django-registration-redux==1.4
+django-crispy-forms==1.6.0
 django-rest-swagger==2.0.5
 docutils==0.12
 python-slugify==0.1.0

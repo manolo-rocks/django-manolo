@@ -124,7 +124,9 @@ DJANGO_APPS = (
     'django.contrib.humanize',
     'bootstrap3',
     'bootstrap_themes',
+    'crispy_forms',
 
+    'registration',
     'rest_framework',
     'haystack',
     'rest_framework_swagger',
@@ -208,3 +210,9 @@ REST_FRAMEWORK = {
 SWAGGER_SETTINGS = {
     'doc_expansion': 'list',
 }
+CRISPY_TEMPLATE_PACK = 'bootstrap3'
+
+# Django registration redux
+ACCOUNT_ACTIVATION_DAYS = 7  # One-week activation window; you may, of course, use a different value.
+REGISTRATION_AUTO_LOGIN = True  # Automatically log the user in.
+LOGIN_REDIRECT_URL = '/'

@@ -20,6 +20,18 @@
      <br />
 
      <div id="contenido" class="container" style="max-width:1200px;">
+
+     {% if extra_premium_results > 0 %}
+       <div class="alert alert-info">
+         <h3>
+        Se encontraron <a href="/accounts/login/">{{ extra_premium_results }}</a> registros
+         adicionales (recientes) los cuales están disponibles para
+        subscriptores del servicio <a href="/accounts/login/">Manolo - Premium</a>
+         </h3>
+       </div>
+     {% endif %}
+
+
      {% if paginator.object_list|length > 0 %}
 
        También puedes hacer búsquedas haciendo click sobre cada uno de los
