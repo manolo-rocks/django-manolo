@@ -1,7 +1,13 @@
 # -*- coding: utf-8 -*-
-# This piece of code has lines from the repository "Amy".
+# The Paginator class has lines from the repository "Amy".
 # Copyright (c) 2014-2015 Software Carpentry and contributors
+import base64
+import hashlib
+
 from django.core.paginator import Paginator as DjangoPaginator
+import requests
+
+from visitors.models import Subscriber
 
 
 class Paginator(DjangoPaginator):
@@ -53,3 +59,20 @@ class Paginator(DjangoPaginator):
             pagination = sorted(L_s | M_s | R_s)
 
         return pagination
+
+
+def fetch_and_save_avatar(user):
+    email = user.email.encode("utf-8")
+    email_hash = hashlib.md5()
+    email_hash.update(email)
+    url = "https://www.gravatar.com/{}.json".format(email_hash.hexdigest())
+    r = requests.get(url)
+    thumbnail_url = [
+        i['thumbnailUrl']
+        for i in r.json()['entry']
+    ][0]
+    r = requests.get(thumbnail_url)
+    img = base64.b64encode(r.content)
+    s = Subscriber.objects.get(user=user)
+    s.avatar = img
+    s.save()

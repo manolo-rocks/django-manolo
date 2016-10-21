@@ -13,7 +13,7 @@ from django.views.decorators.csrf import csrf_exempt
 
 from visitors.models import Visitor
 from visitors.forms import ManoloForm
-from visitors.utils import Paginator
+from visitors.utils import Paginator, fetch_and_save_avatar
 
 
 class JSONResponse(HttpResponse):
@@ -27,8 +27,23 @@ class JSONResponse(HttpResponse):
 
 
 def index(request):
+    avatar = False
+    first_name = False
+    if request.user.is_authenticated():
+        user = request.user
+        if not user.subscriber.avatar:
+            fetch_and_save_avatar(user)
+        first_name = user.first_name
+        avatar = user.subscriber.avatar
     count = Visitor.objects.count()
-    return render(request, "index.html", {'count': count})
+    return render(
+        request,
+        "index.html",
+        {
+            'count': count,
+            'avatar': avatar,
+            'first_name': first_name,
+        })
 
 
 def about(request):
