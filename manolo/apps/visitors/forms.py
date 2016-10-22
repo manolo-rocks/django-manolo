@@ -2,6 +2,8 @@ import datetime
 
 from haystack.forms import HighlightedSearchForm
 
+from manolo.settings.production import PREMIUM_INSTITUTIONS
+
 
 class ManoloForm(HighlightedSearchForm):
     def search(self, premium):
@@ -18,6 +20,8 @@ class ManoloForm(HighlightedSearchForm):
             today = datetime.datetime.today()
             six_months_ago = today - datetime.timedelta(days=180)
             sqs = sqs.filter(date__lte=six_months_ago)
+            for institution in PREMIUM_INSTITUTIONS:
+                sqs = sqs.exclude(institution=institution)
 
         if self.load_all:
             sqs = sqs.load_all()
