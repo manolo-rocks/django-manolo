@@ -33,6 +33,7 @@ def get_secret(setting, secrets=secrets):
         raise ImproperlyConfigured(error_msg)
 
 SECRET_KEY = get_secret('SECRET_KEY')
+PREMIUM_INSTITUTIONS = get_secret('premium_institutions')
 
 DATABASES = {
     'default': {
@@ -42,5 +43,5 @@ DATABASES = {
         'PASSWORD': get_secret('DB_PASS'),
         'HOST': get_secret('DB_HOST'),
         'PORT': get_secret('DB_PORT'),
-        }
+    }
 }

@@ -101,6 +101,9 @@ files:
         "DB_NAME": "manolo",
         "DB_PORT": "5432",
         "DB_HOST": "localhost"
+        "premium_institutions": [
+            "minjus"
+        ]
     }
 
 .. |Pypi index| image:: https://badge.fury.io/py/django-manolo.svg
