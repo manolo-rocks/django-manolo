@@ -32,7 +32,7 @@ class TestAPI(TestCase):
 
         data = []
         for i in range(500):
-            m = Visitor(full_name='Romulo', id=i, date=datetime.date.today())
+            m = Visitor(full_name='Romulo', id=i, date=datetime.date(2015, 1, 1))
             data.append(m)
         Visitor.objects.bulk_create(data)
 
