@@ -61,6 +61,21 @@ class Paginator(DjangoPaginator):
         return pagination
 
 
+def get_user_profile(request):
+    avatar = False
+    first_name = False
+    if request.user.is_authenticated():
+        user = request.user
+        if not user.subscriber.avatar:
+            fetch_and_save_avatar(user)
+        first_name = user.first_name
+        avatar = user.subscriber.avatar
+    return {
+        'avatar': avatar,
+        'first_name': first_name,
+    }
+
+
 def fetch_and_save_avatar(user):
     email = user.email.encode("utf-8")
     email_hash = hashlib.md5()

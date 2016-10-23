@@ -1,3 +1,4 @@
+from collections import namedtuple
 import datetime
 import csv
 
@@ -27,23 +28,17 @@ class JSONResponse(HttpResponse):
 
 
 def index(request):
-    avatar = False
-    first_name = False
-    if request.user.is_authenticated():
-        user = request.user
-        if not user.subscriber.avatar:
-            fetch_and_save_avatar(user)
-        first_name = user.first_name
-        avatar = user.subscriber.avatar
+    user_profile = get_user_profile(request)
     count = Visitor.objects.count()
     return render(
         request,
         "index.html",
         {
             'count': count,
-            'avatar': avatar,
-            'first_name': first_name,
-        })
+            'user_profile': user_profile,
+        },
+    )
+
 
 
 def about(request):

@@ -58,11 +58,11 @@
               <form action="#" class="navbar-form form-inline">
                 <div class="form-group">
                   {% if request.user.is_authenticated %}
-                    {% if avatar %}
-                       <img src="data:image/png;base64, {{ avatar }}"
+                    {% if user_profile.avatar %}
+                       <img src="data:image/png;base64, {{ user_profile.avatar }}"
                             class="img-circle"
                             alt="Avatar" width="40px" />&nbsp;
-                       <b>{{ first_name }}</b>&nbsp;
+                       <b>{{ user_profile.first_name }}</b>&nbsp;
                     {% endif %}
                     <a class="btn btn-danger" href="{% url 'auth_logout' %}">Logout</a>
                   {% else %}

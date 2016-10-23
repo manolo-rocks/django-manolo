@@ -97,7 +97,7 @@ class Visitor(models.Model):
 
 class Subscriber(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
-    last_monthly_payment = models.DateField(blank=False)
+    expiration = models.DateField(blank=False)
     avatar = models.TextField(
         blank=True,
     )
