@@ -19,7 +19,9 @@ from visitors.views import do_pagination, data_as_csv
 @renderer_classes([OpenAPIRenderer, SwaggerUIRenderer])
 def schema_view(request):
     generator = schemas.SchemaGenerator(title='Documentación del API de Manolo.')
-    return response.Response(generator.get_schema(request=request))
+    return response.Response(
+        generator.get_schema(request=request),
+    )
 
 
 @api_view(['GET'])
