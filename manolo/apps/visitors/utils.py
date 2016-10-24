@@ -2,9 +2,10 @@
 # The Paginator class has lines from the repository "Amy".
 # Copyright (c) 2014-2015 Software Carpentry and contributors
 import base64
-from datetime import datetime, date
+from datetime import date
 import hashlib
 
+from django.shortcuts import redirect
 from django.core.paginator import Paginator as DjangoPaginator
 import requests
 
@@ -80,12 +81,15 @@ def get_user_profile(request):
         days_before_expiration = delta.days
         if days_before_expiration < 8:
             about_to_expire = True
+        if days_before_expiration < 0:
+            expired = True
 
     return {
         'avatar': avatar,
         'first_name': first_name,
         'about_to_expire': about_to_expire,
         'days_before_expiration': days_before_expiration,
+        'expired': expired,
     }
 
 

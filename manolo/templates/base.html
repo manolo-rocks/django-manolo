@@ -81,7 +81,25 @@
     </nav>
 
 
-  {% if user_profile.about_to_expire %}
+  {% if user_profile.expired %}
+  <div class="row">
+    <div class="col-xs-10 col-xs-offset-1">
+      <p class="alert alert-danger text-center" role="alert">
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+          <i class="fa fa-times" aria-hidden="true"></i>
+        </button>
+        <b>Esta cuenta ha expirado.</b>
+        <br />
+        <b>Contacte a <a href="mailto:aniversarioperu1@gmail.com?Subject=Suscripción a Manolo Premium"
+                         class="alert-link">
+          aniversarioperu1@gmail.com</a> para extender su suscripción</b>
+      </p>
+    </div>
+  </div>
+  {% endif %}
+
+
+  {% if user_profile.about_to_expire and not user_profile.expired %}
     <div class="row">
       <div class="col-xs-10 col-xs-offset-1">
         <p class="alert alert-warning text-center" role="alert">

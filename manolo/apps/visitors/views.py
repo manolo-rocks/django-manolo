@@ -51,13 +51,14 @@ def about(request):
 
 @csrf_exempt
 def search(request):
+    user_profile = get_user_profile(request)
     form = ManoloForm(request.GET)
     query = request.GET['q']
 
     all_items_premium = form.search(premium=True)
     all_items_standard = form.search(premium=False)
 
-    if request.user.is_authenticated():
+    if request.user.is_authenticated() and user_profile['expired'] is False:
         all_items = all_items_premium
         extra_premium_results = 0
     else:
@@ -68,7 +69,6 @@ def search(request):
 
     json_path = request.get_full_path() + '&json'
     tsv_path = request.get_full_path() + '&tsv'
-    user_profile = get_user_profile(request)
     return render(
         request,
         "search/search.html",
