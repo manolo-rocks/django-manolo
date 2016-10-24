@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 from django.db import models
+from django.contrib.auth.models import User
 
 
 class Visitor(models.Model):
@@ -92,3 +93,11 @@ class Visitor(models.Model):
 
     created = models.DateTimeField(auto_now_add=True)
     modified = models.DateTimeField(auto_now=True)
+
+
+class Subscriber(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    expiration = models.DateField(blank=False)
+    avatar = models.TextField(
+        blank=True,
+    )

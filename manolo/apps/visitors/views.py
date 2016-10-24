@@ -13,7 +13,7 @@ from django.views.decorators.csrf import csrf_exempt
 
 from visitors.models import Visitor
 from visitors.forms import ManoloForm
-from visitors.utils import Paginator
+from visitors.utils import Paginator, get_user_profile
 
 
 class JSONResponse(HttpResponse):
@@ -27,23 +27,38 @@ class JSONResponse(HttpResponse):
 
 
 def index(request):
+    user_profile = get_user_profile(request)
     count = Visitor.objects.count()
-    return render(request, "index.html", {'count': count})
+    return render(
+        request,
+        "index.html",
+        {
+            'count': count,
+            'user_profile': user_profile,
+        },
+    )
+
 
 
 def about(request):
-    return render(request, "about.html")
+    user_profile = get_user_profile(request)
+    return render(
+        request,
+        "about.html",
+        {'user_profile': user_profile},
+    )
 
 
 @csrf_exempt
 def search(request):
+    user_profile = get_user_profile(request)
     form = ManoloForm(request.GET)
     query = request.GET['q']
 
     all_items_premium = form.search(premium=True)
     all_items_standard = form.search(premium=False)
 
-    if request.user.is_authenticated():
+    if request.user.is_authenticated() and user_profile['expired'] is False:
         all_items = all_items_premium
         extra_premium_results = 0
     else:
@@ -54,19 +69,23 @@ def search(request):
 
     json_path = request.get_full_path() + '&json'
     tsv_path = request.get_full_path() + '&tsv'
-    return render(request, "search/search.html",
-                  {
-                      "extra_premium_results": extra_premium_results,
-                      "paginator": paginator,
-                      "page": page,
-                      "query": query,
-                      "json_path": json_path,
-                      "tsv_path": tsv_path,
-                  }
-                  )
+    return render(
+        request,
+        "search/search.html",
+        {
+            "extra_premium_results": extra_premium_results,
+            "paginator": paginator,
+            "page": page,
+            "query": query,
+            "json_path": json_path,
+            "tsv_path": tsv_path,
+            'user_profile': user_profile,
+        },
+    )
 
 
 def search_date(request):
+    user_profile = get_user_profile(request)
     if 'q' in request.GET:
         query = request.GET['q']
         if query.strip() == '':
@@ -79,7 +98,11 @@ def search_date(request):
             return render(
                 request,
                 "search/search.html",
-                {'items': results, 'keyword': query, }
+                {
+                    'items': results,
+                    'keyword': query,
+                    'user_profile': user_profile,
+                },
             )
 
         date_str = datetime.datetime.strftime(date_obj, '%Y-%m-%d')
@@ -88,13 +111,15 @@ def search_date(request):
         all_items = results
         paginator, page = do_pagination(request, all_items)
 
-        return render(request, "search/search.html",
-                      {
-                          "paginator": paginator,
-                          "page": page,
-                          "query": query,
-                      }
-                      )
+        return render(
+            request, "search/search.html",
+            {
+                "paginator": paginator,
+                "page": page,
+                "query": query,
+                'user_profile': user_profile,
+            },
+        )
     else:
         return redirect('/')
 

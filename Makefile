@@ -80,7 +80,7 @@ rebuild_index-production:
 update_index-production:
 	python manage.py update_index --settings=manolo.settings.production
 
-serve: rebuild_index
+serve:
 	python manage.py runserver --settings=manolo.settings.local
 
 serve-production:
