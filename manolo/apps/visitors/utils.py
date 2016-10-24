@@ -2,6 +2,7 @@
 # The Paginator class has lines from the repository "Amy".
 # Copyright (c) 2014-2015 Software Carpentry and contributors
 import base64
+from datetime import datetime, date
 import hashlib
 
 from django.core.paginator import Paginator as DjangoPaginator
@@ -64,15 +65,27 @@ class Paginator(DjangoPaginator):
 def get_user_profile(request):
     avatar = False
     first_name = False
+    about_to_expire = False
+    days_before_expiration = 1000
+    expired = False
+
     if request.user.is_authenticated():
         user = request.user
         if not user.subscriber.avatar:
             fetch_and_save_avatar(user)
         first_name = user.first_name
         avatar = user.subscriber.avatar
+
+        delta = user.subscriber.expiration - date.today()
+        days_before_expiration = delta.days
+        if days_before_expiration < 8:
+            about_to_expire = True
+
     return {
         'avatar': avatar,
         'first_name': first_name,
+        'about_to_expire': about_to_expire,
+        'days_before_expiration': days_before_expiration,
     }
 
 
