@@ -56,6 +56,7 @@ class Visitor(models.Model):
         max_length=250,
         help_text='Institution visited',
         null=True,
+        db_index=True,
     )
 
     location = models.CharField(
@@ -92,7 +93,7 @@ class Visitor(models.Model):
     )
 
     created = models.DateTimeField(auto_now_add=True)
-    modified = models.DateTimeField(auto_now=True)
+    modified = models.DateTimeField(auto_now=True, db_index=True)
 
 
 class Subscriber(models.Model):
