@@ -1,6 +1,23 @@
+html, body {
+    height: 100%;
+}
+
 body {
     font-family: "Raleway", Arial, sans-serif;
 }
+
+#wrap {
+    min-height: 100%;
+    height: auto !important;
+    height: 100%;
+    margin: 0 auto -190px;
+    margin-top: -86px;
+}
+
+#push, #bottom-text-footer {
+    height: 190px;
+}
+
 
 .create_alert {
    cursor: pointer;
