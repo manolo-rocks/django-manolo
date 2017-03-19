@@ -171,6 +171,16 @@ $( document ).ready(function() {
           hideAfter: 5000
         });
       }
+      else if (data.message == "alert exists") {
+        $.toast({
+          heading: 'Oops',
+          text: 'Ya has creado esta alerta antes. Mira todas tus alertas en <a href="/alertas/">este link</a>',
+          showHideTransition: 'slide',
+          icon: 'warning',
+          position: 'mid-center',
+          hideAfter: 5000
+        });
+      }
     });
   });
 });

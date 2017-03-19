@@ -62,6 +62,8 @@ def create_alert(request):
             alert, _ = Alert.objects.get_or_create(full_name=full_name)
             subscriber.alerts.add(alert)
             return JSONResponse({"message": "alert created"})
+        else:
+            return JSONResponse({"message": "alert exists"})
 
 
 @csrf_exempt

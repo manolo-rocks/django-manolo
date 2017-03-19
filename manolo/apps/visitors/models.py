@@ -103,7 +103,7 @@ class Subscriber(models.Model):
     avatar = models.TextField(
         blank=True,
     )
-    alerts = models.ManyToManyField('Alert')
+    alerts = models.ManyToManyField('Alert', blank=True, null=True)
 
 
 class Alert(models.Model):
