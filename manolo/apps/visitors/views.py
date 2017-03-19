@@ -52,18 +52,35 @@ def about(request):
 
 @csrf_exempt
 def create_alert(request):
-    if not request.user.is_authenticated():
-        return JSONResponse({"message": "user not authenticated"})
-    else:
+    user_profile = get_user_profile(request)
+    if request.user.is_authenticated() and user_profile['expired'] is False:
         full_name = bleach.clean(request.POST['full_name'], strip=True).strip()
         subscriber = request.user.subscriber
-        alerts = Alert.objects.filter(subscriber=subscriber).filter(full_name=full_name)
-        if not alerts:
+        user_alerts = Alert.objects.filter(subscriber=subscriber).filter(full_name=full_name)
+        if not user_alerts:
             alert, _ = Alert.objects.get_or_create(full_name=full_name)
             subscriber.alerts.add(alert)
             return JSONResponse({"message": "alert created"})
         else:
             return JSONResponse({"message": "alert exists"})
+    else:
+        return JSONResponse({"message": "user not authenticated"})
+
+
+def alerts(request):
+    user_profile = get_user_profile(request)
+    if request.user.is_authenticated() and user_profile['expired'] is False:
+        user_alerts = request.user.subscriber.alerts.all()
+    else:
+        user_alerts = []
+    return render(
+        request,
+        "alerts.html",
+        {
+            'user_profile': user_profile,
+            'alerts': user_alerts,
+        },
+    )
 
 
 @csrf_exempt

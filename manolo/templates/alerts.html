@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+
+{% block content %}
+
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-sm-10 col-md-7 col-md-offset-1">
+
+      <h1>Tus alertas</h1>
+
+      <p>Recibirás un email cada vez que aparezca un nuevo registro de las
+        siguientes personas:</p>
+
+      <ul>
+        {% for i in alerts %}
+        <li>
+          {{ i.full_name }}
+          <span class="label label-danger">Eliminar alerta</span>
+        </li>
+        {% endfor %}
+      </ul>
+
+    </div>
+  </div><!-- row -->
+
+
+
+
+
+</div><!-- container -->
+
+{% endblock content %}

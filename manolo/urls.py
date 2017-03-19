@@ -18,6 +18,7 @@ urlpatterns = [
     url(r'^administramelo/', include(admin.site.urls)),
     url(r'^accounts/', include('registration.backends.default.urls')),
     url(r'^search_date/$', views.search_date),
+    url(r'^alerts/$', views.alerts),
     url(r'^search/', views.search, name='search_view'),
     url(r'^create_alert/', views.create_alert, name='create_alert'),
     url(r'^api/', include('api.urls')),
