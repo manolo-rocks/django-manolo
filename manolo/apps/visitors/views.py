@@ -67,10 +67,18 @@ def create_alert(request):
         return JSONResponse({"message": "user not authenticated"})
 
 
+@csrf_exempt
+def delete_alert(request):
+    alert_id = request.POST['id']
+    user = request.user
+    user.subscriber.alerts.through.objects.filter(alert__id=alert_id).delete()
+    return JSONResponse({"message": "alert cleared"})
+
+
 def alerts(request):
     user_profile = get_user_profile(request)
     if request.user.is_authenticated() and user_profile['expired'] is False:
-        user_alerts = request.user.subscriber.alerts.all()
+        user_alerts = request.user.subscriber.alerts.all().order_by("full_name")
     else:
         user_alerts = []
     return render(

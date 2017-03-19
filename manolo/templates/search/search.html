@@ -72,9 +72,7 @@
              <a href='/search?q={{ i.object.full_name }}'>
                {{ i.object.full_name|upper }}
              </a>
-             <a class="create_alert">
-               <i title="Crear alerta" class="fa fa-bell pull-right" aria-hidden="true"></i>
-             </a>
+             <i title="Crear alerta" class="create_alert fa fa-bell pull-right" aria-hidden="true"></i>
            </td>
            <td><a href='/search?q={{ i.object.id_number }}'>
              {{ i.object.id_document }}: {{ i.object.id_number }}
@@ -164,7 +162,7 @@ $( document ).ready(function() {
       else if (data.message == "alert created") {
         $.toast({
           heading: 'Éxito',
-          text: 'Alerta creada. Mira todas tus alertas en <a href="/alertas/">este link</a>',
+          text: 'Alerta creada. Mira todas tus alertas en <a href="/alerts/">este link</a>',
           showHideTransition: 'slide',
           icon: 'success',
           position: 'mid-center',

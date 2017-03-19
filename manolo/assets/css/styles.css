@@ -2,6 +2,14 @@ body {
     font-family: "Raleway", Arial, sans-serif;
 }
 
+.create_alert {
+   cursor: pointer;
+}
+
+.clear_alert {
+   cursor: pointer;
+}
+
 #contenido {
     font-family: "Raleway", Arial, sans-serif;
 }

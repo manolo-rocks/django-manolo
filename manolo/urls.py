@@ -21,6 +21,7 @@ urlpatterns = [
     url(r'^alerts/$', views.alerts),
     url(r'^search/', views.search, name='search_view'),
     url(r'^create_alert/', views.create_alert, name='create_alert'),
+    url(r'^delete_alert/', views.delete_alert, name='delete_alert'),
     url(r'^api/', include('api.urls')),
     url(r'^docs/', schema_view),
     url(r'^statistics/$', views.statistics),

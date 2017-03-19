@@ -13,21 +13,32 @@
         siguientes personas:</p>
 
       <ul>
-        {% for i in alerts %}
+        {% for alert in alerts %}
         <li>
-          {{ i.full_name }}
-          <span class="label label-danger">Eliminar alerta</span>
+          {{ alert.full_name }}
+          <span class="label label-danger clear_alert" id="{{ alert.id }}">
+            Eliminar alerta [x]
+          </span>
         </li>
         {% endfor %}
       </ul>
 
     </div>
   </div><!-- row -->
-
-
-
-
-
 </div><!-- container -->
 
 {% endblock content %}
+
+
+{% block additional_javascript %}
+<script src='{% static "js/jquery.toast.min.js" %}'></script>
+<script>
+$( document ).ready(function() {
+  $( ".clear_alert" ).click(function() {
+    var id = $(this).attr("id");
+    $.post("/delete_alert/", {"id": id}, function(data) {});
+    $(this).parent().fadeOut("slow");
+  });
+});
+</script>
+{% endblock additional_javascript %}
