@@ -14,18 +14,17 @@
 
 
      <div class="container" style="text-align:center; max-width:1200px;">
-       <h2>Este es <a href="/">Manolo</a></h2>
-       <h4>Manolo es un buscador de personas que visitan entidades del Estado peruano</h4>
-       <br />
+       <div class="row">
+         <div class="col-xs-12">
+           <h2>Este es <a href="/">Manolo</a></h2>
+           <h4>Manolo es un buscador de personas que visitan entidades del Estado peruano</h4>
+           <br />
 
-       {% include 'search_box.html' %}
+           {% include 'search_box.html' %}
 
-     </div><!-- container -->
 
-     <br />
-
-     <div id="contenido" class="container" style="max-width:1200px;">
-
+           <br />
+           
      {% if extra_premium_results > 0 %}
        <div class="alert alert-info">
          <h3>
@@ -137,6 +136,8 @@
        <h4>No se encontraron resultados. Intenta con otra palabra clave.</h4>
      {% endif %}
 
+         </div><!-- col  -->
+       </div><!-- row  -->
      </div><!-- container contenido -->
 
 {% endblock content %}
