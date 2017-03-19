@@ -74,6 +74,14 @@ def statistics(request):
 
 
 @csrf_exempt
+def create_alert(request):
+    if not request.user.is_authenticated():
+        return JSONResponse({"message": "user not authenticated"})
+    else:
+        return JSONResponse({"message": "pollo"})
+
+
+@csrf_exempt
 def search(request):
     user_profile = get_user_profile(request)
     form = ManoloForm(request.GET)
