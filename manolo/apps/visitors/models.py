@@ -16,6 +16,7 @@ class Visitor(models.Model):
     )
 
     full_name = models.CharField(
+        db_index=True,
         max_length=250,
         help_text='Full name of visitor',
         db_index=True,
@@ -108,3 +109,10 @@ class Subscriber(models.Model):
 
 class Alert(models.Model):
     full_name = models.TextField(db_index=True, unique=True)
+    created = models.DateTimeField(auto_now_add=True)
+
+
+class AlertDelivery(models.Model):
+    subscriber = models.ForeignKey(Subscriber)
+    alert = models.ForeignKey(Alert)
+    record = models.ForeignKey(Visitor)

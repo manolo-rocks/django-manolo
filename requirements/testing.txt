@@ -1,5 +1,6 @@
 -r base.txt
 
+testfixtures
 mock==1.0.1
 model-mommy==1.2.2
 
