@@ -18,6 +18,7 @@ class Visitor(models.Model):
     full_name = models.CharField(
         max_length=250,
         help_text='Full name of visitor',
+        db_index=True,
     )
 
     entity = models.CharField(

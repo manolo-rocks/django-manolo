@@ -1,6 +1,10 @@
 import datetime
 import csv
 
+from collections import Counter
+from django.db.models import Count
+
+
 from django.shortcuts import render
 from django.shortcuts import redirect
 from django.core.paginator import PageNotAnInteger, EmptyPage
@@ -47,6 +51,28 @@ def about(request):
         "about.html",
         {'user_profile': user_profile},
     )
+
+def statistics(request):
+    user_profile = get_user_profile(request)
+    visitors = Visitor.objects.all().values_list(
+        "full_name",
+    ).annotate(
+        the_count=Count("full_name"),
+    ).order_by(
+        '-the_count',
+    )[:5]
+    #visitors = list(Visitor.objects.all().values_list("full_name"))
+    #visitors = Counter(visitors).most_common()[:5]
+    #visitors = [ "%s %s" % x for x in visitors]
+    return render(
+        request,
+        "statistics.html",
+        {
+            'user_profile': user_profile,
+            'visitors': visitors,
+        },
+    )
+
 
 
 @csrf_exempt
