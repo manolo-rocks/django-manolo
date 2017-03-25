@@ -18,8 +18,8 @@
         </tr>
         {% for i in visitors %}
         <tr>
-          <td>{{ i }}</td>
-          <td></td> 
+          <td>{{ i.full_name }}</td>
+          <td>{{ i.number_of_visits }}</td> 
         </tr>
         
         {% endfor %}
