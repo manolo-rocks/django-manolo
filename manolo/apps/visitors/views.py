@@ -1,6 +1,12 @@
 import datetime
 import csv
 
+from collections import Counter
+from django.db.models import Count
+from django.core.management import call_command
+
+
+
 from django.shortcuts import render
 from django.shortcuts import redirect
 from django.core.paginator import PageNotAnInteger, EmptyPage
@@ -11,7 +17,7 @@ from rest_framework.renderers import JSONRenderer
 from haystack.query import SearchQuerySet
 from django.views.decorators.csrf import csrf_exempt
 
-from visitors.models import Visitor
+from visitors.models import Visitor, Statistic
 from visitors.forms import ManoloForm
 from visitors.utils import Paginator, get_user_profile
 
@@ -47,6 +53,24 @@ def about(request):
         "about.html",
         {'user_profile': user_profile},
     )
+
+def statistics(request):
+    user_profile = get_user_profile(request)
+    visitors = Statistic.objects.all()
+  
+    
+    #visitors = list(Visitor.objects.all().values_list("full_name"))
+    #visitors = Counter(visitors).most_common()[:5]
+    #visitors = [ "%s %s" % x for x in visitors]
+    return render(
+        request,
+        "statistics.html",
+        {
+            'user_profile': user_profile,
+            'visitors': visitors,
+        },
+    )
+
 
 
 @csrf_exempt

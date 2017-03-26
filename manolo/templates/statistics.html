@@ -1,0 +1,41 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+
+{% block content %}
+
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-sm-10 col-md-7 col-md-offset-1">
+
+      <h1>Estadísticas del visitante más caserito</h1>
+
+       
+
+      <table style="width:100%">
+        <tr>
+          <th>Nombre</th>
+          <th>Cantidad de visitas</th> 
+        </tr>
+        {% for i in visitors %}
+        <tr>
+          <td>{{ i.full_name }}</td>
+          <td>{{ i.number_of_visits }}</td> 
+        </tr>
+        
+        {% endfor %}
+      </table> 
+     
+
+
+    </div>
+  </div><!-- row -->
+
+
+
+
+
+
+
+</div><!-- container -->
+
+{% endblock content %}
