@@ -120,7 +120,7 @@ DJANGO_APPS = (
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'django.contrib.admin',
-
+    
     'django.contrib.humanize',
     'bootstrap3',
     'bootstrap_themes',

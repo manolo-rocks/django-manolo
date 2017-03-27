@@ -1,5 +1,7 @@
+
 {% extends 'base.html' %}
 {% load staticfiles %}
+{% load humanize %}
 
 {% block content %}
 
@@ -9,17 +11,17 @@
 
       <h1>Estadísticas del visitante más caserito</h1>
 
-       
 
-      <table style="width:100%">
+      <table class="table table-bordered table-striped">
         <tr>
           <th>Nombre</th>
-          <th>Cantidad de visitas</th> 
+          <th class="text-center">Cantidad de visitas</th> 
         </tr>
         {% for i in visitors %}
+
         <tr>
           <td>{{ i.full_name }}</td>
-          <td>{{ i.number_of_visits }}</td> 
+          <td class="text-center">{{ i.number_of_visits|intcomma }} </td> 
         </tr>
         
         {% endfor %}
