@@ -11,6 +11,7 @@ from django.shortcuts import render
 from django.shortcuts import redirect
 from django.core.paginator import PageNotAnInteger, EmptyPage
 from django.core.paginator import InvalidPage
+from django.core import serializers
 from django.http import Http404
 from django.http import HttpResponse
 from rest_framework.renderers import JSONRenderer
@@ -57,8 +58,8 @@ def about(request):
 def statistics(request):
     user_profile = get_user_profile(request)
     visitors = Statistic.objects.all()
-  
-    
+   
+
     #visitors = list(Visitor.objects.all().values_list("full_name"))
     #visitors = Counter(visitors).most_common()[:5]
     #visitors = [ "%s %s" % x for x in visitors]
@@ -71,6 +72,12 @@ def statistics(request):
         },
     )
 
+def statistics_api(request):  
+    user_profile = get_user_profile(request)  
+    visitors = Statistic.objects.all().values_list('full_name',
+               'number_of_visits')[0:20]
+    print(len(visitors))
+    return JSONResponse(visitors)
 
 
 @csrf_exempt

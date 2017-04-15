@@ -5,13 +5,13 @@
 
 {% block content %}
 
+<svg width="960" height="360";><svg> 
 <div class="container-fluid">
   <div class="row">
     <div class="col-sm-10 col-md-7 col-md-offset-1">
 
       <h1>Estadísticas del visitante más caserito</h1>
-
-
+      
       <table class="table table-bordered table-striped">
         <tr>
           <th>Nombre</th>
@@ -26,18 +26,36 @@
         
         {% endfor %}
       </table> 
-     
+   
+     <!-- bubble graph -->
+<script src="//d3js.org/d3.v3.min.js"></script>
+<script>
+d3.json("/prueba/", function(error, data) {
+  if (error) throw error;
+  // data es lista de 5 elementos
+  // cada elemento es lista de 2 elementos
+  // elemento 0 es el nombre
+  // elemento 1 es el numero de visitas
+  var data_for_circles = [];
+  for (var i=0; i < data.length; i++) {
+        data_for_circles.push(data[i][1])
+  };
+ 
 
-
+  var svg = d3.select("svg");
+      
+  svg.selectAll("circle")
+    .data(data_for_circles)
+    .enter().append("circle")
+    .attr("cy", 60)
+    .attr("cx", function(d, i) { return i * 70 + 50; })
+    .attr("r", function(d) { 
+      var unit = d / 190;
+      return unit*unit; })
+});
+</script>
     </div>
   </div><!-- row -->
-
-
-
-
-
-
-
 </div><!-- container -->
 
 {% endblock content %}
