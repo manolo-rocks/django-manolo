@@ -110,5 +110,5 @@ class Statistic(models.Model):
         max_length=250,
         help_text='Full name of visitor',
     )
-
     number_of_visits = models.IntegerField()
+
