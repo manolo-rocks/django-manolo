@@ -1,0 +1,15 @@
+{
+    "SECRET_KEY": "secret key",
+    "DB_USER": "postgres",
+    "DB_PASS": "hu8jmn3",
+    "DB_NAME": "manolo",
+    "DB_PORT": "5432",
+    "DB_HOST": "localhost",
+    "premium_institutions": [
+        "ambiente",
+        "minjus",
+        "mincetur",
+        "mtc"
+    ]
+}
+
