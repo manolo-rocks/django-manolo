@@ -75,7 +75,7 @@ def statistics(request):
 def statistics_api(request):  
     user_profile = get_user_profile(request)  
     visitors = Statistic.objects.all().values_list('full_name',
-               'number_of_visits')[0:20]
+               'number_of_visits')[0:100]
     print(len(visitors))
     return JSONResponse(visitors)
 

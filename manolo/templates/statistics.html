@@ -5,12 +5,13 @@
 
 {% block content %}
 
-<svg width="960" height="360";><svg> 
+
 <div class="container-fluid">
   <div class="row">
     <div class="col-sm-10 col-md-7 col-md-offset-1">
 
-      <h1>Estadísticas del visitante más caserito</h1>
+      <h1>Los 100 visitantes más caseritos</h1>
+      <div id="bubbles"></div>
       
       <table class="table table-bordered table-striped">
         <tr>
@@ -30,29 +31,127 @@
      <!-- bubble graph -->
 <script src="//d3js.org/d3.v3.min.js"></script>
 <script>
+
 d3.json("/prueba/", function(error, data) {
   if (error) throw error;
-  // data es lista de 5 elementos
-  // cada elemento es lista de 2 elementos
-  // elemento 0 es el nombre
-  // elemento 1 es el numero de visitas
-  var data_for_circles = [];
-  for (var i=0; i < data.length; i++) {
-        data_for_circles.push(data[i][1])
+
+  var data_for_circles = {
+     "name": "statistics",
+     "value": 500,
+     "children": [],
   };
  
+  for (var i=0; i < data.length; i++) {
+     var child = {"name": data[i][0], "value": Math.pow(data[i][1],2), "visitas":data[i][1]}
 
-  var svg = d3.select("svg");
+     //var child = {"name": data[i][0], "value": data[i][1]}
+     data_for_circles["children"].push(child);
+  };
+ 
+  //This is making the demensions for the circles and canvas
+  //The format and color is for hovering over the circles for the dialog box
+  var diameter = 900,
+      format = d3.format(",d"),
+      color = d3.scale.category20b(); 
+ 
+  //This makes the canvas that the bubble chart will be made on
+  var canvas = d3.select("#bubbles").append("svg")
+                                .attr("width", diameter)
+                                .attr("height", diameter)
+                                .append("g")
+                                .attr("transform", "translate(0,0)");
+ 
+    //This is the size of the actual bubbles in the chart
+    var pack = d3.layout.pack()
+                  .size([diameter, diameter])
+                  .sort( function(a, b) {
+        return -(a.value - b.value);
+    })
+                  .padding(4);
+ 
+    //This is adding the data into the bubbles and creating their size
+         var nodes = pack.nodes(data_for_circles);
+         console.log(nodes);
+         var node = canvas.selectAll(".node")
+                 .data(nodes)
+                 .enter()
+                 .append("g")
+                 .attr("class", "node")
+                 .attr("transform", function(d) { return "translate(" + d.x + "," + d.y + ")"; });
+ 
+        //This is the actual bubbles
+        node.append("circle")
+            .attr("r", function (d) {
+               var unit = d.r / 10;
+               return d.r;
+             })
+            .style("fill", function (d, i) { return color(i); })
+            
+            
+ 
+        //This is the text inside the bubbles
+        node.append("text")
+            .style("text-anchor", "middle")
+            .attr("dy", ".1em")
+            .text(function (d) { 
+              var legend =d.children ? "" : d.name
+              return legend.substring(0,10); })
+            .style("font-size", function(d) { 
+              return Math.min(2 * d.r, (2 * d.r - 8) / this.getComputedTextLength() * 16) + "px"; })
+            .on("mouseover", function(d) {
+                d3.select(this).text(function (d) { 
+                    return d.children ? "" : d.visitas + " visitas"; })
+                  .style("font-weight", "bold")
+                }) 
+            .on("mouseout", function(d) {
+                d3.select(this).text(function (d) { 
+                    var legend =d.children ? "" : d.name
+                    return legend.substring(0,10); })
+                  .style("font-weight","normal")
+                });
       
-  svg.selectAll("circle")
-    .data(data_for_circles)
-    .enter().append("circle")
-    .attr("cy", 60)
-    .attr("cx", function(d, i) { return i * 70 + 50; })
-    .attr("r", function(d) { 
-      var unit = d / 190;
-      return unit*unit; })
+      var big_circle = d3.select("circle[r='449.99999999999994']");
+       big_circle.remove();
+
+ 
+       // This removes the big circle in the background
+      
+       
 });
+
+/*
+d3.json("/prueba/", function(error, data) {
+  if (error) throw error;
+
+ var data_for_circles = {
+     "name": "statistics",
+     "value": 500,
+     "children": [],
+  };
+ 
+  for (var i=0; i < data.length; i++) {
+     var child = {"name": data[i][0], "value": data[i][1]}
+     data_for_circles["children"].push(child);}
+console.log(data_for_circles)
+
+  var svgContainer = d3.select("svg")
+                     .attr("width", 900)
+                     .attr("height", 200);
+      
+  var circles = svgContainer.selectAll("circle")
+                .data(data_for_circles.children)
+                .enter().append("circle")
+
+  var circlesAtributes = circles.attr("cy", 60)
+                .attr("cx", function(d, i) { 
+                             return i * 70 + 50; })
+                .attr("r", function(d) { 
+                             //var unit = d / 190;
+                             //return unit*unit; })
+                             return (d.value/190)*(d.value/190);})
+                             });
+*/
+                            
 </script>
     </div>
   </div><!-- row -->
