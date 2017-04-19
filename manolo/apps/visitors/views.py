@@ -46,7 +46,6 @@ def index(request):
     )
 
 
-
 def about(request):
     user_profile = get_user_profile(request)
     return render(
@@ -58,11 +57,7 @@ def about(request):
 def statistics(request):
     user_profile = get_user_profile(request)
     visitors = Statistic.objects.all()
-   
 
-    #visitors = list(Visitor.objects.all().values_list("full_name"))
-    #visitors = Counter(visitors).most_common()[:5]
-    #visitors = [ "%s %s" % x for x in visitors]
     return render(
         request,
         "statistics.html",
