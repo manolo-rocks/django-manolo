@@ -5,7 +5,6 @@
 
 {% block content %}
 
-
 <div class="container-fluid">
   <div class="row">
     <div class="col-sm-10 col-md-7 col-md-offset-1">
@@ -44,7 +43,6 @@ d3.json("/prueba/", function(error, data) {
   for (var i=0; i < data.length; i++) {
      var child = {"name": data[i][0], "value": Math.pow(data[i][1],2), "visitas":data[i][1]}
 
-     //var child = {"name": data[i][0], "value": data[i][1]}
      data_for_circles["children"].push(child);
   };
  
@@ -87,8 +85,6 @@ d3.json("/prueba/", function(error, data) {
              })
             .style("fill", function (d, i) { return color(i); })
             
-            
- 
         //This is the text inside the bubbles
         node.append("text")
             .style("text-anchor", "middle")
@@ -96,8 +92,10 @@ d3.json("/prueba/", function(error, data) {
             .text(function (d) { 
               var legend =d.children ? "" : d.name
               return legend.substring(0,10); })
+            //this adjust the size of the text to the size of the circle
             .style("font-size", function(d) { 
               return Math.min(2 * d.r, (2 * d.r - 8) / this.getComputedTextLength() * 16) + "px"; })
+
             .on("mouseover", function(d) {
                 d3.select(this).text(function (d) { 
                     return d.children ? "" : d.visitas + " visitas"; })
@@ -109,48 +107,10 @@ d3.json("/prueba/", function(error, data) {
                     return legend.substring(0,10); })
                   .style("font-weight","normal")
                 });
-      
+      // This removes the big circle in the background
       var big_circle = d3.select("circle[r='449.99999999999994']");
-       big_circle.remove();
-
- 
-       // This removes the big circle in the background
-      
-       
+      big_circle.remove();
 });
-
-/*
-d3.json("/prueba/", function(error, data) {
-  if (error) throw error;
-
- var data_for_circles = {
-     "name": "statistics",
-     "value": 500,
-     "children": [],
-  };
- 
-  for (var i=0; i < data.length; i++) {
-     var child = {"name": data[i][0], "value": data[i][1]}
-     data_for_circles["children"].push(child);}
-console.log(data_for_circles)
-
-  var svgContainer = d3.select("svg")
-                     .attr("width", 900)
-                     .attr("height", 200);
-      
-  var circles = svgContainer.selectAll("circle")
-                .data(data_for_circles.children)
-                .enter().append("circle")
-
-  var circlesAtributes = circles.attr("cy", 60)
-                .attr("cx", function(d, i) { 
-                             return i * 70 + 50; })
-                .attr("r", function(d) { 
-                             //var unit = d / 190;
-                             //return unit*unit; })
-                             return (d.value/190)*(d.value/190);})
-                             });
-*/
                             
 </script>
     </div>
