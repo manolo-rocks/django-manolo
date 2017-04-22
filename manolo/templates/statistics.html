@@ -4,14 +4,44 @@
 {% load humanize %}
 
 {% block content %}
+<style>
 
+.bar {
+  fill: steelblue;
+}
+
+.bar:hover {
+  fill: red;
+}
+
+.axis--x path {
+  display: none;
+}
+
+.toolTip {
+        font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+        position: absolute;
+        display: none;
+        width: auto;
+        height: auto;
+        background: none repeat scroll 0 0 white;
+        border: 0 none;
+        border-radius: 8px 8px 8px 8px;
+        box-shadow: -3px 3px 15px #888888;
+        color: black;
+        font: 12px sans-serif;
+        padding: 5px;
+        text-align: center;
+    }
+
+</style>
 <div class="container-fluid">
   <div class="row">
     <div class="col-sm-10 col-md-7 col-md-offset-1">
 
-      <h1>Los 100 visitantes más caseritos</h1>
+      <h1>Número de visitas de los 500 visitantes más caseritos</h1>
+      <svg width="1100" height="500"></svg>
       <div id="bubbles"></div>
-      
       <table class="table table-bordered table-striped">
         <tr>
           <th>Nombre</th>
@@ -28,9 +58,9 @@
       </table> 
    
      <!-- bubble graph -->
-<script src="//d3js.org/d3.v3.min.js"></script>
-<script>
 
+<script src="http://d3js.org/d3.v3.min.js"></script>
+<script>
 d3.json("/prueba/", function(error, data) {
   if (error) throw error;
 
@@ -48,7 +78,7 @@ d3.json("/prueba/", function(error, data) {
  
   //This is making the demensions for the circles and canvas
   //The format and color is for hovering over the circles for the dialog box
-  var diameter = 900,
+  var diameter = 800,
       format = d3.format(",d"),
       color = d3.scale.category20b(); 
  
@@ -108,11 +138,76 @@ d3.json("/prueba/", function(error, data) {
                   .style("font-weight","normal")
                 });
       // This removes the big circle in the background
-      var big_circle = d3.select("circle[r='449.99999999999994']");
+      var big_circle = d3.select("circle[r='400']");
       big_circle.remove();
 });
                             
 </script>
+            <!-- bar chart -->
+
+
+<script src="https://d3js.org/d3.v4.min.js"></script>
+<script>
+
+var svg = d3.select("svg"),
+    margin = {top: 20, right: 20, bottom: 30, left: 40},
+    width = +svg.attr("width") - margin.left - margin.right,
+    height = +svg.attr("height") - margin.top - margin.bottom;
+
+var x = d3.scaleBand().rangeRound([0, width]).padding(0.1),
+    y = d3.scaleLinear().rangeRound([height, 0]);
+
+var g = svg.append("g")
+    .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+//neceario para labels y tooltips
+var div = d3.select("body").append("div").attr("class", "toolTip");    
+d3.json("/prueba/", function(error, data) {
+  if (error) throw error;
+
+  data.forEach(function(d) {
+        d.name = d[0];
+        d.value = +d[1];
+    });
+
+  x.domain(data.map(function(d,i) { return i }));
+  y.domain([0, d3.max(data, function(d) { return d.value; })]);
+
+  g.append("g")
+      .attr("class", "axis axis--y")
+      .call(d3.axisLeft(y).ticks(10));
+
+  svg.append("text")
+    .attr("class", "y label")
+    .attr("text-anchor", "end")
+    .attr("x", -30)
+    .attr("y", 46)
+    .attr("dy", ".75em")
+    .attr("transform", "rotate(-90)")
+    .text("Número de visitas");  
+
+  g.selectAll(".bar")
+    .data(data)
+    .enter().append("rect")
+      .attr("class", "bar")
+      .attr("x", function(d,i) { return x(i); })
+      .attr("y", function(d) { return y(d.value); })
+      .attr("width", x.bandwidth())
+      .attr("height", function(d) { return height - y(d.value); })
+      //neceario para labels y tooltips
+      .on("mousemove", function(d){
+                div.style("left", d3.event.pageX+10+"px");
+                div.style("top", d3.event.pageY-25+"px");
+                div.style("display", "inline-block");
+                div.html((d.name)+"<br>"+(d.value)+ " visitas");
+            })
+      .on("mouseout", function(d){
+                div.style("display", "none");
+            });    
+});
+
+</script>
+
+
     </div>
   </div><!-- row -->
 </div><!-- container -->

@@ -25,7 +25,7 @@ def run_statistics():
         the_count=Count("full_name"),
     ).order_by(
         '-the_count',
-    )[:100]
+    )[:500]
     Statistic.objects.all().delete()
     for visitor in visitors:
         Statistic.objects.create(full_name=visitor[0], number_of_visits=visitor[1])
