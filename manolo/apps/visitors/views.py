@@ -1,5 +1,6 @@
 import datetime
 import csv
+import json
 
 from collections import Counter
 from django.db.models import Count
@@ -11,6 +12,8 @@ from django.shortcuts import render
 from django.shortcuts import redirect
 from django.core.paginator import PageNotAnInteger, EmptyPage
 from django.core.paginator import InvalidPage
+from django.core.serializers.json import DjangoJSONEncoder
+
 from django.core import serializers
 from django.http import Http404
 from django.http import HttpResponse
@@ -57,6 +60,25 @@ def about(request):
 def statistics(request):
     user_profile = get_user_profile(request)
     visitors = Statistic.objects.all()[0:100]
+    
+    instituciones_count = Visitor.objects.filter(
+                        full_name="VIOLETA GUEVARA CABANILLAS",
+                        ).values_list("institution",
+                        ).annotate(the_count=Count("institution",
+                        ))
+    entity_count = Visitor.objects.filter(
+                          full_name="VIOLETA GUEVARA CABANILLAS", institution="mincu",
+                          ).values_list("reason",
+                          ).annotate(the_count=Count("reason",
+                          ))
+    reason = Visitor.objects.filter(
+                          full_name="VIOLETA GUEVARA CABANILLAS",
+                          ).values_list("institution","reason",
+                          ).annotate(the_count=Count("reason",
+                          )) 
+        #).values_list("host_name",
+        #).annotate(the_count=Count("host_name"))
+   
 
     return render(
         request,
@@ -70,10 +92,43 @@ def statistics(request):
 def statistics_api(request):  
     user_profile = get_user_profile(request)  
     visitors = Statistic.objects.all().values_list('full_name',
-               'number_of_visits')[0:500]
-    print(len(visitors))
-    return JSONResponse(visitors)
+               'number_of_visits')[0:50]
+    #return JSONResponse(visitors)
 
+    count= 0
+    ls = []
+    json = {"name":"Statistics",
+            "children": ls}
+
+    
+    for i in visitors :
+        dic = {"name":i[0], "children":[]}
+        ls.append(dic)
+        institution = Visitor.objects.filter(
+                        full_name=i[0],
+                        ).values_list("institution",
+                        ).annotate(the_count=Count("institution",
+                        ))
+        for j in institution:
+            dic_2= {"name":j[0], "children":[] }
+            dic["children"].append(dic_2)
+
+        nombre=[d for d in ls if d['name'] == i[0]]
+            
+        cuenta = 0
+        while (cuenta<len(institution)):
+            reason = Visitor.objects.filter(
+                          full_name=i[0], institution=institution[cuenta][0],
+                          ).values_list("reason",
+                          ).annotate(the_count=Count("reason",
+                          )) 
+            for l in reason:
+                dic_3 = {"name":l[0], "size":l[1]}          
+                nombre[0]['children'][cuenta]['children'].append(dic_3)
+            cuenta+=1
+            
+    
+    return JSONResponse(json)
 
 @csrf_exempt
 def search(request):

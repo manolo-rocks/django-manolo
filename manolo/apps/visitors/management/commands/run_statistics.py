@@ -10,8 +10,7 @@ class Command(BaseCommand):
 
         print("Doing calculations")
         run_statistics()
-
-
+        
 def run_statistics():
     all_visitor_names = Visitor.objects.all().values_list(
         "full_name", flat=True,
