@@ -4,44 +4,14 @@
 {% load humanize %}
 
 {% block content %}
-<style>
 
-.bar {
-  fill: steelblue;
-}
-
-.bar:hover {
-  fill: red;
-}
-
-.axis--x path {
-  display: none;
-}
-
-.toolTip {
-        font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
-        position: absolute;
-        display: none;
-        width: auto;
-        height: auto;
-        background: none repeat scroll 0 0 white;
-        border: 0 none;
-        border-radius: 8px 8px 8px 8px;
-        box-shadow: -3px 3px 15px #888888;
-        color: black;
-        font: 12px sans-serif;
-        padding: 5px;
-        text-align: center;
-    }
-
-</style>
 <div class="container-fluid">
   <div class="row">
     <div class="col-sm-10 col-md-7 col-md-offset-1">
 
-      <h1>Número de visitas de los 500 visitantes más caseritos</h1>
-      <svg width="1100" height="500"></svg>
-      <div id="bubbles"></div>
+      <h1>Los 50 visitantes más caseritos</h1>
+      <h5>Las entidades del estado que visitan y las razones de las visitas.</h5>
+      <div id="graph"></div>
       <table class="table table-bordered table-striped">
         <tr>
           <th>Nombre</th>
@@ -56,154 +26,257 @@
         
         {% endfor %}
       </table> 
-   
-     <!-- bubble graph -->
 
-<script src="http://d3js.org/d3.v3.min.js"></script>
-<script>
-d3.json("/prueba/", function(error, data) {
-  if (error) throw error;
+   <!-- Hierarchical bar graph -->
 
-  var data_for_circles = {
-     "name": "statistics",
-     "value": 500,
-     "children": [],
-  };
- 
-  for (var i=0; i < data.length; i++) {
-     var child = {"name": data[i][0], "value": Math.pow(data[i][1],2), "visitas":data[i][1]}
+<style>
 
-     data_for_circles["children"].push(child);
-  };
- 
-  //This is making the demensions for the circles and canvas
-  //The format and color is for hovering over the circles for the dialog box
-  var diameter = 800,
-      format = d3.format(",d"),
-      color = d3.scale.category20b(); 
- 
-  //This makes the canvas that the bubble chart will be made on
-  var canvas = d3.select("#bubbles").append("svg")
-                                .attr("width", diameter)
-                                .attr("height", diameter)
-                                .append("g")
-                                .attr("transform", "translate(0,0)");
- 
-    //This is the size of the actual bubbles in the chart
-    var pack = d3.layout.pack()
-                  .size([diameter, diameter])
-                  .sort( function(a, b) {
-        return -(a.value - b.value);
-    })
-                  .padding(4);
- 
-    //This is adding the data into the bubbles and creating their size
-         var nodes = pack.nodes(data_for_circles);
-         console.log(nodes);
-         var node = canvas.selectAll(".node")
-                 .data(nodes)
-                 .enter()
-                 .append("g")
-                 .attr("class", "node")
-                 .attr("transform", function(d) { return "translate(" + d.x + "," + d.y + ")"; });
- 
-        //This is the actual bubbles
-        node.append("circle")
-            .attr("r", function (d) {
-               var unit = d.r / 10;
-               return d.r;
-             })
-            .style("fill", function (d, i) { return color(i); })
-            
-        //This is the text inside the bubbles
-        node.append("text")
-            .style("text-anchor", "middle")
-            .attr("dy", ".1em")
-            .text(function (d) { 
-              var legend =d.children ? "" : d.name
-              return legend.substring(0,10); })
-            //this adjust the size of the text to the size of the circle
-            .style("font-size", function(d) { 
-              return Math.min(2 * d.r, (2 * d.r - 8) / this.getComputedTextLength() * 16) + "px"; })
+text {
+  font: 10px sans-serif;
+}
 
-            .on("mouseover", function(d) {
-                d3.select(this).text(function (d) { 
-                    return d.children ? "" : d.visitas + " visitas"; })
-                  .style("font-weight", "bold")
-                }) 
-            .on("mouseout", function(d) {
-                d3.select(this).text(function (d) { 
-                    var legend =d.children ? "" : d.name
-                    return legend.substring(0,10); })
-                  .style("font-weight","normal")
-                });
-      // This removes the big circle in the background
-      var big_circle = d3.select("circle[r='400']");
-      big_circle.remove();
-});
-                            
-</script>
-            <!-- bar chart -->
+rect.background {
+  fill: white;
+}
 
+.axis {
+  shape-rendering: crispEdges;
+}
 
-<script src="https://d3js.org/d3.v4.min.js"></script>
+.axis path,
+.axis line {
+  fill: none;
+  stroke: #000;
+}
+
+</style>
+
+<script src="//d3js.org/d3.v3.min.js"></script>
 <script>
 
-var svg = d3.select("svg"),
-    margin = {top: 20, right: 20, bottom: 30, left: 40},
-    width = +svg.attr("width") - margin.left - margin.right,
-    height = +svg.attr("height") - margin.top - margin.bottom;
+var margin = {top: 40, right: 120, bottom: 0, left: 220},
+    width = 960 - margin.left - margin.right,
+    height = 650 - margin.top - margin.bottom;
 
-var x = d3.scaleBand().rangeRound([0, width]).padding(0.1),
-    y = d3.scaleLinear().rangeRound([height, 0]);
+var x = d3.scale.linear()
+    .range([0, width]);
 
-var g = svg.append("g")
+var barHeight = 10;
+
+var color = d3.scale.ordinal()
+    .range(["steelblue", "#ccc"]);
+
+var duration = 550,
+    delay = 5;
+
+var partition = d3.layout.partition()
+    .value(function(d) { return d.size; });
+
+var xAxis = d3.svg.axis()
+    .scale(x)
+    .orient("top");
+
+var svg = d3.select("#graph").append("svg")
+    .attr("width", width + margin.left + margin.right)
+    .attr("height", height + margin.top + margin.bottom)
+  .append("g")
     .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
-//neceario para labels y tooltips
-var div = d3.select("body").append("div").attr("class", "toolTip");    
-d3.json("/prueba/", function(error, data) {
-  if (error) throw error;
 
-  data.forEach(function(d) {
-        d.name = d[0];
-        d.value = +d[1];
-    });
+svg.append("rect")
+    .attr("class", "background")
+    .attr("width", width)
+    .attr("height", height)
+    .on("click", up);
 
-  x.domain(data.map(function(d,i) { return i }));
-  y.domain([0, d3.max(data, function(d) { return d.value; })]);
+svg.append("g")
+    .attr("class", "x axis");
 
-  g.append("g")
-      .attr("class", "axis axis--y")
-      .call(d3.axisLeft(y).ticks(10));
+svg.append("g")
+    .attr("class", "y axis")
+  .append("line")
+    .attr("y1", "100%");
 
-  svg.append("text")
+svg.append("text")
     .attr("class", "y label")
     .attr("text-anchor", "end")
-    .attr("x", -30)
-    .attr("y", 46)
+    .attr("x", 350)
+    .attr("y", -30)
     .attr("dy", ".75em")
-    .attr("transform", "rotate(-90)")
-    .text("Número de visitas");  
+    .text("Número de visitas");    
 
-  g.selectAll(".bar")
-    .data(data)
-    .enter().append("rect")
-      .attr("class", "bar")
-      .attr("x", function(d,i) { return x(i); })
-      .attr("y", function(d) { return y(d.value); })
-      .attr("width", x.bandwidth())
-      .attr("height", function(d) { return height - y(d.value); })
-      //neceario para labels y tooltips
-      .on("mousemove", function(d){
-                div.style("left", d3.event.pageX+10+"px");
-                div.style("top", d3.event.pageY-25+"px");
-                div.style("display", "inline-block");
-                div.html((d.name)+"<br>"+(d.value)+ " visitas");
-            })
-      .on("mouseout", function(d){
-                div.style("display", "none");
-            });    
+d3.json("/prueba/", function(error, root) {
+  if (error) throw error;
+
+  partition.nodes(root);
+  x.domain([0, root.value]).nice();
+  down(root, 0);
 });
+
+function down(d, i) {
+  if (!d.children || this.__transition__) return;
+  var end = duration + d.children.length * delay;
+
+  // Mark any currently-displayed bars as exiting.
+  var exit = svg.selectAll(".enter")
+      .attr("class", "exit");
+
+  // Entering nodes immediately obscure the clicked-on bar, so hide it.
+  exit.selectAll("rect").filter(function(p) { return p === d; })
+      .style("fill-opacity", 1e-6);
+
+  // Enter the new bars for the clicked-on data.
+  // Per above, entering bars are immediately visible.
+  var enter = bar(d)
+      .attr("transform", stack(i))
+      .style("opacity", 1);
+
+  // Have the text fade-in, even though the bars are visible.
+  // Color the bars as parents; they will fade to children if appropriate.
+  enter.select("text").style("fill-opacity", 1e-6);
+  enter.select("rect").style("fill", color(true));
+
+  // Update the x-scale domain.
+  x.domain([0, d3.max(d.children, function(d) { return d.value; })]).nice();
+
+  // Update the x-axis.
+  svg.selectAll(".x.axis").transition()
+      .duration(duration)
+      .call(xAxis);
+
+  // Transition entering bars to their new position.
+  var enterTransition = enter.transition()
+      .duration(duration)
+      .delay(function(d, i) { return i * delay; })
+      .attr("transform", function(d, i) { return "translate(0," + barHeight * i * 1.2 + ")"; });
+
+  // Transition entering text.
+  enterTransition.select("text")
+      .style("fill-opacity", 1);
+
+  // Transition entering rects to the new x-scale.
+  enterTransition.select("rect")
+      .attr("width", function(d) { return x(d.value); })
+      .style("fill", function(d) { return color(!!d.children); });
+
+  // Transition exiting bars to fade out.
+  var exitTransition = exit.transition()
+      .duration(duration)
+      .style("opacity", 1e-6)
+      .remove();
+
+  // Transition exiting bars to the new x-scale.
+  exitTransition.selectAll("rect")
+      .attr("width", function(d) { return x(d.value); });
+
+  // Rebind the current node to the background.
+  svg.select(".background")
+      .datum(d)
+    .transition()
+      .duration(end);
+
+  d.index = i;
+}
+
+function up(d) {
+  if (!d.parent || this.__transition__) return;
+  var end = duration + d.children.length * delay;
+
+  // Mark any currently-displayed bars as exiting.
+  var exit = svg.selectAll(".enter")
+      .attr("class", "exit");
+
+  // Enter the new bars for the clicked-on data's parent.
+  var enter = bar(d.parent)
+      .attr("transform", function(d, i) { return "translate(0," + barHeight * i * 1.2 + ")"; })
+      .style("opacity", 1e-6);
+
+  // Color the bars as appropriate.
+  // Exiting nodes will obscure the parent bar, so hide it.
+  enter.select("rect")
+      .style("fill", function(d) { return color(!!d.children); })
+    .filter(function(p) { return p === d; })
+      .style("fill-opacity", 1e-6);
+
+  // Update the x-scale domain.
+  x.domain([0, d3.max(d.parent.children, function(d) { return d.value; })]).nice();
+
+  // Update the x-axis.
+  svg.selectAll(".x.axis").transition()
+      .duration(duration)
+      .call(xAxis);
+
+  // Transition entering bars to fade in over the full duration.
+  var enterTransition = enter.transition()
+      .duration(end)
+      .style("opacity", 1);
+
+  // Transition entering rects to the new x-scale.
+  // When the entering parent rect is done, make it visible!
+  enterTransition.select("rect")
+      .attr("width", function(d) { return x(d.value); })
+      .each("end", function(p) { if (p === d) d3.select(this).style("fill-opacity", null); });
+
+  // Transition exiting bars to the parent's position.
+  var exitTransition = exit.selectAll("g").transition()
+      .duration(duration)
+      .delay(function(d, i) { return i * delay; })
+      .attr("transform", stack(d.index));
+
+  // Transition exiting text to fade out.
+  exitTransition.select("text")
+      .style("fill-opacity", 1e-6);
+
+  // Transition exiting rects to the new scale and fade to parent color.
+  exitTransition.select("rect")
+      .attr("width", function(d) { return x(d.value); })
+      .style("fill", color(true));
+
+  // Remove exiting nodes when the last child has finished transitioning.
+  exit.transition()
+      .duration(end)
+      .remove();
+
+  // Rebind the current parent to the background.
+  svg.select(".background")
+      .datum(d.parent)
+    .transition()
+      .duration(end);
+}
+
+// Creates a set of bars for the given data node, at the specified index.
+function bar(d) {
+  var bar = svg.insert("g", ".y.axis")
+      .attr("class", "enter")
+      .attr("transform", "translate(0,5)")
+    .selectAll("g")
+      .data(d.children)
+    .enter().append("g")
+      .style("cursor", function(d) { return !d.children ? null : "pointer"; })
+      .on("click", down);
+
+  bar.append("text")
+      .attr("x", -6)
+      .attr("y", barHeight / 2)
+      .attr("dy", ".35em")
+      .style("text-anchor", "end")
+      .text(function(d) { return d.name; });
+
+  bar.append("rect")
+      .attr("width", function(d) { return x(d.value); })
+      .attr("height", barHeight);
+
+  return bar;
+}
+
+// A stateful closure for stacking bars horizontally.
+function stack(i) {
+  var x0 = 0;
+  return function(d) {
+    var tx = "translate(" + x0 + "," + barHeight * i * 1.2 + ")";
+    x0 += x(d.value);
+    return tx;
+  };
+}
 
 </script>
 
