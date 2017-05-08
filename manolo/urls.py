@@ -24,7 +24,7 @@ urlpatterns = [
     url(r'^delete_alert/', views.delete_alert, name='delete_alert'),
     url(r'^api/', include('api.urls')),
     url(r'^docs/', schema_view),
-    url(r'^statistics/$', views.statistics),
+    # url(r'^statistics/$', views.statistics),
     url(r'^about/', views.about, name='about'),
     url(r'^', include('visitors.urls', namespace="visitors")),
     url(r'robots.txt$', views.robots, name='robots'),
