@@ -72,7 +72,10 @@
                 </div>
               </form>
             </li>
-            <li><a href="/statistics/">Estadísticas</a></li>
+            {% if request.user.is_authenticated %}
+              <li><a href="/alerts/">Alertas</a></li>
+            {% endif %}
+            <li><a href="/cazador/">Manolo Cazador</a></li>
             <li><a href="/docs/">API</a></li>
             <li><a href="/about/">About Manolo</a></li>
           </ul>
