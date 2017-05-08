@@ -28,7 +28,7 @@
         <ul>
           {% for alert in alerts %}
           <li>
-            {{ alert.full_name }}
+            <a href="/search/?q={{ alert.full_name }}">{{ alert.full_name }}</a>
             <span class="label label-danger clear_alert" id="{{ alert.id }}">
               Eliminar alerta [x]
             </span>
