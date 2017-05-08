@@ -227,6 +227,8 @@ with open(SECRETS_FILE) as f:
 
 
 def get_secret(setting, secrets=secrets):
+    if sys.argv[1] == "test":
+        return ""
     try:
         return secrets[setting]
     except KeyError:
