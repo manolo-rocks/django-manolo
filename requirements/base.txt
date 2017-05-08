@@ -5,6 +5,7 @@
 pyprind==2.9.1
 psycopg2==2.6
 Django==1.10.5
+bleach==2.0.0
 Jinja2==2.7.3
 MarkupSafe==0.23
 Markdown==2.6.2

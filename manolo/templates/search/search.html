@@ -161,6 +161,16 @@ $( document ).ready(function() {
           hideAfter: 5000
         });
       }
+      else if (data.message == "alert created") {
+        $.toast({
+          heading: 'Éxito',
+          text: 'Alerta creada. Mira todas tus alertas en <a href="/alertas/">este link</a>',
+          showHideTransition: 'slide',
+          icon: 'success',
+          position: 'mid-center',
+          hideAfter: 5000
+        });
+      }
     });
   });
 });

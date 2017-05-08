@@ -103,12 +103,8 @@ class Subscriber(models.Model):
     avatar = models.TextField(
         blank=True,
     )
+    alerts = models.ManyToManyField('Alert')
 
 
-class Statistic(models.Model):
-    full_name = models.CharField(
-        max_length=250,
-        help_text='Full name of visitor',
-    )
-
-    number_of_visits = models.IntegerField()
+class Alert(models.Model):
+    full_name = models.TextField(db_index=True, unique=True)

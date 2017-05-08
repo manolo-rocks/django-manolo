@@ -1,12 +1,7 @@
 import datetime
 import csv
 
-from collections import Counter
-from django.db.models import Count
-from django.core.management import call_command
-
-
-
+import bleach
 from django.shortcuts import render
 from django.shortcuts import redirect
 from django.core.paginator import PageNotAnInteger, EmptyPage
@@ -17,7 +12,7 @@ from rest_framework.renderers import JSONRenderer
 from haystack.query import SearchQuerySet
 from django.views.decorators.csrf import csrf_exempt
 
-from visitors.models import Visitor, Statistic
+from visitors.models import Visitor, Alert
 from visitors.forms import ManoloForm
 from visitors.utils import Paginator, get_user_profile
 
@@ -54,31 +49,19 @@ def about(request):
         {'user_profile': user_profile},
     )
 
-def statistics(request):
-    user_profile = get_user_profile(request)
-    visitors = Statistic.objects.all()
-  
-    
-    #visitors = list(Visitor.objects.all().values_list("full_name"))
-    #visitors = Counter(visitors).most_common()[:5]
-    #visitors = [ "%s %s" % x for x in visitors]
-    return render(
-        request,
-        "statistics.html",
-        {
-            'user_profile': user_profile,
-            'visitors': visitors,
-        },
-    )
-
-
 
 @csrf_exempt
 def create_alert(request):
     if not request.user.is_authenticated():
         return JSONResponse({"message": "user not authenticated"})
     else:
-        return JSONResponse({"message": "pollo"})
+        full_name = bleach.clean(request.POST['full_name'], strip=True).strip()
+        subscriber = request.user.subscriber
+        alerts = Alert.objects.filter(subscriber=subscriber).filter(full_name=full_name)
+        if not alerts:
+            alert, _ = Alert.objects.get_or_create(full_name=full_name)
+            subscriber.alerts.add(alert)
+            return JSONResponse({"message": "alert created"})
 
 
 @csrf_exempt
