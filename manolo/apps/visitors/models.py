@@ -19,7 +19,6 @@ class Visitor(models.Model):
         db_index=True,
         max_length=250,
         help_text='Full name of visitor',
-        db_index=True,
     )
 
     entity = models.CharField(
