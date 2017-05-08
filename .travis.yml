@@ -11,7 +11,9 @@ services:
     - elasticsearch
 
 # command to install dependencies, e.g. pip install -r requirements.txt --use-mirrors
-install: pip install -r requirements/testing.txt
+install:
+  - "pip install six"
+  - pip install -r requirements/testing.txt
 
 # command to run tests using coverage, e.g. python setup.py test
 script: coverage run --source manolo manage.py test -v 2 visitors api cazador --settings=manolo.settings.testing
