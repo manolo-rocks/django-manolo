@@ -1,15 +1,17 @@
 {
     "SECRET_KEY": "secret key",
     "DB_USER": "postgres",
-    "DB_PASS": "hu8jmn3",
+    "DB_PASS": "",
     "DB_NAME": "manolo",
     "DB_PORT": "5432",
     "DB_HOST": "localhost",
     "premium_institutions": [
-        "ambiente",
-        "minjus",
-        "mincetur",
-        "mtc"
-    ]
+        "minjus"
+    ],
+    "EMAIL_HOST": "",
+    "EMAIL_PORT": 587,
+    "EMAIL_HOST_USER": "",
+    "EMAIL_HOST_PASSWORD": "",
+    "EMAIL_USE_TLS": "true",
+    "EMAIL_USE_SSL": "false"
 }
-
