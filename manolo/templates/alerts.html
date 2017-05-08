@@ -9,19 +9,35 @@
 
       <h1>Tus alertas</h1>
 
-      <p>Recibirás un email cada vez que aparezca un nuevo registro de las
-        siguientes personas:</p>
+      {% if not alerts %}
+        <p>Aún no has configurado niguna alerta. Luego de hacer una búsqueda, puedes crear una
+          alerta al hacer clic en el ícono de campana al costado del nombre de las personas que
+          visitaron las instituciones estatales.
+        </p>
+        <p>
+          <img width="560px" height="205px" class="img-responsive img-rounded" src='{% static "/img/alert1.png" %}' />
+        </p>
+        <p>
+          Luego de hacer click, aquí aparecerá la lista de nombres y recibirás un email cada vez
+          que aparezca un nuevo registro de visita de aquellas personas.
+        </p>
+      {% else %}
+        <p>
+          Recibirás un email cada vez que aquellas personas visiten alguna institución estatal.
+        </p>
+        <ul>
+          {% for alert in alerts %}
+          <li>
+            {{ alert.full_name }}
+            <span class="label label-danger clear_alert" id="{{ alert.id }}">
+              Eliminar alerta [x]
+            </span>
+          </li>
+          {% endfor %}
+        </ul>
+      {% endif %}
 
-      <ul>
-        {% for alert in alerts %}
-        <li>
-          {{ alert.full_name }}
-          <span class="label label-danger clear_alert" id="{{ alert.id }}">
-            Eliminar alerta [x]
-          </span>
-        </li>
-        {% endfor %}
-      </ul>
+
 
     </div>
   </div><!-- row -->

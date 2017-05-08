@@ -80,7 +80,7 @@ def alerts(request):
     if request.user.is_authenticated() and user_profile['expired'] is False:
         user_alerts = request.user.subscriber.alerts.all().order_by("full_name")
     else:
-        user_alerts = []
+        user_alerts = None
     return render(
         request,
         "alerts.html",
