@@ -227,7 +227,7 @@ with open(SECRETS_FILE) as f:
 
 
 def get_secret(setting, secrets=secrets):
-    if sys.argv[1] == "test":
+    if sys.argv[1] == "test" and setting.startswith("EMAIL_"):
         return "dummy value"
     try:
         return secrets[setting]
