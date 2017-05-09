@@ -262,3 +262,5 @@ if get_secret("EMAIL_USE_SSL") == "true":
     EMAIL_USE_SSL = True
 else:
     EMAIL_USE_SSL = False
+
+ALERT_LIMIT_SUBSCRIBER = 3

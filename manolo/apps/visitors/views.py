@@ -4,6 +4,7 @@ import csv
 import bleach
 from django.shortcuts import render
 from django.shortcuts import redirect
+from django.conf import settings
 from django.core.paginator import PageNotAnInteger, EmptyPage
 from django.core.paginator import InvalidPage
 from django.http import Http404
@@ -56,6 +57,9 @@ def create_alert(request):
     if request.user.is_authenticated() and user_profile['expired'] is False:
         full_name = bleach.clean(request.POST['full_name'], strip=True).strip()
         subscriber = request.user.subscriber
+        if used_quota(subscriber) is True:
+            return JSONResponse({"message": "reached quota"})
+
         user_alerts = Alert.objects.filter(subscriber=subscriber).filter(full_name=full_name)
         if not user_alerts:
             alert, _ = Alert.objects.get_or_create(full_name=full_name)
@@ -65,6 +69,18 @@ def create_alert(request):
             return JSONResponse({"message": "alert exists"})
     else:
         return JSONResponse({"message": "user not authenticated"})
+
+
+def used_quota(subscriber):
+    """Checks if user has used up the max number of allowed alerts
+
+    :param subscriber:
+    :return:
+    """
+    if subscriber.alerts.all().count() >= settings.ALERT_LIMIT_SUBSCRIBER:
+        return True
+    else:
+        return False
 
 
 @csrf_exempt

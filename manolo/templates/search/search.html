@@ -160,6 +160,16 @@ $( document ).ready(function() {
           hideAfter: 5000
         });
       }
+      else if (data.message == "reached quota") {
+        $.toast({
+          heading: 'Oops',
+          text: 'Has alcanzado el número máximo de alertas. Borra una o más para crear más alertas: <a href="/alerts/">este link</a>',
+          showHideTransition: 'slide',
+          icon: 'error',
+          position: 'mid-center',
+          hideAfter: 5000
+        });
+      }
       else if (data.message == "alert created") {
         $.toast({
           heading: 'Éxito',
