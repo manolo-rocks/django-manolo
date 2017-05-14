@@ -5,8 +5,10 @@ import base64
 from datetime import date
 import hashlib
 
-from django.shortcuts import redirect
 from django.core.paginator import Paginator as DjangoPaginator
+import django
+from django.core.exceptions import ObjectDoesNotExist
+from django.contrib.auth.models import User
 import requests
 
 from visitors.models import Subscriber
@@ -72,17 +74,23 @@ def get_user_profile(request):
 
     if request.user.is_authenticated():
         user = request.user
-        if not user.subscriber.avatar:
-            fetch_and_save_avatar(user)
-        first_name = user.first_name
-        avatar = user.subscriber.avatar
+        if hasattr(user, "subscriber"):
+            subscriber = user.subscriber
+        else:
+            subscriber = None
 
-        delta = user.subscriber.expiration - date.today()
-        days_before_expiration = delta.days
-        if days_before_expiration < 8:
-            about_to_expire = True
-        if days_before_expiration < 0:
-            expired = True
+        if subscriber:
+            if not user.subscriber.avatar:
+                fetch_and_save_avatar(user)
+            first_name = user.first_name
+            avatar = user.subscriber.avatar
+
+            delta = user.subscriber.expiration - date.today()
+            days_before_expiration = delta.days
+            if days_before_expiration < 8:
+                about_to_expire = True
+            if days_before_expiration < 0:
+                expired = True
 
     return {
         'avatar': avatar,

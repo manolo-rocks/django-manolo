@@ -21,7 +21,10 @@ def send():
     delivered_alerts = AlertDelivery.objects.all().values_list("record", flat=True)
     for alert in alerts:
         # visitors created later than alert and not in AlertDelivery
-        visitors = Visitor.objects.filter(created__gte=alert.created).exclude(id__in=delivered_alerts)
+        visitors = Visitor.objects.filter(
+            full_name=alert.full_name,
+            created__gte=alert.created,
+        ).exclude(id__in=delivered_alerts)
         subscribers = alert.subscriber_set.all()
         if visitors:
             for visitor in visitors:

@@ -93,7 +93,7 @@ class Visitor(models.Model):
         null=True,
     )
 
-    created = models.DateTimeField(auto_now_add=True)
+    created = models.DateTimeField(auto_now_add=True, db_index=True)
     modified = models.DateTimeField(auto_now=True, db_index=True)
 
 
