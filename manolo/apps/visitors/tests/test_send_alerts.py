@@ -41,8 +41,6 @@ class TestSendAlerts(TestCase):
         )
 
     def test_send_alerts(self):
-        with LogCapture() as log_capture:
-            send()
-            log_capture.check(
-                ('visitors.management.commands.send_alerts', 'DEBUG', 'Sent email'),
-            )
+        self.assertEqual("", AlertDelivery.objects.all().count())
+        send()
+        self.assertEqual("", AlertDelivery.objects.all().count())
