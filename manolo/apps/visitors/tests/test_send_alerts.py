@@ -43,4 +43,4 @@ class TestSendAlerts(TestCase):
     def test_send_alerts(self):
         self.assertEqual(1, AlertDelivery.objects.all().count())
         send()
-        self.assertEqual("", AlertDelivery.objects.all().count())
+        self.assertEqual(2, AlertDelivery.objects.all().count())
