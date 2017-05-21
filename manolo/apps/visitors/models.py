@@ -105,10 +105,11 @@ class Subscriber(models.Model):
     )
 
 
-class Statistic(models.Model):
-    full_name = models.CharField(
-        max_length=250,
-        help_text='Full name of visitor',
-    )
-    number_of_visits = models.IntegerField()
 
+class Statistic(models.Model):
+    data = models.TextField(null=True)
+
+
+class Statistic_detail(models.Model):
+    name = models.TextField(null=True)
+    number_of_visits = models.IntegerField(null=True)

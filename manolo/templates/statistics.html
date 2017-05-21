@@ -11,6 +11,7 @@
 
       <h1>Los 50 visitantes más caseritos</h1>
       <h5>Las entidades del estado que visitan y las razones de las visitas.</h5>
+      {{institucion_details}}
       <div id="graph"></div>
       <table class="table table-bordered table-striped">
         <tr>
@@ -20,7 +21,7 @@
         {% for i in visitors %}
 
         <tr>
-          <td>{{ i.full_name }}</td>
+          <td>{{ i.name }}</td>
           <td class="text-center">{{ i.number_of_visits|intcomma }} </td> 
         </tr>
         
