@@ -22,6 +22,8 @@ urlpatterns = [
     url(r'^api/', include('api.urls')),
     url(r'^docs/', schema_view),
     url(r'^statistics/$', views.statistics),
+    url(r'^prueba/$', views.statistics_api),
+
     url(r'^about/', views.about, name='about'),
     # url(r'^search/', include('haystack.urls')),
     url(r'^', include('visitors.urls', namespace="visitors")),

@@ -1,5 +1,6 @@
 import datetime
 import csv
+import json
 
 from collections import Counter
 from django.db.models import Count
@@ -11,13 +12,16 @@ from django.shortcuts import render
 from django.shortcuts import redirect
 from django.core.paginator import PageNotAnInteger, EmptyPage
 from django.core.paginator import InvalidPage
+from django.core.serializers.json import DjangoJSONEncoder
+
+from django.core import serializers
 from django.http import Http404
 from django.http import HttpResponse
 from rest_framework.renderers import JSONRenderer
 from haystack.query import SearchQuerySet
 from django.views.decorators.csrf import csrf_exempt
 
-from visitors.models import Visitor, Statistic
+from visitors.models import Visitor, Statistic, Statistic_detail
 from visitors.forms import ManoloForm
 from visitors.utils import Paginator, get_user_profile
 
@@ -45,7 +49,6 @@ def index(request):
     )
 
 
-
 def about(request):
     user_profile = get_user_profile(request)
     return render(
@@ -56,12 +59,9 @@ def about(request):
 
 def statistics(request):
     user_profile = get_user_profile(request)
-    visitors = Statistic.objects.all()
-  
-    
-    #visitors = list(Visitor.objects.all().values_list("full_name"))
-    #visitors = Counter(visitors).most_common()[:5]
-    #visitors = [ "%s %s" % x for x in visitors]
+    visitors = Statistic_detail.objects.all()
+
+
     return render(
         request,
         "statistics.html",
@@ -71,6 +71,10 @@ def statistics(request):
         },
     )
 
+def statistics_api(request):  
+    user_profile = get_user_profile(request)  
+    stats = Statistic.objects.all()[0]
+    return HttpResponse(stats.data)
 
 
 @csrf_exempt
