@@ -12,20 +12,4 @@ class Migration(migrations.Migration):
     ]
 
     operations = [
-        migrations.AlterField(
-            model_name='visitor',
-            name='full_name',
-            field=models.CharField(db_index=True, 
-            help_text='Full name of visitor', max_length=250),
-        ),
-       # migrations.AlterField(
-       #     model_name='visitor',
-       #     name='institution',
-       #     field=models.CharField(db_index=True, help_text='Institution visited', max_length=250, null=True),
-       # ),
-       # migrations.AlterField(
-       #     model_name='visitor',
-       #     name='modified',
-       #     field=models.DateTimeField(auto_now=True, db_index=True),
-       # ),
     ]
