@@ -105,7 +105,6 @@ class Subscriber(models.Model):
     )
 
 
-
 class Statistic(models.Model):
     data = models.TextField(null=True)
 

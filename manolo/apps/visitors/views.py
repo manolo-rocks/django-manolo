@@ -52,11 +52,10 @@ def about(request):
         {'user_profile': user_profile},
     )
 
+
 def statistics(request):
     user_profile = get_user_profile(request)
     visitors = Statistic_detail.objects.all()
-
-
     return render(
         request,
         "statistics.html",
