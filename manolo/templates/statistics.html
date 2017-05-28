@@ -108,7 +108,7 @@ svg.append("text")
     .attr("dy", ".75em")
     .text("Número de visitas");    
 
-d3.json("/prueba/", function(error, root) {
+d3.json("/statistics_api/", function(error, root) {
   if (error) throw error;
 
   partition.nodes(root);
