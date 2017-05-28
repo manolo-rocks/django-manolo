@@ -1,20 +1,12 @@
 import datetime
 import csv
-import json
-
-from collections import Counter
-from django.db.models import Count
-from django.core.management import call_command
-
-
+import logging
 
 from django.shortcuts import render
 from django.shortcuts import redirect
 from django.core.paginator import PageNotAnInteger, EmptyPage
 from django.core.paginator import InvalidPage
-from django.core.serializers.json import DjangoJSONEncoder
 
-from django.core import serializers
 from django.http import Http404
 from django.http import HttpResponse
 from rest_framework.renderers import JSONRenderer
@@ -24,6 +16,9 @@ from django.views.decorators.csrf import csrf_exempt
 from visitors.models import Visitor, Statistic, Statistic_detail
 from visitors.forms import ManoloForm
 from visitors.utils import Paginator, get_user_profile
+
+
+logger = logging.getLogger(__name__)
 
 
 class JSONResponse(HttpResponse):
@@ -71,10 +66,15 @@ def statistics(request):
         },
     )
 
-def statistics_api(request):  
-    user_profile = get_user_profile(request)  
-    stats = Statistic.objects.all()[0]
-    return HttpResponse(stats.data)
+
+def statistics_api(request):
+    try:
+        stats = Statistic.objects.all()[0]
+        data = stats.data
+    except IndexError:
+        logger.warning("Need to compute statistics")
+        data = '{"error": "no data"}'
+    return HttpResponse(data)
 
 
 @csrf_exempt
