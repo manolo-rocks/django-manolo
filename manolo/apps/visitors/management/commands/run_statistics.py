@@ -21,7 +21,7 @@ def run_statistics():
     all_visitor_names_unique = set(all_visitor_names)
     print(len(all_visitor_names_unique))
 
-    visitors = Visitor.objects.all().values_list(
+    visitors = Visitor.objects.all().exclude(full_name=",").values_list(
         "full_name",
     ).annotate(
         the_count=Count("full_name"),
