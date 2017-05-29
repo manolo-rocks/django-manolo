@@ -15,7 +15,7 @@ class Command(BaseCommand):
 
 
 def run_statistics():
-    all_visitor_names = Visitor.objects.all().values_list(
+    all_visitor_names = Visitor.objects.all().exclude(full_name=",").values_list(
         "full_name", flat=True,
     )
     all_visitor_names_unique = set(all_visitor_names)
