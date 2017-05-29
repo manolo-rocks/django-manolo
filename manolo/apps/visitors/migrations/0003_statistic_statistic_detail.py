@@ -8,17 +8,10 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('visitors', '0003_auto_20170322_0237'),
+        ('visitors', '0002_subscriber'),
     ]
 
     operations = [
-        migrations.CreateModel(
-            name='Statistic',
-            fields=[
-                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('data', models.TextField(null=True)),
-            ],
-        ),
         migrations.CreateModel(
             name='Statistic_detail',
             fields=[
