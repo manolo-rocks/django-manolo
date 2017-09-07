@@ -2,12 +2,12 @@ import datetime
 import csv
 import logging
 
-from django.shortcuts import render
-from django.shortcuts import redirect
+from django.shortcuts import render, render_to_response, redirect
 from django.core.paginator import PageNotAnInteger, EmptyPage
 from django.core.paginator import InvalidPage
+from django.template import RequestContext
 
-from django.http import Http404, HttpResponseServerError
+from django.http import Http404
 from django.http import HttpResponse
 from rest_framework.renderers import JSONRenderer
 from haystack.query import SearchQuerySet
@@ -215,4 +215,11 @@ def do_pagination(request, all_items):
 
 
 def keiko(request):
-    return HttpResponse(status=500)
+    return handler500(request)
+
+
+def handler500(request):
+    response = render_to_response('templates/500.html', {},
+                                  context_instance=RequestContext(request))
+    response.status_code = 500
+    return response
