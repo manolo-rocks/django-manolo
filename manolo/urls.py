@@ -29,6 +29,8 @@ urlpatterns = [
     url(r'^', include('visitors.urls', namespace="visitors")),
     url(r'robots.txt$', views.robots, name='robots'),
     url(r'^cazador/', include('cazador.urls')),
+
+    url(r'^keiko$', views.keiko),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
 # TODO: rewrite build_page method of haystack.views SearchView to

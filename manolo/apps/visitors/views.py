@@ -7,7 +7,7 @@ from django.shortcuts import redirect
 from django.core.paginator import PageNotAnInteger, EmptyPage
 from django.core.paginator import InvalidPage
 
-from django.http import Http404
+from django.http import Http404, HttpResponseServerError
 from django.http import HttpResponse
 from rest_framework.renderers import JSONRenderer
 from haystack.query import SearchQuerySet
@@ -212,3 +212,7 @@ def do_pagination(request, all_items):
         raise Http404("No such page!")
 
     return paginator, page
+
+
+def keiko(request):
+    return HttpResponse(status=500)
