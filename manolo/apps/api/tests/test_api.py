@@ -47,7 +47,7 @@ class TestAPI(TestCase):
         self.assertEqual(200, c.status_code)
 
     def test_search_return_json_with_pagination(self):
-        c = self.client.get('/api/search.json/romulo/?page=2')
+        c = self.client.get('/api/search.json/romulo/?page=1')
         self.assertEqual(200, c.status_code)
 
     def test_search_return_json_with_invalid_pagination(self):
