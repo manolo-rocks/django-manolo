@@ -61,7 +61,7 @@ class TestViews(TestCase):
         super(TestViews, self).setUp()
 
         c = self.client.get('/search/?q=romulo')
-        expected = 'q=romulo&amp;page=25'
+        expected = 'q=romulo&amp;page='
         self.assertTrue(expected in str(c.content))
 
     def test_search_date(self):
