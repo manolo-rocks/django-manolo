@@ -62,7 +62,7 @@ class TestViews(TestCase):
 
         c = self.client.get('/search/?q=romulo')
         expected = 'q=romulo&amp;page='
-        self.assertTrue(expected in str(c.content))
+        self.assertEqual("",  str(c.content))
 
     def test_search_date(self):
         c = self.client.get('/search_date/?q=30/05/2014')
