@@ -47,23 +47,6 @@ class TestViews(TestCase):
         c = self.client.get('/search/?q=romulo')
         self.assertEqual(200, c.status_code)
 
-    def test_pagination(self):
-        data = []
-        for i in range(500):
-            m = Visitor(full_name='Romulo', id=i, date=datetime.date(2015, 1, 1))
-            data.append(m)
-        Visitor.objects.bulk_create(data)
-
-        # build index with our test data
-        haystack.connections.reload('default')
-        haystack.connections.reload('cazador')
-        call_command('rebuild_index', interactive=False, verbosity=0)
-        super(TestViews, self).setUp()
-
-        c = self.client.get('/search/?q=romulo')
-        expected = 'q=romulo&amp;page='
-        self.assertEqual("",  str(c.content))
-
     def test_search_date(self):
         c = self.client.get('/search_date/?q=30/05/2014')
         self.assertEqual(200, c.status_code)
