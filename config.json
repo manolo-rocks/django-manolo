@@ -6,6 +6,10 @@
     "DB_PORT": "5432",
     "DB_HOST": "localhost",
     "premium_institutions": [
-        "minjus"
+        "minjus",
+        "minam",
+        "mincetur",
+        "mtc",
+        "ingemmet"
     ]
 }
