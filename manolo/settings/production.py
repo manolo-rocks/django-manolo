@@ -5,6 +5,9 @@ from django.core.exceptions import ImproperlyConfigured
 
 from .base import *
 
+STATIC_ROOT = "/var/www/manolo/static/"
+MEDIA_ROOT = "/var/www/manolo/media/"
+
 DEBUG = False
 
 ADMINS = (
