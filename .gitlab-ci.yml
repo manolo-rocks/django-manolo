@@ -1,7 +1,7 @@
 image: python:3.5-onbuild
 
 services:
-    - elasticsearch:1.7.3
+    - elasticsearch:1.7.2
     - postgres:9.6
 
 variables:
