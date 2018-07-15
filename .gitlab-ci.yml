@@ -1,0 +1,15 @@
+image: python:3.5-onbuild
+
+services:
+    - elasticsearch:1.7.3
+    - postgres:9.6
+
+variables:
+    POSTGRES_DB: manolo
+    POSTGRES_USER: runner
+    POSTGRES_PASSWORD: ""
+
+test:
+    script:
+      - pip install -r requirements/testing.txt
+      - make coverage

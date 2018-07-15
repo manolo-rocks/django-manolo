@@ -86,6 +86,8 @@ def search(request):
     all_items_standard = form.search(premium=False)
 
     if request.user.is_authenticated() and user_profile['expired'] is False:
+        request.user.subscriber.credits -= 1
+        request.user.subscriber.save()
         all_items = all_items_premium
         extra_premium_results = 0
     else:
@@ -112,6 +114,7 @@ def search(request):
 
 
 def search_date(request):
+    """view"""
     user_profile = get_user_profile(request)
     if 'q' in request.GET:
         query = request.GET['q']
