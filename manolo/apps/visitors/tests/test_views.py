@@ -101,13 +101,12 @@ class TestViews(TestCase):
 
         # build index with our test data
         haystack.connections.reload('default')
-        haystack.connections.reload('cazador')
         call_command('rebuild_index', interactive=False, verbosity=0)
         super(TestViews, self).setUp()
 
         today_str = datetime.datetime.today().strftime("%d/%m/%Y")
 
-        self.client.login(username="testuser", password="12345")
+        self.client.login(username="john", password="smith")
         c = self.client.get('/search_date/?q=' + today_str)
         self.assertIn("ROMULO", str(c.content))
 
@@ -126,7 +125,7 @@ class TestViews(TestCase):
 
         today_str = datetime.datetime.today().strftime("%d/%m/%Y")
 
-        self.client.login(username="testuser", password="12345")
+        self.client.login(username="john", password="smith")
         c = self.client.get('/search_date/?q=' + today_str)
         self.assertNotIn("ROMULO", str(c.content))
 
@@ -149,8 +148,6 @@ class TestViews(TestCase):
 
         self.client.login(username="john", password="smith")
         c = self.client.get('/search_date/?q=' + old_date_str)
-        with open("/tmp/a.html", "w") as handle:
-            handle.write(str(c.content))
         self.assertIn("ROMULO", str(c.content))
 
     def setup_subscriber(self):
