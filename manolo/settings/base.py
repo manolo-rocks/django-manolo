@@ -199,13 +199,13 @@ LOGGING = {
         'file': {
             'level': 'INFO',
             'class': 'logging.FileHandler',
-            'filename': LOG_DIR + 'main.log',
+            'filename': LOG_DIR + 'manolo.rocks.main.log',
             'formatter': 'verbose',
         },
         'file_debug': {
             'level': 'DEBUG',
             'class': 'logging.FileHandler',
-            'filename': LOG_DIR + 'main.debug.log',
+            'filename': LOG_DIR + 'manolo.rocks.main.debug.log',
             'formatter': 'verbose',
         },
     },
