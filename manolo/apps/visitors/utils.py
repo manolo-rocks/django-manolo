@@ -85,7 +85,7 @@ def get_user_profile(request):
             expired = True
         elif user.subscriber.credits <= 30:
             about_to_expire = True
-        if user.subscriber.credits <= 0:
+        elif user.subscriber.credits <= 0:
             expired = True
 
     context = {
