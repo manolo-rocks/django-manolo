@@ -85,9 +85,11 @@ def search(request):
     all_items_premium = form.search(premium=True)
     all_items_standard = form.search(premium=False)
 
-    if request.user.is_authenticated() and user_profile['expired'] is False:
-        request.user.subscriber.credits -= 1
-        request.user.subscriber.save()
+    if request.user.is_authenticated() and "expired" in user_profile and \
+            user_profile["expired"] is False:
+        if len(all_items_premium) > 0:
+            request.user.subscriber.credits -= 1
+            request.user.subscriber.save()
         all_items = all_items_premium
         extra_premium_results = 0
     else:
@@ -147,6 +149,10 @@ def search_date(request):
         if can_show_results:
             date_str = datetime.datetime.strftime(query_date_obj, '%Y-%m-%d')
             results = SearchQuerySet().filter(date=date_str)
+
+            if len(results) > 0:
+                request.user.subscriber.credits -= 1
+                request.user.subscriber.save()
 
             all_items = results
             paginator, page = do_pagination(request, all_items)

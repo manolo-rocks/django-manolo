@@ -67,6 +67,7 @@ def get_user_profile(request):
     first_name = False
     about_to_expire = False
     expired = False
+    user = None
 
     if request.user.is_authenticated():
         user = request.user
@@ -85,12 +86,17 @@ def get_user_profile(request):
         if user.subscriber.credits <= 0:
             expired = True
 
-    return {
+    context = {
         'avatar': avatar,
         'first_name': first_name,
         'about_to_expire': about_to_expire,
         'expired': expired,
     }
+    if user:
+        context['credits'] = user.subscriber.credits - 1
+    else:
+        context['credits'] = 0
+    return context
 
 
 def fetch_and_save_avatar(user):
