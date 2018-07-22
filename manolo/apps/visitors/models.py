@@ -103,6 +103,7 @@ class Subscriber(models.Model):
     avatar = models.TextField(
         blank=True,
     )
+    credits = models.IntegerField(null=True)
 
 
 class Statistic(models.Model):

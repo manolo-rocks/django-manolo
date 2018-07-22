@@ -85,7 +85,11 @@ def search(request):
     all_items_premium = form.search(premium=True)
     all_items_standard = form.search(premium=False)
 
-    if request.user.is_authenticated() and user_profile['expired'] is False:
+    if request.user.is_authenticated() and "expired" in user_profile and \
+            user_profile["expired"] is False:
+        if len(all_items_premium) > 0:
+            request.user.subscriber.credits -= 1
+            request.user.subscriber.save()
         all_items = all_items_premium
         extra_premium_results = 0
     else:
@@ -112,6 +116,7 @@ def search(request):
 
 
 def search_date(request):
+    """view"""
     user_profile = get_user_profile(request)
     if 'q' in request.GET:
         query = request.GET['q']
@@ -119,7 +124,7 @@ def search_date(request):
             return redirect('/')
 
         try:
-            date_obj = datetime.datetime.strptime(query, '%d/%m/%Y').date()
+            query_date_obj = datetime.datetime.strptime(query, '%d/%m/%Y')
         except ValueError:
             results = "No se encontraron resultados."
             return render(
@@ -131,22 +136,39 @@ def search_date(request):
                     'user_profile': user_profile,
                 },
             )
+        six_months_ago = datetime.datetime.today() - datetime.timedelta(days=180)
 
-        date_str = datetime.datetime.strftime(date_obj, '%Y-%m-%d')
-        results = SearchQuerySet().filter(date=date_str)
+        if query_date_obj < six_months_ago:
+            can_show_results = True
+        else:
+            if request.user.subscriber.credits > 0:
+                can_show_results = True
+            else:
+                can_show_results = False
 
-        all_items = results
-        paginator, page = do_pagination(request, all_items)
+        if can_show_results:
+            date_str = datetime.datetime.strftime(query_date_obj, '%Y-%m-%d')
+            results = SearchQuerySet().filter(date=date_str)
 
-        return render(
-            request, "search/search.html",
-            {
+            if len(results) > 0:
+                request.user.subscriber.credits -= 1
+                request.user.subscriber.save()
+
+            all_items = results
+            paginator, page = do_pagination(request, all_items)
+            context = {
                 "paginator": paginator,
                 "page": page,
                 "query": query,
                 'user_profile': user_profile,
-            },
-        )
+            }
+        else:
+            context = {
+                "items": "Necesita comprar créditos para ver los resultados de búsqueda",
+                "query": query,
+                'user_profile': user_profile,
+            }
+        return render(request, "search/search.html", context)
     else:
         return redirect('/')
 
