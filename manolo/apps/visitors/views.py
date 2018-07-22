@@ -141,9 +141,13 @@ def search_date(request):
         if query_date_obj < six_months_ago:
             can_show_results = True
         else:
-            if request.user.subscriber.credits > 0:
-                can_show_results = True
-            else:
+            try:
+                if request.user.subscriber.credits > 0:
+                    can_show_results = True
+                else:
+                    can_show_results = False
+            except AttributeError:
+                # user has no subscriber
                 can_show_results = False
 
         if can_show_results:
