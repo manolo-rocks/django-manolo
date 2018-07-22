@@ -1,14 +1,15 @@
 image: python:3.5-onbuild
 
 services:
-    - elasticsearch:1.7.2
+    - name: elasticsearch:1.7.2
+      alias: elasticsearch
     - postgres:9.6
 
 variables:
     POSTGRES_DB: manolo
     POSTGRES_USER: runner
     POSTGRES_PASSWORD: ""
-    ELASTICSEARCH_URL "http://elasticsearch:9200"
+    ELASTICSEARCH_URL: "http://elasticsearch:9200"
 
 test:
     script:
