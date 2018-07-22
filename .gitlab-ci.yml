@@ -16,4 +16,4 @@ test:
       - pip install -r requirements/testing.txt
       - make coverage-gitlab
       - coverage report -m
-      - coverage report html
+      - coverage html
