@@ -4,21 +4,22 @@ from django.test import TestCase
 from django.test.client import Client
 from django.core.management import call_command
 from django.test.utils import override_settings
+from django.contrib.auth.models import User
 import haystack
 
-from visitors.models import Visitor
+from visitors.models import Visitor, Subscriber
 
 
 TEST_INDEX = {
     'default': {
         'ENGINE': 'haystack.backends.elasticsearch_backend.ElasticsearchSearchEngine',
-        'URL': 'http://127.0.0.1:9200/',
+        'URL': 'http://elasticsearch:9200/',
         'INDEX_NAME': 'test_haystack',
         'EXCLUDED_INDEXES': ['cazador.search_indexes.CazadorIndex'],
     },
     'cazador': {
         'ENGINE': 'haystack.backends.elasticsearch_backend.ElasticsearchSearchEngine',
-        'URL': 'http://127.0.0.1:9200/',
+        'URL': 'http://elasticsearch:9200/',
         'INDEX_NAME': 'test_cazador',
         'EXCLUDED_INDEXES': ['visitors.search_indexes.VisitorIndex'],
     }
@@ -91,3 +92,66 @@ class TestViews(TestCase):
     def test_search_date_invalid4(self):
         c = self.client.get('/search_date/?q=30/05/2012&page=abadca')
         self.assertEqual(404, c.status_code)
+
+    def test_search_date__client_has_valid_account(self):
+        """can show recent record"""
+        self.setup_subscriber()
+
+        Visitor.objects.create(full_name='Romulo', date=datetime.datetime.today())
+
+        # build index with our test data
+        haystack.connections.reload('default')
+        call_command('rebuild_index', interactive=False, verbosity=0)
+        super(TestViews, self).setUp()
+
+        today_str = datetime.datetime.today().strftime("%d/%m/%Y")
+
+        self.client.login(username="john", password="smith")
+        c = self.client.get('/search_date/?q=' + today_str)
+        self.assertIn("ROMULO", str(c.content))
+
+    def test_search_date__client_has_invalid_account__recent_record(self):
+        """Cannot show recent record"""
+        self.setup_subscriber()
+        self.subscriber.credits = 0
+        self.subscriber.save()
+
+        Visitor.objects.create(full_name='Romulo', date=datetime.datetime.today())
+
+        # build index with our test data
+        haystack.connections.reload('default')
+        call_command('rebuild_index', interactive=False, verbosity=0)
+        super(TestViews, self).setUp()
+
+        today_str = datetime.datetime.today().strftime("%d/%m/%Y")
+
+        self.client.login(username="john", password="smith")
+        c = self.client.get('/search_date/?q=' + today_str)
+        self.assertNotIn("ROMULO", str(c.content))
+
+    def test_search_date__client_has_invalid_account__old_record(self):
+        """Can show old record"""
+        self.setup_subscriber()
+        self.subscriber.credits = 0
+        self.subscriber.save()
+
+        old_date = datetime.datetime.today() - datetime.timedelta(days=365)
+        Visitor.objects.create(full_name='Romulo', date=old_date)
+
+        # build index with our test data
+        haystack.connections.reload('default')
+        haystack.connections.reload('cazador')
+        call_command('rebuild_index', interactive=False, verbosity=0)
+        super(TestViews, self).setUp()
+
+        old_date_str = old_date.strftime("%d/%m/%Y")
+
+        self.client.login(username="john", password="smith")
+        c = self.client.get('/search_date/?q=' + old_date_str)
+        self.assertIn("ROMULO", str(c.content))
+
+    def setup_subscriber(self):
+        self.user = User.objects.create_superuser("john", "john@example.com", "smith")
+        self.subscriber = Subscriber.objects.create(
+            user=self.user, expiration=datetime.datetime.today(), credits=600)
+

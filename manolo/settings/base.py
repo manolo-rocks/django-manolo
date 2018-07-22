@@ -157,33 +157,83 @@ HAYSTACK_CONNECTIONS = {
 }
 HAYSTACK_DEFAULT_OPERATOR = 'AND'
 
-# A sample logging configuration. The only tangible logging
-# performed by this configuration is to send an email to
-# the site admins on every HTTP 500 error when DEBUG=False.
-# See http://docs.djangoproject.com/en/dev/topics/logging for
-# more details on how to customize your logging configuration.
+SIMPLE_LOG_FORMAT = '%(levelname)s %(message)s'
+VERBOSE_LOG_FORMAT = '[%(asctime)s] [%(levelname)s] [%(threadName)s] ' \
+                     '[%(name)s] [%(lineno)d] %(message)s'
+
+LOG_DIR = "/tmp/"
+
 LOGGING = {
     'version': 1,
-    'disable_existing_loggers': False,
+    'disable_existing_loggers': True,
+    'formatters': {
+        'verbose': {
+            'format': VERBOSE_LOG_FORMAT
+        },
+        'simple': {
+            'format': SIMPLE_LOG_FORMAT
+        },
+    },
+
     'filters': {
         'require_debug_false': {
             '()': 'django.utils.log.RequireDebugFalse'
         }
     },
+
     'handlers': {
+        'null': {
+            'level': 'DEBUG',
+            'class': 'logging.NullHandler',
+        },
+        'terminal': {
+            'level': 'DEBUG',
+            'class': 'logging.StreamHandler',
+            'formatter': 'verbose',
+        },
         'mail_admins': {
             'level': 'ERROR',
+            'class': 'django.utils.log.AdminEmailHandler',
             'filters': ['require_debug_false'],
-            'class': 'django.utils.log.AdminEmailHandler'
-        }
-    },
-    'loggers': {
-        'django.request': {
-            'handlers': ['mail_admins'],
-            'level': 'ERROR',
-            'propagate': True,
         },
-    }
+        'file': {
+            'level': 'INFO',
+            'class': 'logging.FileHandler',
+            'filename': LOG_DIR + 'main.log',
+            'formatter': 'verbose',
+        },
+        'file_debug': {
+            'level': 'DEBUG',
+            'class': 'logging.FileHandler',
+            'filename': LOG_DIR + 'main.debug.log',
+            'formatter': 'verbose',
+        },
+    },
+
+    'loggers': {
+        'django': {
+            'handlers': ['null'],
+            'propagate': True,
+            'level': 'INFO',
+        },
+        'django.request': {
+            'handlers': ['terminal', 'mail_admins'],
+            'level': 'ERROR',
+            'propagate': False,
+        },
+        'visitors': {
+            'handlers': ['terminal', 'file', 'mail_admins'],
+            'level': 'DEBUG',
+        },
+        'api': {
+            'handlers': ['terminal', 'file', 'mail_admins'],
+            'level': 'DEBUG',
+        },
+        'cazador': {
+            'handlers': ['terminal', 'file', 'mail_admins'],
+            'level': 'DEBUG',
+        },
+    },
 }
 
 REST_FRAMEWORK = {
@@ -217,3 +267,4 @@ CRISPY_TEMPLATE_PACK = 'bootstrap3'
 ACCOUNT_ACTIVATION_DAYS = 7  # One-week activation window; you may, of course, use a different value.
 REGISTRATION_AUTO_LOGIN = True  # Automatically log the user in.
 LOGIN_REDIRECT_URL = '/'
+

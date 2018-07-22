@@ -48,8 +48,6 @@ def get_secret(setting, secrets=secrets):
         error_msg = "Set the {0} environment variable".format(setting)
         raise ImproperlyConfigured(error_msg)
 
-SECRET_KEY = get_secret('SECRET_KEY')
-
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
@@ -60,3 +58,10 @@ DATABASES = {
         'PORT': get_secret('DB_PORT'),
         }
 }
+
+EMAIL_HOST = get_secret("EMAIL_HOST")
+EMAIL_PORT = get_secret("EMAIL_PORT")
+EMAIL_HOST_USER = get_secret("EMAIL_HOST_USER")
+EMAIL_HOST_PASSWORD = get_secret("EMAIL_HOST_PASSWORD")
+SERVER_EMAIL = get_secret("SERVER_EMAIL")
+SUBMIT_EMAIL_LIST = get_secret("SUBMIT_EMAIL_LIST")

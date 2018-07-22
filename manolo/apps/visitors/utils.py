@@ -5,7 +5,6 @@ import base64
 from datetime import date
 import hashlib
 
-from django.shortcuts import redirect
 from django.core.paginator import Paginator as DjangoPaginator
 import requests
 
@@ -67,30 +66,37 @@ def get_user_profile(request):
     avatar = False
     first_name = False
     about_to_expire = False
-    days_before_expiration = 1000
     expired = False
+    user = None
 
     if request.user.is_authenticated():
         user = request.user
+        try:
+            user.subscriber
+        except:
+            return {}
+
         if not user.subscriber.avatar:
             fetch_and_save_avatar(user)
         first_name = user.first_name
         avatar = user.subscriber.avatar
 
-        delta = user.subscriber.expiration - date.today()
-        days_before_expiration = delta.days
-        if days_before_expiration < 8:
+        if user.subscriber.credits <= 30:
             about_to_expire = True
-        if days_before_expiration < 0:
+        if user.subscriber.credits <= 0:
             expired = True
 
-    return {
+    context = {
         'avatar': avatar,
         'first_name': first_name,
         'about_to_expire': about_to_expire,
-        'days_before_expiration': days_before_expiration,
         'expired': expired,
     }
+    if user:
+        context['credits'] = user.subscriber.credits - 1
+    else:
+        context['credits'] = 0
+    return context
 
 
 def fetch_and_save_avatar(user):
