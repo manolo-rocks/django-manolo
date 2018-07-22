@@ -12,4 +12,4 @@ variables:
 test:
     script:
       - pip install -r requirements/testing.txt
-      - make coverage
+      - make coverage-gitlab

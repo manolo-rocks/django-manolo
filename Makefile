@@ -45,6 +45,10 @@ coverage: test
 	coverage report -m
 	coverage html
 
+coverage-gitlab:
+	coverage run --source="manolo" manage.py test -v 2 --noinput --testrunner="xmlrunner.extra.djangotestrunner.XMLTestRunner" api.tests visitors.tests cazador.tests --settings=manolo.settings.testing
+	coverage report --skip-covered
+
 docs:
 	rm -f docs/django-manolo.rst
 	rm -f docs/modules.rst
