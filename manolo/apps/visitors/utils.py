@@ -81,7 +81,9 @@ def get_user_profile(request):
         first_name = user.first_name
         avatar = user.subscriber.avatar
 
-        if user.subscriber.credits <= 30:
+        if not user.subscriber:
+            expired = True
+        elif user.subscriber.credits <= 30:
             about_to_expire = True
         if user.subscriber.credits <= 0:
             expired = True
