@@ -150,9 +150,10 @@ def search_date(request):
             date_str = datetime.datetime.strftime(query_date_obj, '%Y-%m-%d')
             results = SearchQuerySet().filter(date=date_str)
 
-            if len(results) > 0 and request.user.subscriber.credits is not None:
-                request.user.subscriber.credits -= 1
-                request.user.subscriber.save()
+            if len(results) > 0 and request.user.subscriber:
+                if request.user.subscriber.credits is not None:
+                    request.user.subscriber.credits -= 1
+                    request.user.subscriber.save()
 
             all_items = results
             paginator, page = do_pagination(request, all_items)
