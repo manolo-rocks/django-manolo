@@ -94,10 +94,13 @@ def get_user_profile(request):
         'about_to_expire': about_to_expire,
         'expired': expired,
     }
-    context["credits"] = user.subscriber.credits
-    if user and user.subscriber.credits is not None:
-        if context['credits'] < 0:
-            context['credits'] = 0
+    if user:
+        context["credits"] = user.subscriber.credits
+        if user and user.subscriber.credits is not None:
+            if context['credits'] < 0:
+                context['credits'] = 0
+    else:
+        context["credits"] = 0
     return context
 
 
