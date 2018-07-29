@@ -60,7 +60,7 @@ def search(request, query):
     """
     query_request = QueryDict('q={}'.format(query))
     form = ApiForm(query_request)
-    if request.user.is_authenticated():
+    if request.user.is_authenticated:
         all_items = form.search(premium=True)
     else:
         all_items = form.search(premium=False)
@@ -85,7 +85,7 @@ def search(request, query):
 def search_tsv(request, query):
     query_request = QueryDict('q={}'.format(query))
     form = ApiForm(query_request)
-    if request.user.is_authenticated():
+    if request.user.is_authenticated:
         all_items = form.search(premium=True)
     else:
         all_items = form.search(premium=False)

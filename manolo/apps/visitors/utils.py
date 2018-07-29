@@ -69,7 +69,7 @@ def get_user_profile(request):
     expired = False
     user = None
 
-    if request.user.is_authenticated():
+    if request.user.is_authenticated:
         user = request.user
         try:
             user.subscriber
