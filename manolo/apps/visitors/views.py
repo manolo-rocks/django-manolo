@@ -80,7 +80,7 @@ def statistics_api(request):
 def search(request):
     user_profile = get_user_profile(request)
     form = ManoloForm(request.GET)
-    query = request.GET['q']
+    query = request.GET.get('q')
 
     all_items_premium = form.search(premium=True)
     all_items_standard = form.search(premium=False)
