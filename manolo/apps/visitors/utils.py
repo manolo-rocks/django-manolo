@@ -83,10 +83,10 @@ def get_user_profile(request):
 
         if not user.subscriber or not user.subscriber.credits:
             expired = True
-        elif user.subscriber.credits <= 30:
-            about_to_expire = True
         elif user.subscriber.credits <= 0:
             expired = True
+        elif user.subscriber.credits <= 30:
+            about_to_expire = True
 
     context = {
         'avatar': avatar,
