@@ -150,6 +150,14 @@ class TestViews(TestCase):
         c = self.client.get('/search_date/?q=' + old_date_str)
         self.assertIn("ROMULO", str(c.content))
 
+    def test_search_view__user_1_credits(self):
+        self.setup_subscriber()
+        self.subscriber.credits = 1
+        self.subscriber.save()
+        self.client.login(username="john", password="smith")
+        c = self.client.get('/search_date/?q=2010-01-01')
+        self.assertIn("luego de usar 1", str(c.content))
+
     def setup_subscriber(self):
         self.user = User.objects.create_superuser("john", "john@example.com", "smith")
         self.subscriber = Subscriber.objects.create(
