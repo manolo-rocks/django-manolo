@@ -96,7 +96,9 @@ def get_user_profile(request):
     }
     context["credits"] = 0
     if user and user.subscriber.credits is not None:
-            context['credits'] = user.subscriber.credits - 1
+        context['credits'] = user.subscriber.credits - 1
+        if context['credits'] < 0:
+            context['credits'] = 0
     return context
 
 
