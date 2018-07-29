@@ -1,5 +1,9 @@
+import json
 import sys
+import os
 from os.path import join, abspath, dirname
+
+from django.core.exceptions import ImproperlyConfigured
 
 # PATH vars
 
@@ -12,7 +16,9 @@ sys.path.insert(0, root('apps'))
 
 DEBUG = True
 
-ADMINS = ()
+ADMINS = (
+    ('AniversarioPeru', 'aniversarioperu1@gmail.com'),
+)
 
 MANAGERS = ADMINS
 
@@ -268,3 +274,24 @@ ACCOUNT_ACTIVATION_DAYS = 7  # One-week activation window; you may, of course, u
 REGISTRATION_AUTO_LOGIN = True  # Automatically log the user in.
 LOGIN_REDIRECT_URL = '/'
 
+BASE_DIR = os.path.dirname(os.path.dirname(__file__))
+SECRETS_FILE = os.path.join(BASE_DIR, '..', 'config.json')
+
+with open(SECRETS_FILE) as f:
+    SECRETS = json.loads(f.read())
+
+def get_secret(setting, secrets=SECRETS):
+    try:
+        return secrets[setting]
+    except KeyError:
+        error_msg = "Set the {0} environment variable".format(setting)
+        raise ImproperlyConfigured(error_msg)
+
+
+# should be configured for others
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = SECRETS["EMAIL_HOST"]
+EMAIL_PORT = '587'
+EMAIL_HOST_USER = SECRETS['EMAIL_HOST_USER']
+EMAIL_HOST_PASSWORD = SECRETS["EMAIL_HOST_PASSWORD"]
+EMAIL_USE_TLS = True
