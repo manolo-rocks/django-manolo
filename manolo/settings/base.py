@@ -289,9 +289,10 @@ def get_secret(setting, secrets=SECRETS):
 
 
 # should be configured for others
-EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-EMAIL_HOST = SECRETS["EMAIL_HOST"]
-EMAIL_PORT = '587'
-EMAIL_HOST_USER = SECRETS['EMAIL_HOST_USER']
-EMAIL_HOST_PASSWORD = SECRETS["EMAIL_HOST_PASSWORD"]
-EMAIL_USE_TLS = True
+if sys.argv[1] != "test":
+    EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+    EMAIL_HOST = SECRETS["EMAIL_HOST"]
+    EMAIL_PORT = '587'
+    EMAIL_HOST_USER = SECRETS['EMAIL_HOST_USER']
+    EMAIL_HOST_PASSWORD = SECRETS["EMAIL_HOST_PASSWORD"]
+    EMAIL_USE_TLS = True
