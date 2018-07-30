@@ -1,13 +1,10 @@
 from datetime import datetime
 import csv
-import json
 from unidecode import unidecode
 import hashlib
-import re
 
 from django.core.management.base import BaseCommand
-from django.db.models import Count
-from visitors.models import Visitor, Statistic, Statistic_detail
+from visitors.models import Visitor
 
 
 class Command(BaseCommand):
@@ -42,7 +39,7 @@ def do_import(filename):
             }
             item = make_hash(item)
             hash_str = item["sha1"]
-            if hash_str in hash_str:
+            if hash_str in hashes:
                 continue
             queryset = Visitor.objects.filter(sha1=hash_str)
             if not queryset:
@@ -74,6 +71,7 @@ def get_id_document(row):
         id_document = row["id_document"]
     except KeyError:
         id_document = "dni"
+    return id_document
 
 
 def get_time_start(row):
