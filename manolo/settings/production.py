@@ -19,7 +19,15 @@ with open(SECRETS_FILE) as f:
     secrets = json.loads(f.read())
 
 SECRET_KEY = get_secret('SECRET_KEY')
-PREMIUM_INSTITUTIONS = get_secret('premium_institutions')
+
+PREMIUM_INSTITUTIONS = [
+    "minjus",
+    "minam",
+    "mincetur",
+    "mtc",
+    "ingemmet",
+    "perucompras",
+]
 
 DATABASES = {
     'default': {

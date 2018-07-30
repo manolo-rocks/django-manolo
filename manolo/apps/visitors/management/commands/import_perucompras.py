@@ -46,6 +46,7 @@ def do_import(filename):
                 host_title = row.get("cargo_contacto", "")
                 visitors.append(
                     Visitor(
+                        institution="perucompras",
                         sha1=hash_str,
                         full_name=item["full_name"],
                         entity=row["empresa"],
