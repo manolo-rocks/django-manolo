@@ -39,5 +39,6 @@ def do_update(filename):
             record = Visitor.objects.get(sha1=hash_str)
             if not record:
                 print("error, cannot find in db ", row)
+            else:
                 record.date = date_str
                 record.save()
