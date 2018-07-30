@@ -12,11 +12,11 @@ class Visitor(models.Model):
         max_length=40,
         null=True,
         help_text='Use it as identifier for any record regardless of'
-                  'origin. It is built with: date + id_number + time_start'
+                  'origin. It is built with: date + id_number + time_start',
+        db_index=True,
     )
 
-    full_name = models.CharField(
-        max_length=250,
+    full_name = models.TextField(
         help_text='Full name of visitor',
         db_index=True,
     )
@@ -40,14 +40,17 @@ class Visitor(models.Model):
         null=True,
     )
 
-    host_name = models.CharField(
-        max_length=250,
+    host_name = models.TextField(
         help_text='Name of person that receives visitor',
         null=True,
     )
 
-    reason = models.CharField(
-        max_length=250,
+    host_title = models.TextField(
+        help_text='Official title of host: Jefe, Director, etc',
+        null=True
+    )
+
+    reason = models.TextField(
         help_text='Reason behind the meeting. Some peruvian institutions have'
                   'it as `observación`.',
         null=True,
@@ -67,8 +70,7 @@ class Visitor(models.Model):
         null=True,
     )
 
-    id_number = models.CharField(
-        max_length=250,
+    id_number = models.TextField(
         help_text='Id number. It should be char field as some numbers begin with zero.',
         null=True,
     )
