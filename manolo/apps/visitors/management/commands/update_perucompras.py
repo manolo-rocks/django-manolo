@@ -36,9 +36,11 @@ def do_update(filename):
             }
             item = make_hash(item)
             hash_str = item["sha1"]
-            record = Visitor.objects.get(sha1=hash_str)
-            if not record:
+            try:
+                record = Visitor.objects.get(sha1=hash_str)
+            except Exception:
                 print("error, cannot find in db ", row)
-            else:
-                record.date = date_str
-                record.save()
+                continue
+
+            record.date = date_str
+            record.save()
