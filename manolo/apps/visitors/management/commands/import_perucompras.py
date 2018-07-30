@@ -50,6 +50,7 @@ def do_import(filename):
                 hashes.append(hash_str)
                 visitors.append(
                     Visitor(
+                        date=date_str,
                         institution="perucompras",
                         sha1=hash_str,
                         full_name=item["full_name"],
