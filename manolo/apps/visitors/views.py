@@ -2,13 +2,10 @@ import datetime
 import csv
 import logging
 
-from django.shortcuts import render
-from django.shortcuts import redirect
-from django.core.paginator import PageNotAnInteger, EmptyPage
-from django.core.paginator import InvalidPage
+from django.shortcuts import render, redirect
+from django.core.paginator import PageNotAnInteger, EmptyPage, InvalidPage
 
-from django.http import Http404
-from django.http import HttpResponse
+from django.http import Http404, HttpResponse
 from rest_framework.renderers import JSONRenderer
 from haystack.query import SearchQuerySet
 from django.views.decorators.csrf import csrf_exempt
