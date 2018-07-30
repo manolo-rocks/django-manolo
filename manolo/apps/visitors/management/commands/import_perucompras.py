@@ -22,6 +22,7 @@ class Command(BaseCommand):
 
 def do_import(filename):
     visitors = []
+    hashes = []
     with open(filename, "r") as csvfile:
         reader = csv.DictReader(csvfile)
         for row in reader:
@@ -41,9 +42,12 @@ def do_import(filename):
             }
             item = make_hash(item)
             hash_str = item["sha1"]
+            if hash_str in hash_str:
+                continue
             queryset = Visitor.objects.filter(sha1=hash_str)
             if not queryset:
                 host_title = row.get("cargo_contacto", "")
+                hashes.append(hash_str)
                 visitors.append(
                     Visitor(
                         institution="perucompras",
