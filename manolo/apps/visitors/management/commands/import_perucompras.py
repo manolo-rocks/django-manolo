@@ -28,6 +28,7 @@ def do_import(filename):
             date_str = get_visit_date_str(row)
             time_start = get_time_start(row)
             time_end = get_time_end(row)
+            id_document = get_id_document(row)
 
             item = {
                 "institution": "perucompras",
@@ -49,7 +50,7 @@ def do_import(filename):
                         full_name=item["full_name"],
                         entity=row["empresa"],
                         office=row["area"],
-                        id_document="dni",
+                        id_document=id_document,
                         id_number=item["id_number"],
                         reason=row["motivo"],
                         host_name=row["contacto"],
@@ -60,6 +61,13 @@ def do_import(filename):
                 )
     Visitor.objects.bulk_create(visitors)
     print("creating {} visitors".format(len(visitors)))
+
+
+def get_id_document(row):
+    try:
+        id_document = row["id_document"]
+    except KeyError:
+        id_document = "dni"
 
 
 def get_time_start(row):
@@ -92,6 +100,8 @@ def get_visit_date(fecha_inicio):
     :param fecha_inicio:
     :return: date string YYYY-mm-dd
     """
+    if not fecha_inicio.strip():
+        return ""
     try:
         date_obj = datetime.strptime(fecha_inicio, "%m/%d/%y %H:%M %p")
     except ValueError:
@@ -101,7 +111,10 @@ def get_visit_date(fecha_inicio):
             try:
                 date_obj = datetime.strptime(fecha_inicio, "%m/%d/%Y %H:%M")
             except ValueError:
-                date_obj = datetime.strptime(fecha_inicio, "%m/%d/%Y")
+                try:
+                    date_obj = datetime.strptime(fecha_inicio, "%m/%d/%Y")
+                except ValueError:
+                    date_obj = datetime.strptime(fecha_inicio, "%d/%m/%Y %H:%M")
     return date_obj.strftime("%Y-%m-%d")
 
 
@@ -119,7 +132,10 @@ def get_time(fecha):
             try:
                 date_obj = datetime.strptime(fecha, "%m/%d/%Y %H:%M")
             except ValueError:
-                date_obj = datetime.strptime(fecha, "%H:%M:%S %p")
+                try:
+                    date_obj = datetime.strptime(fecha, "%H:%M:%S %p")
+                except ValueError:
+                    date_obj = datetime.strptime(fecha, "%d/%m/%Y %H:%M")
     return date_obj.strftime("%H:%M")
 
 
