@@ -113,7 +113,6 @@ def search(request):
 
 
 def search_date(request):
-    """view"""
     user_profile = get_user_profile(request)
     if 'q' in request.GET:
         query = request.GET['q']
@@ -147,10 +146,17 @@ def search_date(request):
                 # user has no subscriber
                 can_show_results = False
 
-        if can_show_results:
-            date_str = datetime.datetime.strftime(query_date_obj, '%Y-%m-%d')
-            results = SearchQuerySet().filter(date=date_str)
+        date_str = datetime.datetime.strftime(query_date_obj, '%Y-%m-%d')
+        results = SearchQuerySet().filter(date=date_str)
+        paginator, page = do_pagination(request, results)
 
+        context = {
+            "paginator": paginator,
+            "query": query,
+            'user_profile': user_profile,
+        }
+
+        if can_show_results:
             try:
                 if len(results) > 0 and request.user.subscriber:
                     if request.user.subscriber.credits is not None:
@@ -158,21 +164,9 @@ def search_date(request):
                         request.user.subscriber.save()
             except AttributeError:
                 pass
-
-            all_items = results
-            paginator, page = do_pagination(request, all_items)
-            context = {
-                "paginator": paginator,
-                "page": page,
-                "query": query,
-                'user_profile': user_profile,
-            }
+            context["page"] = page
         else:
-            context = {
-                "items": "Necesita comprar créditos para ver los resultados de búsqueda",
-                "query": query,
-                'user_profile': user_profile,
-            }
+            context["extra_premium_results"] = len(results)
         return render(request, "search/search.html", context)
     else:
         return redirect('/')
