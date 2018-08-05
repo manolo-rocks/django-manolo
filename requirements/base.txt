@@ -4,7 +4,7 @@
 
 pyprind==2.9.1
 psycopg2==2.7.3.2
-Django==2.0.7
+Django==2.1.0
 Jinja2==2.7.3
 MarkupSafe==0.23
 Markdown==2.6.2
