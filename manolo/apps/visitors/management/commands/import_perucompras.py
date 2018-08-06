@@ -8,7 +8,18 @@ from visitors.models import Visitor
 
 
 class Command(BaseCommand):
-    help = 'imports records from perucompras.gob.pe from CSV files'
+    help = 'imports records from perucompras.gob.pe from CSV files ' \
+           'headers:' \
+           '- nombre_visita' \
+           '- fecha_inicio' \
+           '- fecha_fin' \
+           '- documento' \
+           '- empresa' \
+           '- area' \
+           '- motivo' \
+           '- contacto' \
+           '- cargo_contacto' \
+           '- dni'
 
     def add_arguments(self, parser):
         parser.add_argument("filename")
