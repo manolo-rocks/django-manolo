@@ -109,6 +109,7 @@ class TestViews(TestCase):
         self.client.login(username="john", password="smith")
         c = self.client.get('/search_date/?q=' + today_str)
         self.assertIn("ROMULO", str(c.content))
+        self.assertNotIn("registros adicionales", str(c.content))
 
     def test_search_date__client_has_invalid_account__recent_record(self):
         """Cannot show recent record"""
@@ -128,6 +129,7 @@ class TestViews(TestCase):
         self.client.login(username="john", password="smith")
         c = self.client.get('/search_date/?q=' + today_str)
         self.assertNotIn("ROMULO", str(c.content))
+        self.assertIn("registros adicionales", str(c.content))
 
     def test_search_date__client_has_invalid_account__old_record(self):
         """Can show old record"""
