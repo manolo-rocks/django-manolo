@@ -37,7 +37,7 @@
        También puedes hacer búsquedas haciendo click sobre cada uno de los
        resultados <span class="badge"><b>{{ paginator.object_list|length|intcomma }}</b></span>
 
-       {% load staticfiles %}
+       {% load static %}
        <p class="pull-right">
          <a href="/api/search.tsv/{{ query }}/?page={{ page.number }}">
            <img title="Descarga datos en formato TSV" width="32px" src="{% static 'img/tsv.svg' %}" /></a>

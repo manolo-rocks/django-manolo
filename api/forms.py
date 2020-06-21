@@ -1,9 +1,9 @@
 import datetime
 
-from haystack.forms import SearchForm
+from django.forms import Form
 
 
-class ApiForm(SearchForm):
+class ApiForm(Form):
     def search(self, premium):
         sqs = super(ApiForm, self).search()
 

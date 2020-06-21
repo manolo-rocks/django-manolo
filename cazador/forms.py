@@ -1,7 +1,7 @@
-from haystack.forms import HighlightedSearchForm
+from django.forms import Form
 
 
-class CazadorForm(HighlightedSearchForm):
+class CazadorForm(Form):
     def search(self):
         sqs = super(CazadorForm, self).search()
 

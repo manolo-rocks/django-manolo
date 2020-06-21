@@ -1,10 +1,10 @@
 import urllib
 
-from django.shortcuts import render_to_response
+from django.shortcuts import render
 from django.views.decorators.csrf import csrf_exempt
 
-from manolo.apps.cazador.forms import CazadorForm
-from manolo.apps.visitors.views import do_pagination
+from cazador.forms import CazadorForm
+from visitors.views import do_pagination
 
 
 @csrf_exempt
@@ -12,7 +12,7 @@ def index(request):
     try:
         original_query = request.GET['q']
     except:
-        return render_to_response("cazador/index.html")
+        return render("cazador/index.html")
 
     all_items = []
     query_list = original_query.splitlines()
@@ -25,7 +25,7 @@ def index(request):
     search_queryset = list(set(all_items))
     paginator, page = do_pagination(request, search_queryset)
 
-    return render_to_response("cazador/results.html",
+    return render("cazador/results.html",
                   {
                       "paginator": paginator,
                       "page": page,

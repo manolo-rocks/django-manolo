@@ -17,4 +17,4 @@ beautifulsoup4==4.3.2
 requests>=2.3.0
 dataset==0.5.5
 SQLAlchemy==0.9.8
-django-debug-toolbar==1.9.1
+django-debug-toolbar==2.2

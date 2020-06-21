@@ -7,7 +7,6 @@ from django.core.paginator import PageNotAnInteger, EmptyPage, InvalidPage
 
 from django.http import Http404, HttpResponse
 from rest_framework.renderers import JSONRenderer
-from haystack.query import SearchQuerySet
 from django.views.decorators.csrf import csrf_exempt
 
 from visitors.models import Visitor, Statistic, Statistic_detail

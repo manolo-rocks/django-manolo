@@ -4,7 +4,7 @@ from tqdm import tqdm
 from django.core.management.base import BaseCommand, CommandError
 
 from cazador.models import Cazador
-from manolo.apps.cazador.utils import shrink_url_in_string
+from cazador import shrink_url_in_string
 
 
 

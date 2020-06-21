@@ -6,19 +6,12 @@ from os.path import join, abspath, dirname
 from django.core.exceptions import ImproperlyConfigured
 
 # PATH vars
-
-here = lambda *x: join(abspath(dirname(__file__)), *x)
-PROJECT_ROOT = here("..")
-root = lambda *x: join(abspath(PROJECT_ROOT), *x)
-
-sys.path.insert(0, root('apps'))
-
-
 DEBUG = True
 
 ADMINS = (
     ('AniversarioPeru', 'aniversarioperu1@gmail.com'),
 )
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 MANAGERS = ADMINS
 
@@ -51,7 +44,9 @@ USE_TZ = True
 
 # Absolute filesystem path to the directory that will hold user-uploaded files.
 # Example: "/var/www/example.com/media/"
-MEDIA_ROOT = root('assets', 'uploads')
+MEDIA_ROOT = BASE_DIR + '/../run/devdata/media/'
+LOG_DIR = BASE_DIR + "/../run/devdata/logs/"
+STATIC_ROOT = BASE_DIR + '/../run/devdata/static/'
 
 # URL that handles the media served from MEDIA_ROOT. Make sure to use a
 # trailing slash.
@@ -62,7 +57,6 @@ MEDIA_URL = '/media/'
 # Don't put anything in this directory yourself; store your static files
 # in apps' "static/" subdirectories and in STATICFILES_DIRS.
 # Example: "/home/media/media.lawrence.com/static/"
-STATIC_ROOT = root('static')
 
 # URL prefix for static files.
 # Example: "http://media.lawrence.com/static/"
@@ -70,7 +64,8 @@ STATIC_URL = '/static/'
 
 # Additional locations of static files
 STATICFILES_DIRS = (
-    root('assets'),
+    os.path.join(BASE_DIR, '..', 'manolo/media'),
+    os.path.join(BASE_DIR, '..', 'manolo/static'),
 )
 
 # List of finder classes that know how to find static files in
@@ -91,6 +86,7 @@ TEMPLATES = [
             'context_processors': [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
+                'django.contrib.messages.context_processors.messages',
             ],
             # needed for building sitemaps
             'loaders': [
@@ -129,13 +125,12 @@ DJANGO_APPS = (
     'django.contrib.admin',
 
     'django.contrib.humanize',
-    'bootstrap3',
+    'bootstrap4',
     'bootstrap_themes',
     'crispy_forms',
 
     'registration',
     'rest_framework',
-    'haystack',
     'rest_framework_swagger',
 )
 
@@ -167,7 +162,6 @@ SIMPLE_LOG_FORMAT = '%(levelname)s %(message)s'
 VERBOSE_LOG_FORMAT = '[%(asctime)s] [%(levelname)s] [%(threadName)s] ' \
                      '[%(name)s] [%(lineno)d] %(message)s'
 
-LOG_DIR = "/tmp/"
 
 LOGGING = {
     'version': 1,
@@ -274,7 +268,6 @@ ACCOUNT_ACTIVATION_DAYS = 7  # One-week activation window; you may, of course, u
 REGISTRATION_AUTO_LOGIN = True  # Automatically log the user in.
 LOGIN_REDIRECT_URL = '/'
 
-BASE_DIR = os.path.dirname(os.path.dirname(__file__))
 SECRETS_FILE = os.path.join(BASE_DIR, '..', 'config.json')
 
 with open(SECRETS_FILE) as f:
