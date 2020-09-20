@@ -106,6 +106,11 @@ files:
         ]
     }
 
+Releases
+========
+
+* 2018-07-22. Changed suscription to credit based
+
 .. |Pypi index| image:: https://badge.fury.io/py/django-manolo.svg
    :target: https://badge.fury.io/py/django-manolo
 .. |Build Status| image:: https://travis-ci.org/manolo-rocks/django-manolo.png?branch=master

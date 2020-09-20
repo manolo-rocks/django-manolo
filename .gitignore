@@ -1,5 +1,7 @@
+.DS_Store
 *db
 *.json
+config.json
 *.csv
 config.py
 .idea

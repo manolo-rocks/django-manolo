@@ -1,11 +1,11 @@
 import datetime
 
-from haystack.forms import HighlightedSearchForm
+from django import forms
 
 from manolo.settings.production import PREMIUM_INSTITUTIONS
 
 
-class ManoloForm(HighlightedSearchForm):
+class ManoloForm(forms.Form):
     def search(self, premium):
         sqs = super(ManoloForm, self).search()
 

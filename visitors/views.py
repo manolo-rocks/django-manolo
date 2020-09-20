@@ -2,15 +2,11 @@ import datetime
 import csv
 import logging
 
-from django.shortcuts import render
-from django.shortcuts import redirect
-from django.core.paginator import PageNotAnInteger, EmptyPage
-from django.core.paginator import InvalidPage
+from django.shortcuts import render, redirect
+from django.core.paginator import PageNotAnInteger, EmptyPage, InvalidPage
 
-from django.http import Http404
-from django.http import HttpResponse
+from django.http import Http404, HttpResponse
 from rest_framework.renderers import JSONRenderer
-from haystack.query import SearchQuerySet
 from django.views.decorators.csrf import csrf_exempt
 
 from visitors.models import Visitor, Statistic, Statistic_detail
@@ -80,12 +76,16 @@ def statistics_api(request):
 def search(request):
     user_profile = get_user_profile(request)
     form = ManoloForm(request.GET)
-    query = request.GET['q']
+    query = request.GET.get('q')
 
     all_items_premium = form.search(premium=True)
     all_items_standard = form.search(premium=False)
 
-    if request.user.is_authenticated() and user_profile['expired'] is False:
+    if request.user.is_authenticated and "expired" in user_profile and \
+            user_profile["expired"] is False:
+        if len(all_items_premium) > 0:
+            request.user.subscriber.credits -= 1
+            request.user.subscriber.save()
         all_items = all_items_premium
         extra_premium_results = 0
     else:
@@ -119,7 +119,7 @@ def search_date(request):
             return redirect('/')
 
         try:
-            date_obj = datetime.datetime.strptime(query, '%d/%m/%Y').date()
+            query_date_obj = datetime.datetime.strptime(query, '%d/%m/%Y')
         except ValueError:
             results = "No se encontraron resultados."
             return render(
@@ -131,22 +131,42 @@ def search_date(request):
                     'user_profile': user_profile,
                 },
             )
+        six_months_ago = datetime.datetime.today() - datetime.timedelta(days=180)
 
-        date_str = datetime.datetime.strftime(date_obj, '%Y-%m-%d')
+        if query_date_obj < six_months_ago:
+            can_show_results = True
+        else:
+            try:
+                if request.user.subscriber.credits > 0:
+                    can_show_results = True
+                else:
+                    can_show_results = False
+            except AttributeError:
+                # user has no subscriber
+                can_show_results = False
+
+        date_str = datetime.datetime.strftime(query_date_obj, '%Y-%m-%d')
         results = SearchQuerySet().filter(date=date_str)
+        paginator, page = do_pagination(request, results)
 
-        all_items = results
-        paginator, page = do_pagination(request, all_items)
+        context = {
+            "paginator": paginator,
+            "query": query,
+            'user_profile': user_profile,
+        }
 
-        return render(
-            request, "search/search.html",
-            {
-                "paginator": paginator,
-                "page": page,
-                "query": query,
-                'user_profile': user_profile,
-            },
-        )
+        if can_show_results:
+            try:
+                if len(results) > 0 and request.user.subscriber:
+                    if request.user.subscriber.credits is not None:
+                        request.user.subscriber.credits -= 1
+                        request.user.subscriber.save()
+            except AttributeError:
+                pass
+            context["page"] = page
+        else:
+            context["extra_premium_results"] = len(results)
+        return render(request, "search/search.html", context)
     else:
         return redirect('/')
 

@@ -1,0 +1,19 @@
+image: python:3.5-onbuild
+
+services:
+    - name: elasticsearch:1.7.2
+      alias: elasticsearch
+    - postgres:9.6
+
+variables:
+    POSTGRES_DB: manolo
+    POSTGRES_USER: runner
+    POSTGRES_PASSWORD: ""
+    ELASTICSEARCH_URL: "http://elasticsearch:9200"
+
+test:
+    script:
+      - pip install -r requirements/testing.txt
+      - make coverage-gitlab
+      - coverage report -m
+      - coverage html

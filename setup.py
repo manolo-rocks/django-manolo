@@ -30,7 +30,7 @@ setup(
     long_description=readme + '\n\n' + history,
     author='aniversarioperu',
     author_email='aniversarioperu1@gmail.com',
-    url='https://github.com/aniversarioperu/django-manolo',
+    url='https://github.com/manolo-rocks/django-manolo',
     packages=[
         'manolo',
     ],

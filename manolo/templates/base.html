@@ -13,7 +13,7 @@
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:site" content="@aniversarioperu" />
     <meta name="twitter:creator" content="@aniversarioperu" />
-    {% load staticfiles %}
+    {% load static %}
     <link rel="shortcut icon" href="{% static 'img/favicon.ico' %}">
 
     {% block title %}
@@ -58,6 +58,15 @@
               <form action="#" class="navbar-form form-inline">
                 <div class="form-group">
                   {% if request.user.is_authenticated %}
+
+                    <span class="badge">Credits available:
+                      {% if request.user.subscriber.credits %}
+                        {{ request.user.subscriber.credits }}
+                      {% else %}
+                        0
+                      {% endif %}
+                    </span>
+
                     {% if user_profile.avatar %}
                        <img src="data:image/png;base64, {{ user_profile.avatar }}"
                             class="img-circle"
@@ -106,7 +115,7 @@
           <button type="button" class="close" data-dismiss="alert" aria-label="Close">
             <i class="fa fa-times" aria-hidden="true"></i>
           </button>
-          <b>Esta cuenta expirará en {{ user_profile.days_before_expiration }} días.</b>
+          <b>Esta cuenta expirará luego de usar {{ user_profile.credits }} créditos.</b>
           <br />
           <b>Contacte a <a href="mailto:aniversarioperu1@gmail.com?Subject=Suscripción a Manolo Premium"
              class="alert-link">
@@ -153,7 +162,7 @@
       </div>
 
 
-  {% load staticfiles %}
+  {% load static %}
   <script src="//code.jquery.com/jquery-1.11.0.min.js"></script>
   <script src='{% static "js/bootstrap.min.js" %}'></script>
   <script src='{% static "js/highlighter.js" %}'></script>

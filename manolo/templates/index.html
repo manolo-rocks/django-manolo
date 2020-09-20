@@ -36,6 +36,10 @@
 
       <p class="text-left">Contiene <span class="label label-primary"><b>{{ count|intcomma }}</b></span> registros de visitas de las siguientes instituciones:</p>
       <ol class="list-group text-left">
+        <li class="list-group-item">18. <a href="/search/?q=perucompras">Perú Compras http://www.perucompras.gob.pe</a>
+          <span class="label label-danger"><b>Nuevo</b></span>
+          <span class="label label-info"><b>Premium users: <a href="/accounts/login/">Login</a></b></span>
+        </li>
         <li class="list-group-item">17. <a href="/search/?q=mtc">Ministerio de Transportes</a>
           <span class="label label-danger"><b>Nuevo</b></span>
           <span class="label label-info"><b>Premium users: <a href="/accounts/login/">Login</a></b></span>
@@ -80,7 +84,7 @@
       </h3>
 
       <p class="text-left">
-        {% load staticfiles %}
+        {% load static %}
         <img src="{% static 'img/2014-12-01_portadas.png' %}" />
       </p>
 
