@@ -2,9 +2,9 @@ import datetime
 import csv
 import logging
 
+from django.conf import settings
 from django.shortcuts import render, redirect
 from django.core.paginator import PageNotAnInteger, EmptyPage, InvalidPage
-
 from django.http import Http404, HttpResponse
 from rest_framework.renderers import JSONRenderer
 from django.views.decorators.csrf import csrf_exempt
@@ -100,6 +100,7 @@ def search(request):
         request,
         "search/search.html",
         {
+            "is_elastic_search": settings.ELASTICSEARCH_ENABLED,
             "extra_premium_results": extra_premium_results,
             "paginator": paginator,
             "page": page,

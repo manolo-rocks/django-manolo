@@ -289,3 +289,6 @@ if sys.argv[1] != "test":
     EMAIL_HOST_USER = SECRETS['EMAIL_HOST_USER']
     EMAIL_HOST_PASSWORD = SECRETS["EMAIL_HOST_PASSWORD"]
     EMAIL_USE_TLS = True
+
+# it not enabled, we will use regular django querysets for searches
+ELASTICSEARCH_ENABLED = False

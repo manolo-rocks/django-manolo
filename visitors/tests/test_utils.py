@@ -2,7 +2,7 @@ from unittest.mock import MagicMock
 
 from django.test import TestCase
 
-from visitors.utils import get_user_profile
+from visitors.utils import get_user_profile, is_dni
 
 
 class TestUtils(TestCase):
@@ -18,3 +18,16 @@ class TestUtils(TestCase):
         self.assertEqual(True, result["expired"])
         self.assertEqual(False, result["about_to_expire"])
         self.assertEqual(0, result["credits"])
+
+    def test_is_dni(self):
+        items = [
+            # input, expected
+            ('bla', False),
+            ('0989', False),
+            ('0989', False),
+            ('09976110', True),
+            ('9976110', True),
+        ]
+        for item in items:
+            result = is_dni(item[0])
+            self.assertEqual(result, item[1])
