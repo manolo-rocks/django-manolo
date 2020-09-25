@@ -2,7 +2,7 @@ import datetime
 import csv
 import logging
 
-from django.conf import settings
+from django.db import connection
 from django.shortcuts import render, redirect
 from django.core.paginator import PageNotAnInteger, EmptyPage, InvalidPage
 from django.http import Http404, HttpResponse
@@ -75,22 +75,16 @@ def statistics_api(request):
 @csrf_exempt
 def search(request):
     user_profile = get_user_profile(request)
-    form = ManoloForm(request.GET)
     query = request.GET.get('q')
 
-    all_items_premium = form.search(premium=True)
-    all_items_standard = form.search(premium=False)
-
-    if request.user.is_authenticated and "expired" in user_profile and \
-            user_profile["expired"] is False:
-        if len(all_items_premium) > 0:
-            request.user.subscriber.credits -= 1
-            request.user.subscriber.save()
-        all_items = all_items_premium
-        extra_premium_results = 0
-    else:
-        all_items = all_items_standard
-        extra_premium_results = len(all_items_premium) - len(all_items_standard)
+    with connection.cursor() as cursor:
+        cursor.execute(
+            "SELECT full_name, entity, meeting_place, office, host_name, "
+            "reason, institution, location, id_document, id_number, date, "
+            "time_start, time_end, objective, title, host_title FROM visitors_visitor "
+            "WHERE full_name_dni @@ to_tsquery(%s)", [query]
+        )
+        all_items = cursor.fetchall()
 
     paginator, page = do_pagination(request, all_items)
 
@@ -100,8 +94,6 @@ def search(request):
         request,
         "search/search.html",
         {
-            "is_elastic_search": settings.ELASTICSEARCH_ENABLED,
-            "extra_premium_results": extra_premium_results,
             "paginator": paginator,
             "page": page,
             "query": query,

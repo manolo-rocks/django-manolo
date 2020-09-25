@@ -142,22 +142,6 @@ PROJECT_APPS = (
 
 INSTALLED_APPS = DJANGO_APPS + PROJECT_APPS
 
-HAYSTACK_CONNECTIONS = {
-    'default': {
-        'ENGINE': 'haystack.backends.elasticsearch_backend.ElasticsearchSearchEngine',
-        'URL': 'http://127.0.0.1:9200/',
-        'INDEX_NAME': 'haystack',
-        'EXCLUDED_INDEXES': ['cazador.search_indexes.CazadorIndex'],
-    },
-    'cazador': {
-        'ENGINE': 'haystack.backends.elasticsearch_backend.ElasticsearchSearchEngine',
-        'URL': 'http://127.0.0.1:9200/',
-        'INDEX_NAME': 'cazador',
-        'EXCLUDED_INDEXES': ['visitors.search_indexes.VisitorIndex'],
-    }
-}
-HAYSTACK_DEFAULT_OPERATOR = 'AND'
-
 SIMPLE_LOG_FORMAT = '%(levelname)s %(message)s'
 VERBOSE_LOG_FORMAT = '[%(asctime)s] [%(levelname)s] [%(threadName)s] ' \
                      '[%(name)s] [%(lineno)d] %(message)s'
@@ -289,6 +273,3 @@ if sys.argv[1] != "test":
     EMAIL_HOST_USER = SECRETS['EMAIL_HOST_USER']
     EMAIL_HOST_PASSWORD = SECRETS["EMAIL_HOST_PASSWORD"]
     EMAIL_USE_TLS = True
-
-# it not enabled, we will use regular django querysets for searches
-ELASTICSEARCH_ENABLED = False

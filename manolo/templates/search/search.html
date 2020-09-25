@@ -20,17 +20,6 @@
 
      <div id="contenido" class="container" style="max-width:1200px;">
 
-     {% if extra_premium_results > 0 %}
-       <div class="alert alert-info">
-         <h3>
-        Se encontraron <a href="/accounts/login/">{{ extra_premium_results|intcomma }}</a> registros
-         adicionales (recientes) los cuales están disponibles para
-        suscriptores del servicio <a href="/accounts/login/">Manolo - Premium</a>
-         </h3>
-       </div>
-     {% endif %}
-
-
      {% if paginator.object_list|length > 0 %}
 
        También puedes hacer búsquedas haciendo click sobre cada uno de los
@@ -51,52 +40,12 @@
          <th>Motivo</th><th>Empleado público</th><th>Oficina/Cargo</th>
          <th>Lugar de reunión</th><th>Hora ing.</th><th>Hora sal.</th>
 
-         {% if is_elastic_search is True %}
-           {% for i in page.object_list %}
-           <tr>
-             <td>
-               <a href='/search?q={{ i.object.institution }}'>
-                 {{ i.object.institution|upper }}
-               </a>
-             </td>
-             <td>
-               <a href='/search_date?q={{ i.object.date|date:"d/m/Y" }}'>
-                 {{ i.object.date|date:"d/m/Y" }}
-               </a>
-             </td>
-             <td>
-               <a href='/search?q={{ i.object.full_name }}'>
-                 {{ i.object.full_name|upper }}
-               </a>
-             </td>
-             <td><a href='/search?q={{ i.object.id_number }}'>
-               {{ i.object.id_document }}: {{ i.object.id_number }}
-             </a></td>
-             <td><a href='/search?q={{ i.object.entity }}'>
-               {{ i.object.entity }}
-             </a></td>
-             <td><a href='/search?q={{ i.object.reason }}'>
-               {{ i.object.reason }}
-             </a></td>
-             <td><a href='/search?q={{ i.object.host_name }}'>
-               {{ i.object.host_name|upper }}
-             </a></td>
-             <td><a href='/search?q={{ i.object.office }}'>
-               {{ i.object.office }}
-             </a></td>
-             <td><a href='/search?q={{ i.object.meeting_place }}'>
-               {{ i.object.meeting_place }}
-             </a></td>
-             <td>{{ i.object.time_start }}</td>
-             <td>{{ i.object.time_end }}</td>
-           </tr>
-           {% endfor %}
-         {% else %}
+         {{ page.object_list.0 }}
             {% for i in page.object_list %}
                <tr>
                  <td>
                    <a href='/search?q={{ i.institution }}'>
-                     {{ i.institution|upper }}
+                     {{ i.6|upper }}
                    </a>
                  </td>
                  <td>
@@ -110,7 +59,7 @@
                    </a>
                  </td>
                  <td><a href='/search?q={{ i.id_number }}'>
-                   {{ i.id_document }}: {{ i.id_number }}
+                   {{ i.11 }}: {{ i.10 }}
                  </a></td>
                  <td><a href='/search?q={{ i.entity }}'>
                    {{ i.entity }}
@@ -131,7 +80,6 @@
                  <td>{{ i.time_end }}</td>
                </tr>
             {% endfor %}
-         {% endif %}
        </table>
 
        {% if page.has_previous or page.has_next %}
