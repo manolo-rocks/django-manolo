@@ -40,46 +40,45 @@
          <th>Motivo</th><th>Empleado público</th><th>Oficina/Cargo</th>
          <th>Lugar de reunión</th><th>Hora ing.</th><th>Hora sal.</th>
 
-         {{ page.object_list.0 }}
-            {% for i in page.object_list %}
-               <tr>
-                 <td>
-                   <a href='/search?q={{ i.institution }}'>
-                     {{ i.6|upper }}
-                   </a>
-                 </td>
-                 <td>
-                   <a href='/search_date?q={{ i.date|date:"d/m/Y" }}'>
-                     {{ i.date|date:"d/m/Y" }}
-                   </a>
-                 </td>
-                 <td>
-                   <a href='/search?q={{ i.full_name }}'>
-                     {{ i.full_name|upper }}
-                   </a>
-                 </td>
-                 <td><a href='/search?q={{ i.id_number }}'>
-                   {{ i.11 }}: {{ i.10 }}
-                 </a></td>
-                 <td><a href='/search?q={{ i.entity }}'>
-                   {{ i.entity }}
-                 </a></td>
-                 <td><a href='/search?q={{ i.reason }}'>
-                   {{ i.reason }}
-                 </a></td>
-                 <td><a href='/search?q={{ i.host_name }}'>
-                   {{ i.host_name|upper }}
-                 </a></td>
-                 <td><a href='/search?q={{ i.office }}'>
-                   {{ i.office }}
-                 </a></td>
-                 <td><a href='/search?q={{ i.meeting_place }}'>
-                   {{ i.meeting_place }}
-                 </a></td>
-                 <td>{{ i.time_start }}</td>
-                 <td>{{ i.time_end }}</td>
-               </tr>
-            {% endfor %}
+         {% for i in page.object_list %}
+           <tr>
+             <td>
+               <a href='/search?q={{ i.institution }}'>
+                 {{ i.6|upper }}
+               </a>
+             </td>
+             <td>
+               <a href='/search_date?q={{ i.date|date:"d/m/Y" }}'>
+                 {{ i.10|date:"d/m/Y" }}
+               </a>
+             </td>
+             <td>
+               <a href='/search?q={{ i.full_name }}'>
+                 {{ i.0|upper }}
+               </a>
+             </td>
+             <td><a href='/search?q={{ i.id_number }}'>
+               {{ i.8 }}: {{ i.9 }}
+             </a></td>
+             <td><a href='/search?q={{ i.entity }}'>
+               {{ i.1 }}
+             </a></td>
+             <td><a href='/search?q={{ i.reason }}'>
+               {{ i.5 }}
+             </a></td>
+             <td><a href='/search?q={{ i.host_name }}'>
+               {{ i.4|upper }}
+             </a></td>
+             <td><a href='/search?q={{ i.office }}'>
+               {{ i.3 }}
+             </a></td>
+             <td><a href='/search?q={{ i.meeting_place }}'>
+               {{ i.2 }}
+             </a></td>
+             <td>{{ i.11 }}</td>
+             <td>{{ i.12 }}</td>
+           </tr>
+         {% endfor %}
        </table>
 
        {% if page.has_previous or page.has_next %}

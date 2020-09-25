@@ -10,7 +10,6 @@ from rest_framework.renderers import JSONRenderer
 from django.views.decorators.csrf import csrf_exempt
 
 from visitors.models import Visitor, Statistic, Statistic_detail
-from visitors.forms import ManoloForm
 from visitors.utils import Paginator, get_user_profile
 
 
@@ -79,10 +78,11 @@ def search(request):
 
     with connection.cursor() as cursor:
         cursor.execute(
-            "SELECT full_name, entity, meeting_place, office, host_name, "
-            "reason, institution, location, id_document, id_number, date, "
-            "time_start, time_end, objective, title, host_title FROM visitors_visitor "
-            "WHERE full_name_dni @@ to_tsquery(%s)", [query]
+            "SELECT full_name, entity, meeting_place, office, "
+            "host_name, reason, institution, location, "
+            "id_document, id_number, date, time_start, "
+            "time_end, objective, title, host_title FROM visitors_visitor "
+            "WHERE full_name_dni @@ plainto_tsquery(%s)", [query]
         )
         all_items = cursor.fetchall()
 
