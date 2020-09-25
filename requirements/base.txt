@@ -4,7 +4,6 @@ psycopg2
 Jinja2==2.7.3
 MarkupSafe==0.23
 Markdown==2.6.2
-PyYAML==3.11
 Unidecode==0.4.17
 binaryornot==0.3.0
 bpython==0.13.2
