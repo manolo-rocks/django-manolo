@@ -4,6 +4,7 @@
 import base64
 from datetime import date
 import hashlib
+from typing import Union
 
 from django.core.paginator import Paginator as DjangoPaginator
 import requests
@@ -122,3 +123,16 @@ def fetch_and_save_avatar(user):
     s = Subscriber.objects.get(user=user)
     s.avatar = img
     s.save()
+
+
+def is_dni(value: Union[str, int]) -> bool:
+    value = value.strip()
+    try:
+        int(value)
+    except ValueError:
+        return False
+
+    if len(value) >= 7:
+        return True
+
+    return False

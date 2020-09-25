@@ -2,9 +2,9 @@ import datetime
 import csv
 import logging
 
+from django.conf import settings
 from django.shortcuts import render, redirect
 from django.core.paginator import PageNotAnInteger, EmptyPage, InvalidPage
-
 from django.http import Http404, HttpResponse
 from rest_framework.renderers import JSONRenderer
 from django.views.decorators.csrf import csrf_exempt
@@ -100,6 +100,7 @@ def search(request):
         request,
         "search/search.html",
         {
+            "is_elastic_search": settings.ELASTICSEARCH_ENABLED,
             "extra_premium_results": extra_premium_results,
             "paginator": paginator,
             "page": page,
@@ -146,7 +147,8 @@ def search_date(request):
                 can_show_results = False
 
         date_str = datetime.datetime.strftime(query_date_obj, '%Y-%m-%d')
-        results = SearchQuerySet().filter(date=date_str)
+        # TODO: implement django queryset search here
+        results = []
         paginator, page = do_pagination(request, results)
 
         context = {

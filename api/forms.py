@@ -5,8 +5,6 @@ from django.forms import Form
 
 class ApiForm(Form):
     def search(self, premium):
-        sqs = super(ApiForm, self).search()
-
         if not self.is_valid():
             return self.no_query_found()
 
