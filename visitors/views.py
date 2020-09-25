@@ -147,7 +147,8 @@ def search_date(request):
                 can_show_results = False
 
         date_str = datetime.datetime.strftime(query_date_obj, '%Y-%m-%d')
-        results = SearchQuerySet().filter(date=date_str)
+        # TODO: implement django queryset search here
+        results = []
         paginator, page = do_pagination(request, results)
 
         context = {

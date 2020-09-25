@@ -1,10 +1,11 @@
 import re
 
-from elasticsearch import Elasticsearch
-
 
 def search(name):
-    es = Elasticsearch()
+    es = None
+    # TODO: implement django queryset search here
+    if not es:
+        return []
     res = es.search(index="great_db", q=name)
 
     records = []
