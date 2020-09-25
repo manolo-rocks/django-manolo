@@ -2,7 +2,6 @@ import datetime
 
 from django.test import TestCase
 from django.test.client import Client
-from django.core.management import call_command
 
 from visitors.models import Visitor
 
@@ -18,8 +17,6 @@ class TestAPI(TestCase):
         Visitor.objects.bulk_create(data)
 
         # build index with our test data
-        call_command('rebuild_index', interactive=False, verbosity=0)
-        super(TestAPI, self).setUp()
         self.maxDiff = None
 
     def test_search_return_json(self):
