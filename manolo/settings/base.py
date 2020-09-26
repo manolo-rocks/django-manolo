@@ -64,8 +64,8 @@ STATIC_URL = '/static/'
 
 # Additional locations of static files
 STATICFILES_DIRS = (
-    os.path.join(BASE_DIR, '..', 'manolo/media'),
-    os.path.join(BASE_DIR, '..', 'manolo/static'),
+    os.path.join(BASE_DIR, '..', 'media'),
+    os.path.join(BASE_DIR, '..', 'manolo/assets'),
 )
 
 # List of finder classes that know how to find static files in
@@ -123,12 +123,10 @@ DJANGO_APPS = (
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'django.contrib.admin',
-
     'django.contrib.humanize',
     'bootstrap4',
     'bootstrap_themes',
     'crispy_forms',
-
     'registration',
     'rest_framework',
     'rest_framework_swagger',
@@ -256,6 +254,7 @@ SECRETS_FILE = os.path.join(BASE_DIR, '..', 'config.json')
 
 with open(SECRETS_FILE) as f:
     SECRETS = json.loads(f.read())
+
 
 def get_secret(setting, secrets=SECRETS):
     try:
