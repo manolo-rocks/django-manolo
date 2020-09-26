@@ -2,7 +2,7 @@ from unittest.mock import MagicMock
 
 from django.test import TestCase
 
-from visitors.utils import get_user_profile, is_dni
+from visitors.utils import get_user_profile, is_dni, Paginator
 
 
 class TestUtils(TestCase):
@@ -31,3 +31,19 @@ class TestUtils(TestCase):
         for item in items:
             result = is_dni(item[0])
             self.assertEqual(result, item[1])
+
+
+class TestPaginator(TestCase):
+    def test_paginator_with_less_than_10_pages_should_return_all_pages(self):
+        results = list(range(0, 199))
+        results_per_page = 20
+        paginator = Paginator(results, results_per_page)
+        paginator.page(1)
+        self.assertEqual(paginator.paginate_sections(), [1, 2, 3, 4, 5, 6, 7, 8, 9, 10])
+
+    def test_paginator_with_more_than_10_pages_should_hide_some_of_them(self):
+        results = list(range(0, 300))
+        results_per_page = 20
+        paginator = Paginator(results, results_per_page)
+        paginator.page(1)
+        self.assertEqual(paginator.paginate_sections(), [1, 2, 3, 4, 5, None, 11, 12, 13, 14, 15])

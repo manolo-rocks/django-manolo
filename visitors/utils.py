@@ -11,6 +11,8 @@ import requests
 
 from visitors.models import Subscriber
 
+PAGINATOR_DIVIDER_THRESHOLD = 10
+
 
 class Paginator(DjangoPaginator):
     """Everything should work as in django.core.paginator.Paginator, except
@@ -37,6 +39,11 @@ class Paginator(DjangoPaginator):
         """
         index = int(self._page_number) or 1
         items = self.page_range
+
+        # The number of pages is low, so we don't need to divide them.
+        if items and items[-1] <= PAGINATOR_DIVIDER_THRESHOLD:
+            return list(items)
+
         L = items[0:5]
         M = items[index-3:index+4] or items[0:index+1]
         R = items[-5:]
