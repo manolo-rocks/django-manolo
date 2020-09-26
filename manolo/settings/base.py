@@ -74,8 +74,8 @@ STATIC_URL = '/static/'
 
 # Additional locations of static files
 STATICFILES_DIRS = (
-    str(APPS_DIR / 'media'),
-    str(APPS_DIR / "static"),
+    str(APPS_DIR / '../media'),
+    str(APPS_DIR / "assets"),
 )
 
 # List of finder classes that know how to find static files in
@@ -134,7 +134,6 @@ DJANGO_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'django.contrib.admin',
-
     'django.contrib.humanize',
 ]
 
@@ -142,7 +141,6 @@ THIRD_PARTY_APPS = [
     'bootstrap4',
     'bootstrap_themes',
     'crispy_forms',
-
     'registration',
     'rest_framework',
     'rest_framework_swagger',
@@ -205,13 +203,13 @@ LOGGING = {
         'file': {
             'level': 'INFO',
             'class': 'logging.FileHandler',
-            'filename': LOG_DIR + 'manolo.rocks.main.log',
+            'filename': LOG_DIR + '/manolo.rocks.main.log',
             'formatter': 'verbose',
         },
         'file_debug': {
             'level': 'DEBUG',
             'class': 'logging.FileHandler',
-            'filename': LOG_DIR + 'manolo.rocks.main.debug.log',
+            'filename': LOG_DIR + '/manolo.rocks.main.debug.log',
             'formatter': 'verbose',
         },
     },

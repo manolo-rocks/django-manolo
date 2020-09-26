@@ -15,7 +15,6 @@ from api.views import schema_view
 
 
 urlpatterns = [
-    # Uncomment the next line to enable the admin:
     path('administramelo/', admin.site.urls),
     url(r'^accounts/', include('registration.backends.default.urls')),
     url(r'^search_date/$', views.search_date),
@@ -26,11 +25,14 @@ urlpatterns = [
     url(r'^statistics_api/$', views.statistics_api),
 
     url(r'^about/', views.about, name='about'),
-    # url(r'^search/', include('haystack.urls')),
     path('', include('visitors.urls')),
     url(r'robots.txt$', views.robots, name='robots'),
     url(r'^cazador/', include('cazador.urls')),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
-# TODO: rewrite build_page method of haystack.views SearchView to
-# produce a nicer pagination that includes max 20 pages to click
+
+if settings.DEBUG:
+    import debug_toolbar
+    urlpatterns += [
+        url(r'^__debug__/', include(debug_toolbar.urls)),
+    ]
