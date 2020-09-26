@@ -12,5 +12,5 @@ class Migration(migrations.Migration):
     operations = [
         migrations.RunSQL("ALTER TABLE visitors_visitor ADD COLUMN full_name_dni tsvector"),
         migrations.RunSQL(
-            "UPDATE visitors_visitor SET full_name_dni = to_tsvector(full_name | | ' ' | | id_number)"),  # noqa
+            "UPDATE visitors_visitor SET full_name_dni = to_tsvector(full_name || '' || id_number)"),  # noqa
     ]
