@@ -5,16 +5,28 @@ language: python
 sudo: false
 
 python:
-  - "3.7"
+  - "3.8"
 
-before_install:
-    - curl -O https://download.elastic.co/elasticsearch/elasticsearch/elasticsearch-1.7.3.deb && sudo dpkg -i --force-confnew elasticsearch-1.7.3.deb && sudo service elasticsearch start
+services:
+  - postgresql
 
-# command to install dependencies, e.g. pip install -r requirements.txt --use-mirrors
-install: pip install -r requirements/testing.txt
+jobs:
+  include:
+    - name: "Django Test"
 
-# command to run tests using coverage, e.g. python setup.py test
-script: coverage run --source manolo manage.py test -v 2 visitors api cazador --settings=manolo.settings.testing
+  before_install:
+        - sudo apt-get update -qq
+        - sudo apt-get install -qq build-essential gettext python-dev zlib1g-dev libpq-dev xvfb
+        - sudo apt-get install -qq libjpeg8-dev libfreetype6-dev libwebp-dev
+        - sudo apt-get install -qq graphviz-dev python-setuptools python3-dev python-virtualenv python-pip
+        - sudo apt-get install -qq firefox automake libtool libreadline6 libreadline6-dev libreadline-dev
+        - sudo apt-get install -qq libsqlite3-dev libxml2 libxml2-dev libssl-dev libbz2-dev wget curl llvm
+      language: python
+      python:
+        - "3.8"
+      install:
+        - pip install -r requirements/local.txt
+      script:
+        - "coverage run --source manolo manage.py test -v 2 visitors api cazador --settings=manolo.settings.testing"
 
-# report coverage to coveralls.io
-after_success: coveralls
+      after_success: coveralls
