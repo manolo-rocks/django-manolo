@@ -60,10 +60,7 @@ def search(request, query):
     """
     query_request = QueryDict('q={}'.format(query))
     form = ApiForm(query_request)
-    if request.user.is_authenticated:
-        all_items = form.search(premium=True)
-    else:
-        all_items = form.search(premium=False)
+    all_items = form.search()
 
     pagination = PageNumberPagination()
     paginated_results = pagination.paginate_queryset(all_items, request)
@@ -84,10 +81,7 @@ def search(request, query):
 def search_tsv(request, query):
     query_request = QueryDict('q={}'.format(query))
     form = ApiForm(query_request)
-    if request.user.is_authenticated:
-        all_items = form.search(premium=True)
-    else:
-        all_items = form.search(premium=False)
+    all_items = form.search()
 
     paginator, page = do_pagination(request, all_items)
     return data_as_csv(request, paginator)

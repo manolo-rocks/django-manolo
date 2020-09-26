@@ -6,7 +6,7 @@ from visitors.models import Visitor
 
 
 class ApiForm(Form):
-    def search(self, premium):
+    def search(self):
         if not self.is_valid():
             return None
 
@@ -15,9 +15,8 @@ class ApiForm(Form):
             return None
 
         visitors = Visitor.objects.filter(full_name__icontains=query).order_by('-date')
-        if not premium:
-            today = datetime.datetime.today()
-            six_months_ago = today - datetime.timedelta(days=180)
-            visitors = visitors.filter(date__lte=six_months_ago)
+        today = datetime.datetime.today()
+        six_months_ago = today - datetime.timedelta(days=180)
+        visitors = visitors.filter(date__lte=six_months_ago)
 
         return visitors
