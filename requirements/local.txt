@@ -1,4 +1,5 @@
 -r testing.txt
 
+django-extensions
 Sphinx==1.2.3
 django-debug-toolbar
