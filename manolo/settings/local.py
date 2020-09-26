@@ -22,6 +22,7 @@ EMAIL_BACKEND = env(
 )
 
 INSTALLED_APPS += ['debug_toolbar']  # noqa F405
+INSTALLED_APPS += ["django_extensions"]  # noqa F405
 
 # django-debug-toolbar
 MIDDLEWARE += ['debug_toolbar.middleware.DebugToolbarMiddleware']  # noqa F405
