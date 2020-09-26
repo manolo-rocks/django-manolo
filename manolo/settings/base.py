@@ -134,7 +134,6 @@ DJANGO_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'django.contrib.admin',
-
     'django.contrib.humanize',
 ]
 
@@ -142,7 +141,6 @@ THIRD_PARTY_APPS = [
     'bootstrap4',
     'bootstrap_themes',
     'crispy_forms',
-
     'registration',
     'rest_framework',
     'rest_framework_swagger',
