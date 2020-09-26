@@ -2,22 +2,22 @@ import datetime
 
 from django.forms import Form
 
+from visitors.models import Visitor
+
 
 class ApiForm(Form):
     def search(self, premium):
         if not self.is_valid():
-            return self.no_query_found()
+            return None
 
-        if not self.cleaned_data['q'].strip():
-            return self.no_query_found()
+        query = self.data['q'].strip()
+        if not query:
+            return None
 
-        sqs = self.searchqueryset.auto_query(self.cleaned_data['q']).order_by('-date')
+        visitors = Visitor.objects.filter(full_name__icontains=query).order_by('-date')
         if not premium:
             today = datetime.datetime.today()
             six_months_ago = today - datetime.timedelta(days=180)
-            sqs = sqs.filter(date__lte=six_months_ago)
+            visitors = visitors.filter(date__lte=six_months_ago)
 
-        if self.load_all:
-            sqs = sqs.load_all()
-
-        return sqs
+        return visitors
