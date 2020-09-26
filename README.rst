@@ -74,7 +74,8 @@ Install
 1. `pip install -r requirements.txt`.
 2. Create a config file called `config.json`. See Configure section.
 3. `python manage.py syncdb --settings=manolo.settings.local`
-4. `python manage.py runserver --settings=manolo.settings.local`.
+4. `python manage.py migrate --settings=manolo.settings.local`
+5. `python manage.py runserver --settings=manolo.settings.local`.
 
 Note: This project uses python 3.4
 
@@ -89,22 +90,14 @@ rebuild the index:
 
 Configure
 =========
-Create a `config.json` file to keep private credentials to use by settings
-files:
+Create a `.env` file locally to keep all private credentials protected: 
 
 ::
 
-    {
-        "SECRET_KEY": "hola",
-        "DB_USER": "postgres",
-        "DB_PASS": "password",
-        "DB_NAME": "manolo",
-        "DB_PORT": "5432",
-        "DB_HOST": "localhost"
-        "premium_institutions": [
-            "minjus"
-        ]
-    }
+    DEBUG=on
+    SECRET_KEY=your-secret-key
+    DATABASE_URL=psql://user:un-githubbedpassword@127.0.0.1:8458/database
+
 
 Releases
 ========
