@@ -10,7 +10,7 @@ import re
 
 from scrapy.exceptions import DropItem
 
-from models import db_connect
+from visitors.models import Visitor
 
 
 class DuplicatesPipeline(object):
@@ -29,8 +29,8 @@ class DuplicatesPipeline(object):
 class CleanItemPipeline(object):
     def process_item(self, item, spider):
         for k, v in item.items():
-            if isinstance(v, basestring) is True:
-                value = re.sub('\s+', ' ', v)
+            if isinstance(v, strt) is True:
+                value = re.sub(r'\s+', ' ', v)
                 item[k] = value.strip()
             else:
                 item[k] = v
@@ -66,13 +66,11 @@ class CleanItemPipeline(object):
         return item
 
     def save_item(self, item):
-        db = db_connect()
-        table = db['visitors_visitor']
-
-        if table.find_one(sha1=item['sha1']) is None:
+        if not Visitor.objects.filter(sha1=item['sha1']).exists():
             item['created'] = datetime.datetime.now()
             item['modified'] = datetime.datetime.now()
-            table.insert(item)
+            record = Visitor(item)
+            record.save()
             logging.info("Saving: {0}, date: {1}".format(item['sha1'], item['date']))
         else:
             logging.info("{0}, date: {1} is found in db, not saving".format(item['sha1'], item['date']))

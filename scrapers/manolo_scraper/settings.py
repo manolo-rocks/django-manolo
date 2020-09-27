@@ -33,13 +33,12 @@ USER_AGENT = "Mozilla/5.0 (Linux; Android 4.0.4; Galaxy Nexus Build/IMM76B) Appl
 CRAWLERA_ENABLED = False
 
 DOWNLOADER_MIDDLEWARES = {
-    'scrapylib.crawlera.CrawleraMiddleware': 600,
-    'scrapy.downloadermiddlewares.useragent.UserAgentMiddleware': "Mozilla/5.0 (Windows NT 6.2; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/32.0.1667.0 Safari/537.36",
+    'scrapy.downloadermiddlewares.useragent.UserAgentMiddleware': 500,
     'scrapy.downloadermiddlewares.cookies.CookiesMiddleware': 700,
     'scrapy_splash.SplashCookiesMiddleware': 723,
     'scrapy_splash.SplashMiddleware': 725,
     'scrapy.downloadermiddlewares.httpcompression.HttpCompressionMiddleware': 810,
-    'manolo_scraper.middlewares.ProxyMiddleware': 410,
+    # 'manolo_scraper.middlewares.ProxyMiddleware': 410,
 }
 
 LOG_LEVEL = 'DEBUG'
