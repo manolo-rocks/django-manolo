@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
-from unidecode import unidecode
 import hashlib
 import re
 import pkgutil
+from unicodedata import normalize
 
 
 def make_hash(item):
@@ -10,18 +10,18 @@ def make_hash(item):
     hash_input += str(item['institution'])
 
     if 'full_name' in item:
-        hash_input += str(unidecode(item['full_name']))
+        hash_input += str(normalize(item['full_name'], 'NFKD'))
 
     if 'id_document' in item:
-        hash_input += str(unidecode(item['id_document']))
+        hash_input += str(normalize(item['id_document'], 'NFKD'))
 
     if 'id_number' in item:
-        hash_input += str(unidecode(item['id_number']))
+        hash_input += str(normalize(item['id_number'], 'NFKD'))
 
     hash_input += str(item['date'])
 
     if 'time_start' in item:
-        hash_input += str(unidecode(item['time_start']))
+        hash_input += str(normalize(item['time_start'], 'NFKD'))
 
     hash_output = hashlib.sha1()
     hash_output.update(hash_input.encode("utf-8"))

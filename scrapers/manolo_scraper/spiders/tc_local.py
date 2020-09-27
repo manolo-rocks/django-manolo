@@ -4,7 +4,7 @@ from datetime import timedelta
 
 import scrapy
 
-from manolo_scraper.spiders.tc import TcSpider
+from scrapers.manolo_scraper.spiders.tc import TcSpider
 
 
 class TcSpiderLocal(TcSpider):

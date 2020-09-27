@@ -2,7 +2,6 @@
 import datetime
 import logging
 import re
-from exceptions import NotImplementedError
 
 import scrapy
 from scrapy import exceptions

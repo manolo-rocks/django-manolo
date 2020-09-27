@@ -2,7 +2,7 @@
 
 from scrapy_splash import SplashRequest
 
-from spiders import ManoloBaseSpider
+from .spiders import ManoloBaseSpider
 from ..items import ManoloItem
 from ..item_loaders import ManoloItemLoader
 from ..utils import get_lua_script, make_hash

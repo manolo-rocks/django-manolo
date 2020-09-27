@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 import scrapy
 
-from spiders import ManoloBaseSpider
+from .spiders import ManoloBaseSpider
 from ..item_loaders import ManoloItemLoader
 from ..items import ManoloItem
 from ..utils import make_hash

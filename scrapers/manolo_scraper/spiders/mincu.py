@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-from spiders import SireviSpider
+from scrapers.manolo_scraper.spiders.spiders import SireviSpider
 
 
 class MincuSpider(SireviSpider):

@@ -3,7 +3,7 @@ import datetime
 
 import scrapy
 
-from spiders import ManoloBaseSpider
+from scrapers.manolo_scraper.spiders.spiders import ManoloBaseSpider
 from ..items import ManoloItem
 from ..item_loaders import ManoloItemLoader
 from ..utils import make_hash, get_dni

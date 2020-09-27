@@ -5,8 +5,8 @@ import sys
 
 import scrapy
 
-from manolo_scraper.items import ManoloItem
-from manolo_scraper import utils
+from scrapers.manolo_scraper import utils
+from scrapers.manolo_scraper.items import ManoloItem
 
 
 class TcSpider(scrapy.Spider):

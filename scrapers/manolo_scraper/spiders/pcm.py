@@ -1,6 +1,5 @@
 # -*- coding: utf-8 -*-
-from spiders import SireviSpider
-
+from .spiders import SireviSpider
 from ..items import ManoloItem
 from ..item_loaders import ManoloItemLoader
 from ..utils import get_dni
