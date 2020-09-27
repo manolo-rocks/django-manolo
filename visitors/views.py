@@ -81,7 +81,7 @@ def search(request):
             "SELECT full_name, entity, meeting_place, office, "
             "host_name, reason, institution, location, "
             "id_document, id_number, date, time_start, "
-            "time_end, objective, title, host_title FROM visitors_visitor "
+            "time_end, reason, host_title FROM visitors_visitor "
             "WHERE full_name_dni @@ plainto_tsquery(%s)", [query]
         )
         all_items = cursor.fetchall()

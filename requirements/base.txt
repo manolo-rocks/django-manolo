@@ -1,6 +1,7 @@
 Django==3.1.1
+django-environ==0.4.5
 pyprind==2.9.1
-psycopg2
+psycopg2-binary==2.8.6
 MarkupSafe==0.23
 Markdown==2.6.2
 Unidecode==0.4.17
@@ -19,3 +20,4 @@ six==1.9
 elasticsearch==1.4.0
 wheel==0.24.0
 tqdm==3.7.1
+argon2-cffi==20.1.0  # https://github.com/hynek/argon2_cffi

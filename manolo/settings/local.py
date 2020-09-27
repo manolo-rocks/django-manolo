@@ -1,67 +1,33 @@
-import json
-import os
+from .base import *  # noqa
+from .base import env
 
-from django.core.exceptions import ImproperlyConfigured
+DEBUG = True
 
-from .base import *
-
-
-ADMINS = (
-    ('AniversarioPeru', 'aniversarioperu1@gmail.com'),
+SECRET_KEY = env(
+    'DJANGO_SECRET_KEY',
+    default='!!!SET DJANGO_SECRET_KEY!!!',
 )
+ALLOWED_HOSTS = ['localhost', '0.0.0.0', '127.0.0.1']
 
-LOCAL_APPS = (
-    'debug_toolbar',
-)
-
-INSTALLED_APPS += LOCAL_APPS
-
-MANAGERS = ADMINS
-
-BASE_DIR = os.path.dirname(os.path.dirname(__file__))
-SECRETS_FILE = os.path.join(BASE_DIR, '..', 'config.json')
-
-with open(SECRETS_FILE) as f:
-    secrets = json.loads(f.read())
-
-
-def get_secret(setting, secrets=secrets):
-    try:
-        return secrets[setting]
-    except KeyError:
-        error_msg = "Set the {0} environment variable".format(setting)
-        raise ImproperlyConfigured(error_msg)
-
-SECRET_KEY = get_secret('SECRET_KEY')
-
-BASE_DIR = os.path.dirname(os.path.dirname(__file__))
-SECRETS_FILE = os.path.join(BASE_DIR, '..', 'config.json')
-
-with open(SECRETS_FILE) as f:
-    secrets = json.loads(f.read())
-
-
-def get_secret(setting, secrets=secrets):
-    try:
-        return secrets[setting]
-    except KeyError:
-        error_msg = "Set the {0} environment variable".format(setting)
-        raise ImproperlyConfigured(error_msg)
-
-DATABASES = {
+CACHES = {
     'default': {
-        'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': get_secret('DB_NAME'),
-        'USER': get_secret('DB_USER'),
-        'PASSWORD': get_secret('DB_PASS'),
-        'HOST': get_secret('DB_HOST'),
-        'PORT': get_secret('DB_PORT'),
-        }
+        'BACKEND': 'django.core.cache.backends.locmem.LocMemCache',
+        'LOCATION': '',
+    }
 }
 
-EMAIL_HOST = get_secret("EMAIL_HOST")
-EMAIL_PORT = get_secret("EMAIL_PORT")
-EMAIL_HOST_USER = get_secret("EMAIL_HOST_USER")
-EMAIL_HOST_PASSWORD = get_secret("EMAIL_HOST_PASSWORD")
-SERVER_EMAIL = get_secret("SERVER_EMAIL")
-SUBMIT_EMAIL_LIST = get_secret("SUBMIT_EMAIL_LIST")
+EMAIL_BACKEND = env(
+    'DJANGO_EMAIL_BACKEND', 
+    default='django.core.mail.backends.console.EmailBackend'
+)
+
+INSTALLED_APPS += ['debug_toolbar']  # noqa F405
+INSTALLED_APPS += ["django_extensions"]  # noqa F405
+
+# django-debug-toolbar
+MIDDLEWARE += ['debug_toolbar.middleware.DebugToolbarMiddleware']  # noqa F405
+DEBUG_TOOLBAR_CONFIG = {
+    'DISABLE_PANELS': ['debug_toolbar.panels.redirects.RedirectsPanel'],
+    'SHOW_TEMPLATE_CONTEXT': True,
+}
+INTERNAL_IPS = ["127.0.0.1", "10.0.2.2"]

@@ -67,7 +67,6 @@ def search(request, query):
 
     pagination = PageNumberPagination()
     paginated_results = pagination.paginate_queryset(all_items, request)
-    paginated_results = [i.object for i in paginated_results]
 
     serializer = ManoloSerializer(paginated_results, many=True)
 
