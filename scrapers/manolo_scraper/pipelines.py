@@ -29,7 +29,7 @@ class DuplicatesPipeline(object):
 class CleanItemPipeline(object):
     def process_item(self, item, spider):
         for k, v in item.items():
-            if isinstance(v, strt) is True:
+            if isinstance(v, str) is True:
                 value = re.sub(r'\s+', ' ', v)
                 item[k] = value.strip()
             else:
