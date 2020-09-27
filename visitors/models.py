@@ -1,4 +1,6 @@
 # -*- coding: utf-8 -*-
+from django.contrib.postgres.indexes import GinIndex
+from django.contrib.postgres.search import SearchVectorField, SearchVector
 from django.db import models
 from django.contrib.auth.models import User
 
@@ -7,6 +9,9 @@ class Visitor(models.Model):
     id = models.AutoField(
         primary_key=True
     )
+
+    # combined field for full text search on full_name, id_number, host_name
+    full_name_dni_host_name = SearchVectorField(null=True)
 
     sha1 = models.CharField(
         max_length=40,
@@ -71,7 +76,7 @@ class Visitor(models.Model):
     )
 
     id_number = models.TextField(
-        help_text='Id number. It should be char field as some numbers begin with zero.',
+        help_text='Id number. DNI. It should be char field as some numbers begin with zero.',
         null=True,
     )
 
@@ -97,6 +102,23 @@ class Visitor(models.Model):
 
     created = models.DateTimeField(auto_now_add=True)
     modified = models.DateTimeField(auto_now=True, db_index=True)
+
+    def save(self, *args, **kwargs):
+        """Need to update the combined field for full text search"""
+        super(Visitor, self).save(*args, **kwargs)
+        if not self.full_name_dni_host_name:
+            Visitor.objects.filter(
+                id=self.id
+            ).update(
+                full_name_dni_host_name=SearchVector('full_name', 'id_number', 'host_name')
+            )
+
+    class Meta:
+        indexes = [
+            GinIndex(
+                fields=['full_name_dni_host_name'], name='full_name_dni_host_name_idx'
+            )
+        ]
 
 
 class Subscriber(models.Model):

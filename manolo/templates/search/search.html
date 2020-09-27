@@ -44,39 +44,39 @@
            <tr>
              <td>
                <a href='/search?q={{ i.institution }}'>
-                 {{ i.6|upper }}
+                 {{ i.institution }}
                </a>
              </td>
              <td>
                <a href='/search_date?q={{ i.date|date:"d/m/Y" }}'>
-                 {{ i.10|date:"d/m/Y" }}
+                 {{ i.date|date:"d/m/Y" }}
                </a>
              </td>
              <td>
                <a href='/search?q={{ i.full_name }}'>
-                 {{ i.0|upper }}
+                 {{ i.full_name|upper }}
                </a>
              </td>
              <td><a href='/search?q={{ i.id_number }}'>
-               {{ i.8 }}: {{ i.9 }}
+               {{ i.id_document }}: {{ i.id_number }}
              </a></td>
              <td><a href='/search?q={{ i.entity }}'>
-               {{ i.1 }}
+               {{ i.entity }}
              </a></td>
              <td><a href='/search?q={{ i.reason }}'>
-               {{ i.5 }}
+               {{ i.reason }}
              </a></td>
              <td><a href='/search?q={{ i.host_name }}'>
-               {{ i.4|upper }}
+               {{ i.host_name }}
              </a></td>
              <td><a href='/search?q={{ i.office }}'>
-               {{ i.3 }}
+               {{ i.office }}
              </a></td>
              <td><a href='/search?q={{ i.meeting_place }}'>
-               {{ i.2 }}
+               {{ i.meeting_place }}
              </a></td>
-             <td>{{ i.11 }}</td>
-             <td>{{ i.12 }}</td>
+             <td>{{ i.time_start }}</td>
+             <td>{{ i.time_end }}</td>
            </tr>
          {% endfor %}
        </table>
