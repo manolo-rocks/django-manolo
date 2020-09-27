@@ -23,7 +23,7 @@ class Visitor(models.Model):
         db_index=True,
     )
 
-    full_name_dni = SearchVectorField(null=True)
+    full_name_dni_host_name = SearchVectorField(null=True)
 
     entity = models.CharField(
         max_length=250,
@@ -104,7 +104,9 @@ class Visitor(models.Model):
 
     class Meta:
         indexes = [
-            GinIndex(fields=['full_name_dni'], name='full_name_dni_idx')
+            GinIndex(
+                fields=['full_name_dni_host_name'], name='full_name_dni_host_name_idx'
+            )
         ]
 
 

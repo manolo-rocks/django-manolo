@@ -76,7 +76,7 @@ def search(request):
     user_profile = get_user_profile(request)
     query = request.GET.get('q')
 
-    all_items = Visitor.objects.filter(full_name_dni=SearchQuery(query))
+    all_items = Visitor.objects.filter(full_name_dni_host_name=SearchQuery(query))
     paginator, page = do_pagination(request, all_items)
 
     json_path = request.get_full_path() + '&json'
