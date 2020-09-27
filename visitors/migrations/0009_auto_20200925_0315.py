@@ -10,7 +10,10 @@ class Migration(migrations.Migration):
     ]
 
     operations = [
-        migrations.RunSQL("ALTER TABLE visitors_visitor ADD COLUMN full_name_dni tsvector"),
         migrations.RunSQL(
-            "UPDATE visitors_visitor SET full_name_dni = to_tsvector(full_name || ' ' || id_number)"),  # noqa
+            "ALTER TABLE visitors_visitor ADD COLUMN full_name_dni tsvector",
+            reverse_sql="ALTER TABLE visitors_visitor DROP COLUMN full_name_dni"),
+        migrations.RunSQL(
+            "UPDATE visitors_visitor SET full_name_dni = to_tsvector(full_name || ' ' || id_number)",
+            reverse_sql=migrations.RunSQL.noop),  # noqa
     ]

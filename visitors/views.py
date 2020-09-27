@@ -2,7 +2,7 @@ import datetime
 import csv
 import logging
 
-from django.db import connection
+from django.contrib.postgres.search import SearchQuery
 from django.shortcuts import render, redirect
 from django.core.paginator import PageNotAnInteger, EmptyPage, InvalidPage
 from django.http import Http404, HttpResponse
@@ -76,16 +76,7 @@ def search(request):
     user_profile = get_user_profile(request)
     query = request.GET.get('q')
 
-    with connection.cursor() as cursor:
-        cursor.execute(
-            "SELECT full_name, entity, meeting_place, office, "
-            "host_name, reason, institution, location, "
-            "id_document, id_number, date, time_start, "
-            "time_end, reason, host_title FROM visitors_visitor "
-            "WHERE full_name_dni @@ plainto_tsquery(%s)", [query]
-        )
-        all_items = cursor.fetchall()
-
+    all_items = Visitor.objects.filter(full_name_dni=SearchQuery(query))
     paginator, page = do_pagination(request, all_items)
 
     json_path = request.get_full_path() + '&json'

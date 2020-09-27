@@ -1,4 +1,6 @@
 # -*- coding: utf-8 -*-
+from django.contrib.postgres.indexes import GinIndex
+from django.contrib.postgres.search import SearchVectorField
 from django.db import models
 from django.contrib.auth.models import User
 
@@ -20,6 +22,8 @@ class Visitor(models.Model):
         help_text='Full name of visitor',
         db_index=True,
     )
+
+    full_name_dni = SearchVectorField(null=True)
 
     entity = models.CharField(
         max_length=250,
@@ -97,6 +101,11 @@ class Visitor(models.Model):
 
     created = models.DateTimeField(auto_now_add=True)
     modified = models.DateTimeField(auto_now=True, db_index=True)
+
+    class Meta:
+        indexes = [
+            GinIndex(fields=['full_name_dni'], name='full_name_dni_idx')
+        ]
 
 
 class Subscriber(models.Model):

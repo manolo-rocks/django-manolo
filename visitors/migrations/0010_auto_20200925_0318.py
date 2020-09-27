@@ -12,5 +12,5 @@ class Migration(migrations.Migration):
     operations = [
         migrations.RunSQL(
             "CREATE INDEX IF NOT EXISTS  full_name_dni_idx ON visitors_visitor USING GIN("
-            "full_name_dni)"),
+            "full_name_dni)", reverse_sql="DROP INDEX IF EXISTS  full_name_dni_idx"),
     ]
