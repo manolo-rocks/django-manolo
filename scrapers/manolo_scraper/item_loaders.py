@@ -1,16 +1,17 @@
 import datetime
 
-from scrapy.utils.markup import remove_tags
+from w3lib.html import remove_tags
 from scrapy.loader import ItemLoader
-from scrapy.loader.processors import MapCompose
+from itemloaders.processors import MapCompose, TakeFirst
 
 
-def filter_date(date):
-    if isinstance(date, datetime.datetime):
-        return datetime.date.strftime(date, '%Y-%m-%d')
+def filter_date(value):
+    if isinstance(value, datetime.datetime):
+        return datetime.date.strftime(value, '%Y-%m-%d')
 
-    return date
+    return value
 
 
 class ManoloItemLoader(ItemLoader):
-    default_input_processor = MapCompose(remove_tags, filter_date)
+    default_input_processor = MapCompose(remove_tags)
+    default_output_processor = TakeFirst()

@@ -47,7 +47,6 @@ class ManoloBaseSpider(scrapy.Spider):
         for day in range(delta.days + 1):
             date_obj = d1 + datetime.timedelta(days=day)
             print("SCRAPING: {}".format(date_obj))
-
             yield self.initial_request(date_obj)
 
     # Check if instance of requests
