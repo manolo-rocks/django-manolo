@@ -69,7 +69,6 @@ class AmbienteSpider(ManoloBaseSpider):
         rows = response.xpath('//table[@id="gvwConsulta"]/tr[@class="rgRow" or @class="rgAltRow"]')
 
         for row in rows:
-            print('##row', row)
             l = ManoloItemLoader(item=ManoloItem(), selector=row)
             l.add_value('institution', 'ambiente')
             l.add_value('date', date)
@@ -88,13 +87,11 @@ class AmbienteSpider(ManoloBaseSpider):
 
             time_start = l.get_output_value('time_start')
             time_end = l.get_output_value('time_end')
-            print('## l', l, time_end)
 
             l.replace_value('time_start', self._get_time(time_start))
             l.replace_value('time_end', self._get_time(time_end))
 
             item = l.load_item()
-            print('## item', item)
             item = make_hash(item)
 
             yield item

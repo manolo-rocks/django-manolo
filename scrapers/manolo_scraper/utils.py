@@ -30,7 +30,6 @@ def make_hash(item):
     hash_output = hashlib.sha1()
     hash_output.update(hash_input.encode("utf-8"))
     item['sha1'] = hash_output.hexdigest()
-    print('### item', item)
     return item
 
 
