@@ -2,6 +2,7 @@
 from scrapy import FormRequest, Request
 
 from scrapers.manolo_scraper.spiders.spiders import ManoloBaseSpider
+from ..errors import ParsingError
 from ..items import ManoloItem
 from ..item_loaders import ManoloItemLoader
 from ..utils import make_hash
@@ -34,8 +35,8 @@ class AmbienteSpider(ManoloBaseSpider):
             response,
             formdata={
                 'txtDesde': date,
-                'btnBuscar.x': '62',
-                'btnBuscar.y': '15',
+                'btnBuscar.x': '55',
+                'btnBuscar.y': '18',
             },
             dont_filter=True,
             callback=self.parse_page,
@@ -91,7 +92,6 @@ class AmbienteSpider(ManoloBaseSpider):
             l.replace_value('time_end', self._get_time(time_end))
 
             item = l.load_item()
-
             item = make_hash(item)
 
             yield item
@@ -110,10 +110,14 @@ class AmbienteSpider(ManoloBaseSpider):
         request.meta['date'] = date
         return request
 
-    # date_string: '28/08/2015 05:11:38 p.m.'
     def _get_time(self, date_string):
-        if date_string is not None:
-            date = date_string.split(' ')
-            return date[1] + ' ' + date[2]
+        # date_string: '28/08/2015 05:11:38 p.m.'
+        if date_string is None:
+            return None
 
-        return None
+        if isinstance(date_string, str):
+            return date_string
+        elif isinstance(date_string, list) and len(date_string) > 0:
+            return date_string[0]
+        else:
+            raise ParsingError(f'_get_time error: cannot parse {date_string}')

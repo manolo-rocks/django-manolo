@@ -10,18 +10,22 @@ def make_hash(item):
     hash_input += str(item['institution'])
 
     if 'full_name' in item:
-        hash_input += str(normalize(item['full_name'], 'NFKD'))
+        hash_input += str(normalize('NFKD', item['full_name']))
 
     if 'id_document' in item:
-        hash_input += str(normalize(item['id_document'], 'NFKD'))
+        hash_input += str(normalize('NFKD', item['id_document']))
 
     if 'id_number' in item:
-        hash_input += str(normalize(item['id_number'], 'NFKD'))
+        hash_input += str(normalize('NFKD', item['id_number']))
 
     hash_input += str(item['date'])
 
     if 'time_start' in item:
-        hash_input += str(normalize(item['time_start'], 'NFKD'))
+        # only use time and am or pm, do not include date as this is how whe
+        # have done it in the past to compute the hash
+        time_start_items = item['time_start'].split(' ')
+        time_start = f"{time_start_items[1]} {time_start_items[2]}"
+        hash_input += str(normalize('NFKD', time_start))
 
     hash_output = hashlib.sha1()
     hash_output.update(hash_input.encode("utf-8"))
