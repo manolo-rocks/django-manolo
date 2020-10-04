@@ -23,7 +23,6 @@ class Visitor(models.Model):
 
     full_name = models.TextField(
         help_text='Full name of visitor',
-        db_index=True,
     )
 
     entity = models.CharField(
@@ -64,8 +63,7 @@ class Visitor(models.Model):
     institution = models.CharField(
         max_length=250,
         help_text='Institution visited',
-        null=True,
-        db_index=True,
+        null=True
     )
 
     location = models.CharField(
@@ -101,7 +99,7 @@ class Visitor(models.Model):
     )
 
     created = models.DateTimeField(auto_now_add=True)
-    modified = models.DateTimeField(auto_now=True, db_index=True)
+    modified = models.DateTimeField(auto_now=True)
 
     def save(self, *args, **kwargs):
         """Need to update the combined field for full text search"""
