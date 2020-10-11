@@ -42,7 +42,7 @@ def get_dni(document_identity):
     document_identity = document_identity.strip()
     document_identity = re.sub('^', ' ', document_identity)
 
-    res = re.search("(.*)\s(([A-Za-z0-9]+\W*)+)$", document_identity)
+    res = re.search(r"(.*)\s(([A-Za-z0-9]+\W*)+)$", document_identity)
     if res:
         id_document = res.groups()[0].strip()
         id_number = res.groups()[1].strip()
