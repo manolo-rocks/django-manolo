@@ -24,7 +24,11 @@ def make_hash(item):
         # only use time and am or pm, do not include date as this is how whe
         # have done it in the past to compute the hash
         time_start_items = item['time_start'].split(' ')
-        time_start = f"{time_start_items[1]} {time_start_items[2]}"
+        if len(time_start_items) == 3:
+            time_start = f"{time_start_items[1]} {time_start_items[2]}"
+        else:
+            time_start = item['time_start']
+
         hash_input += str(normalize('NFKD', time_start))
 
     hash_output = hashlib.sha1()

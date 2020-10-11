@@ -70,7 +70,7 @@ class AmbienteSpider(ManoloBaseSpider):
 
         for row in rows:
             l = ManoloItemLoader(item=ManoloItem(), selector=row)
-            l.add_value('institution', 'ambiente')
+            l.add_value('institution', self.name)
             l.add_value('date', date)
             l.add_value('id_document', 'DNI')
 

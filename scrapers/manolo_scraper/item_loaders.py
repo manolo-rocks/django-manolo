@@ -13,5 +13,5 @@ def filter_date(value):
 
 
 class ManoloItemLoader(ItemLoader):
-    default_input_processor = MapCompose(remove_tags)
+    default_input_processor = MapCompose(remove_tags, str.strip)
     default_output_processor = TakeFirst()
