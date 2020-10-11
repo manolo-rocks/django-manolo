@@ -10,7 +10,6 @@
 import os
 import sys
 sys.path.append(os.path.dirname(os.path.abspath('..')))
-print(sys.path)
 
 os.environ['DJANGO_SETTINGS_MODULE'] = 'manolo.settings.local'
 

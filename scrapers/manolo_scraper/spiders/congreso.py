@@ -63,6 +63,8 @@ class CongresoSpider(ManoloBaseSpider):
         yield request
 
     def parse(self, response):
+        with open('a.html', 'w') as handle:
+            handle.write(response.text)
         date = self.get_date_item(response.meta['date'], '%d/%m/%Y')
 
         for row in response.xpath('//table[@class="grid"]/tr'):
@@ -73,7 +75,7 @@ class CongresoSpider(ManoloBaseSpider):
 
                 if full_name.strip():
                     l = ManoloItemLoader(item=ManoloItem(), selector=row)
-                    l.add_value('institution', 'congreso')
+                    l.add_value('institution', self.name)
                     l.add_value('date', date)
                     l.add_value('full_name', full_name)
 
@@ -83,12 +85,11 @@ class CongresoSpider(ManoloBaseSpider):
                     l.add_xpath('entity', './td[6]/span/text()')
                     l.add_xpath('reason', './td[7]/span/text()')
                     l.add_xpath('host_name', './td[8]/span/text()')
-                    l.add_xpath('title', './td[9]/span/text()')
+                    l.add_xpath('host_title', './td[9]/span/text()')
                     l.add_xpath('office', './td[10]/span/text()')
                     l.add_xpath('time_end', './td[11]/span/text()')
 
                     item = l.load_item()
-
                     item = make_hash(item)
 
                     yield item
