@@ -5,7 +5,6 @@
 # Don't forget to add your pipeline to the ITEM_PIPELINES setting
 # See: http://doc.scrapy.org/en/latest/topics/item-pipeline.html
 import datetime
-import logging
 import re
 
 from scrapy.exceptions import DropItem
@@ -27,6 +26,15 @@ class DuplicatesPipeline(object):
 
 
 class CleanItemPipeline(object):
+    errors = []
+
+    def open_spider(self, spider):
+        self.errors = []
+
+    def close_spider(self, spider):
+        # TODO: send an email if error where found
+        print(f'Found {len(self.errors)} errors: {self.errors}')
+
     def process_item(self, item, spider):
         for k, v in item.items():
             if isinstance(v, str) is True:
@@ -35,9 +43,10 @@ class CleanItemPipeline(object):
             else:
                 item[k] = v
         try:
-            item['date'] = datetime.date.strftime(item['date'], '%Y-%m-%d')
+            item['date'] = datetime.datetime.strptime(item['date'], '%Y-%m-%d')
         except TypeError as e:
-            print("Our date is good, continue: {}".format(e))
+            self.errors.append(f"Our date is bad: {e}: {item['date']}")
+            return item
 
         if 'time_end' not in item:
             item['time_end'] = ''
@@ -54,7 +63,7 @@ class CleanItemPipeline(object):
         if 'entity' not in item:
             item['entity'] = ''
 
-        if not 'full_name' in item:
+        if 'full_name' not in item:
             raise DropItem("Missing visitor in item: {}".format(item))
 
         if item['full_name'] == '':
@@ -63,14 +72,26 @@ class CleanItemPipeline(object):
         if 'HORA DE' in item['time_start']:
             raise DropItem("This is a header, drop it: {}".format(item))
 
+        try:
+            self.save_item(item)
+        except Exception as e:
+            self.errors.append(f"Could not store in the database: {e}")
         return item
 
     def save_item(self, item):
-        if not Visitor.objects.filter(sha1=item['sha1']).exists():
+        try:
+            visitor_exists = Visitor.objects.filter(sha1=item['sha1']).exists()
+        except Exception as e:
+            self.errors.append(f"Could not search in the database: {e}")
+            return
+
+        if not visitor_exists:
             item['created'] = datetime.datetime.now()
             item['modified'] = datetime.datetime.now()
-            record = Visitor(item)
-            record.save()
-            logging.info("Saving: {0}, date: {1}".format(item['sha1'], item['date']))
+            try:
+                Visitor.objects.create(**item)
+            except Exception as e:
+                self.errors.append(f'Error when saving item to database {e}')
+                return
         else:
-            logging.info("{0}, date: {1} is found in db, not saving".format(item['sha1'], item['date']))
+            print("{0}, date: {1} is found in db, not saving".format(item['sha1'], item['date']))
