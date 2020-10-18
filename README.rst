@@ -81,12 +81,7 @@ Note: This project uses python 3.4
 
 Troubleshooting
 ===============
-If error in pickle version appears. Remove contents of whoosh index folder and
-rebuild the index:
-
-::
-
-    python manage.py rebuild_index  --settings=manolo.settings.local
+TBD
 
 Configure
 =========

@@ -11,9 +11,6 @@ help:
 	@echo "release - package and upload a release"
 	@echo "sdist - package"
 	@echo "migrations - apply Django model migrations"
-	@echo "rebuild_index - rebuild whoosh database index"
-	@echo "rebuild_index-production - rebuild whoosh database index in production"
-	@echo "update_index-production - update whoosh database index in production"
 	@echo "serve - serve Django project for local development"
 	@echo "serve-production - serve Django project for production database postgreSQL"
 
@@ -74,15 +71,6 @@ migrations:
 migrations-production:
 	python manage.py makemigrations --settings=manolo.settings.production
 	python manage.py migrate --settings=manolo.settings.production
-
-rebuild_index:
-	python manage.py rebuild_index --settings=manolo.settings.local
-
-rebuild_index-production:
-	python manage.py rebuild_index --noinput --settings=manolo.settings.production
-
-update_index-production:
-	python manage.py update_index --settings=manolo.settings.production
 
 serve:
 	python manage.py runserver --settings=manolo.settings.local
