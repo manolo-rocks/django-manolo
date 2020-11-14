@@ -7,16 +7,21 @@ APPS_DIR = ROOT_DIR / 'manolo'
 
 env = environ.Env()
 
-READ_DOT_ENV_FILE = env.bool('DJANGO_READ_DOT_ENV_FILE', default=False)
-if READ_DOT_ENV_FILE:
-    # OS environment variables take precedence over variables from .env
-    env.read_env(str(ROOT_DIR / '.env'))
+# OS environment variables take precedence over variables from .env
+env.read_env(str(ROOT_DIR / '.env'))
 
 # PATH vars
-DEBUG = env.bool("DJANGO_DEBUG", False)
+DEBUG = env.bool("DJANGO_DEBUG", True)
 
 DATABASES = {
-    "default": env.db("DATABASE_URL", default="postgres:///manolo")
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': 'manolo',
+        'USER': 'postgres',
+        'PASSWORD': '',
+        'HOST': 'db',
+        'PORT': 5432,
+    }
 }
 DATABASES["default"]["ATOMIC_REQUESTS"] = True
 
@@ -52,11 +57,11 @@ USE_L10N = True
 # If you set this to False, Django will not use timezone-aware datetimes.
 USE_TZ = True
 
-# Absolute filesystem path to the directory that will hold user-uploaded files.
+# Absolute filesystem path to the directory for user-uploaded files.
 # Example: "/var/www/example.com/media/"
-MEDIA_ROOT = str(ROOT_DIR / 'run/devdata/media/')
-LOG_DIR = str(ROOT_DIR / 'run/devdata/logs/')
-STATIC_ROOT = str(ROOT_DIR / 'run/devdata/static/')
+MEDIA_ROOT = str(ROOT_DIR / 'docker/devdata/media/')
+LOG_DIR = str(ROOT_DIR / 'docker/devdata/logs/')
+STATIC_ROOT = str(ROOT_DIR / 'docker/devdata/static/')
 
 # URL that handles the media served from MEDIA_ROOT. Make sure to use a
 # trailing slash.

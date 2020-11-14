@@ -1,0 +1,15 @@
+#!/usr/bin/env bash
+
+set -e
+echo "Running docker_upgrade $APP_NAME $0"
+
+cd docker
+echo "Building containers"
+docker-compose -f docker-compose.yml build
+docker-compose stop
+docker-compose -f docker-compose.yml run --rm app /wait_for_it.sh db:5432 -t 0 -- python manage.py migrate
+docker-compose -f docker-compose.yml run --rm app /wait_for_it.sh db:5432 -t 0 -- python manage.py collectstatic --noinput
+docker-compose -f docker-compose.yml up -d
+echo ""
+echo "Successfully built and upgraded docker containers. Ready to start $APP_NAME"
+docker-compose ps

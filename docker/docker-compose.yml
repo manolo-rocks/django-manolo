@@ -1,0 +1,51 @@
+version: '3.5'
+volumes:
+  db_data:
+  app_data:
+services:
+  db:
+    build:
+      context: ../
+      dockerfile: docker/postgres/Dockerfile
+    image: manolo/manolo_db
+    volumes:
+      - db_data:/srv/postgresql/data/
+    expose:
+      - '5432'
+    environment:
+      POSTGRES_HOST_AUTH_METHOD: 'trust'
+  app:
+    build:
+      context: ../
+      dockerfile: docker/app/Dockerfile
+    image: manolo/manolo_app
+    command: |
+      /wait_for_it.sh db:5432 -t 0 -- gunicorn
+      --workers 8
+      --timeout 120
+      --worker-class aiohttp.worker.GunicornWebWorker
+      --log-level debug
+      --error-logfile=-
+      --preload
+      -b 0.0.0.0:8000 manolo.wsgi
+    volumes:
+      - app_data:/data
+      - /logs
+    expose:
+      - "8000"
+    depends_on:
+      - db
+    environment:
+      DJANGO_SETTINGS_MODULE: 'manolo.settings.production'
+  nginx:
+    build:
+      context: ../
+      dockerfile: docker/nginx/Dockerfile
+    image: manolo/manolo_nginx
+    volumes:
+      - app_data:/data
+    ports:
+      - "4082:80"
+      - "4432:443"
+    depends_on:
+      - app
