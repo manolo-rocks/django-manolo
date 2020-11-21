@@ -1,9 +1,11 @@
+import os
 from .base import *  # noqa
 from .base import env
 
+os.environ["DJANGO_ALLOW_ASYNC_UNSAFE"] = "true"
 
-STATIC_ROOT = "/var/www/manolo/static/"
-MEDIA_ROOT = "/var/www/manolo/media/"
+MEDIA_ROOT = "/data/media/"
+STATIC_ROOT = "/data/static/"
 
 DEBUG = False
 
