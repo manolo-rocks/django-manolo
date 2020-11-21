@@ -27,29 +27,32 @@
     </div>
   </div><!-- row -->
 
-
   <div class="row ">
+    {% for developer in developers %}
     <div class="col-xs-11 col-sm-6 col-md-3 col-md-offset-1 col-lg-3">
       <div class="panel panel-default">
         <div class="panel-body">
 
           <div class="media">
             <div class="media-left media-middle">
-                <img class="media-object img-circle"
-                     src="{% static 'img/carlos_avatar_2015.png' %}"
-                     alt="Carlos Peña" />
+              {% with 'img/'|add:developer.avatar_image_name as imagePath %}
+                <img
+                  class="media-object img-circle"
+                  src="{% static imagePath %}"
+                  alt="{{ developer.name }}"
+                />
+              {% endwith %}
             </div>
             <div class="media-body">
-              <h4 class="media-heading">Carlos Peña</h4>
-                <small> programmer/biologist</small>
+              <h4 class="media-heading">{{ developer.name }}</h4>
+                <small> {{ developer.title }}</small>
               <p>
                 <br />
-                <a href="https://github.com/carlosp420/"><i class="fa fa-github-alt fa-lg fa-fw"></i></a>
-                <a href="https://twitter.com/carlosp420"><i class="fa fa-twitter fa-lg fa-fw"></i></a>
-                <a href="http://mycalesis.me/"><i class="fa fa-external-link fa-lg fa-fw"></i></a>
-                <br />
-                a.k.a:
-                <a href="https://twitter.com/aniversarioperu"> @aniversarioperu </a>
+                <a href="https://github.com/{{ developer.github }}/"><i class="fa fa-github-alt fa-lg fa-fw"></i></a>
+                <a href="https://twitter.com/{{ developer.twitter }}"> @{{ developer.twitter }} </a>
+                {% if developer.homepage %}
+                  <a href="{{ developer.homepage }}"><i class="fa fa-external-link fa-lg fa-fw"></i></a>
+                {% endif %}
               </p>
 
             </div>
@@ -59,67 +62,9 @@
       </div>
     </div><!-- col -->
 
-    <div class="col-xs-11 col-sm-6 col-md-3 col-lg-3">
-      <div class="panel panel-default">
-        <div class="panel-body">
-
-          <div class="media">
-            <div class="media-left media-middle">
-              <a href="#">
-                <img class="media-object img-circle" src="{% static 'img/avatar_matiskay.png' %}"
-                     alt="Edgar Mara @matiskay" />
-              </a>
-            </div>
-            <div class="media-body">
-              <h4 class="media-heading">Edgar Marca</h4>
-              <small>MSc. candidate in Computational Modeling at LNCC
-                (<a href="http://www.lncc.br/">http://www.lncc.br/</a>)
-                where I do research in Machine Learning.</small>
-              <p>
-                <br />
-                <a href="https://github.com/matiskay/"><i class="fa fa-github-alt fa-lg fa-fw"></i></a>
-                <a href="https://twitter.com/matiskay"><i class="fa fa-twitter fa-lg fa-fw"></i></a>
-              </p>
-
-            </div>
-          </div>
-
-        </div>
-      </div>
-    </div><!-- col -->
-
-    <div class="col-xs-11 col-sm-6 col-md-3  col-lg-3">
-      <div class="panel panel-default">
-        <div class="panel-body">
-
-          <div class="media">
-            <div class="media-left media-middle">
-                <img class="media-object img-circle"
-                     src="{% static 'img/carol_foto.png' %}"
-                     alt="Carol Castillo" />
-            </div>
-            <div class="media-body">
-              <h4 class="media-heading">Carol Castillo</h4>
-                <small> programmer newbie/entomologist</small>
-              <p>
-                <br />
-                <a href="https://github.com/hedonazur"><i class="fa fa-github-alt fa-lg fa-fw"></i></a>
-                <a href="https://twitter.com/hedonazur"><i class="fa fa-twitter fa-lg fa-fw"></i></a>
-                <br />
-              </p>
-
-            </div>
-          </div>
-
-        </div>
-      </div>
-    </div><!-- col -->
-
-
-
+    {% endfor %}
 
   </div><!-- row -->
-
 
 </div><!-- container -->
 

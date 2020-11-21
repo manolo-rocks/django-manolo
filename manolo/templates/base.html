@@ -59,14 +59,6 @@
                 <div class="form-group">
                   {% if request.user.is_authenticated %}
 
-                    <span class="badge">Credits available:
-                      {% if request.user.subscriber.credits %}
-                        {{ request.user.subscriber.credits }}
-                      {% else %}
-                        0
-                      {% endif %}
-                    </span>
-
                     {% if user_profile.avatar %}
                        <img src="data:image/png;base64, {{ user_profile.avatar }}"
                             class="img-circle"
@@ -145,7 +137,7 @@
         <footer>
           <small class="pull-left">
             <a href="https://github.com/aniversarioperu/django-manolo/"><i class="fa fa-github-alt"></i>
-              v2.4.0</a>
+              v2.5.0</a>
           </small>
 
             <small class="pull-right">
@@ -153,8 +145,15 @@
                 Los datos en Manolo son obtenidos con escrapers construidos con el framework
                 <a href="http://scrapy.org/">Scrapy</a>.
               <br />
-              &copy; 2015-2016 Desarrollado por <a href="https://twitter.com/AniversarioPeru">Carlos Peña<i class="fa fa-twitter"></i></a>
-              &amp; <a href="https://twitter.com/matiskay">Edgar Marca<i class="fa fa-twitter"></i></a>
+              &copy; 2015-2020 Desarrollado por
+              <a href="https://twitter.com/AniversarioPeru"><i class="fa fa-twitter"></i>AniversarioPeru</a>,
+              <a href="https://twitter.com/carlosp420"><i class="fa fa-twitter"></i>Carlos Peña</a>,
+              <a href="https://twitter.com/manubellido"><i class="fa fa-twitter"></i>Manuel Bellido</a>, <br />
+              <a href="https://twitter.com/hedonazur"><i class="fa fa-twitter"></i>Carol Castillo</a>,
+              <a href="https://twitter.com/matiskay"><i class="fa fa-twitter"></i>Edgar Marca</a>,
+              <a href="https://twitter.com/jmvr1"><i class="fa fa-twitter"></i>Jose Manuel Valdivia</a>,
+              <a href="https://twitter.com/lisbeth_s4"><i class="fa fa-twitter"></i>Lisbeth S.</a> &amp;
+              <a href="https://twitter.com/luhegoes"><i class="fa fa-twitter"></i>Luis Herrera</a>
               <br />
               <br />
             </small>

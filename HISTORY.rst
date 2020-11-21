@@ -3,8 +3,12 @@
 History
 -------
 
-2.x.x ()
-========
+2.5.0 (2020-11-21)
+==================
+* Uso de docker
+* Se agregó sponsors
+* Se quitó elasticsearch
+* Ahora todas las visitas son gratis
 * Mejor página 404
 * Brand logo
 * API usando rest_framework

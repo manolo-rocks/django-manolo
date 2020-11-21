@@ -135,3 +135,16 @@ class Statistic(models.Model):
 class Statistic_detail(models.Model):
     name = models.TextField(null=True)
     number_of_visits = models.IntegerField(null=True)
+
+
+class Developer(models.Model):
+    name = models.CharField(null=False, max_length=200)
+    title = models.TextField(null=True, blank=True)
+    twitter = models.CharField(null=True, blank=True, max_length=200)
+    github = models.CharField(null=True, blank=True, max_length=200)
+    homepage = models.URLField(null=True, blank=True, max_length=200)
+    avatar_image_name = models.CharField(null=True, blank=True, max_length=200)
+    rank = models.IntegerField()
+
+    def __str__(self):
+        return self.name
