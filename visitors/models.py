@@ -10,8 +10,9 @@ class Visitor(models.Model):
         primary_key=True
     )
 
-    # combined field for full text search on full_name, id_number, host_name
-    full_name_dni_host_name = SearchVectorField(null=True)
+    # combined field for full text search on full_name, id_number, host_name,
+    # institution, entity, reason, office, meeting place
+    full_search = SearchVectorField(null=True)
 
     sha1 = models.CharField(
         max_length=40,
@@ -104,17 +105,21 @@ class Visitor(models.Model):
     def save(self, *args, **kwargs):
         """Need to update the combined field for full text search"""
         super(Visitor, self).save(*args, **kwargs)
-        if not self.full_name_dni_host_name:
+        if not self.full_search:
             Visitor.objects.filter(
                 id=self.id
             ).update(
-                full_name_dni_host_name=SearchVector('full_name', 'id_number', 'host_name')
+                full_search=SearchVector(
+                    'full_name', 'id_number', 'host_name', 'institution',
+                    'entity', 'reason', 'office', 'meeting_place', 'host_title',
+                    'location'
+                )
             )
 
     class Meta:
         indexes = [
             GinIndex(
-                fields=['full_name_dni_host_name'], name='full_name_dni_host_name_idx'
+                fields=['full_search'], name='full_search_idx'
             )
         ]
 
