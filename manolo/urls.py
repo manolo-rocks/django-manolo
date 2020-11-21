@@ -26,7 +26,7 @@ urlpatterns = [
 
     url(r'^about/', views.about, name='about'),
     path('', include('visitors.urls')),
-    url(r'robots.txt$', views.robots, name='robots'),
+    path('robots.txt', views.robots_txt, name='robots'),
     url(r'^cazador/', include('cazador.urls')),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 

@@ -191,8 +191,13 @@ def api(request):
     return render(request, "api.html")
 
 
-def robots(request):
-    return render(request, "robots.txt")
+def robots_txt(request):
+    lines = [
+        "User-Agent: *",
+        "Disallow: /search/",
+        "Disallow: /api/",
+    ]
+    return HttpResponse("\n".join(lines), content_type="text/plain")
 
 
 def do_pagination(request, all_items):
