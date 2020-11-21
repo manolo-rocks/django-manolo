@@ -9,7 +9,7 @@ from django.http import Http404, HttpResponse
 from rest_framework.renderers import JSONRenderer
 from django.views.decorators.csrf import csrf_exempt
 
-from visitors.models import Visitor, Statistic, Statistic_detail
+from visitors.models import Visitor, Statistic, Statistic_detail, Developer
 from visitors.utils import Paginator, get_user_profile
 
 
@@ -40,11 +40,13 @@ def index(request):
 
 
 def about(request):
-    user_profile = get_user_profile(request)
+    developers = Developer.objects.all().order_by('rank')
+    context = get_user_profile(request)
+    context['developers'] = developers
     return render(
         request,
         "about.html",
-        {'user_profile': user_profile},
+        context
     )
 
 
