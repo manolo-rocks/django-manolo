@@ -21,6 +21,8 @@ EMAIL_BACKEND = env(
     default='django.core.mail.backends.console.EmailBackend'
 )
 
+DATABASES['default']['HOST'] = 'localhost'
+
 INSTALLED_APPS += ['debug_toolbar']  # noqa F405
 INSTALLED_APPS += ["django_extensions"]  # noqa F405
 
