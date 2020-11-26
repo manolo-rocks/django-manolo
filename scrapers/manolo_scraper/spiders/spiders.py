@@ -18,7 +18,6 @@ class ManoloBaseSpider(scrapy.Spider):
 
         self.date_start = date_start
         self.date_end = date_end
-
         today = datetime.date.today()
 
         if self.date_start is None:

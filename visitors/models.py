@@ -135,6 +135,7 @@ class Subscriber(models.Model):
 
 class Statistic(models.Model):
     data = models.TextField(null=True)
+    visitor_count = models.IntegerField(null=True)
 
 
 class Statistic_detail(models.Model):

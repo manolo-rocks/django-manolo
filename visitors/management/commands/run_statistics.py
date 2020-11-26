@@ -66,7 +66,9 @@ def run_statistics():
     Statistic.objects.all().delete()
 
     print("Saving data to Statistics")
-    Statistic.objects.create(data=json.dumps(data_dict))
+    stats = Statistic.objects.create(data=json.dumps(data_dict))
+    stats.visitor_count = Visitor.objects.all().count()
+    stats.save()
 
     number_of_rows = Statistic.objects.all().count()
     print("Currently have {} rows in Statistics".format(number_of_rows))
