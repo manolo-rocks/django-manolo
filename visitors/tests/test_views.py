@@ -10,9 +10,6 @@ from visitors.models import Subscriber
 class TestViews(TestCase):
     def setUp(self):
         self.client = Client()
-        # self.user = User.objects.get(username='admin')
-        # self.user.set_password('pass')
-        # self.user.save()
         self.maxDiff = None
 
     def test_index(self):
