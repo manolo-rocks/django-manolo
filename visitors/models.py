@@ -64,7 +64,8 @@ class Visitor(models.Model):
     institution = models.CharField(
         max_length=250,
         help_text='Institution visited',
-        null=True
+        null=True,
+        db_index=True,
     )
 
     location = models.CharField(
