@@ -23,3 +23,5 @@ tqdm==3.7.1
 argon2-cffi==20.1.0  # https://github.com/hynek/argon2_cffi
 Scrapy==2.3.0
 scrapy-splash==0.7.2
+django-extensions==3.0.9
+django-debug-toolbar
