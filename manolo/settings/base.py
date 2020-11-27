@@ -140,6 +140,7 @@ DJANGO_APPS = [
     'django.contrib.staticfiles',
     'django.contrib.admin',
     'django.contrib.humanize',
+    'django_extensions',
 ]
 
 THIRD_PARTY_APPS = [

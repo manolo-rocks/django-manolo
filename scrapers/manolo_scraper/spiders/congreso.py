@@ -63,8 +63,6 @@ class CongresoSpider(ManoloBaseSpider):
         yield request
 
     def parse(self, response):
-        with open('a.html', 'w') as handle:
-            handle.write(response.text)
         date = self.get_date_item(response.meta['date'], '%d/%m/%Y')
 
         for row in response.xpath('//table[@class="grid"]/tr'):

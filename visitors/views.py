@@ -28,7 +28,7 @@ class JSONResponse(HttpResponse):
 
 def index(request):
     user_profile = get_user_profile(request)
-    count = Visitor.objects.count()
+    count = Statistic.objects.last().visitor_count
     return render(
         request,
         "index.html",
@@ -78,8 +78,9 @@ def search(request):
     user_profile = get_user_profile(request)
     query = request.GET.get('q')
 
-    all_items = Visitor.objects.filter(full_search=SearchQuery(query))
-    print(all_items)
+    all_items = Visitor.objects.filter(
+        full_search=SearchQuery(query)
+    ).order_by('-date')
     paginator, page = do_pagination(request, all_items)
 
     json_path = request.get_full_path() + '&json'
