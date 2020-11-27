@@ -28,7 +28,12 @@ class JSONResponse(HttpResponse):
 
 def index(request):
     user_profile = get_user_profile(request)
-    count = Statistic.objects.last().visitor_count
+    stats = Statistic.objects.last()
+    if stats:
+        count = stats.visitor_count
+    else:
+        count = 0
+        
     return render(
         request,
         "index.html",
