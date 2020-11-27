@@ -127,8 +127,8 @@ class SireviSpider(ManoloBaseSpider):
         l.add_xpath('entity', './td[4]/text()')
         l.add_xpath('reason', './td[5]/text()')
         l.add_xpath('host_name', './td[6]/text()')
-        l.add_xpath('title', './td[7]/text()')
-        l.add_xpath('office', './td[8]/text()')
+        l.add_xpath('host_title', './td[7]/text()')
+        l.add_xpath('meeting_place', './td[8]/text()')
         l.add_xpath('time_start', './td[9]/text()')
         l.add_xpath('time_end', './td[10]/text()')
 

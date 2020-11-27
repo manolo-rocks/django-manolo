@@ -7,6 +7,7 @@
 import datetime
 import re
 
+import dateparser
 from scrapy.exceptions import DropItem
 
 from visitors.models import Visitor
@@ -42,11 +43,7 @@ class CleanItemPipeline(object):
                 item[k] = value.strip()
             else:
                 item[k] = v
-        try:
-            item['date'] = datetime.datetime.strptime(item['date'], '%Y-%m-%d')
-        except TypeError as e:
-            self.errors.append(f"Our date is bad: {e}: {item['date']}")
-            return item
+        item['date'] = dateparser.parse(item['date'])
 
         if 'time_end' not in item:
             item['time_end'] = ''
@@ -90,6 +87,7 @@ class CleanItemPipeline(object):
             item['modified'] = datetime.datetime.now()
             try:
                 Visitor.objects.create(**item)
+                print('saving to db item')
             except Exception as e:
                 self.errors.append(f'Error when saving item to database {e}')
                 return

@@ -114,7 +114,7 @@ class MinsaSpider(ManoloBaseSpider):
                 l.add_xpath('reason', './td[7]/text()')
                 l.add_xpath('host_name', './td[8]/text()')
                 l.add_xpath('office', './td[9]/text()')
-                l.add_xpath('title', './td[10]/text()')
+                l.add_xpath('host_title', './td[10]/text()')
                 l.add_xpath('time_start', './td[11]/text()')
                 l.add_xpath('time_end', './td[12]/text()')
 

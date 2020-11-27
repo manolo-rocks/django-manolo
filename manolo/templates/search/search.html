@@ -69,9 +69,19 @@
              <td><a href='/search?q={{ i.host_name }}'>
                {{ i.host_name }}
              </a></td>
-             <td><a href='/search?q={{ i.office }}'>
-               {{ i.office }}
-             </a></td>
+             {% if i.office %}
+               <td>
+                 <a href='/search?q={{ i.office }}'>
+                   {{ i.office }}
+                 </a>
+               </td>
+             {% else %}
+               <td>
+                 <a href='/search?q={{ i.host_title }}'>
+                   {{ i.host_title }}
+                 </a>
+               </td>
+             {% endif %}
              <td><a href='/search?q={{ i.meeting_place }}'>
                {{ i.meeting_place }}
              </a></td>
