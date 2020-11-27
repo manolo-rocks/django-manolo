@@ -33,7 +33,7 @@ def index(request):
         count = stats.visitor_count
     else:
         count = 0
-        
+
     return render(
         request,
         "index.html",
