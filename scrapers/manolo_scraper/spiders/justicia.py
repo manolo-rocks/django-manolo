@@ -1,6 +1,6 @@
 import logging
 
-from scrapy import FormRequest
+from scrapy.http import FormRequest, Request
 
 from scrapers.manolo_scraper.spiders.spiders import ManoloBaseSpider
 from ..items import ManoloItem
@@ -10,82 +10,80 @@ from ..utils import make_hash
 
 class JusticiaSpider(ManoloBaseSpider):
     name = 'justicia'
-    allowed_domains = ['http://visitas.minjus.gob.pe']
-    base_url = 'http://visitas.minjus.gob.pe/visita_web'
+    allowed_domains = ['visitas.minjus.gob.pe']
+    base_url = 'https://visitas.minjus.gob.pe/visita_web/consulta_buscarVisitas'
 
     def initial_request(self, date):
         date_str = date.strftime('%d/%m/%Y')
-        request = self._request_number_of_pages(date_str)
-        return request
-
-    def _request_number_of_pages(self, date_str):
-        url = self.base_url + '/consulta_paginarBusquedaVisitas'
-
-        request = FormRequest(url=url,
-                              meta={
-                                  'date': date_str,
-                              },
-                              formdata={
-                                  'fechaDesde': date_str,
-                                  'fechaHasta': date_str,
-                                  'paginaActual': '1',
-                                  'visita.visitanteNombres': '',
-                                  'visita.personalNombre': '',
-                                  'visita.oficinaNombre': '',
-                                  'visita.sedeId': '00',
-                                  'visita.ano': '',
-                                  'visita.mes': '',
-                                  'visita.fechaIngreso': '',
-                                  'paginaNueva': '0',
-                                  'visita.visitanteId': '0',
-                                  'visita.personalId': '0',
-                                  'visita.oficinaId': '0',
-                              },
-                              dont_filter=True,
-                              callback=self.parse_initial_request)
-
-        request.meta['date'] = date_str
+        request = FormRequest(
+            url=self.base_url,
+            formdata={
+                'visita.visitanteNombres': '',
+                'visita.personalNombre': '',
+                'visita.oficinaNombre': '',
+                'visita.sedeId': '00',
+                'fechaDesde': date_str,
+                'fechaHasta': date_str,
+                'ano': '0000',
+                'mes': '00',
+                'correcto': '0',
+                'visita.ano': '',
+                'visita.mes': '',
+                'visita.fechaIngreso': '',
+                'paginaNueva': '0',
+                'paginaNueva2': '0',
+                'visita.visitanteId': '0',
+                'visita.personalId': '0',
+                'visita.oficinaId': '0',
+            },
+            meta={
+                'date': date_str,
+                'page_current': 0,
+            },
+            callback=self.parse_initial_request,
+        )
         return request
 
     def parse_initial_request(self, response):
         date_str = response.meta['date']
+        items = self.parse(response)
 
-        number_of_pages = response.xpath('//select/option/text()').extract()
+        item_count = 0
+        for item in items:
+            item_count += 1
+            yield item
 
-        if number_of_pages:
-            number_of_pages = int(number_of_pages[-1])
-
-            for page in range(1, number_of_pages + 1):
-                request = self._request_page(date_str, page, self.parse)
-
-                yield request
-
-    def _request_page(self, date_str, page, callback):
-        url = self.base_url + '/consulta_buscarVisitas'
-
-        request = FormRequest(url=url,
-                              meta={
-                                  'date': date_str,
-                              },
-                              formdata={
-                                  'fechaDesde': date_str,
-                                  'fechaHasta': date_str,
-                                  'paginaActual': str(page),
-                                  'visita.visitanteNombres': '',
-                                  'visita.personalNombre': '',
-                                  'visita.oficinaNombre': '',
-                                  'visita.sedeId': '00',
-                                  'visita.ano': '',
-                                  'visita.mes': '',
-                                  'visita.fechaIngreso': '',
-                                  'paginaNueva': str(page),
-                                  'visita.visitanteId': '0',
-                                  'visita.personalId': '0',
-                                  'visita.oficinaId': '0',
-                              },
-                              dont_filter=True,
-                              callback=callback)
-        return request
+        if item_count:
+            page_current = response.meta['page_current'] + 1
+            request = FormRequest(
+                self.base_url,
+                formdata={
+                    'visita.visitanteNombres': '',
+                    'visita.personalNombre': '',
+                    'visita.oficinaNombre': '',
+                    'visita.sedeId': '00',
+                    'fechaDesde': date_str,
+                    'fechaHasta': date_str,
+                    'ano': '0000',
+                    'mes': '00',
+                    'correcto': '0',
+                    'visita.ano': '',
+                    'visita.mes': '',
+                    'visita.fechaIngreso': '',
+                    'paginaActual': str(page_current),
+                    'paginaNueva': str(page_current),
+                    'paginaNueva2': '0',
+                    'visita.visitanteId': '0',
+                    'visita.personalId': '0',
+                    'visita.oficinaId': '0',
+                },
+                meta={
+                    'date': date_str,
+                    'page_current': page_current,
+                },
+                callback=self.parse_initial_request,
+            )
+            yield request
 
     def parse(self, response):
         rows = response.xpath('//table/tr')
