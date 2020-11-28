@@ -9,6 +9,9 @@ from ..utils import make_hash
 
 
 class JusticiaSpider(ManoloBaseSpider):
+    """Run this scraper in a peruvian server because the minjus blocks non
+    peruvian ips
+    """
     name = 'justicia'
     allowed_domains = ['visitas.minjus.gob.pe']
     base_url = 'https://visitas.minjus.gob.pe/visita_web/consulta_buscarVisitas'

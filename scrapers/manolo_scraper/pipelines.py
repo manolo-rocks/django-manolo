@@ -37,59 +37,76 @@ class CleanItemPipeline(object):
         print(f'Found {len(self.errors)} errors: {self.errors}')
 
     def process_item(self, item, spider):
-        for k, v in item.items():
-            if isinstance(v, str) is True:
-                value = re.sub(r'\s+', ' ', v)
-                item[k] = value.strip()
-            else:
-                item[k] = v
-        item['date'] = dateparser.parse(item['date'])
+        result = process_item(item)
+        item = result['item']
+        error = result['error']
 
-        if 'time_end' not in item:
-            item['time_end'] = ''
-
-        if 'meeting_place' not in item:
-            item['meeting_place'] = ''
-
-        if 'location' not in item:
-            item['location'] = ''
-
-        if 'office' not in item:
-            item['office'] = ''
-
-        if 'entity' not in item:
-            item['entity'] = ''
-
-        if 'full_name' not in item:
-            raise DropItem("Missing visitor in item: {}".format(item))
-
-        if item['full_name'] == '':
-            raise DropItem("Missing visitor in item: {}".format(item))
-
-        if 'HORA DE' in item['time_start']:
-            raise DropItem("This is a header, drop it: {}".format(item))
-
-        try:
-            self.save_item(item)
-        except Exception as e:
-            self.errors.append(f"Could not store in the database: {e}")
+        if error:
+            self.errors.append(error)
         return item
 
-    def save_item(self, item):
-        try:
-            visitor_exists = Visitor.objects.filter(sha1=item['sha1']).exists()
-        except Exception as e:
-            self.errors.append(f"Could not search in the database: {e}")
-            return
 
-        if not visitor_exists:
-            item['created'] = datetime.datetime.now()
-            item['modified'] = datetime.datetime.now()
-            try:
-                Visitor.objects.create(**item)
-                print('saving to db item')
-            except Exception as e:
-                self.errors.append(f'Error when saving item to database {e}')
-                return
+def process_item(item):
+    """Process and saves a scraped item"""
+    for k, v in item.items():
+        if isinstance(v, str) is True:
+            value = re.sub(r'\s+', ' ', v)
+            item[k] = value.strip()
         else:
-            print("{0}, date: {1} is found in db, not saving".format(item['sha1'], item['date']))
+            item[k] = v
+    item['date'] = dateparser.parse(item['date'])
+
+    if 'time_end' not in item:
+        item['time_end'] = ''
+
+    if 'meeting_place' not in item:
+        item['meeting_place'] = ''
+
+    if 'location' not in item:
+        item['location'] = ''
+
+    if 'office' not in item:
+        item['office'] = ''
+
+    if 'entity' not in item:
+        item['entity'] = ''
+
+    if 'full_name' not in item:
+        raise DropItem("Missing visitor in item: {}".format(item))
+
+    if item['full_name'] == '':
+        raise DropItem("Missing visitor in item: {}".format(item))
+
+    if 'HORA DE' in item['time_start']:
+        raise DropItem("This is a header, drop it: {}".format(item))
+
+    try:
+        saving_error = save_item(item)
+    except Exception as e:
+        saving_error = f"Could not store in the database: {e}"
+
+    return {
+        'error': saving_error,
+        'item': item,
+    }
+
+
+def save_item(item):
+    """
+    returns error if occurred otherwise returns None
+    """
+    try:
+        visitor_exists = Visitor.objects.filter(sha1=item['sha1']).exists()
+    except Exception as e:
+        return f"Could not search in the database: {e}"
+
+    if not visitor_exists:
+        item['created'] = datetime.datetime.now()
+        item['modified'] = datetime.datetime.now()
+        try:
+            Visitor.objects.create(**item)
+            print('saving to db item')
+        except Exception as e:
+            return f'Error when saving item to database {e}'
+    else:
+        print("{0}, date: {1} is found in db, not saving".format(item['sha1'], item['date']))
