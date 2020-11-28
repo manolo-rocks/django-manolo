@@ -1,17 +1,36 @@
 # -*- coding: utf-8 -*-
-from .spiders import SireviSpider
+import scrapy
+
+from .spiders import SireviSpider, ManoloBaseSpider
 from ..items import ManoloItem
 from ..item_loaders import ManoloItemLoader
 from ..utils import get_dni
 
 
-class PcmSpider(SireviSpider):
+class PcmSpider(ManoloBaseSpider):
     name = 'pcm'
-    allowed_domains = ['horus.pcm.gob.pe']
-
-    base_url = 'http://horus.pcm.gob.pe/Visitas/controlVisitas'
-
     institution_name = 'pcm'
+    allowed_domains = ['visitas.pcm.gob.pe']
+    base_url = 'https://visitas.pcm.gob.pe/visitas/Transparencia/Transparencia/Buscar_Visita'
+
+    def initial_request(self, date):
+        date_str = date.strftime("%d/%m/%Y")
+        request = scrapy.FormRequest(
+            self.base_url,
+            formdata={
+                'biCodMovPersona': '',
+                'iCurrentPage': 1,
+                'iPageSize': 25,
+                'vFechFin': date_str,
+                'vFechInicio': date_str,
+                'vSortColumn': 'A.biCodMovVisita',
+                'vSortOrder': 'asc',
+            },
+            callback=self.parse)
+
+        request.meta['date'] = date_str
+
+        return request
 
     def get_item(self, data, date_str, row):
         l = ManoloItemLoader(item=ManoloItem(), selector=row)

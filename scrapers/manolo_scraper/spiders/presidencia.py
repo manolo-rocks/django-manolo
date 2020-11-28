@@ -12,7 +12,7 @@ from ..utils import make_hash, get_dni
 class PresidenciaSpider(ManoloBaseSpider):
     name = 'presidencia'
     allowed_domains = ['presidencia.gob.pe']
-    base_url = 'http://transparencia.presidencia.gob.pe/visitas'
+    base_url = 'http://appw.presidencia.gob.pe/visitas/transparencia'
 
     # custom_settings = {
         # "HTTP_PROXY": "http://127.0.0.1:8118",
@@ -26,7 +26,7 @@ class PresidenciaSpider(ManoloBaseSpider):
         return request
 
     def _request_page(self, date_str, callback):
-        url = self.base_url + '/index_server.php'
+        url = self.base_url + '/index_server.php?k=sbmtBuscar'
         request = FormRequest(
             url=url,
             meta={
@@ -39,10 +39,7 @@ class PresidenciaSpider(ManoloBaseSpider):
         request.meta['date'] = date_str
         return request
 
-
-    def parse(self, response):
-        with open("a.html", "w") as handle:
-            handle.write(response.body)
+    def parse(self, response, **kwargs):
         rows = response.xpath('//tr')
 
         date = self.get_date_item(response.meta['date'], '%d/%m/%Y')

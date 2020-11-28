@@ -82,9 +82,21 @@
                  </a>
                </td>
              {% endif %}
-             <td><a href='/search?q={{ i.meeting_place }}'>
-               {{ i.meeting_place }}
-             </a></td>
+
+             {% if i.meeting_place %}
+               <td>
+                 <a href='/search?q={{ i.meeting_place }}'>
+                   {{ i.meeting_place }}
+                 </a>
+               </td>
+             {% else %}
+               <td>
+                 <a href='/search?q={{ i.location }}'>
+                   {{ i.location }}
+                 </a>
+               </td>
+             {% endif %}
+
              <td>{{ i.time_start }}</td>
              <td>{{ i.time_end }}</td>
            </tr>
