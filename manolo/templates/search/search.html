@@ -23,7 +23,7 @@
      {% if paginator.object_list|length > 0 %}
 
        También puedes hacer búsquedas haciendo click sobre cada uno de los
-       resultados <span class="badge"><b>{{ paginator.object_list|length|intcomma }}</b></span>
+       resultados <span class="badge"><b>{{ all_items_count|intcomma }}</b></span>
 
        {% load static %}
        <p class="pull-right">

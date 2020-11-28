@@ -86,7 +86,7 @@ def search(request):
     all_items = Visitor.objects.filter(
         full_search=SearchQuery(query)
     ).order_by('-date')
-    paginator, page = do_pagination(request, all_items)
+    paginator, page = do_pagination(request, all_items[:4_000])
 
     json_path = request.get_full_path() + '&json'
     tsv_path = request.get_full_path() + '&tsv'
@@ -94,6 +94,7 @@ def search(request):
         request,
         "search/search.html",
         {
+            "all_items_count": all_items.count(),
             "paginator": paginator,
             "page": page,
             "query": query,
