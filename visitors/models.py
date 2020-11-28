@@ -87,7 +87,8 @@ class Visitor(models.Model):
     )
 
     date = models.DateField(
-        null=True
+        null=True,
+        db_index=True
     )
 
     time_start = models.CharField(
