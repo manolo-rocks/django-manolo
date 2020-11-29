@@ -60,6 +60,7 @@ services:
       --loglevel=info
       --concurrency=2
       --queues=default
+      --beat
     depends_on:
       - redis
       - db
