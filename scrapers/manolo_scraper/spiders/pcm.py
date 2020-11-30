@@ -1,10 +1,11 @@
 # -*- coding: utf-8 -*-
 import scrapy
+from scrapy import FormRequest
 
-from .spiders import SireviSpider, ManoloBaseSpider
+from .spiders import ManoloBaseSpider
 from ..items import ManoloItem
 from ..item_loaders import ManoloItemLoader
-from ..utils import get_dni
+from ..utils import get_dni, make_hash
 
 
 class PcmSpider(ManoloBaseSpider):
@@ -19,43 +20,71 @@ class PcmSpider(ManoloBaseSpider):
             self.base_url,
             formdata={
                 'biCodMovPersona': '',
-                'iCurrentPage': 1,
-                'iPageSize': 25,
+                'iCurrentPage': '1',
+                'iPageSize': '25',
                 'vFechFin': date_str,
                 'vFechInicio': date_str,
                 'vSortColumn': 'A.biCodMovVisita',
                 'vSortOrder': 'asc',
             },
-            callback=self.parse)
-
-        request.meta['date'] = date_str
-
+            meta={'date': date_str},
+            callback=self.parse_initial_request,
+        )
         return request
 
-    def get_item(self, data, date_str, row):
-        l = ManoloItemLoader(item=ManoloItem(), selector=row)
+    def parse_initial_request(self, response):
+        date_str = response.meta['date']
+        page_count = response.json()['PageCount']
+        for i in range(0, page_count):
+            request = FormRequest(
+                self.base_url,
+                formdata={
+                    'biCodMovPersona': '',
+                    'iCurrentPage': str(i + 1),
+                    'iPageSize': '25',
+                    'vFechFin': date_str,
+                    'vFechInicio': date_str,
+                    'vSortColumn': 'A.biCodMovVisita',
+                    'vSortOrder': 'asc',
+                },
+                meta={'date': date_str},
+                callback=self.parse,
+                dont_filter=True,
+            )
+            yield request
 
-        l.add_value('institution', self.institution_name)
-        l.add_value('date', date_str)
-        l.add_xpath('full_name', './td[2]/text()')
-        l.add_xpath('entity', './td[4]/text()')
-        l.add_xpath('reason', './td[5]/text()')
-        l.add_xpath('location', './td[6]/text()')
-        l.add_xpath('host_name', './td[7]/text()')
-        l.add_xpath('office', './td[8]/text()')
-        l.add_xpath('meeting_place', './td[9]/text()')
-        l.add_xpath('time_start', './td[10]/text()')
-        l.add_xpath('time_end', './td[11]/text()')
+    def parse(self, response, **kwargs):
+        date_str = response.meta['date']
 
+        for item in response.json()['Items']:
+            yield self.get_item(item['Row'], date_str)
+
+    def get_item(self, item, date_str):
         try:
-            document_identity = data[2].strip()
+            document_identity = item[3].strip()
         except IndexError:
             document_identity = ''
 
         if document_identity != '':
             id_document, id_number = get_dni(document_identity)
+        else:
+            id_document = 'DNI'
+            id_number = ''
 
-            l.add_value('id_document', id_document)
-            l.add_value('id_number', id_number)
-
-        return l.load_item()
+        l = ManoloItem(
+            institution=self.institution_name,
+            date=date_str,
+            full_name=item[2],
+            entity=item[4],
+            reason=item[5],
+            location=item[6],
+            office=item[8],
+            meeting_place=item[9],
+            host_name=item[7],
+            time_start=item[10],
+            time_end=item[11],
+            id_document=id_document,
+            id_number=id_number,
+        )
+        l = make_hash(l)
+        return l
