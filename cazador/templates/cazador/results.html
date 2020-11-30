@@ -11,9 +11,9 @@
 
     {% include "cazador/forms/search-form.html" %}
 
-    {% if paginator.object_list|length > 0 %}
+    {% if paginator.count > 0 %}
         <div class="row results-notice">
-            Manolo Cazador ha encontrado <strong>{{ paginator.object_list|length|intcomma }}</strong> resultados.
+            Manolo Cazador ha encontrado <strong>{{ paginator.count | intcomma }}</strong> resultados.
         </div>
 
         <div class="row">
