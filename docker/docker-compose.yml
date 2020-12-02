@@ -49,3 +49,30 @@ services:
       - "4432:443"
     depends_on:
       - app
+  celery_worker:
+    image: manolo/manolo_app
+    command: /wait_for_it.sh redis:6379
+      --timeout=0 --
+      /wait_for_it.sh db:5432
+      --timeout=0 -- celery
+      --app=manolo worker
+      --hostname=default@%h
+      --loglevel=info
+      --concurrency=2
+      --queues=default
+      --beat
+    depends_on:
+      - redis
+      - db
+    environment:
+      C_FORCE_ROOT: 'True'
+      DJANGO_SETTINGS_MODULE: 'manolo.settings.production'
+    volumes:
+      - app_data:/data
+  redis:
+    image: redis
+    command: redis-server --appendonly yes
+    volumes:
+      - app_data:/data
+    expose:
+      - '6379'

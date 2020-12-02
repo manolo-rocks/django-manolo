@@ -1,6 +1,7 @@
 import environ
 from pathlib import Path
 
+from kombu import Exchange, Queue
 
 ROOT_DIR = Path(__file__).resolve(strict=True).parent.parent.parent
 APPS_DIR = ROOT_DIR / 'manolo'
@@ -278,3 +279,15 @@ CRISPY_TEMPLATE_PACK = 'bootstrap3'
 ACCOUNT_ACTIVATION_DAYS = 7  # One-week activation window; you may, of course, use a different value.
 REGISTRATION_AUTO_LOGIN = True  # Automatically log the user in.
 LOGIN_REDIRECT_URL = '/'
+
+# celery - redis
+BROKER_URL = 'redis://redis:6379/0'
+CELERY_RESULT_BACKEND = 'redis://redis:6379/0'
+
+default_exchange = Exchange('default', type='direct')
+CELERY_QUEUES = (
+    Queue('default', default_exchange, routing_key='default'),
+)
+CELERY_DEFAULT_QUEUE = 'default'
+CELERY_DEFAULT_EXCHANGE = 'default'
+CELERY_DEFAULT_ROUTING_KEY = 'default'

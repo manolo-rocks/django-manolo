@@ -4,6 +4,7 @@ import json
 import logging
 
 import scrapy
+from scrapy import Request
 
 from .spiders import ManoloBaseSpider
 from ..item_loaders import ManoloItemLoader
@@ -13,66 +14,56 @@ from ..utils import make_hash
 
 class MujerSpider(ManoloBaseSpider):
     name = 'mujer'
-    allowed_domains = ['app.mimp.gob.pe']
+    allowed_domains = ['mimp.gob.pe']
 
-    base_url = 'http://app.mimp.gob.pe:8080/visitaweb/ListarVisitas.do'
+    base_url = 'https://appweb.mimp.gob.pe:8181/visitas-web/faces/reportes/listado/reporteTransparenciaVisitas.xhtml'
     NUMBER_OF_ITEMS_PER_PAGE = 20
-
-    def start_requests(self):
-        """
-        The peruvian website delivers all the records starting from the
-        requested date to the present.
-
-        So if you ask for records starting from date 2011-10-01, you will
-        get all records from between 2011-10-01 and today. You just need to
-        iterate over the pagination to scrape all the records.
-        """
-        d1 = datetime.datetime.strptime(self.date_start, '%Y-%m-%d').date()
-        print("SCRAPING from: {}".format(d1))
-        yield self.initial_request(d1)
 
     def initial_request(self, date):
         date_str = date.strftime('%d/%m/%Y')
+        return Request(
+            url=self.base_url,
+            dont_filter=True,
+            meta={'date': date_str},
+            callback=self.parse_initial_request,
+        )
+
+    def parse_initial_request(self, response):
+        print('***** parase intiial request')
+        with open('b.html', 'w') as handle:
+            handle.write(response.body)
 
         params = {
-            'page': '1',
-            'rows': str(self.NUMBER_OF_ITEMS_PER_PAGE)
+            "javax.faces.partial.ajax": "true",
+            "javax.faces.source": "j_idt13:j_idt24",
+            "javax.faces.partial.execute": "@all",
+            "javax.faces.partial.render": "j_idt13:tablaReporteVisita",
+            "j_idt13:j_idt24": "j_idt13:j_idt24",
+            "j_idt13": "j_idt13",
+            "j_idt13:tipoBusquedaFecha_focus": "",
+            "j_idt13:tipoBusquedaFecha_input": "range",
+            "j_idt13:primeraFecha_input": date_str,
+            "j_idt13:segundaFecha_input": date_str,
+            "j_idt13:tablaReporteVisita:j_idt32:filter": "",
+            "j_idt13:tablaReporteVisita:j_idt34:filter": "",
+            "j_idt13:tablaReporteVisita:j_idt36:filter": "",
+            "j_idt13:tablaReporteVisita:j_idt38:filter": "",
+            "j_idt13:tablaReporteVisita:j_idt40:filter": "",
+            "j_idt13:tablaReporteVisita:j_idt42:filter": "",
+            "javax.faces.ViewState": "-5349415418103296452:-682788750258638827",
         }
+        return scrapy.FormRequest(
+            url=self.base_url,
+            formdata=params,
+            meta={'date': date_str},
+            dont_filter=True,
+            callback=self.parse,
+        )
 
-        url = self._get_url(date)
+    def parse(self, response, **kwargs):
+        with open('a.html', 'w') as handle:
+            handle.write(response.content)
 
-        return scrapy.FormRequest(url=url, formdata=params,
-                                  meta={'date': date_str},
-                                  dont_filter=True,
-                                  callback=self.after_post)
-
-    def _get_url(self, date):
-        return "{}?fecha={}".format(self.base_url, date.strftime('%Y%m%d'))
-
-    def after_post(self, response):
-        # send requests based on pagination
-        res = json.loads(response.body)
-        total_records = res['total']
-
-        logging.info('Found {} records to scrape'.format(total_records))
-        pages = total_records / self.NUMBER_OF_ITEMS_PER_PAGE + 1
-
-        logging.info('Found {} pages to scrape'.format(pages))
-
-        for page in range(pages):
-            params = {
-                'page': str(page + 1),
-                'rows': str(self.NUMBER_OF_ITEMS_PER_PAGE)
-            }
-
-            yield scrapy.FormRequest(url=response.url, formdata=params,
-                                     meta={
-                                         'date': response.meta['date'],
-                                     },
-                                     dont_filter=True,
-                                     callback=self.parse)
-
-    def parse(self, response):
         data = json.loads(response.body)
         rows = data['rows']
 

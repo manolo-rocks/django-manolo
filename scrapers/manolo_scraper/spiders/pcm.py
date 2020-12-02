@@ -4,7 +4,6 @@ from scrapy import FormRequest
 
 from .spiders import ManoloBaseSpider
 from ..items import ManoloItem
-from ..item_loaders import ManoloItemLoader
 from ..utils import get_dni, make_hash
 
 

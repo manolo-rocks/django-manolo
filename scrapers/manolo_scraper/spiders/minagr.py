@@ -7,6 +7,6 @@ class MinagrSpider(SireviSpider):
 
     allowed_domains = ['minagri.gob.pe']
 
-    base_url = 'http://visitas.minagri.gob.pe/visitas/controlVisitas'
+    base_url = "https://visitas.minagri.gob.pe/visitas/controlVisitas/index.php?r=consultas/visitaConsulta/index"
 
     institution_name = 'minagr'

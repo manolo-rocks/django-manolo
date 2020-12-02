@@ -26,3 +26,4 @@ scrapy-splash==0.7.2
 django-extensions==3.0.9
 django-debug-toolbar
 dateparser
+celery[redis]==4.3.1
