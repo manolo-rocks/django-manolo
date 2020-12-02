@@ -20,10 +20,10 @@
 
      <div id="contenido" class="container" style="max-width:1200px;">
 
-     {% if paginator.object_list|length > 0 %}
+     {% if paginator.count > 0 %}
 
        También puedes hacer búsquedas haciendo click sobre cada uno de los
-       resultados <span class="badge"><b>{{ all_items_count|intcomma }}</b></span>
+       resultados <span class="badge"><b>{{ paginator.count | intcomma }}</b></span>
 
        {% load static %}
        <p class="pull-right">
