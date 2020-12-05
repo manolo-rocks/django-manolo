@@ -18,6 +18,7 @@ services:
     command: postgres
       -c max_connections=1000
   app:
+    restart: always
     build:
       context: ../
       dockerfile: docker/app/Dockerfile
@@ -41,6 +42,7 @@ services:
     environment:
       DJANGO_SETTINGS_MODULE: 'manolo.settings.production'
   nginx:
+    restart: always
     build:
       context: ../
       dockerfile: docker/nginx/Dockerfile
@@ -53,6 +55,7 @@ services:
     depends_on:
       - app
   celery_worker:
+    restart: always
     image: manolo/manolo_app
     command: /wait_for_it.sh redis:6379
       --timeout=0 --
@@ -73,9 +76,23 @@ services:
     volumes:
       - app_data:/data
   redis:
+    restart: always
     image: redis
     command: redis-server --appendonly yes
     volumes:
       - app_data:/data
     expose:
       - '6379'
+  cron:
+    restart: always
+    build:
+      context: ../
+      dockerfile: docker/cron/Dockerfile
+    image: manolo/manolo_app
+    volumes:
+      - app_data:/data
+      - /logs
+    depends_on:
+      - db
+    environment:
+      DJANGO_SETTINGS_MODULE: 'manolo.settings.production'
