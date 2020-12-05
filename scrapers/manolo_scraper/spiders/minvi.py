@@ -5,8 +5,8 @@ from scrapers.manolo_scraper.spiders.spiders import SireviSpider
 class MinviSpider(SireviSpider):
     name = 'minvi'
 
-    allowed_domains = ['geo.vivienda.gob.pe']
+    allowed_domains = ['s01pweb001.vivienda.gob.pe']
 
-    base_url = 'http://geo.vivienda.gob.pe/Visitas/controlVisitas'
+    base_url = "http://s01pweb001.vivienda.gob.pe/Visitas/controlVisitas/index.php"
 
     institution_name = 'vivienda'
