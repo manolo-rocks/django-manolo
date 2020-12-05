@@ -8,5 +8,4 @@ class MineduSpider(SireviSpider):
     allowed_domains = ['visitasmed.perueduca.edu.pe']
 
     base_url = 'http://visitasmed.perueduca.edu.pe/controlVisitas'
-
     institution_name = 'minedu'

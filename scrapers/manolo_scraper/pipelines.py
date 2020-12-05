@@ -7,7 +7,6 @@
 import datetime
 import re
 
-import dateparser
 from scrapy.exceptions import DropItem
 
 from visitors.models import Visitor
@@ -55,6 +54,7 @@ def process_item(item):
         else:
             item[k] = v
 
+    item['date'] = item['date'].replace(' 00:00:00', '')
     try:
         item['date'] = datetime.datetime.strptime(item['date'], '%d/%m/%Y')
     except ValueError:
