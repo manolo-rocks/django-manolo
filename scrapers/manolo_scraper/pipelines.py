@@ -54,7 +54,11 @@ def process_item(item):
             item[k] = value.strip()
         else:
             item[k] = v
-    item['date'] = dateparser.parse(item['date'])
+
+    try:
+        item['date'] = datetime.datetime.strptime(item['date'], '%d/%m/%Y')
+    except Exception as e:
+        print('***', e)
 
     if 'time_end' not in item:
         item['time_end'] = ''
@@ -84,6 +88,7 @@ def process_item(item):
         saving_error = save_item(item)
     except Exception as e:
         saving_error = f"Could not store in the database: {e}"
+        print(saving_error)
 
     return {
         'error': saving_error,
@@ -98,7 +103,7 @@ def save_item(item):
     try:
         visitor_exists = Visitor.objects.filter(sha1=item['sha1']).exists()
     except Exception as e:
-        return f"Could not search in the database: {e}"
+        raise Exception(f"Could not search in the database: {e}")
 
     if not visitor_exists:
         item['created'] = datetime.datetime.now()
@@ -107,6 +112,6 @@ def save_item(item):
             Visitor.objects.create(**item)
             print('saving to db item')
         except Exception as e:
-            return f'Error when saving item to database {e}'
+            print(f'Error when saving item to database {e}')
     else:
         print("{0}, date: {1} is found in db, not saving".format(item['sha1'], item['date']))
