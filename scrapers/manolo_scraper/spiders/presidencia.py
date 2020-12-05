@@ -14,10 +14,6 @@ class PresidenciaSpider(ManoloBaseSpider):
     allowed_domains = ['presidencia.gob.pe']
     base_url = 'http://appw.presidencia.gob.pe/visitas/transparencia'
 
-    # custom_settings = {
-        # "HTTP_PROXY": "http://127.0.0.1:8118",
-    # }
-
     def initial_request(self, date):
         date_str = date.strftime('%d/%m/%Y')
 

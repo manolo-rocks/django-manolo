@@ -57,8 +57,11 @@ def process_item(item):
 
     try:
         item['date'] = datetime.datetime.strptime(item['date'], '%d/%m/%Y')
-    except Exception as e:
-        print('***', e)
+    except ValueError:
+        try:
+            item['date'] = datetime.datetime.strptime(item['date'], '%Y-%m-%d')
+        except ValueError as e:
+            print('***', e)
 
     if 'time_end' not in item:
         item['time_end'] = ''
