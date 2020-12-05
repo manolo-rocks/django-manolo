@@ -29,8 +29,7 @@ class DefensaSpider(ManoloBaseSpider):
             callback=self.parse,
         )
 
-    def parse(self, response):
-        print(f'parse {response.meta["date"]}')
+    def parse(self, response, **kwargs):
         rows = response.xpath('//tr')
         for idx, row in enumerate(rows):
             data = row.xpath('.//td[@class="clsgriddata2"]')
