@@ -2,7 +2,7 @@ import json
 
 from django.core.management.base import BaseCommand
 from django.db.models import Count
-from visitors.models import Visitor, Statistic, Statistic_detail
+from visitors.models import Visitor, Statistic, Statistic_detail, Institution
 
 
 class Command(BaseCommand):
@@ -70,5 +70,28 @@ def run_statistics():
     stats.visitor_count = Visitor.objects.all().count()
     stats.save()
 
+    store_updated_institutions(stats)
+
     number_of_rows = Statistic.objects.all().count()
     print("Currently have {} rows in Statistics".format(number_of_rows))
+
+
+def store_updated_institutions(stats):
+    institution_stats = []
+
+    for institution in Institution.objects.all().order_by('-rank'):
+        last_visitor = Visitor.objects.filter(
+            institution=institution.slug,
+        ).order_by('date').last()
+
+        if last_visitor:
+            item = {
+                'name': institution.name,
+                'slug': institution.slug,
+                'rank': institution.rank,
+                'last_updated': last_visitor.date.strftime('%Y-%m-%d'),
+            }
+            institution_stats.append(item)
+
+    stats.updated_institutions = institution_stats
+    stats.save()

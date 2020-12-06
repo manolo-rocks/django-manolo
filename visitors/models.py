@@ -3,6 +3,7 @@ from django.contrib.postgres.indexes import GinIndex
 from django.contrib.postgres.search import SearchVectorField, SearchVector
 from django.db import models
 from django.contrib.auth.models import User
+from django.contrib.postgres.fields import JSONField
 
 
 class Visitor(models.Model):
@@ -139,6 +140,7 @@ class Subscriber(models.Model):
 class Statistic(models.Model):
     data = models.TextField(null=True)
     visitor_count = models.IntegerField(null=True)
+    updated_institutions = JSONField(blank=True, null=True)
 
 
 class Statistic_detail(models.Model):
@@ -157,3 +159,12 @@ class Developer(models.Model):
 
     def __str__(self):
         return self.name
+
+
+class Institution(models.Model):
+    slug = models.CharField(null=False, max_length=200, unique=True)
+    name = models.CharField(null=False, max_length=200, unique=True)
+    rank = models.IntegerField()
+
+    def __str__(self):
+        return f"{self.slug} ({self.name})"

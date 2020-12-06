@@ -35,27 +35,14 @@
       <h3 class="text-left">La base de datos de Manolo <i class="fa fa-database"></i></h3>
 
       <p class="text-left">Contiene <span class="label label-primary"><b>{{ count|intcomma }}</b></span> registros de visitas de las siguientes instituciones:</p>
-      <ol class="list-group text-left">
-<!--        <li class="list-group-item">19. <a href="/search/?q=perucompras">Perú Compras http://www.perucompras.gob.pe</a></li>-->
-        <li class="list-group-item">18. <a href="/search/?q=mtc">Ministerio de Transportes</a></li>
-        <li class="list-group-item">17. <a href="/search/?q=ambiente">Ministerio del Ambiente</a></li>
-        <li class="list-group-item">16. <a href="/search/?q=mincetur">Min. de Comercio Exterior y Turismo</a></li>
-        <li class="list-group-item">15. <a href="/search/?q=minjus">Ministerio de Justicia</a></li>
-        <li class="list-group-item">14. <a href="/search/?q=congreso">Congreso de la República</a></li>
-        <li class="list-group-item">13. Ministerio de <a href="/search/?q=minsa">Salud</a></li>
-        <li class="list-group-item">12. Ministerio de <a href="/search/?q=minedu">Educación</a></li>
-        <li class="list-group-item">11. Ministerio de <a href="/search/?q=mincu">Cultura (MINCU)</a></li>
-        <li class="list-group-item">10. Ministerio de <a href="/search/?q=minagr">Agricultura (MINAGR)</a></li>
-        <li class="list-group-item">9. Ministerio de la Producción <a href="/search/?q=produce">(Produce)</a>
-        <li class="list-group-item">8. Ministerio <a href="/search/?q=minem">de Energía y Minas</a>
-        <li class="list-group-item">7. Organismo Supervisor de las Contrataciones del Estado, <a href="/search/?q=osce">OSCE</a></li>
-        <li class="list-group-item">6. Ministerio de <a href="/search/?q=defensa">Defensa</a></li>
-        <li class="list-group-item">5. <a href="/search/?q=inpe">INPE</a></li>
-        <li class="list-group-item">4. Ministerio <a href="/search/?q=min.%20mujer">de la Mujer</a></li>
-        <li class="list-group-item">3. Presidencia del <a href="/search/?q=pcm">Consejo de Ministros</a></li>
-        <li class="list-group-item">2. <a href="/search/?q=presidencia">Presidencia</a></li>
-        <li class="list-group-item">1. Ministerio <a href="/search/?q=vivienda">de Vivienda</a></li>
-      </ol>
+      <ul class="list-group text-left">
+        {% for institution in institutions  %}
+          <li class="list-group-item">
+            {{ institution.rank }}. <a href="/search/?q={{ institution.slug }}">{{ institution.name }}.</a>
+            <small>(Actualizado {{ institution.last_updated }}</small>)
+          </li>
+        {% endfor %}
+      </ul>
     </div>
   </div><!-- row -->
 

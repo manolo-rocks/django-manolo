@@ -35,12 +35,18 @@ def index(request):
     else:
         count = 0
 
+    if stats and stats.updated_institutions:
+        institutions = stats.updated_institutions
+    else:
+        institutions = []
+
     return render(
         request,
         "index.html",
         {
             'count': count,
             'user_profile': user_profile,
+            'institutions': institutions,
         },
     )
 
