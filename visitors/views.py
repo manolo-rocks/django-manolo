@@ -91,8 +91,7 @@ def search(request):
     else:
         all_items = Visitor.objects.filter(
             full_search=SearchQuery(query)
-        ).order_by('-date')
-    all_items_count = all_items.count()
+        )
 
     paginator, page = do_pagination(request, all_items)
 
@@ -102,7 +101,6 @@ def search(request):
         request,
         "search/search.html",
         {
-            "all_items_count": all_items_count,
             "paginator": paginator,
             "page": page,
             "query": query,
