@@ -3,7 +3,7 @@ import csv
 import logging
 import re
 
-from django.contrib.postgres.search import SearchQuery
+from django.contrib.postgres.search import SearchQuery, SearchRank
 from django.shortcuts import render, redirect
 from django.core.paginator import PageNotAnInteger, EmptyPage, InvalidPage
 from django.http import Http404, HttpResponse
@@ -92,6 +92,7 @@ def search(request):
         all_items = Visitor.objects.filter(
             full_search=SearchQuery(query)
         ).order_by('-date')
+    all_items_count = all_items.count()
 
     paginator, page = do_pagination(request, all_items)
 
@@ -101,6 +102,7 @@ def search(request):
         request,
         "search/search.html",
         {
+            "all_items_count": all_items_count,
             "paginator": paginator,
             "page": page,
             "query": query,
@@ -112,7 +114,7 @@ def search(request):
 
 
 def query_is_dni(query):
-    if re.search(r'^(\d{6,})', query):
+    if re.search(r'^(\d{5,})', query):
         return True
     else:
         return False
