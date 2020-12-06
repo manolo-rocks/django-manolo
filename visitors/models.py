@@ -78,6 +78,7 @@ class Visitor(models.Model):
     id_number = models.TextField(
         help_text='Id number. DNI. It should be char field as some numbers begin with zero.',
         null=True,
+        db_index=True,
     )
 
     id_document = models.CharField(
