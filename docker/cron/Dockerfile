@@ -29,3 +29,6 @@ RUN chmod a+x /etc/cron.daily/run_scraper_pcm.sh
 
 COPY docker/cron/run_scraper_presidencia.sh /etc/cron.daily/run_scraper_presidencia.sh
 RUN chmod a+x /etc/cron.daily/run_scraper_presidencia.sh
+
+COPY docker/cron/run_scraper_minvi.sh /etc/cron.daily/run_scraper_minvi.sh
+RUN chmod a+x /etc/cron.daily/run_scraper_minvi.sh
