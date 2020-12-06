@@ -1,6 +1,7 @@
 import datetime
 import csv
 import logging
+import re
 
 from django.contrib.postgres.search import SearchQuery
 from django.shortcuts import render, redirect
@@ -81,11 +82,17 @@ def statistics_api(request):
 @csrf_exempt
 def search(request):
     user_profile = get_user_profile(request)
-    query = request.GET.get('q')
+    query = request.GET.get('q') or ''
+    query = query.strip()
 
-    all_items = Visitor.objects.filter(
-        full_search=SearchQuery(query)
-    ).order_by('-date')
+    if query_is_dni(query):
+        # do dni search
+        all_items = do_dni_search(query)
+    else:
+        all_items = Visitor.objects.filter(
+            full_search=SearchQuery(query)
+        ).order_by('-date')
+
     paginator, page = do_pagination(request, all_items)
 
     json_path = request.get_full_path() + '&json'
@@ -102,6 +109,19 @@ def search(request):
             'user_profile': user_profile,
         },
     )
+
+
+def query_is_dni(query):
+    if re.search(r'^(\d{6,})', query):
+        return True
+    else:
+        return False
+
+
+def do_dni_search(query):
+    return Visitor.objects.filter(
+        id_number=query,
+    ).order_by('-date')
 
 
 def search_date(request):

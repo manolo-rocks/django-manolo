@@ -5,6 +5,7 @@ from django.test.client import Client
 from django.contrib.auth.models import User
 
 from visitors.models import Subscriber
+from visitors.views import query_is_dni
 
 
 class TestViews(TestCase):
@@ -66,3 +67,25 @@ class TestViews(TestCase):
         self.subscriber = Subscriber.objects.create(
             user=self.user, expiration=datetime.datetime.today(), credits=600)
 
+    def test_query_is_dni(self):
+        items = [
+            {
+                'query': 'yoni pacheco',
+                'expected': False,
+            },
+            {
+                'query': '10468395',
+                'expected': True,
+            },
+            {
+                'query': 'yoni pacheco 10468395',
+                'expected': False,
+            },
+            {
+                'query': '24779433-s',
+                'expected': True,
+            },
+        ]
+        for item in items:
+            result = query_is_dni(item['query'])
+            self.assertEqual(result, item['expected'])
