@@ -103,7 +103,7 @@ class Visitor(models.Model):
         null=True,
     )
 
-    created = models.DateTimeField(auto_now_add=True)
+    created = models.DateTimeField(auto_now_add=True, db_index=True)
     modified = models.DateTimeField(auto_now=True)
 
     def save(self, *args, **kwargs):
@@ -135,6 +135,20 @@ class Subscriber(models.Model):
         blank=True,
     )
     credits = models.IntegerField(null=True)
+
+
+class VisitorScrapeProgress(models.Model):
+    """Keep track of number of visitors kept in our db per date
+
+    Keep stats 1 per month or when we reach milestones:
+    - 0
+    - 10k
+    - 100k
+    - 1 million
+    - then every 1 million
+    """
+    visitor_count = models.IntegerField()
+    cutoff_date = models.DateField(db_index=True)
 
 
 class Statistic(models.Model):
