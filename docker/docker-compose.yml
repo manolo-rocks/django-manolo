@@ -91,7 +91,6 @@ services:
     image: manolo/manolo_app
     volumes:
       - app_data:/data
-      - /logs
     depends_on:
       - db
     environment:
