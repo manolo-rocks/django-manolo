@@ -206,12 +206,11 @@ def data_as_csv(request, paginator):
         # If page is out of range, deliver last page
         articles = paginator.page(paginator.num_pages)
 
-    items = [i.object for i in articles]
     response = HttpResponse(content_type='text/csv')
-    response['Content-Disposition'] = 'attachment; filename="manolo_data.csv"'
+    response['Content-Disposition'] = 'attachment; filename="manolo_data.tsv"'
 
     writer = csv.writer(response, dialect='excel-tab')
-    for i in items:
+    for i in articles.object_list:
         writer.writerow([i.id, i.institution, i.date, i.full_name,
                          i.id_document, i.id_number, i.entity, i.reason,
                          i.host_name, i.office, i.meeting_place,

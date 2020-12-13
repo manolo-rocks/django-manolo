@@ -14,7 +14,7 @@ django-model-utils==2.2
 djangorestframework==3.11.0
 django-registration-redux==2.8
 django-crispy-forms==1.9.1
-django-rest-swagger==2.2.0
+drf-yasg
 docutils==0.12
 python-slugify==0.1.0
 six==1.9

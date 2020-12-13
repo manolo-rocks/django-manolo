@@ -6,13 +6,14 @@ from uuid import uuid4
 from django.http.request import QueryDict
 from django.shortcuts import HttpResponse
 from django.views.decorators.csrf import csrf_exempt
+from drf_yasg import openapi
+from drf_yasg.views import get_schema_view
 from rest_framework.authentication import BasicAuthentication
-from rest_framework.decorators import api_view, renderer_classes, authentication_classes, \
+from rest_framework.decorators import api_view, authentication_classes, \
     permission_classes
 from rest_framework.permissions import AllowAny, IsAdminUser
 from rest_framework.pagination import PageNumberPagination
-from rest_framework_swagger.renderers import OpenAPIRenderer, SwaggerUIRenderer
-from rest_framework import response, schemas
+from rest_framework import permissions
 
 from .forms import ApiForm
 from .serializers import ManoloSerializer
@@ -20,14 +21,16 @@ from .api_responses import JSONResponse
 from visitors.views import do_pagination, data_as_csv
 
 
-@api_view()
-@permission_classes((AllowAny, ))
-@renderer_classes([OpenAPIRenderer, SwaggerUIRenderer])
-def schema_view(request):
-    generator = schemas.SchemaGenerator(title='Documentación del API de Manolo.')
-    return response.Response(
-        generator.get_schema(request=request),
-    )
+schema_view = get_schema_view(
+    openapi.Info(
+        title="Manolo API",
+        default_version='v1',
+        description='Documentación del API de Manolo.rocks',
+        contact=openapi.Contact(email='aniversarioperu1@gmail.com'),
+    ),
+    public=True,
+    permission_classes=(permissions.AllowAny,),
+)
 
 
 @api_view(['GET'])

@@ -150,7 +150,7 @@ THIRD_PARTY_APPS = [
     'crispy_forms',
     'registration',
     'rest_framework',
-    'rest_framework_swagger',
+    'drf_yasg',
 ]
 
 LOCAL_APPS = [
