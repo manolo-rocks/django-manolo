@@ -99,10 +99,11 @@ def store_total_visitor_count(data_dict):
                 f'de registros de visitas con {stats.visitor_count:,} registros'
             )
 
-    VisitorScrapeProgress.objects.create(
-        visitor_count=stats.visitor_count,
-        cutoff_date=timezone.now(),
-    )
+    if not VisitorScrapeProgress.objects.filter(cutoff_date=timezone.now()).exists():
+        VisitorScrapeProgress.objects.create(
+            visitor_count=stats.visitor_count,
+            cutoff_date=timezone.now(),
+        )
 
     return stats
 
