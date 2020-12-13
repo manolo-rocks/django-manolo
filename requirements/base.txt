@@ -27,3 +27,4 @@ django-extensions==3.0.9
 django-debug-toolbar
 dateparser
 celery[redis]==4.3.1
+twitterbot2
