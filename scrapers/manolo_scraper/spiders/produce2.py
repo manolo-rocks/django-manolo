@@ -10,7 +10,7 @@ from ..utils import make_hash
 
 
 class ProduceSpider(ManoloBaseSpider):
-    name = 'produce'
+    name = 'produce2'
     allowed_domains = ['www.produce.gob.pe']
 
     def initial_request(self, date):

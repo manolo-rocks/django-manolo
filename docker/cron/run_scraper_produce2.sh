@@ -8,4 +8,4 @@ scrapy_bin=/usr/local/bin/scrapy
 
 cd $scrapy_path
 
-$scrapy_bin crawl produce -a date_start=$last_week -a date_end=$today
+$scrapy_bin crawl produce2 -a date_start=$last_week -a date_end=$today
