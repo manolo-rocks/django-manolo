@@ -109,15 +109,11 @@ class ProduceSpider(ManoloBaseSpider):
         return request
 
     def parse(self, response, **kwargs):
-        print('***', response)
-        with open('a.html', 'w') as handle:
-            handle.write(response.text)
         date = self.get_date_item(response.meta['date'], '%d/%m/%Y')
         response_json = json.loads(response.text)
         rows = response_json['aaData']
 
         for row in rows:
-            print(row)
             l = ManoloItemLoader(item=ManoloItem(), selector=row)
 
             l.add_value('institution', 'produce')
