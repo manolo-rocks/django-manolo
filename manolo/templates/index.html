@@ -39,7 +39,7 @@
         {% for institution in institutions  %}
           <li class="list-group-item">
             {{ institution.rank }}. <a href="/search/?q={{ institution.slug }}">{{ institution.name }}.</a>
-            <small>(Updated {{ institution.last_updated|naturalday }}</small>)
+            <small>(Updated {{ institution.last_updated|naturaltime }}</small>)
           </li>
         {% endfor %}
       </ul>
