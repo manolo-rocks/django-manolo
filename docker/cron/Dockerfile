@@ -38,3 +38,6 @@ RUN chmod a+x /etc/cron.daily/run_scraper_minedu.sh
 
 COPY docker/cron/run_scraper_produce2.sh /etc/cron.daily/run_scraper_produce2.sh
 RUN chmod a+x /etc/cron.daily/run_scraper_produce2.sh
+
+COPY docker/cron/run_scraper_inpe.sh /etc/cron.daily/run_scraper_inpe.sh
+RUN chmod a+x /etc/cron.daily/run_scraper_inpe.sh
