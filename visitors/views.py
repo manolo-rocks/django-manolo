@@ -37,6 +37,8 @@ def index(request):
 
     if stats and stats.updated_institutions:
         institutions = stats.updated_institutions
+        for institution in institutions:
+            institution['last_updated'] = datetime.datetime.strptime(institution['last_updated'], '%Y-%m-%d')
     else:
         institutions = []
 
