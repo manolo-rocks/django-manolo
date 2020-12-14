@@ -7,7 +7,7 @@ from scrapy import Request, FormRequest
 from scrapers.manolo_scraper.spiders.spiders import ManoloBaseSpider
 from ..item_loaders import ManoloItemLoader
 from ..items import ManoloItem
-from ..utils import make_hash
+from ..utils import make_hash, get_dni
 
 
 class INPESpider(ManoloBaseSpider):
@@ -19,93 +19,37 @@ class INPESpider(ManoloBaseSpider):
     def initial_request(self, date):
         date_str = date.strftime('%d/%m/%Y')
         url = f'https://apps.inpe.gob.pe/VisitasadmInpe/CargarTablaVisitaJSON?FechaVisita={date_str}&local=-1'
-        requests = Request(
+        requests = FormRequest(
             url,
             meta={'date': date_str},
             dont_filter=True,
-            callback=self.parse_initial_request,
+            callback=self.parse,
         )
-        print('requests', requests)
         return requests
-
-    def parse_initial_request(self, response):
-        date = response.meta['date']
-        data = json.loads(response.text)
-        record_count = data['iTotalDisplayRecords']
-
-        steps = list(range(0, record_count, 8))
-        requests = []
-        for i in steps:
-            print(i, response.url)
-            params = {'start': i, 'length': 8}
-            print(params)
-            request = FormRequest.from_response(
-                response,
-                formdata=params,
-                dont_filter=True,
-                callback=self.parse,
-            )
-            requests.append(request)
-        return requests
-
-    def _request_initial_date_page(self, response, date_str, callback):
-        data = json.loads(response.text)
-        record_count = data['iTotalDisplayRecords']
-
-        steps = list(range(0, record_count, 8))
-
-        for i in steps:
-            print(i, response.url)
-            params = {'start': i, 'length': 8}
-            print(params)
-            request = FormRequest.from_response(
-                response,
-                formdata=params,
-                callback=self.hola,
-            )
-            yield request
-
-    def hola(self, response):
-        print('hola')
 
     def parse(self, response, **kwargs):
-        print('**** response')
+        data = json.loads(response.text)['aaData']
         date = self.get_date_item(response.meta['date'], '%d/%m/%Y')
 
-        rows = response.xpath('//tr')
+        for row in data:
+            l = ManoloItemLoader(item=ManoloItem(), selector=row)
 
-        for row in rows:
-            data = row.xpath('td')
+            l.add_value('institution', 'inpe')
+            l.add_value('date', date)
 
-            if len(data) > 7:
-                l = ManoloItemLoader(item=ManoloItem(), selector=row)
+            l.add_value('full_name', row[1])
 
-                l.add_value('institution', 'inpe')
-                l.add_value('date', date)
-
-                l.add_xpath('full_name', './td[3]/p/text()')
-                l.add_xpath('id_document', './td[4]/p/text()')
-
-                id_document = l.get_output_value('id_document')
-
-                if id_document is None:
-                    l.replace_value('id_document', 'Otros')
-
-                l.add_xpath('id_number', './td[5]/p/text()')
-                l.add_xpath('entity', './td[6]/p/text()')
-                l.add_xpath('reason', './td[7]/p/text()')
-                l.add_xpath('host_name', './td[8]/p/text()')
-
-                # Add conditional, don't accept "---"
-                l.add_xpath('host_title', './td[9]/p/text()')
-
-                l.add_xpath('office', './td[10]/p/text()')
-
-                l.add_xpath('time_start', './td[2]/text()')
-                l.add_xpath('time_end', './td[11]/text()')
-
-                item = l.load_item()
-
-                item = make_hash(item)
-
-                yield item
+            dni_str, dni_number = get_dni(row[2])
+            l.add_value('id_document', dni_str)
+            l.add_value('id_number', dni_number)
+            l.add_value('entity', row[3])
+            l.add_value('time_start', row[4])
+            l.add_value('time_end', row[5])
+            l.add_value('reason', row[6])
+            l.add_value('host_name', row[7])
+            l.add_value('host_title', row[8])
+            l.add_value('office', row[9])
+            l.add_value('location', row[10])
+            item = l.load_item()
+            item = make_hash(item)
+            yield item
