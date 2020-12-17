@@ -68,23 +68,37 @@ class MinceturSpider(ManoloBaseSpider):
             l.add_value('institution', 'mincetur')
             l.add_value('date', date)
 
+
             date_time = row.xpath('./td[2]/text()').extract_first().split()
             l.add_value('time_start', date_time[1])
 
-            full_name_id = row.xpath('./td[3]/span/text()').extract()
-            full_name = full_name_id[0]
+            full_name = row.xpath('./td[3]/span/@title').extract_first()
             l.add_value('full_name', full_name)
-            id_document, id_number = get_dni(full_name_id[1])
+
+            entity = row.xpath('./td[3]/text()').extract()[-1]
+            l.add_value('entity', entity)
+
+            id_document, id_number = get_dni(row.xpath('./td[3]/span/text()').extract()[1])
             l.add_value('id_document', id_document)
             l.add_value('id_number', id_number)
-            l.add_xpath('reason', './td[4]/text()')
-            try:
-                host_name, office = row.xpath('./td[5]/span/text()').extract()
-            except ValueError:
-                host_name, office = "", ""
+
+            reason = row.xpath('./td[4]/text()').extract()[0]
+            l.add_value('reason', reason)
+
+            meeting_place = row.xpath('./td[4]/text()').extract()[1]
+            l.add_value('meeting_place', meeting_place)
+
+            host_name = row.xpath('./td[5]/span/text()').extract()[0]
             l.add_value('host_name', host_name)
+
+            host_title = row.xpath('./td[5]/span/text()').extract()[1]
+            l.add_value('host_title', host_title)
+
+            office = row.xpath('./td[5]/span/text()').extract()[2]
             l.add_value('office', office)
-            l.add_xpath('time_end', './td[6]/span/text()')
+
+            time_end = row.xpath('./td[6]/span/text()').extract_first()
+            l.add_value('time_end', time_end)
 
             item = l.load_item()
             item = make_hash(item)
