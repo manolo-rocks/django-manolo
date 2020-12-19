@@ -10,7 +10,7 @@ from django.http import Http404, HttpResponse
 from rest_framework.renderers import JSONRenderer
 from django.views.decorators.csrf import csrf_exempt
 
-from visitors.models import Visitor, Statistic, Statistic_detail, Developer
+from visitors.models import Visitor, Statistic, Statistic_detail, Developer, VisitorScrapeProgress
 from visitors.utils import Paginator, get_user_profile
 
 
@@ -67,12 +67,22 @@ def about(request):
 def statistics(request):
     user_profile = get_user_profile(request)
     visitors = Statistic_detail.objects.all()
+    visitor_counts = dict()
+
+    for entry in VisitorScrapeProgress.objects.all().order_by('cutoff_date'):
+        date_str = str(entry.cutoff_date.strftime('%Y'))
+        visitor_counts[date_str] = entry.visitor_count
+
+    print(visitor_counts)
+
     return render(
         request,
         "statistics.html",
         {
             'user_profile': user_profile,
             'visitors': visitors,
+            'visitor_counts': list(visitor_counts.values()),
+            'visitor_counts_start': list(visitor_counts.keys())[0],
         },
     )
 
