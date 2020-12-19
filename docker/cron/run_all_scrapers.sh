@@ -6,7 +6,7 @@ today=$(date +"%Y-%m-%d")
 scrapy_path=/code/scrapers/manolo_scraper
 scrapy_bin=/usr/local/bin/scrapy
 
-#cd $scrapy_path
+cd $scrapy_path
 
 declare -a scrapers=(
     'ambiente' 'congreso' 'defensa' 'ingemmet' 'inpe' 'minagr' 'mincetur'
