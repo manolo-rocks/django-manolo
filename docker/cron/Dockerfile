@@ -44,3 +44,6 @@ RUN chmod a+x /etc/cron.daily/run_scraper_inpe.sh
 
 COPY docker/cron/run_scraper_mincetur.sh /etc/cron.daily/run_scraper_mincetur.sh
 RUN chmod a+x /etc/cron.daily/run_scraper_mincetur.sh
+
+COPY docker/cron/run_scraper_osce.sh /etc/cron.daily/run_scraper_osce.sh
+RUN chmod a+x /etc/cron.daily/run_scraper_osce.sh
