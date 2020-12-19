@@ -306,6 +306,11 @@ function stack(i) {
                     text: 'Número de registros'
                 }
             },
+            xAxis: {
+              title: {
+                text: 'Año'
+              }
+            },
             plotOptions: {
               series: {
                 label: {
@@ -316,7 +321,7 @@ function stack(i) {
 
             },
             series: [{
-                name: 'Año',
+                name: 'Visitas',
                 data: {{ visitor_counts }}
             }]
         });
