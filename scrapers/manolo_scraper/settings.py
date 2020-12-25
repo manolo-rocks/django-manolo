@@ -21,10 +21,17 @@ CONCURRENT_REQUESTS = 1
 CONCURRENT_REQUESTS_PER_DOMAIN = 1
 DOWNLOAD_DELAY = 5
 
-BOT_NAME = 'manolo_scraper'
+BOT_NAME = 'bingbot'
 
 SPIDER_MODULES = ['manolo_scraper.spiders']
 NEWSPIDER_MODULE = 'manolo_scraper.spiders'
+
+# activate for splash
+# SPIDER_MIDDLEWARES = {
+#     'scrapy_splash.SplashDeduplicateArgsMiddleware': 100,
+# }
+# DUPEFILTER_CLASS = 'scrapy_splash.SplashAwareDupeFilter'
+# SPLASH_URL = 'http://IP:8050'
 
 # Crawl responsibly by identifying yourself (and your website) on the user-agent
 USER_AGENT = "Mozilla/5.0 (Linux; Android 4.0.4; Galaxy Nexus Build/IMM76B) AppleWebKit/535.19 (KHTML, like Gecko) Chrome/18.0.1025.133 Mobile Safari/535.19"
@@ -34,10 +41,12 @@ CRAWLERA_ENABLED = False
 DOWNLOADER_MIDDLEWARES = {
     'scrapy.downloadermiddlewares.useragent.UserAgentMiddleware': 500,
     'scrapy.downloadermiddlewares.cookies.CookiesMiddleware': 700,
-    'scrapy_splash.SplashCookiesMiddleware': 723,
-    'scrapy_splash.SplashMiddleware': 725,
     'scrapy.downloadermiddlewares.httpcompression.HttpCompressionMiddleware': 810,
-    # 'manolo_scraper.middlewares.ProxyMiddleware': 410,
+    # 'manolo_scraper.middlewares.RetryMiddleware.CustomRetryMiddleware': 710,
+    # 'scrapy_splash.SplashCookiesMiddleware': 723,
+    # 'scrapy_splash.SplashMiddleware': 725,
+    # 'manolo_scraper.middlewares.ProxyMiddleware': 750,
+    # 'scrapy.downloadermiddlewares.retry.RetryMiddleware': None,
 }
 
 LOG_LEVEL = 'DEBUG'
@@ -52,7 +61,3 @@ DUPEFILTER_DEBUG = True
 COOKIES_DEBUG = True
 COOKIES_ENABLED = True
 
-SPLASH_URL = 'http://{}:8050'.format(
-    # TODO: fix or remove
-    "SPLASH_URL",
-)

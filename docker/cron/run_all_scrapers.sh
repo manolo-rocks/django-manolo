@@ -10,7 +10,8 @@ cd $scrapy_path
 
 declare -a scrapers=(
     'ambiente' 'congreso' 'defensa' 'ingemmet' 'inpe' 'minagr' 'mincetur'
-    'mincu' 'minedu' 'minem' 'minsa' 'minvi' 'osce' 'pcm' 'presidencia' 'produce2'
+    'mincu' 'minedu' 'minem' 'minsa' 'minvi' 'osce' 'pcm' 'presidencia'
+    'produce2' 'trabajo'
 )
 
 for i in "${scrapers[@]}"; do
