@@ -10,26 +10,31 @@ from ..utils import get_lua_script, make_hash
 
 class MTCSpider(ManoloBaseSpider):
     name = 'mtc'
-    base_url = 'http://scrv-reporte.mtc.gob.pe/'
+    # base_url = 'http://scrv-reporte.mtc.gob.pe/'
+    base_url = 'https://google.com'
+    allowed_domains = ['scrv-reporte.mtc.gob.pe', 'google.com']
 
     def initial_request(self, date):
         date_str = date.strftime('%d/%m/%Y')
-        return SplashRequest(
+        print(date_str, get_lua_script('mtc.lua'))
+        request = SplashRequest(
             url=self.base_url,
-            endpoint='execute',
-            args={
-                'lua_source': get_lua_script('mtc.lua'),
-                'start_date': date_str,
-                'end_date': date_str
-            },
-            callback=self.parse,
-            meta={
-                'date': date_str,
-            },
+            # callback=self.parse,
+            # endpoint='execute',
+            # args={
+            #     'lua_source': get_lua_script('mtc.lua'),
+            #     'start_date': date_str,
+            #     'end_date': date_str
+            # },
+            # meta={
+            #     'date': date_str,
+            # },
             dont_filter=True,
         )
+        print(request)
+        yield request
 
-    def parse(self, response):
+    def parse(self, response, **kwargs):
         with open("a.html", "w") as handle:
             handle.write(response.body)
         rows = response.xpath('//table[@id="ctl00_ContentPlaceHolder_gdvReporteVisitasNuevo"]//tr[@class="gridRow"]')

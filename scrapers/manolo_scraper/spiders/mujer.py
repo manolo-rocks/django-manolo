@@ -14,8 +14,12 @@ from ..utils import make_hash
 
 class MujerSpider(ManoloBaseSpider):
     name = 'mujer'
-    allowed_domains = ['mimp.gob.pe']
+    allowed_domains = ['appweb.mimp.gob.pe']
 
+    custom_settings = {
+        'DOWNLOAD_DELAY': '25',
+        'RETRY_TIMES': '10',
+    }
     base_url = 'https://appweb.mimp.gob.pe:8181/visitas-web/faces/reportes/listado/reporteTransparenciaVisitas.xhtml'
     NUMBER_OF_ITEMS_PER_PAGE = 20
 
@@ -24,14 +28,17 @@ class MujerSpider(ManoloBaseSpider):
         return Request(
             url=self.base_url,
             dont_filter=True,
-            meta={'date': date_str},
+            meta={
+                'date': date_str,
+                'retry': 1,
+            },
             callback=self.parse_initial_request,
         )
 
     def parse_initial_request(self, response):
+        date_str = response.meta['date']
+        view_state = response.xpath("//input[@name='javax.faces.ViewState']/@value").extract_first()
         print('***** parase intiial request')
-        with open('b.html', 'w') as handle:
-            handle.write(response.body)
 
         params = {
             "javax.faces.partial.ajax": "true",
@@ -50,19 +57,23 @@ class MujerSpider(ManoloBaseSpider):
             "j_idt13:tablaReporteVisita:j_idt38:filter": "",
             "j_idt13:tablaReporteVisita:j_idt40:filter": "",
             "j_idt13:tablaReporteVisita:j_idt42:filter": "",
-            "javax.faces.ViewState": "-5349415418103296452:-682788750258638827",
+            "javax.faces.ViewState": view_state,
         }
+        print(params)
         return scrapy.FormRequest(
             url=self.base_url,
             formdata=params,
-            meta={'date': date_str},
+            meta={
+                'date': date_str,
+                'retry':  1,
+            },
             dont_filter=True,
             callback=self.parse,
         )
 
     def parse(self, response, **kwargs):
         with open('a.html', 'w') as handle:
-            handle.write(response.content)
+            handle.write(response.text)
 
         data = json.loads(response.body)
         rows = data['rows']
