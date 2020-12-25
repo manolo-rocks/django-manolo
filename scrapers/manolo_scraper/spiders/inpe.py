@@ -1,8 +1,7 @@
 # -*- coding: utf-8 -*-
 import json
 
-import scrapy
-from scrapy import Request, FormRequest
+from scrapy import FormRequest
 
 from scrapers.manolo_scraper.spiders.spiders import ManoloBaseSpider
 from ..item_loaders import ManoloItemLoader

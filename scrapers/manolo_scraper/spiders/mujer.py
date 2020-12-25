@@ -72,9 +72,6 @@ class MujerSpider(ManoloBaseSpider):
         )
 
     def parse(self, response, **kwargs):
-        with open('a.html', 'w') as handle:
-            handle.write(response.text)
-
         data = json.loads(response.body)
         rows = data['rows']
 
