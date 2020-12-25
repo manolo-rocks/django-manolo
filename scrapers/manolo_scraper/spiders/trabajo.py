@@ -29,21 +29,17 @@ class TrabajoSpider(ManoloBaseSpider):
 
     def parse(self, response, **kwargs):
         date = self.get_date_item(response.meta['date'], '%d/%m/%Y')
-        print(1, date)
 
         for row in response.xpath('//tr'):
             data = row.xpath('td')
-            print(2, data)
 
             try:
                 full_name = data[1].xpath('text()').extract_first()
             except IndexError:
                 continue
-            print(3, full_name)
 
             if full_name.strip():
                 dni = data[2].xpath('text()').extract_first()
-                print(4, dni)
                 id_document, id_number = get_dni(dni)
 
                 l = ManoloItemLoader(item=ManoloItem(), selector=row)

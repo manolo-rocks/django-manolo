@@ -76,7 +76,6 @@ def get_this_month(number):
 
 
 def get_lua_script(script_name, dependencies=None):
-    print(script_name)
     dependencies_script = ''
     if dependencies:
         for file_name in dependencies:
