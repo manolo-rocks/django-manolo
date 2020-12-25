@@ -15,30 +15,48 @@ class MidisSpider(ManoloBaseSpider):
     NUMBER_OF_PAGES_PER_PAGE = 20
     base_url = "http://sdv.midis.gob.pe/Sis_TransparenciaVisita/Transparencia/Transparencia/Buscar_Visita"
 
+    def get_payload(self, current_page, date_str):
+        return {
+            'biCodMovPersona': '',
+            'iCurrentPage': str(current_page),
+            'iPageSize': '20',
+            'vFechFin': date_str,
+            'vFechInicio': date_str,
+            'vSortColumn': 'biCodMovVisita',
+            'vSortOrder': 'asc',
+        }
+
     def initial_request(self, date):
         date_str = date.strftime("%d/%m/%Y")
 
         # This initial request always hits the current page of the date.
         request = scrapy.FormRequest(
             url=self.base_url,
-            meta={
-                'date': date_str,
-            },
-            formdata={
-                'biCodMovPersona': '',
-                'iCurrentPage': '1',
-                'iPageSize': '2000000',
-                'vFechFin': date_str,
-                'vFechInicio': date_str,
-                'vSortColumn': 'biCodMovVisita',
-                'vSortOrder': 'asc',
-            },
+            meta={'date': date_str},
+            formdata=self.get_payload(1, date_str),
             dont_filter=True,
-            callback=self.parse)
-
+            callback=self.parse_initial_request,
+        )
         return request
 
+    def parse_initial_request(self, response):
+        date_str = response.meta['date']
+        data = json.loads(response.text)
+        number_of_pages = data['PageCount']
+
+        for i in range(0, number_of_pages):
+            current_page = i + 1
+            yield scrapy.FormRequest(
+                url=self.base_url,
+                meta={'date': date_str},
+                formdata=self.get_payload(current_page, date_str),
+                dont_filter=True,
+                callback=self.parse,
+            )
+
     def parse(self, response, **kwargs):
+        with open('a.html', 'w') as handle:
+            handle.write(response.text)
         date = self.get_date_item(response.meta['date'], '%d/%m/%Y')
         data = json.loads(response.text)
 
