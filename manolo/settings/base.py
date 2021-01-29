@@ -1,8 +1,13 @@
-import environ
 from pathlib import Path
+import os
 
 from kombu import Exchange, Queue
+import environ
 
+
+os.environ["DJANGO_ALLOW_ASYNC_UNSAFE"] = "true"
+
+# PATH vars
 ROOT_DIR = Path(__file__).resolve(strict=True).parent.parent.parent
 APPS_DIR = ROOT_DIR / 'manolo'
 
@@ -11,20 +16,24 @@ env = environ.Env()
 # OS environment variables take precedence over variables from .env
 env.read_env(str(ROOT_DIR / '.env'))
 
-# PATH vars
-DEBUG = env.bool("DJANGO_DEBUG", True)
+DEBUG = env.bool("DJANGO_DEBUG", default=False)
+
+SECRET_KEY = env("DJANGO_SECRET_KEY")
+
+# Databases
+# =====================================
+# NOTE: DATABASE_URL format:
+#       postgres://USER:PASSWORD@HOST:PORT/NAME
+#       See: https://github.com/kennethreitz/dj-database-url
 
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'manolo',
-        'USER': 'postgres',
-        'PASSWORD': '',
-        'HOST': 'db',
-        'PORT': 5432,
-    }
+    "default": env.db(
+        "DATABASE_URL", default="postgres://postgres:@db/manolo"
+    )
 }
 DATABASES["default"]["ATOMIC_REQUESTS"] = True
+DATABASES["default"]["CONN_MAX_AGE"] = env.int("CONN_MAX_AGE", default=60)  # noqa F405
+
 
 ADMINS = (
     ('AniversarioPeru', 'aniversarioperu1@gmail.com'),
@@ -60,9 +69,9 @@ USE_TZ = True
 
 # Absolute filesystem path to the directory for user-uploaded files.
 # Example: "/var/www/example.com/media/"
-MEDIA_ROOT = str(ROOT_DIR / 'docker/devdata/media/')
+MEDIA_ROOT = '/data/media/'
 LOG_DIR = str(ROOT_DIR / 'docker/devdata/logs/')
-STATIC_ROOT = str(ROOT_DIR / 'docker/devdata/static/')
+STATIC_ROOT = '/data/static/'
 
 # URL that handles the media served from MEDIA_ROOT. Make sure to use a
 # trailing slash.
@@ -291,3 +300,11 @@ CELERY_QUEUES = (
 CELERY_DEFAULT_QUEUE = 'default'
 CELERY_DEFAULT_EXCHANGE = 'default'
 CELERY_DEFAULT_ROUTING_KEY = 'default'
+
+
+# Twitter (twitterbot2)
+
+TWITTER_CONSUMER_KEY = env("TWITTER_CONSUMER_KEY")
+TWITTER_CONSUMER_SECRET = env("TWITTER_CONSUMER_SECRET")
+TWITTER_OAUTH_TOKEN = env("TWITTER_OAUTH_TOKEN")
+TWITTER_OAUTH_TOKEN_SECRET = env("TWITTER_OAUTH_TOKEN_SECRET")

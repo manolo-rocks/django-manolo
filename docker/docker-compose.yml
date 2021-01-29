@@ -88,7 +88,7 @@ services:
     build:
       context: ../
       dockerfile: docker/cron/Dockerfile
-    image: manolo/manolo_app
+    image: manolo/manolo_cron
     volumes:
       - app_data:/data
     depends_on:

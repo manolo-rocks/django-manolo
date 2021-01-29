@@ -79,6 +79,55 @@ Install
 
 Note: This project uses python 3.4
 
+Install (using Docker)
+======================
+
+Setup local environment using docker
+
+System Requirements
+-------------------
+
+- `Docker Desktop <https://www.docker.com/products/docker-desktop>`_ (docker-engine >= 17.12.0)
+
+Setup
+-----
+::
+
+    # STEP 1: Create .env file from template
+    $ cp env.dist .env
+
+    # STEP 2: Open & enter values.
+    $ vi .env
+
+    # STEP 3: Build and spin up local container
+    $ bash docker/docker_compose -f docker-compose.local.yml up
+
+    # NOTE: Open another terminal starting here
+    # STEP 4: Apply migrations
+    $ bash docker/docker_compose -f docker-compose.local.yml exec app python manage.py migrate
+
+    # STEP 5. Create superuser account
+    $ bash docker/docker_compose -f docker-compose.local.yml exec app python manage.py createsuperuser
+
+    # STEP 5. Load fixtures
+    $ bash docker/docker_compose -f docker-compose.local.yml exec app python manage.py loaddata institutions
+
+    # STEP 5. Collect static resources
+    $ bash docker/docker_compose -f docker-compose.local.yml exec app python manage.py collectstatic
+
+    # NOTE: The following two steps (6 & 7) pretend to fill DB with some
+    # data so the site has something to visualize, however these commands are
+    # executed periodically via scheduled tasks.
+
+    # STEP 6. Pull visitors from institutions into DB. This may take several mins (> 30)
+    $ bash docker/docker_compose -f docker-compose.local.yml exec cron /etc/cron.daily/run_all_scrapers.sh
+
+    # STEP 7. Recompute statistics
+    $ bash docker/docker_compose -f docker-compose.local.yml exec app python manage.py run_statistics
+
+
+Site is available at http://localhost:4082
+
 Troubleshooting
 ===============
 TBD

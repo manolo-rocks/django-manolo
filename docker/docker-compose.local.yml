@@ -1,0 +1,21 @@
+version: '3.5'
+services:
+  app:
+    build:
+      args:
+        ENVIRONMENT: local
+    command: python manage.py runserver 0.0.0.0:8000
+    volumes:
+      - app_data:/data
+      - /logs
+      - ../:/code
+    environment:
+      DJANGO_SETTINGS_MODULE: 'manolo.settings.local'
+  celery_worker:
+    environment:
+      DJANGO_SETTINGS_MODULE: 'manolo.settings.local'
+  cron:
+    command: /usr/sbin/cron -f
+    environment:
+      DJANGO_SETTINGS_MODULE: 'manolo.settings.local'
+

@@ -1,4 +1,5 @@
 FROM python:3.6-buster
+ARG ENVIRONMENT=production
 ENV PYTHONUNBUFFERED 1
 
 RUN apt-get update
@@ -11,9 +12,9 @@ RUN apt-get install -y gcc postgresql-client-13 libpq-dev musl-dev bash postgres
 
 RUN apt-get autoremove -y
 RUN mkdir /pip_requirements
-ADD requirements/base.txt /base.txt
-ADD requirements/production.txt /pip_requirements.txt
-RUN pip install -r /pip_requirements.txt
+ADD requirements/* /pip_requirements/
+RUN pip install -r /pip_requirements/$ENVIRONMENT.txt
+RUN rm -rf /pip_requirements
 COPY config.json /code/config.json
 COPY .env /code/.env
 
