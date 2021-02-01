@@ -106,6 +106,14 @@ class Visitor(models.Model):
     created = models.DateTimeField(auto_now_add=True, db_index=True)
     modified = models.DateTimeField(auto_now=True)
 
+    @classmethod
+    def get_full_search_vector(cls):
+        return SearchVector(
+            'full_name', 'id_number', 'host_name', 'institution',
+            'entity', 'reason', 'office', 'meeting_place', 'host_title',
+            'location'
+        )
+
     def save(self, *args, **kwargs):
         """Need to update the combined field for full text search"""
         super(Visitor, self).save(*args, **kwargs)
@@ -113,11 +121,7 @@ class Visitor(models.Model):
             Visitor.objects.filter(
                 id=self.id
             ).update(
-                full_search=SearchVector(
-                    'full_name', 'id_number', 'host_name', 'institution',
-                    'entity', 'reason', 'office', 'meeting_place', 'host_title',
-                    'location'
-                )
+                full_search=self.get_full_search_vector()
             )
 
     class Meta:
