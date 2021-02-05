@@ -1,5 +1,6 @@
 {% extends 'base.html' %}
 {% load humanize %}
+{% load visitors_tags %}
 
 {% block additional_meta %}
 <meta name="robots" content="noindex">
@@ -36,9 +37,19 @@
 
        <table class='table table-hover table-striped table-bordered
          table-responsive table-condensed' style='font-size: 12px;'>
-         <th>Institución</th></th><th>Fecha</th><th>Visitante</th><th>Documento</th><th>Entidad</th>
-         <th>Motivo</th><th>Empleado público</th><th>Oficina/Cargo</th>
-         <th>Lugar de reunión</th><th>Hora ing.</th><th>Hora sal.</th>
+         <tr>
+           <th>{% sort_anchor 'institution' 'Institución' %}</th>
+           <th>{% sort_anchor 'date' 'Fecha' %}</th>
+           <th>{% sort_anchor 'full_name' 'Visitante' %}</th>
+           <th>{% sort_anchor 'id_number' 'Documento' %}</th>
+           <th>Entidad</th>
+           <th>Motivo</th>
+           <th>Empleado público</th>
+           <th>Oficina/Cargo</th>
+           <th>Lugar de reunión</th>
+           <th>Hora ing.</th>
+           <th>Hora sal.</th>
+         </tr>
 
          {% for i in page.object_list %}
            <tr>
@@ -101,40 +112,7 @@
          {% endfor %}
        </table>
 
-       {% if page.has_previous or page.has_next %}
-       <div class="text-center">
-         <nav>
-           <ul class="pagination">
-             {% if page.has_previous %}
-             <li>
-               <a aria-label="Previous" href="?q={{ query }}&amp;page={{ page.previous_page_number }}">
-                 <span aria-hidden="true">&laquo;</span>
-               </a>
-             </li>
-             {% endif %}
-
-             {% for i in page.paginator.paginate_sections %}
-               {% if page.number == i %}
-                 <li class="active"><a href="?q={{ query }}&amp;page={{ i }}">{{ i }}</a></li>
-               {% elif i == None %}
-                 <li class="disabled"><a href="#">…</a></li>
-               {% else %}
-                 <li><a href="?q={{ query }}&amp;page={{ i }}">{{ i }}</a></li>
-               {% endif %}
-             {% endfor %}
-
-             {% if page.has_next %}
-             <li>
-               <a aria-label="Next" href="?q={{ query }}&amp;page={{ page.next_page_number }}">
-                 <span aria-hidden="true">&raquo;</span>
-               </a>
-             </li>
-             {% endif %}
-
-           </ul>
-         </nav>
-       </div>
-       {% endif %}
+       {% show_pagination %}
 
      {% else %}
        <h4>No se encontraron resultados. Intenta con otra palabra clave.</h4>

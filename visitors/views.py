@@ -11,7 +11,7 @@ from rest_framework.renderers import JSONRenderer
 from django.views.decorators.csrf import csrf_exempt
 
 from visitors.models import Visitor, Statistic, Statistic_detail, Developer, VisitorScrapeProgress
-from visitors.utils import Paginator, get_user_profile
+from visitors.utils import Paginator, get_sort_field, get_user_profile
 
 
 logger = logging.getLogger(__name__)
@@ -111,6 +111,9 @@ def search(request):
             full_search=SearchQuery(query)
         )
 
+    # sort queryset
+    all_items = do_sorting(request, all_items)
+    # paginate queryset
     paginator, page = do_pagination(request, all_items)
 
     json_path = request.get_full_path() + '&json'
@@ -259,3 +262,10 @@ def do_pagination(request, all_items):
         raise Http404("No such page!")
 
     return paginator, page
+
+
+def do_sorting(request, queryset):
+    ordering = get_sort_field(request)
+    if not ordering:
+        return queryset
+    return queryset.order_by(ordering)

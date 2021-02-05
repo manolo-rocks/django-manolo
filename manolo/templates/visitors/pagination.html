@@ -1,0 +1,33 @@
+{% if page.has_previous or page.has_next %}
+<div class="text-center">
+  <nav>
+    <ul class="pagination">
+      {% if page.has_previous %}
+      <li>
+        <a aria-label="Previous" href="?page={{ page.previous_page_number }}{{ getvars }}">
+          <span aria-hidden="true">&laquo;</span>
+        </a>
+      </li>
+      {% endif %}
+
+      {% for i in page.paginator.paginate_sections %}
+        {% if page.number == i %}
+        <li class="active"><a href="?page={{ i }}{{ getvars }}">{{ i }}</a></li>
+        {% elif i == None %}
+        <li class="disabled"><a href="#">…</a></li>
+        {% else %}
+        <li><a href="?page={{ i }}{{ getvars }}">{{ i }}</a></li>
+        {% endif %}
+      {% endfor %}
+
+      {% if page.has_next %}
+      <li>
+        <a aria-label="Next" href="?page={{ page.next_page_number }}{{ getvars }}">
+          <span aria-hidden="true">&raquo;</span>
+        </a>
+      </li>
+      {% endif %}
+    </ul>
+  </nav>
+</div>
+{% endif %}
