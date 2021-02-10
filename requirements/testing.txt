@@ -1,7 +1,7 @@
 -r base.txt
 
 mock==1.0.1
-model-mommy==1.2.2
+model-mommy==2.0.0
 
 coverage
 coveralls

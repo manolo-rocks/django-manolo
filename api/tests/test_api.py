@@ -18,6 +18,9 @@ class TestAPI(TestCase):
                 date=datetime.date(2015, 1, 1))
             data.append(m)
         Visitor.objects.bulk_create(data)
+        # another query to update full_search explicitly since
+        # bulk_create does not invoke the save method
+        Visitor.objects.update(full_search=Visitor.get_full_search_vector())
 
         # build index with our test data
         self.maxDiff = None
