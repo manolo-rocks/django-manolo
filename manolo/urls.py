@@ -25,7 +25,7 @@ urlpatterns = [
     url(r'^docs(?P<format>\.json|\.yaml)$', schema_view.without_ui(cache_timeout=0), name='schema-json'),
     url(r'^docs/$', schema_view.with_ui('swagger', cache_timeout=0), name='schema-swagger-ui'),
     url(r'^redocs/$', schema_view.with_ui('redoc', cache_timeout=0), name='schema-redoc'),
-    url(r'^statistics/$', views.statistics),
+    url(r'^statistics/$', views.statistics, name='statistics'),
     url(r'^statistics_api/$', views.statistics_api),
 
     url(r'^about/', views.about, name='about'),

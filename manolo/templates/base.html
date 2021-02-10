@@ -74,9 +74,9 @@
               </form>
             </li>
             <li><a href="/">Home</a></li>
-            <li><a href="/statistics/">Estadísticas</a></li>
-            <li><a href="/docs/">API</a></li>
-            <li><a href="/about/">About Manolo</a></li>
+            <li><a href="{% url 'statistics' %}">Estadísticas</a></li>
+            <li><a href="{% url 'schema-swagger-ui' %}">API</a></li>
+            <li><a href="{% url 'about' %}">About Manolo</a></li>
           </ul>
         </div><!--/.nav-collapse -->
       </div>

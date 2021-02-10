@@ -27,10 +27,10 @@
 
        {% load static %}
        <p class="pull-right">
-         <a href="/api/search.tsv/{{ query }}/?page={{ page.number }}">
+         <a href="{% url 'search-tsv' query %}?page={{ page.number }}">
            <img title="Descarga datos en formato TSV" width="32px" src="{% static 'img/tsv.svg' %}" /></a>
 
-         <a href="/api/search.json/{{ query }}/?page={{ page.number }}">
+         <a href="{% url 'search-json' query %}?page={{ page.number }}">
            <img title="Descarga datos en formato JSON" width="32px" src="{% static 'img/json.svg' %}" /></a>
        </p>
 
@@ -43,7 +43,7 @@
          {% for i in page.object_list %}
            <tr>
              <td>
-               <a href='/search?q={{ i.institution }}'>
+               <a href='{% url 'search_view' %}?q={{ i.institution }}'>
                  {{ i.institution }}
                </a>
              </td>
@@ -51,31 +51,31 @@
                {{ i.date|date:"d/m/Y" }}
              </td>
              <td>
-               <a href='/search?q={{ i.full_name }}'>
+               <a href='{% url 'search_view' %}?q={{ i.full_name }}'>
                  {{ i.full_name|upper }}
                </a>
              </td>
-             <td><a href='/search?q={{ i.id_number }}'>
+             <td><a href='{% url 'search_view' %}?q={{ i.id_number }}'>
                {{ i.id_document }}: {{ i.id_number }}
              </a></td>
-             <td><a href='/search?q={{ i.entity }}'>
+             <td><a href='{% url 'search_view' %}?q={{ i.entity }}'>
                {{ i.entity }}
              </a></td>
-             <td><a href='/search?q={{ i.reason }}'>
+             <td><a href='{% url 'search_view' %}?q={{ i.reason }}'>
                {{ i.reason }}
              </a></td>
-             <td><a href='/search?q={{ i.host_name }}'>
+             <td><a href='{% url 'search_view' %}?q={{ i.host_name }}'>
                {{ i.host_name }}
              </a></td>
              {% if i.office %}
                <td>
-                 <a href='/search?q={{ i.office }}'>
+                 <a href='{% url 'search_view' %}?q={{ i.office }}'>
                    {{ i.office }}
                  </a>
                </td>
              {% else %}
                <td>
-                 <a href='/search?q={{ i.host_title }}'>
+                 <a href='{% url 'search_view' %}?q={{ i.host_title }}'>
                    {{ i.host_title }}
                  </a>
                </td>
@@ -83,13 +83,13 @@
 
              {% if i.meeting_place %}
                <td>
-                 <a href='/search?q={{ i.meeting_place }}'>
+                 <a href='{% url 'search_view' %}?q={{ i.meeting_place }}'>
                    {{ i.meeting_place }}
                  </a>
                </td>
              {% else %}
                <td>
-                 <a href='/search?q={{ i.location }}'>
+                 <a href='{% url 'search_view' %}?q={{ i.location }}'>
                    {{ i.location }}
                  </a>
                </td>
