@@ -1,1 +1,7 @@
-<a href="{{ anchor_href}}" title="{{ anchor_title }}">{{ anchor_label|safe }}</a>
+<a class="sort-anchor" href="{{ anchor_href }}" title="{{ anchor_title }}">
+    {{ anchor_label|safe }}
+    {% if icon %}
+    <span class="glyphicon glyphicon-{{ icon }} sort-icon" aria-hidden="true"></span>
+    {% endif %}
+    <span class="glyphicon glyphicon-{{ inverse_icon }} sort-hover-icon" aria-hidden="true"></span>
+</a>

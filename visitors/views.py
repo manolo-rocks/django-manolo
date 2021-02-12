@@ -267,5 +267,5 @@ def do_pagination(request, all_items):
 def do_sorting(request, queryset):
     ordering = get_sort_field(request)
     if not ordering:
-        return queryset
+        return queryset.order_by('-date')
     return queryset.order_by(ordering)

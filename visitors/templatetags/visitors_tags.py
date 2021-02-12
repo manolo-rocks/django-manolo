@@ -4,9 +4,21 @@ register = template.Library()
 
 
 SORT_DIRECTIONS = {
-    "asc": {"icon": "&uarr;", "inverse": "desc"},
-    "desc": {"icon": "&darr;", "inverse": ""},
-    "": {"icon": "", "inverse": "asc"},
+    "asc": {
+        "icon": "sort-by-attributes",
+        "inverse": "desc",
+        "inverse_icon": "sort-by-attributes-alt"
+    },
+    "desc": {
+        "icon": "sort-by-attributes-alt",
+        "inverse": "",
+        "inverse_icon": "remove-circle"
+    },
+    "": {
+        "icon": "",
+        "inverse": "asc",
+        "inverse_icon": "sort-by-attributes"
+    },
 }
 
 
@@ -79,12 +91,19 @@ def sort_anchor(context, field, title):
     else:
         sortdir = SORT_DIRECTIONS[""]
 
+    anchor_title = "Click para ordenar resultados"
+
     if sortby == field:
         getvars["dir"] = sortdir["inverse"]
         icon = sortdir["icon"]
+        inverse_icon = sortdir["inverse_icon"]
+        if sortdir["inverse"] == "":
+            anchor_title = "Click para deshabilitar el ordenamiento"
+
     else:
         getvars["dir"] = "asc"
-        icon = ""
+        icon = SORT_DIRECTIONS[""]["icon"]
+        inverse_icon = SORT_DIRECTIONS[""]["inverse_icon"]
 
     if getvars["dir"] == "":
         getvars.pop("dir", None)
@@ -94,17 +113,14 @@ def sort_anchor(context, field, title):
     else:
         urlappend = ""
 
-    if icon:
-        anchor_label = f"{title}&nbsp;{icon}"
-    else:
-        anchor_label = title
-
     if "dir" in getvars:
         anchor_href = f"?sort={field}{urlappend}"
     else:
         anchor_href = f"{'?' if urlappend else ''}{urlappend}"
     return {
-        'anchor_title': title,
-        'anchor_label': anchor_label,
-        'anchor_href': anchor_href
+        'anchor_title': anchor_title,
+        'anchor_label': title,
+        'anchor_href': anchor_href,
+        'icon': icon,
+        'inverse_icon': inverse_icon
     }

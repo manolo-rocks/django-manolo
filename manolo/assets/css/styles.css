@@ -47,3 +47,29 @@ footer {
     margin-bottom: 25px;
     text-align: center;
 }
+
+.sort-anchor {
+    display: block;
+    position: relative;
+    padding-right: 20px;
+}
+
+.sort-anchor .sort-icon,
+.sort-anchor .sort-hover-icon {
+    position: absolute;
+    top: 2px;
+    right: 2px;
+}
+
+.sort-anchor .sort-hover-icon {
+    display: none;
+    opacity: 0.5;
+}
+
+.sort-anchor:hover .sort-icon {
+    display: none;
+}
+
+.sort-anchor:hover .sort-hover-icon {
+    display: inline-block;
+}
