@@ -1,6 +1,7 @@
 {% extends 'base.html' %}
 {% load humanize %}
 {% load visitors_tags %}
+{% load static %}
 
 {% block additional_meta %}
 <meta name="robots" content="noindex">
@@ -25,6 +26,15 @@
 
        También puedes hacer búsquedas haciendo click sobre cada uno de los
        resultados <span class="badge"><b>{{ paginator.count | intcomma }}</b></span>
+
+       <p>
+       Puedes odernar los resultados de manera ascendente o descendente:
+       <img
+         src="{% static 'img/sort_example.jpg' %}"
+         class="img-thumbnail"
+         width="230px"
+       />
+       </p>
 
        {% load static %}
        <p class="pull-right">

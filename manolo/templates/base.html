@@ -67,8 +67,6 @@
                        <b>{{ user_profile.first_name }}</b>&nbsp;
                     {% endif %}
                       <a class="btn btn-danger" href="{% url 'auth_logout' %}">Logout</a>
-                    {% else %}
-                      <a class="btn btn-success" href="{% url 'auth_login' %}">Login</a>
                   {% endif %}
                 </div>
               </form>

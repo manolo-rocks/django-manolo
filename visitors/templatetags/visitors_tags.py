@@ -17,7 +17,7 @@ SORT_DIRECTIONS = {
     "": {
         "icon": "",
         "inverse": "asc",
-        "inverse_icon": "sort-by-attributes"
+        "inverse_icon": "sort"
     },
 }
 
