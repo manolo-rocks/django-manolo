@@ -4,6 +4,7 @@ import logging
 from celery.canvas import chain
 from celery.task import periodic_task
 from django.db import OperationalError
+from django.utils import timezone
 
 from manolo.celery import app
 from scrapers.manolo_scraper.spiders.ambiente import AmbienteSpider
@@ -22,10 +23,9 @@ def run_stats() -> None:
         log.exception(f"Error while computing stats: {error}")
 
 
-@periodic_task(run_every=timedelta(minutes=60 * 24))
+@periodic_task(run_every=timedelta(minutes=60 * 4))
 def schedule_spiders() -> None:
     # for spider in spiders
-    # schedule crawl with delay (create a celery chain)
     spiders = [
         AmbienteSpider,
         CongresoSpider,
@@ -43,4 +43,10 @@ def schedule_spiders() -> None:
 
 @app.task
 def schedule_crawl(spider_name: str) -> None:
-    print(spider_name)
+    from scrapy.crawler import CrawlerProcess
+    from scrapy.utils.project import get_project_settings
+
+    process = CrawlerProcess(get_project_settings())
+    now = timezone.now()
+    process.crawl(spider_name, date_start=now, date_end=now)
+    process.start()
