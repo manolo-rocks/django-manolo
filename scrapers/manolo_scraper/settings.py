@@ -11,15 +11,15 @@ import os
 import sys
 sys.path.append(os.path.dirname(os.path.abspath('..')))
 
-os.environ['DJANGO_SETTINGS_MODULE'] = 'manolo.settings.production'
+os.environ['DJANGO_SETTINGS_MODULE'] = 'manolo.settings.local'
 
 # This is required only if Django Version > 1.8
 import django
 django.setup()
 
-CONCURRENT_REQUESTS = 1
-CONCURRENT_REQUESTS_PER_DOMAIN = 1
-DOWNLOAD_DELAY = 5
+CONCURRENT_REQUESTS = 2
+CONCURRENT_REQUESTS_PER_DOMAIN = 2
+DOWNLOAD_DELAY = 0.5
 
 BOT_NAME = 'bingbot'
 
