@@ -30,3 +30,4 @@ twitterbot2
 gunicorn
 gunicorn[gevent]
 gevent
+ipython
