@@ -29,7 +29,20 @@ PATH=/usr/local/sbin:/usr/local/bin:/sbin:/bin:/usr/sbin:/usr/bin
 
 # run daily and scrape only 2 day ago until today
 10 4 * * * /bin/bash /code/cron_jobs/run_scraper.sh congreso 2
-10 4 * * * /bin/bash /code/cron_jobs/run_scraper.sh presidencia 2
+10 5 * * * /bin/bash /code/cron_jobs/run_scraper.sh presidencia 2
+10 6 * * * /bin/bash /code/cron_jobs/run_scraper.sh ambiente 2
+10 7 * * * /bin/bash /code/cron_jobs/run_scraper.sh defensa 2
+10 8 * * * /bin/bash /code/cron_jobs/run_scraper.sh ingemmet 2
+10 9 * * * /bin/bash /code/cron_jobs/run_scraper.sh inpe 2
+10 10 * * * /bin/bash /code/cron_jobs/run_scraper.sh minagr 2
+10 11 * * * /bin/bash /code/cron_jobs/run_scraper.sh mincetur 2
+10 1 * * * /bin/bash /code/cron_jobs/run_scraper.sh mincu 2
+10 2 * * * /bin/bash /code/cron_jobs/run_scraper.sh minedu 2
+10 3 * * * /bin/bash /code/cron_jobs/run_scraper.sh minem 2
+30 4 * * * /bin/bash /code/cron_jobs/run_scraper.sh minsa 2
+30 5 * * * /bin/bash /code/cron_jobs/run_scraper.sh minvi 2
+30 6 * * * /bin/bash /code/cron_jobs/run_scraper.sh pcm 2
+30 7 * * * /bin/bash /code/cron_jobs/run_scraper.sh produce2 2
 
 # run weekly on Sunday and scrape 7 day ago until today
 20 1 * * 0 /bin/bash /code/cron_jobs/run_scraper.sh congreso 7
