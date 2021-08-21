@@ -22,4 +22,15 @@ PATH=/usr/local/sbin:/usr/local/bin:/sbin:/bin:/usr/sbin:/usr/bin
 #
 
 ## add spiders cronjobs here
-0 */4 * * * /bin/bash /code/cron_jobs/run_scraper_congreso.sh
+
+# run every 4 hours and scrape only 1 day ago until today
+0 */4 * * * /bin/bash /code/cron_jobs/run_scraper.sh congreso 1
+0 */4 * * * /bin/bash /code/cron_jobs/run_scraper.sh presidencia 1
+
+# run daily and scrape only 2 day ago until today
+10 4 * * * /bin/bash /code/cron_jobs/run_scraper.sh congreso 2
+10 4 * * * /bin/bash /code/cron_jobs/run_scraper.sh presidencia 2
+
+# run weekly on Sunday and scrape 7 day ago until today
+20 1 * * 0 /bin/bash /code/cron_jobs/run_scraper.sh congreso 7
+20 1 * * 0 /bin/bash /code/cron_jobs/run_scraper.sh presidencia 7
