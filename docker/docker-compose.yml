@@ -30,7 +30,7 @@ services:
       /wait_for_it.sh db:5432 -t 0 -- gunicorn
       --workers 5
       --threads 2
-      --timeout 120
+      --timeout 3600
       --max-requests 200
       --max-requests-jitter 50
       --graceful-timeout 30
