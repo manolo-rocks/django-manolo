@@ -38,11 +38,11 @@ class PcmSpider(ManoloBaseSpider):
             "Referer": "https://visitas.servicios.gob.pe/consultas/index.php?ruc_enti=20168999926",
             "Accept-Language": "en-US,en;q=0.5",
         }
+        date_str = date.strftime("%d/%m/%Y")
         data = {
             'busqueda': '20168999926',
-            'fecha': '27/08/2021 - 27/08/2021',
+            'fecha': f'{date_str} - {date_str}',
         }
-        date_str = date.strftime("%d/%m/%Y")
         request = scrapy.Request(
             url=self.base_url,
             body=urllib.parse.urlencode(data),
