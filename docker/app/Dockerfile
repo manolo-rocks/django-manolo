@@ -11,7 +11,6 @@ RUN apt-get install -y gcc postgresql-client-13 libpq-dev musl-dev bash postgres
 
 # Google Chrome repository
 RUN wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | apt-key add -
-RUN sh -c 'echo "deb [arch=amd64] http://dl.google.com/linux/chrome/deb/ stable main" >> /etc/apt/sources.list.d/google.list'
 RUN sh -c "echo 'deb http://dl.google.com/linux/chrome/deb/ stable main' >>   /etc/apt/sources.list"
 
 RUN apt-get update
@@ -37,6 +36,6 @@ RUN ls /code
 
 # Install Chromedriver
 RUN wget -O /tmp/chromedriver.zip http://chromedriver.storage.googleapis.com/`curl -sS chromedriver.storage.googleapis.com/LATEST_RELEASE`/chromedriver_linux64.zip
-RUN unzip /tmp/chromedriver.zip chromedriver -d /code/scrapers/manolo_scraper/spiders
+RUN unzip -o /tmp/chromedriver.zip chromedriver -d /code/scrapers/manolo_scraper/spiders
 
 EXPOSE 8000
