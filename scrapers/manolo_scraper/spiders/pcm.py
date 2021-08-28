@@ -2,12 +2,12 @@
 import urllib
 
 import scrapy
-from scrapy import FormRequest
 import undetected_chromedriver.v2 as uc
 
 from .spiders import ManoloBaseSpider
 from ..items import ManoloItem
-from ..utils import get_dni, make_hash
+from ..utils import make_hash
+
 
 class PcmSpider(ManoloBaseSpider):
     name = 'pcm'
@@ -18,10 +18,21 @@ class PcmSpider(ManoloBaseSpider):
 
     def initial_request(self, date):
         """
+        Bypass google recaptcha.
+        The government page does a request to google's recaptcha when user clicks
+        the button to search for visit records.
+        Google returns a token and a score that tells if request comes from human
+        or bot.
+        The government page uses the score to allow users to see results.
+
+        We bypass by doing the request to google's recaptcha ourselves using
+        selenium and getting the token.
+        Use the token to make requests directly to their API.
 
             data = {
                 'busqueda': '20168999926',
                 'fecha': '27/08/2021+-+27/08/2021',
+                'token': 'ble',
                 }
         """
         import os
@@ -67,7 +78,6 @@ class PcmSpider(ManoloBaseSpider):
         return request
 
     def parse(self, response, **kwargs):
-        print(response.text)
         date_str = response.meta['date']
         visitors = response.json().get('data', [])
 
@@ -76,7 +86,6 @@ class PcmSpider(ManoloBaseSpider):
 
     def get_item(self, item, date_str):
         funcionario_triad = [i.strip() for i in item['funcionario'].split('-')]
-        print(funcionario_triad)
         try:
             host_name = funcionario_triad[0]
         except IndexError:
@@ -106,4 +115,4 @@ class PcmSpider(ManoloBaseSpider):
             time_end=item['horaOut'],
         )
         l = make_hash(l)
-        # return l
+        return l
