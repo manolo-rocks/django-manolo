@@ -9,6 +9,13 @@ RUN echo "deb http://apt.postgresql.org/pub/repos/apt/ buster-pgdg main" >> /etc
 RUN apt-get update
 RUN apt-get install -y gcc postgresql-client-13 libpq-dev musl-dev bash postgresql-13 postgresql-contrib && rm -rf /var/lib/apt/lists/*
 
+# Google Chrome repository
+RUN wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | apt-key add -
+RUN sh -c 'echo "deb http://dl.google.com/linux/chrome/deb/ stable main" >> /etc/apt/sources.list.d/google-chrome.list'
+
+RUN apt-get update &&
+    apt-get install -y google-chrome-stable vim fish
+
 RUN apt-get autoremove -y
 RUN mkdir /pip_requirements
 ADD requirements/base.txt /base.txt
@@ -26,5 +33,9 @@ RUN chmod +x /wait_for_it.sh
 
 ADD . /code/
 RUN ls /code
+
+# Install Chromedriver
+RUN wget -O /tmp/chromedriver.zip http://chromedriver.storage.googleapis.com/`curl -sS chromedriver.storage.googleapis.com/LATEST_RELEASE`/chromedriver_linux64.zip
+RUN unzip /tmp/chromedriver.zip chromedriver -d /code/scrapers/manolo_scraper/spiders
 
 EXPOSE 8000
