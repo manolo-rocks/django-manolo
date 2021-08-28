@@ -14,6 +14,7 @@ class PcmSpider(ManoloBaseSpider):
     institution_name = 'pcm'
     allowed_domains = ['visitas.servicios.gob.pe']
     base_url = 'https://visitas.servicios.gob.pe/consultas/dataBusqueda.php'
+    start_url = 'https://visitas.servicios.gob.pe/consultas/index.php?ruc_enti=20168999926'
 
     def initial_request(self, date):
         """
@@ -27,11 +28,12 @@ class PcmSpider(ManoloBaseSpider):
         cwd = os.path.dirname(os.path.abspath(__file__))
         chromedriver_path = os.path.join(cwd, 'chromedriver')
         driver = uc.Chrome(executable_path=chromedriver_path, headless=True)
-        with driver:
-            driver.get(self.base_url)
-            html = driver.page_source
-            with open('/tmp/gcaptcha.txt', 'w') as handle:
-                handle.write(html)
+
+        driver.get(self.start_url)
+        token = driver.execute_script(
+            "return grecaptcha.execute('6LdKTSocAAAAAN_TWX3cgpUMgIKpw_zGrellc3Lj', {action: 'create_comment'})"
+        )
+        driver.close()
 
         headers = {
             "Connection": "keep-alive",
@@ -52,9 +54,8 @@ class PcmSpider(ManoloBaseSpider):
         data = {
             'busqueda': '20168999926',
             'fecha': f'{date_str} - {date_str}',
-            'token': '03AGdBq27MI733wCC_kmdcVc3furrlmKe54-5t8CCcoj4r0WJT_y8cCdpaWRuJ-30gQRytxxVLtQ-gLb2pQ-etuKlCy1C7ciejmntcj-Ccswwod6ZW2qbLRldmJDwe92B6RGckoEjy-pE6-CGy_LOYx1e42_k65_jHVeEF1-BaR1_ok2-gb80pQzUf1h-qy6zKNkVZMUW9SRJ1Ic23MinRwbAHoL5J97x2H6lKJDifld1jbX0-TYkdqh9XaAThU3dXu2krmYfqFIrq35KQgniEq1WD5LNUovogwpUWiCeNs5v-5aP7qFQVLKE0WgZX1hzd9F1EBVLGEYgotg1d3GDyP4l7ZTUWnsVSDTaXAuJZfbFjtrCmFhn4Uo6xl-ZaMCcS-ZyDzjpkWJ1ViAKjUZraGSaY_xR8yGuNix1Cn30VHxRrTvx7V8ghJadTHwliHlRGIAr_uV1p7y2PwfTUxwNOoYDIK6jLhzytlw',
+            'token': token,
         }
-        print(urllib.parse.urlencode(data))
         request = scrapy.Request(
             url=self.base_url,
             body=urllib.parse.urlencode(data),
@@ -75,6 +76,7 @@ class PcmSpider(ManoloBaseSpider):
 
     def get_item(self, item, date_str):
         funcionario_triad = [i.strip() for i in item['funcionario'].split('-')]
+        print(funcionario_triad)
         try:
             host_name = funcionario_triad[0]
         except IndexError:
@@ -104,4 +106,4 @@ class PcmSpider(ManoloBaseSpider):
             time_end=item['horaOut'],
         )
         l = make_hash(l)
-        return l
+        # return l
