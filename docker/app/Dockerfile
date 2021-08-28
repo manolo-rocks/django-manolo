@@ -1,4 +1,4 @@
-FROM python:3.6-buster
+FROM python:3.7-buster
 ENV PYTHONUNBUFFERED 1
 
 RUN apt-get update
@@ -8,6 +8,7 @@ RUN curl -L https://www.postgresql.org/media/keys/ACCC4CF8.asc | apt-key add -
 RUN echo "deb http://apt.postgresql.org/pub/repos/apt/ buster-pgdg main" >> /etc/apt/sources.list
 RUN apt-get update
 RUN apt-get install -y gcc postgresql-client-13 libpq-dev musl-dev bash postgresql-13 postgresql-contrib && rm -rf /var/lib/apt/lists/*
+RUN apt-get install -y fish vim
 
 RUN apt-get autoremove -y
 RUN mkdir /pip_requirements
