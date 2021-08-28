@@ -13,8 +13,7 @@ RUN apt-get install -y gcc postgresql-client-13 libpq-dev musl-dev bash postgres
 RUN wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | apt-key add -
 RUN sh -c 'echo "deb http://dl.google.com/linux/chrome/deb/ stable main" >> /etc/apt/sources.list.d/google-chrome.list'
 
-RUN apt-get update &&
-    apt-get install -y google-chrome-stable vim fish
+RUN apt-get install -y google-chrome-stable vim fish
 
 RUN apt-get autoremove -y
 RUN mkdir /pip_requirements
