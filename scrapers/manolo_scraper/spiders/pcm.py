@@ -3,11 +3,11 @@ import urllib
 
 import scrapy
 from scrapy import FormRequest
+import undetected_chromedriver.v2 as uc
 
 from .spiders import ManoloBaseSpider
 from ..items import ManoloItem
 from ..utils import get_dni, make_hash
-
 
 class PcmSpider(ManoloBaseSpider):
     name = 'pcm'
@@ -23,6 +23,16 @@ class PcmSpider(ManoloBaseSpider):
                 'fecha': '27/08/2021+-+27/08/2021',
                 }
         """
+        import os
+        cwd = os.path.dirname(os.path.abspath(__file__))
+        chromedriver_path = os.path.join(cwd, 'chromedriver')
+        driver = uc.Chrome(executable_path=chromedriver_path, headless=True)
+        with driver:
+            driver.get(self.base_url)
+            html = driver.page_source
+            with open('/tmp/gcaptcha.txt', 'w') as handle:
+                handle.write(html)
+
         headers = {
             "Connection": "keep-alive",
             'sec-ch-ua': '"Chromium";v="92", " Not A;Brand";v="99", "Google Chrome";v="92"',
@@ -42,7 +52,9 @@ class PcmSpider(ManoloBaseSpider):
         data = {
             'busqueda': '20168999926',
             'fecha': f'{date_str} - {date_str}',
+            'token': '03AGdBq27MI733wCC_kmdcVc3furrlmKe54-5t8CCcoj4r0WJT_y8cCdpaWRuJ-30gQRytxxVLtQ-gLb2pQ-etuKlCy1C7ciejmntcj-Ccswwod6ZW2qbLRldmJDwe92B6RGckoEjy-pE6-CGy_LOYx1e42_k65_jHVeEF1-BaR1_ok2-gb80pQzUf1h-qy6zKNkVZMUW9SRJ1Ic23MinRwbAHoL5J97x2H6lKJDifld1jbX0-TYkdqh9XaAThU3dXu2krmYfqFIrq35KQgniEq1WD5LNUovogwpUWiCeNs5v-5aP7qFQVLKE0WgZX1hzd9F1EBVLGEYgotg1d3GDyP4l7ZTUWnsVSDTaXAuJZfbFjtrCmFhn4Uo6xl-ZaMCcS-ZyDzjpkWJ1ViAKjUZraGSaY_xR8yGuNix1Cn30VHxRrTvx7V8ghJadTHwliHlRGIAr_uV1p7y2PwfTUxwNOoYDIK6jLhzytlw',
         }
+        print(urllib.parse.urlencode(data))
         request = scrapy.Request(
             url=self.base_url,
             body=urllib.parse.urlencode(data),
@@ -54,6 +66,7 @@ class PcmSpider(ManoloBaseSpider):
         return request
 
     def parse(self, response, **kwargs):
+        print(response.text)
         date_str = response.meta['date']
         visitors = response.json().get('data', [])
 
