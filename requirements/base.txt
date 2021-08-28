@@ -31,3 +31,4 @@ gunicorn
 gunicorn[gevent]
 gevent
 ipython
+undetected-chromedriver
