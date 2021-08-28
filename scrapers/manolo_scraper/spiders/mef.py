@@ -10,12 +10,12 @@ from ..items import ManoloItem
 from ..utils import make_hash
 
 
-class PcmSpider(ManoloBaseSpider):
-    name = 'pcm'
-    institution_name = 'pcm'
+class MefSpider(ManoloBaseSpider):
+    name = 'mef'
+    institution_name = 'mef'
     allowed_domains = ['visitas.servicios.gob.pe']
     base_url = 'https://visitas.servicios.gob.pe/consultas/dataBusqueda.php'
-    start_url = 'https://visitas.servicios.gob.pe/consultas/index.php?ruc_enti=20168999926'
+    start_url = 'https://visitas.servicios.gob.pe/consultas/index.php?ruc_enti=20131370645'
 
     def initial_request(self, date):
         """
@@ -101,18 +101,25 @@ class PcmSpider(ManoloBaseSpider):
         except IndexError:
             host_title = ''
 
+        full_name = item.get('visitante', '') or ''
+        entity = item.get('rz_empresa', '') or ''
+        reason = item.get('motivo', '') or ''
+        meeting_place = item.get('no_lugar_r', '') or ''
+        time_start = item.get('horaIn', '') or ''
+        time_end = item.get('horaOut', '') or ''
+
         l = ManoloItem(
             institution=self.institution_name,
             date=date_str,
-            full_name=item['visitante'],
-            entity=item['rz_empresa'],
-            reason=item['motivo'],
+            full_name=full_name.strip(),
+            entity=entity.strip(),
+            reason=reason.strip(),
             office=office,
-            meeting_place=item['no_lugar_r'],
+            meeting_place=meeting_place.strip(),
             host_name=host_name,
             host_title=host_title,
-            time_start=item['horaIn'],
-            time_end=item['horaOut'],
+            time_start=time_start.strip(),
+            time_end=time_end.strip(),
         )
         l = make_hash(l)
         return l
