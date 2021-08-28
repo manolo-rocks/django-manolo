@@ -1,0 +1,34 @@
+[
+  {
+    "empleado": "ZUÑIGA PAREDES, BLANCA LEONOR",
+    "cargo": "AUXILIAR",
+    "motivo": "NORMAL",
+    "idVisita": 6584252,
+    "fila": 718,
+    "fechaVisitaRecepcion": "24/08/21 17:46",
+    "entidadVisitanteNombreCompleto": "RAFAEL PINTADO, HENRY HECTOR",
+    "entidadVisitanteTipoDocumento": "DNI/LE",
+    "entidadVisitanteDocumento": "06794905",
+    "entidad": "SIN INSTITUCION",
+    "centroCostoNombre": "TERCERA VICEPRESIDENCIA",
+    "ubicacion": "PALACIO    :    229-E - TERCERA VICEPRESIDENCIA",
+    "fechaVisitaTermino": "21:15",
+    "edificio": "PALACIO"
+  },
+  {
+    "empleado": "ZUÑIGA PAREDES, BLANCA LEONOR",
+    "cargo": "AUXILIAR",
+    "motivo": "NORMAL",
+    "idVisita": 6584253,
+    "fila": 719,
+    "fechaVisitaRecepcion": "24/08/21 17:46",
+    "entidadVisitanteNombreCompleto": "RIOS  RAMIREZ , ANGELICA ROSARIO ",
+    "entidadVisitanteTipoDocumento": "DNI/LE",
+    "entidadVisitanteDocumento": "40944302",
+    "entidad": null,
+    "centroCostoNombre": "TERCERA VICEPRESIDENCIA",
+    "ubicacion": "PALACIO    :    229-E - TERCERA VICEPRESIDENCIA",
+    "fechaVisitaTermino": "21:15",
+    "edificio": "PALACIO"
+  }
+]

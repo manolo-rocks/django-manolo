@@ -23,7 +23,8 @@ def fake_response_from_file(filename, url=None, meta=None):
     else:
         file_path = filename
 
-    file_content = open(file_path, 'r').read()
+    with open(file_path) as handle:
+        file_content = handle.read()
 
     response = TextResponse(url=url, request=request, body=file_content, encoding='latin-1')
     return response
