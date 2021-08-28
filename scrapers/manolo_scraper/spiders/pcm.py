@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 import urllib
+import os
 
 import scrapy
 import undetected_chromedriver.v2 as uc
@@ -35,7 +36,6 @@ class PcmSpider(ManoloBaseSpider):
                 'token': 'ble',
                 }
         """
-        import os
         cwd = os.path.dirname(os.path.abspath(__file__))
         chromedriver_path = os.path.join(cwd, 'chromedriver')
         driver = uc.Chrome(executable_path=chromedriver_path, headless=True)
