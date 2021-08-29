@@ -32,3 +32,4 @@ gunicorn[gevent]
 gevent
 ipython
 undetected-chromedriver
+jedi==0.17.2

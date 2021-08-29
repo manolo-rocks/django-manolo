@@ -13,9 +13,10 @@ from ..utils import make_hash
 class MefSpider(ManoloBaseSpider):
     name = 'mef'
     institution_name = 'mef'
+    institution_ruc = '20131370645'
     allowed_domains = ['visitas.servicios.gob.pe']
     base_url = 'https://visitas.servicios.gob.pe/consultas/dataBusqueda.php'
-    start_url = 'https://visitas.servicios.gob.pe/consultas/index.php?ruc_enti=20131370645'
+    start_url = f'https://visitas.servicios.gob.pe/consultas/index.php?ruc_enti={institution_ruc}'
 
     def initial_request(self, date):
         """
@@ -63,7 +64,7 @@ class MefSpider(ManoloBaseSpider):
         }
         date_str = date.strftime("%d/%m/%Y")
         data = {
-            'busqueda': '20168999926',
+            'busqueda': self.institution_ruc,
             'fecha': f'{date_str} - {date_str}',
             'token': token,
         }
