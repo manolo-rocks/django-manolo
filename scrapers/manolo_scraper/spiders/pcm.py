@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+import time
 import urllib
 import os
 
@@ -37,14 +38,15 @@ class PcmSpider(ManoloBaseSpider):
                 }
         """
         cwd = os.path.dirname(os.path.abspath(__file__))
-        chromedriver_path = os.path.join(cwd, 'chromedriver')
+        chromedriver_path = os.path.join('/Users/carlosp420/Downloads/', 'chromedriver')
         driver = uc.Chrome(executable_path=chromedriver_path, headless=True)
 
         driver.get(self.start_url)
+        time.sleep(10)
         token = driver.execute_script(
             "return grecaptcha.execute('6LdKTSocAAAAAN_TWX3cgpUMgIKpw_zGrellc3Lj', {action: 'create_comment'})"
         )
-        driver.close()
+        time.sleep(6)
 
         headers = {
             "Connection": "keep-alive",
@@ -75,6 +77,7 @@ class PcmSpider(ManoloBaseSpider):
             meta={'date': date_str},
             callback=self.parse,
         )
+        driver.close()
         return request
 
     def parse(self, response, **kwargs):
