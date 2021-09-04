@@ -38,7 +38,7 @@ class PcmSpider(ManoloBaseSpider):
                 }
         """
         cwd = os.path.dirname(os.path.abspath(__file__))
-        chromedriver_path = os.path.join('/Users/carlosp420/Downloads/', 'chromedriver')
+        chromedriver_path = os.path.join(cwd, 'chromedriver')
         driver = uc.Chrome(executable_path=chromedriver_path, headless=True)
 
         driver.get(self.start_url)
