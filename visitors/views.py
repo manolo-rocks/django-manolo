@@ -3,7 +3,7 @@ import csv
 import logging
 import re
 
-from django.contrib.postgres.search import SearchQuery, SearchRank
+from django.contrib.postgres.search import SearchQuery
 from django.shortcuts import render, redirect
 from django.core.paginator import PageNotAnInteger, EmptyPage, InvalidPage
 from django.http import Http404, HttpResponse

@@ -90,7 +90,6 @@ class Visitor(models.Model):
 
     date = models.DateField(
         null=True,
-        db_index=True
     )
 
     time_start = models.CharField(
@@ -128,7 +127,7 @@ class Visitor(models.Model):
         indexes = [
             GinIndex(
                 fields=['full_search'], name='full_search_idx'
-            )
+            ),
         ]
 
 
