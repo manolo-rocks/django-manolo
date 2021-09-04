@@ -3,7 +3,7 @@ import csv
 import logging
 import re
 
-from django.contrib.postgres.search import SearchQuery, SearchRank
+from django.contrib.postgres.search import SearchQuery
 from django.shortcuts import render, redirect
 from django.core.paginator import PageNotAnInteger, EmptyPage, InvalidPage
 from django.http import Http404, HttpResponse
@@ -142,7 +142,7 @@ def query_is_dni(query):
 def do_dni_search(query):
     return Visitor.objects.filter(
         id_number=query,
-    ).order_by('-id')
+    ).order_by('-date')
 
 
 def search_date(request):
@@ -267,5 +267,5 @@ def do_pagination(request, all_items):
 def do_sorting(request, queryset):
     ordering = get_sort_field(request)
     if not ordering:
-        return queryset.order_by('-id')
+        return queryset.order_by('-date')
     return queryset.order_by(ordering)
