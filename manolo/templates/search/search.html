@@ -76,9 +76,15 @@
                  {{ i.full_name|upper }}
                </a>
              </td>
-             <td><a href='{% url 'search_view' %}?q={{ i.id_number }}'>
-               {{ i.id_document }}: {{ i.id_number }}
-             </a></td>
+             <td>
+               {% if i.id_number %}
+                  <a href='{% url 'search_view' %}?q={{ i.id_number }}'>
+                    {{ i.id_document }}: {{ i.id_number }}
+                  </a>
+               {% else %}
+                 &nbsp;
+               {% endif %}
+             </td>
              <td><a href='{% url 'search_view' %}?q={{ i.entity }}'>
                {{ i.entity }}
              </a></td>

@@ -1,0 +1,115 @@
+{
+  "result": "200",
+  "data": [
+    {
+      "rz_empresa": "Aeropuertos del Perú SA ",
+      "visitante": "MEJIA BENDEZU EMERSON JACOB",
+      "funcionario": "RAMIREZ CASTILLO DIANA ROSALIA - Equipo Especializado de Seguimiento de la Inversión - Asesor",
+      "fecha": "12/03/2020",
+      "horaIn": "09:30",
+      "horaOut": "10:50",
+      "razon_social": "MINISTERIO DE ECONOMÍA Y FINANZAS (MEF)",
+      "motivo": "Reunión de trabajo",
+      "no_lugar_r": "Sala Técnica 2"
+    },
+    {
+      "rz_empresa": "Aeropuertos del Perú SA",
+      "visitante": "BARRERA ROMAN ELVIS RICHARD",
+      "funcionario": "RAMIREZ CASTILLO DIANA ROSALIA - Equipo Especializado de Seguimiento de la Inversión - Asesor",
+      "fecha": "12/03/2020",
+      "horaIn": "09:30",
+      "horaOut": "10:50",
+      "razon_social": "MINISTERIO DE ECONOMÍA Y FINANZAS (MEF)",
+      "motivo": "Reunión de trabajo",
+      "no_lugar_r": "Sala Técnica 2"
+    },
+    {
+      "rz_empresa": "Terminal de Cruceros Bahia de Miraflores SAC",
+      "visitante": "LARCO PEDRAZA JOSE IGNACIO JESUS",
+      "funcionario": "RAMIREZ CASTILLO DIANA ROSALIA - Equipo Especializado de Seguimiento de la Inversión - Asesor",
+      "fecha": "12/03/2020",
+      "horaIn": "12:00",
+      "horaOut": "13:00",
+      "razon_social": "MINISTERIO DE ECONOMÍA Y FINANZAS (MEF)",
+      "motivo": "Reunión de trabajo",
+      "no_lugar_r": "Sala Técnica 2"
+    },
+    {
+      "rz_empresa": "Terminal de Cruceros Bahia de Miraflores SAC",
+      "visitante": "DEL BUSTO QUIÑONES JUAN FRANCISCO",
+      "funcionario": "RAMIREZ CASTILLO DIANA ROSALIA - Equipo Especializado de Seguimiento de la Inversión - Asesor",
+      "fecha": "12/03/2020",
+      "horaIn": "12:00",
+      "horaOut": "13:00",
+      "razon_social": "MINISTERIO DE ECONOMÍA Y FINANZAS (MEF)",
+      "motivo": "Reunión de trabajo",
+      "no_lugar_r": "Sala Técnica 2"
+    },
+    {
+      "rz_empresa": "Terminal de Cruceros Bahia de Miraflores SAC",
+      "visitante": "CONTRERAS RIVAS JORGE GONZALO",
+      "funcionario": "RAMIREZ CASTILLO DIANA ROSALIA - Equipo Especializado de Seguimiento de la Inversión - Asesor",
+      "fecha": "12/03/2020",
+      "horaIn": "12:00",
+      "horaOut": "13:00",
+      "razon_social": "MINISTERIO DE ECONOMÍA Y FINANZAS (MEF)",
+      "motivo": "Reunión de trabajo",
+      "no_lugar_r": "Sala Técnica 2"
+    },
+    {
+      "rz_empresa": "Aeropuertos del Perú SA ",
+      "visitante": "MEJIA BENDEZU EMERSON JACOB",
+      "funcionario": "CASTILLO RISCO NESTOR RICARDO - Equipo Especializado de Seguimiento de la Inversión - Asesor",
+      "fecha": "12/03/2020",
+      "horaIn": "09:30",
+      "horaOut": "10:50",
+      "razon_social": "MINISTERIO DE ECONOMÍA Y FINANZAS (MEF)",
+      "motivo": "Reunión de trabajo",
+      "no_lugar_r": "Sala Técnica 2"
+    },
+    {
+      "rz_empresa": "Aeropuertos del Perú SA",
+      "visitante": "BARRERA ROMAN ELVIS RICHARD",
+      "funcionario": "CASTILLO RISCO NESTOR RICARDO - Equipo Especializado de Seguimiento de la Inversión - Asesor",
+      "fecha": "12/03/2020",
+      "horaIn": "09:30",
+      "horaOut": "10:50",
+      "razon_social": "MINISTERIO DE ECONOMÍA Y FINANZAS (MEF)",
+      "motivo": "Reunión de trabajo",
+      "no_lugar_r": "Sala Técnica 2"
+    },
+    {
+      "rz_empresa": "Terminal de Cruceros Bahia de Miraflores SAC",
+      "visitante": "LARCO PEDRAZA JOSE IGNACIO JESUS",
+      "funcionario": "CASTILLO RISCO NESTOR RICARDO - Equipo Especializado de Seguimiento de la Inversión - Asesor",
+      "fecha": "12/03/2020",
+      "horaIn": "12:00",
+      "horaOut": "13:00",
+      "razon_social": "MINISTERIO DE ECONOMÍA Y FINANZAS (MEF)",
+      "motivo": "Reunión de trabajo",
+      "no_lugar_r": "Sala Técnica 2"
+    },
+    {
+      "rz_empresa": "Terminal de Cruceros Bahia de Miraflores SAC",
+      "visitante": "DEL BUSTO QUIÑONES JUAN FRANCISCO",
+      "funcionario": "CASTILLO RISCO NESTOR RICARDO - Equipo Especializado de Seguimiento de la Inversión - Asesor",
+      "fecha": "12/03/2020",
+      "horaIn": "12:00",
+      "horaOut": "13:00",
+      "razon_social": "MINISTERIO DE ECONOMÍA Y FINANZAS (MEF)",
+      "motivo": "Reunión de trabajo",
+      "no_lugar_r": "Sala Técnica 2"
+    },
+    {
+      "rz_empresa": "Terminal de Cruceros Bahia de Miraflores SAC",
+      "visitante": "CONTRERAS RIVAS JORGE GONZALO",
+      "funcionario": "CASTILLO RISCO NESTOR RICARDO - Equipo Especializado de Seguimiento de la Inversión - Asesor",
+      "fecha": "12/03/2020",
+      "horaIn": "12:00",
+      "horaOut": "13:00",
+      "razon_social": "MINISTERIO DE ECONOMÍA Y FINANZAS (MEF)",
+      "motivo": "Reunión de trabajo",
+      "no_lugar_r": "Sala Técnica 2"
+    }
+  ]
+}
