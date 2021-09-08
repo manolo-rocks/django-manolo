@@ -69,7 +69,7 @@ def store_updated_institutions():
                 'name': institution.name,
                 'slug': institution.slug,
                 'rank': institution.rank,
-                'last_updated': last_visitor.date.strftime('%Y-%m-%d'),
+                'last_updated': last_visitor.modified.strftime('%Y-%m-%d %H:%M:%S'),
             }
             institution_stats.append(item)
             print(f'{institution} last updated {item["last_updated"]}')
