@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 import logging
 
-from scrapy import Request, FormRequest
+from scrapy import FormRequest
 
 from .spiders import ManoloBaseSpider
 from ..items import ManoloItem

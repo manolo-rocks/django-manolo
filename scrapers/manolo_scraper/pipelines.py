@@ -7,6 +7,7 @@
 import datetime
 import re
 
+from pytz import timezone
 from scrapy.exceptions import DropItem
 
 from visitors.models import Visitor
@@ -103,14 +104,17 @@ def save_item(item):
     """
     returns error if occurred otherwise returns None
     """
+
+    lima = timezone('America/Lima')
+
     try:
         visitor_exists = Visitor.objects.filter(sha1=item['sha1']).exists()
     except Exception as e:
         raise Exception(f"Could not search in the database: {e}")
 
     if not visitor_exists:
-        item['created'] = datetime.datetime.now()
-        item['modified'] = datetime.datetime.now()
+        item['created'] = datetime.datetime.now(lima)
+        item['modified'] = datetime.datetime.now(lima)
         try:
             Visitor.objects.create(**item)
             print('saving to db item')

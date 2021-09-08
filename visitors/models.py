@@ -102,8 +102,8 @@ class Visitor(models.Model):
         null=True,
     )
 
-    created = models.DateTimeField(auto_now_add=True, db_index=True)
-    modified = models.DateTimeField(auto_now=True)
+    created = models.DateTimeField()
+    modified = models.DateTimeField()
 
     @classmethod
     def get_full_search_vector(cls):
