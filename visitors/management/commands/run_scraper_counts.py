@@ -62,14 +62,15 @@ def store_updated_institutions():
     for institution in Institution.objects.all().order_by('-rank'):
         last_visitor = Visitor.objects.filter(
             institution=institution.slug,
-        ).order_by('date').last()
+        ).order_by('modified').last()
+        last_updated = timezone.localtime(last_visitor.modified)
 
         if last_visitor:
             item = {
                 'name': institution.name,
                 'slug': institution.slug,
                 'rank': institution.rank,
-                'last_updated': last_visitor.modified.strftime('%Y-%m-%d %H:%M:%S'),
+                'last_updated': last_updated.strftime('%Y-%m-%d %H:%M:%S'),
             }
             institution_stats.append(item)
             print(f'{institution} last updated {item["last_updated"]}')
