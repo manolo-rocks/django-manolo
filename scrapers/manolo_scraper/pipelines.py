@@ -108,11 +108,11 @@ def save_item(item):
     lima = timezone('America/Lima')
 
     try:
-        visitor_exists = Visitor.objects.filter(sha1=item['sha1']).exists()
+        visitor_queryset = Visitor.objects.filter(sha1=item['sha1'])
     except Exception as e:
         raise Exception(f"Could not search in the database: {e}")
 
-    if not visitor_exists:
+    if not visitor_queryset.exists():
         item['created'] = datetime.datetime.now(lima)
         item['modified'] = datetime.datetime.now(lima)
         try:
@@ -120,5 +120,13 @@ def save_item(item):
             print('saving to db item')
         except Exception as e:
             print(f'Error when saving item to database {e}')
+
+    elif visitor_queryset.exists() and not visitor_queryset.first().time_end:
+        if item['time_end']:
+            visitor = visitor_queryset.first()
+            visitor.time_end = item['time_end']
+            visitor.save()
+            print(f"Updating date: {item['date']} is found in db")
+
     else:
         print("{0}, date: {1} is found in db, not saving".format(item['sha1'], item['date']))
