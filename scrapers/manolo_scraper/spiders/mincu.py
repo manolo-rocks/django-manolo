@@ -7,6 +7,6 @@ class MincuSpider(SireviSpider):
 
     allowed_domains = ['visitas.cultura.gob.pe']
 
-    base_url = 'http://visitas.cultura.gob.pe'
+    base_url = 'https://visitas.cultura.gob.pe'
 
     institution_name = 'mincu'

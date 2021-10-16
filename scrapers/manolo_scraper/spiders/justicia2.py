@@ -11,10 +11,10 @@ from ..items import ManoloItem
 from ..utils import make_hash
 
 
-class AmbienteSpider(ManoloBaseSpider):
-    name = 'ambiente'
-    institution_name = 'ambiente'
-    institution_ruc = '20492966658'
+class JusticiaSpider2(ManoloBaseSpider):
+    name = 'justicia2'
+    institution_name = 'minjus'
+    institution_ruc = '20131371617'
     allowed_domains = ['visitas.servicios.gob.pe']
     base_url = 'https://visitas.servicios.gob.pe/consultas/dataBusqueda.php'
     start_url = f'https://visitas.servicios.gob.pe/consultas/index.php?ruc_enti={institution_ruc}'

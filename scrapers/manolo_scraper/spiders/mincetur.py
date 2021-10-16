@@ -1,105 +1,129 @@
 # -*- coding: utf-8 -*-
+import time
+import urllib
+import os
+
 import scrapy
+import undetected_chromedriver.v2 as uc
 
-from scrapers.manolo_scraper.spiders.spiders import ManoloBaseSpider
+from .spiders import ManoloBaseSpider
 from ..items import ManoloItem
-from ..item_loaders import ManoloItemLoader
-from ..utils import make_hash, get_dni
+from ..utils import make_hash
 
 
-class MinceturSpider(ManoloBaseSpider):
+class AmbienteSpider(ManoloBaseSpider):
     name = 'mincetur'
-    allowed_domains = ["mincetur.gob.pe"]
-    base_url = "http://consultasenlinea.mincetur.gob.pe/visitaspublico/Visitas/FrmVisitantes.aspx"
+    institution_name = 'mincetur'
+    institution_ruc = '20504774288'
+    allowed_domains = ['visitas.servicios.gob.pe']
+    base_url = 'https://visitas.servicios.gob.pe/consultas/dataBusqueda.php'
+    start_url = f'https://visitas.servicios.gob.pe/consultas/index.php?ruc_enti={institution_ruc}'
 
     def initial_request(self, date):
-        return scrapy.http.Request(
+        """
+        Bypass google recaptcha.
+        The government page does a request to google's recaptcha when user clicks
+        the button to search for visit records.
+        Google returns a token and a score that tells if request comes from human
+        or bot.
+        The government page uses the score to allow users to see results.
+
+        We bypass by doing the request to google's recaptcha ourselves using
+        selenium and getting the token.
+        Use the token to make requests directly to their API.
+
+            data = {
+                'busqueda': '20168999926',
+                'fecha': '27/08/2021+-+27/08/2021',
+                'token': 'ble',
+                }
+        """
+        cwd = os.path.dirname(os.path.abspath(__file__))
+        chromedriver_path = os.path.join(cwd, 'chromedriver')
+        driver = uc.Chrome(executable_path=chromedriver_path, headless=True)
+
+        driver.get(self.start_url)
+        time.sleep(10)
+        token = driver.execute_script(
+            "return grecaptcha.execute('6LdKTSocAAAAAN_TWX3cgpUMgIKpw_zGrellc3Lj', {action: 'create_comment'})"
+        )
+        time.sleep(6)
+
+        headers = {
+            "Connection": "keep-alive",
+            'sec-ch-ua': '"Chromium";v="92", " Not A;Brand";v="99", "Google Chrome";v="92"',
+            "Accept": "application/json, text/javascript, */*; q=0.01",
+            "X-Requested-With": "XMLHttpRequest",
+            'sec-ch-ua-mobile': '?0',
+            "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:91.0) Gecko/20100101 Firefox/91.0",
+            "Content-Type": "application/x-www-form-urlencoded; charset=UTF-8",
+            "Origin": "https://visitas.servicios.gob.pe",
+            "Sec-Fetch-Site": "same-origin",
+            "Sec-Fetch-Mode": "cors",
+            "Sec-Fetch-Dest": "empty",
+            "Referer": "https://visitas.servicios.gob.pe/consultas/index.php?ruc_enti=20168999926",
+            "Accept-Language": "en-US,en;q=0.5",
+        }
+        date_str = date.strftime("%d/%m/%Y")
+        data = {
+            'busqueda': self.institution_ruc,
+            'fecha': f'{date_str} - {date_str}',
+            'token': token,
+        }
+        request = scrapy.Request(
             url=self.base_url,
-            meta={
-                'date_str': date.strftime("%d/%m/%Y"),
-            },
-            dont_filter=True,
-            callback=self.parse_initial_request,
+            body=urllib.parse.urlencode(data),
+            method='POST',
+            headers=headers,
+            meta={'date': date_str},
+            callback=self.parse,
         )
+        driver.close()
+        return request
 
-    def parse_initial_request(self, response):
-        yield scrapy.FormRequest.from_response(
-            response,
-            formdata={
-                'tbFecha': response.meta['date_str'],
-            },
-            meta={
-                'date_str': response.meta['date_str'],
-            },
-            dont_filter=True,
-            callback=self.parse_pages,
+    def parse(self, response, **kwargs):
+        date_str = response.meta['date']
+        visitors = response.json().get('data', [])
+
+        for item in visitors:
+            yield self.get_item(item, date_str)
+
+    def get_item(self, item, date_str):
+        funcionario_triad = [i.strip() for i in item['funcionario'].split('-')]
+        try:
+            host_name = funcionario_triad[0]
+        except IndexError:
+            host_name = ''
+
+        try:
+            office = funcionario_triad[1]
+        except IndexError:
+            office = ''
+
+        try:
+            host_title = funcionario_triad[2]
+        except IndexError:
+            host_title = ''
+
+        full_name = item.get('visitante', '') or ''
+        entity = item.get('rz_empresa', '') or ''
+        reason = item.get('motivo', '') or ''
+        meeting_place = item.get('no_lugar_r', '') or ''
+        time_start = item.get('horaIn', '') or ''
+        time_end = item.get('horaOut', '') or ''
+
+        l = ManoloItem(
+            institution=self.institution_name,
+            date=date_str,
+            full_name=full_name.strip(),
+            entity=entity.strip(),
+            reason=reason.strip(),
+            office=office,
+            meeting_place=meeting_place.strip(),
+            host_name=host_name,
+            host_title=host_title,
+            time_start=time_start.strip(),
+            time_end=time_end.strip(),
         )
-
-    def parse_pages(self, response):
-        number_of_pages = int(response.xpath(
-            "//span[@id='gvVisitante_lblTotalPaginas']/text()",
-        ).extract_first(default=1))
-
-        for page in range(number_of_pages):
-            yield scrapy.FormRequest.from_response(
-                response,
-                formdata={
-                    'ScriptManager1': 'UpDatos|gvVisitante$ctl23$ibPagIr',
-                    'tbFecha': response.meta['date_str'],
-                    'gvVisitante$ctl23$tbPagIr': str(page + 1),
-                    'gvVisitante$ctl23$ibPagIr.x': "6",
-                    'gvVisitante$ctl23$ibPagIr.y': '12',
-                },
-                meta={
-                    'date_str': response.meta['date_str'],
-                },
-                dont_filter=True,
-                callback=self.parse_item,
-            )
-
-    def parse_item(self, response):
-        date = self.get_date_item(response.meta['date_str'], '%d/%m/%Y')
-        rows = response.xpath("//tr")
-        for row in rows:
-            if len(row.xpath('.//td')) != 6:
-                continue
-            l = ManoloItemLoader(item=ManoloItem(), selector=row)
-
-            l.add_value('institution', 'mincetur')
-            l.add_value('date', date)
-
-
-            date_time = row.xpath('./td[2]/text()').extract_first().split()
-            l.add_value('time_start', date_time[1])
-
-            full_name = row.xpath('./td[3]/span/@title').extract_first()
-            l.add_value('full_name', full_name)
-
-            entity = row.xpath('./td[3]/text()').extract()[-1]
-            l.add_value('entity', entity)
-
-            id_document, id_number = get_dni(row.xpath('./td[3]/span/text()').extract()[1])
-            l.add_value('id_document', id_document)
-            l.add_value('id_number', id_number)
-
-            reason = row.xpath('./td[4]/text()').extract()[0]
-            l.add_value('reason', reason)
-
-            meeting_place = row.xpath('./td[4]/text()').extract()[1]
-            l.add_value('meeting_place', meeting_place)
-
-            host_name = row.xpath('./td[5]/span/text()').extract()[0]
-            l.add_value('host_name', host_name)
-
-            host_title = row.xpath('./td[5]/span/text()').extract()[1]
-            l.add_value('host_title', host_title)
-
-            office = row.xpath('./td[5]/span/text()').extract()[2]
-            l.add_value('office', office)
-
-            time_end = row.xpath('./td[6]/span/text()').extract_first()
-            l.add_value('time_end', time_end)
-
-            item = l.load_item()
-            item = make_hash(item)
-            yield item
+        l = make_hash(l)
+        return l
