@@ -18,8 +18,7 @@ from rest_framework import permissions
 from .forms import ApiForm
 from .serializers import ManoloSerializer
 from .api_responses import JSONResponse
-from visitors.views import do_pagination, data_as_csv
-
+from visitors.views import do_pagination, data_as_csv, do_sorting
 
 schema_view = get_schema_view(
     openapi.Info(
@@ -65,6 +64,9 @@ def search(request, query):
     form = ApiForm(query_request)
     all_items = form.search()
 
+    # sort queryset
+    all_items = do_sorting(request, all_items)
+
     pagination = PageNumberPagination()
     paginated_results = pagination.paginate_queryset(all_items, request)
 
@@ -86,7 +88,11 @@ def search_tsv(request, query):
     form = ApiForm(query_request)
     all_items = form.search()
 
+    # sort queryset
+    all_items = do_sorting(request, all_items)
+    # paginate queryset
     paginator, page = do_pagination(request, all_items)
+
     return data_as_csv(request, paginator)
 
 

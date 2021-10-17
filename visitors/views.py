@@ -184,7 +184,6 @@ def search_date(request):
                 # user has no subscriber
                 can_show_results = False
 
-        date_str = datetime.datetime.strftime(query_date_obj, '%Y-%m-%d')
         # TODO: implement django queryset search here
         results = []
         paginator, page = do_pagination(request, results)
