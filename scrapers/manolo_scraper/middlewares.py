@@ -16,7 +16,6 @@ class ProxyMiddleware(object):
 
 class CustomRetryMiddleware(RetryMiddleware):
     def process_exception(self, request, exception, spider):
-        print('::::', request, exception, spider)
         if (
             isinstance(exception, self.EXCEPTIONS_TO_RETRY)
             and not request.meta.get('dont_retry', False)
