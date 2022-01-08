@@ -3,8 +3,10 @@ import time
 import urllib
 import os
 
+import requests
 import scrapy
 import undetected_chromedriver.v2 as uc
+from scrapy import FormRequest
 
 from .spiders import ManoloBaseSpider
 from ..items import ManoloItem
@@ -51,37 +53,45 @@ class MefSpider(ManoloBaseSpider):
 
         headers = {
             "Connection": "keep-alive",
-            'sec-ch-ua': '"Chromium";v="92", " Not A;Brand";v="99", "Google Chrome";v="92"',
             "Accept": "application/json, text/javascript, */*; q=0.01",
+            "Accept-Encoding": "gzip, deflate, br",
             "X-Requested-With": "XMLHttpRequest",
-            'sec-ch-ua-mobile': '?0',
-            "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:91.0) Gecko/20100101 Firefox/91.0",
+            "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:94.0) Gecko/20100101 Firefox/94.0",
             "Content-Type": "application/x-www-form-urlencoded; charset=UTF-8",
-            "Origin": "https://visitas.servicios.gob.pe",
+            "Content-Length": '549',
             "Sec-Fetch-Site": "same-origin",
             "Sec-Fetch-Mode": "cors",
             "Sec-Fetch-Dest": "empty",
-            "Referer": "https://visitas.servicios.gob.pe/consultas/index.php?ruc_enti=20168999926",
+            "Host": "visitas.servicios.gob.pe",
+            "Origin": "https://visitas.servicios.gob.pe",
+            "Referer": "https://visitas.servicios.gob.pe/consultas/index.php?ruc_enti=20131370645",
             "Accept-Language": "en-US,en;q=0.5",
+            "Cookie": "_ga_YRDPQJL96M=GS1.1.1636809370.4.0.1636809371.0; _ga=GA1.1.487497679.1634419054"
         }
         date_str = date.strftime("%d/%m/%Y")
         data = {
             'busqueda': self.institution_ruc,
-            'fecha': f'{date_str} - {date_str}',
+            'fecha': f'{date_str} - 31/10/2021', #{date_str}',
             'token': token,
         }
-        request = scrapy.Request(
+        request = FormRequest(
             url=self.base_url,
-            body=urllib.parse.urlencode(data),
-            method='POST',
+            formdata=data,
             headers=headers,
             meta={'date': date_str},
             callback=self.parse,
         )
         driver.close()
+
+        # res = requests.post(self.base_url, headers=headers, data=data)
+        # with open('/tmp/aaaa', 'w') as handle:
+        #     handle.write(res.text)
+        # print("::::", res.status_code)
+        # print("::::", res.text)
         return request
 
     def parse(self, response, **kwargs):
+        print('::::::::', response.status_code)
         date_str = response.meta['date']
         visitors = response.json().get('data', [])
 

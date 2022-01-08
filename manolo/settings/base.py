@@ -17,10 +17,10 @@ DEBUG = env.bool("DJANGO_DEBUG", True)
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'manolo',
-        'USER': 'postgres',
+        'NAME': 'manolo_dump',
+        'USER': 'carlosp420',
         'PASSWORD': '',
-        'HOST': 'db',
+        'HOST': 'localhost',
         'PORT': 5432,
     }
 }
@@ -39,6 +39,8 @@ ALLOWED_HOSTS = []
 # http://en.wikipedia.org/wiki/List_of_tz_zones_by_name
 # although not all choices may be available on all operating systems.
 # In a Windows environment this must be set to your system time zone.
+# If you set this to False, Django will not use timezone-aware datetimes.
+USE_TZ = True
 TIME_ZONE = 'America/Lima'
 
 # Language code for this installation. All choices can be found here:
@@ -54,9 +56,6 @@ USE_I18N = False
 # If you set this to False, Django will not format dates, numbers and
 # calendars according to the current locale.
 USE_L10N = True
-
-# If you set this to False, Django will not use timezone-aware datetimes.
-USE_TZ = True
 
 # Absolute filesystem path to the directory for user-uploaded files.
 # Example: "/var/www/example.com/media/"
@@ -150,8 +149,10 @@ THIRD_PARTY_APPS = [
     'crispy_forms',
     'registration',
     'rest_framework',
+    'rest_framework_api_key',
     'drf_yasg',
 ]
+DATA_UPLOAD_MAX_MEMORY_SIZE = 5242880
 
 LOCAL_APPS = [
     'visitors',
