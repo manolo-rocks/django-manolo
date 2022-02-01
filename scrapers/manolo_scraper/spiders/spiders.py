@@ -203,6 +203,7 @@ class GobSpider(ManoloBaseSpider):
             'fecha': f'{date_str} - {date_str}',
             'token': token,
         }
+        print(urllib.parse.urlencode(data))
         request = scrapy.Request(
             url=self.base_url,
             body=urllib.parse.urlencode(data),
@@ -215,6 +216,7 @@ class GobSpider(ManoloBaseSpider):
         return request
 
     def parse(self, response, **kwargs):
+        print(response.json())
         date_str = response.meta['date']
         visitors = response.json().get('data', [])
 
