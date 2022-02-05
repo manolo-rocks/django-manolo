@@ -31,9 +31,14 @@ def save_items(input_file):
             fecha = datetime.strptime(fecha, '%d/%m/%Y')
             id_document, id_number = get_dni(row['Documento'])
 
-            host_name, office, host_title = [
+            print(row['Funcionario Visitado'])
+            triad = [
                 i.strip() for i in row['Funcionario Visitado'].split('-')
             ]
+            host_name = triad[0]
+            office = " - ".join(triad[1:-1])
+            host_title = triad[-1]
+
             lugar = row['Lugar']
 
             item = {
