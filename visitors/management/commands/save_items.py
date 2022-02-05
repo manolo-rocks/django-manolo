@@ -22,6 +22,7 @@ saving from cron jobs does not work
 # */7 1-10 * * * cd /code && /usr/local/bin/python manage.py save_items -i /tmp/presidencia.jl 2>> /tmp/saving_err_presidencia.log > /tmp/saving_presidencia.log
 """
 
+
 class Command(BaseCommand):
     help = "Save manolo items in database"
 

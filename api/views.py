@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+import json
 import os
 import subprocess
 from uuid import uuid4
@@ -14,7 +15,9 @@ from rest_framework.decorators import api_view, authentication_classes, \
 from rest_framework.permissions import AllowAny, IsAdminUser
 from rest_framework.pagination import PageNumberPagination
 from rest_framework import permissions
+from rest_framework_api_key.permissions import HasAPIKey
 
+from scrapers.manolo_scraper.pipelines import process_item
 from .forms import ApiForm
 from .serializers import ManoloSerializer
 from .api_responses import JSONResponse
@@ -143,3 +146,17 @@ def ocr_image(file_content):
         text = handle.read().strip().replace(" ", "")
     os.remove("{}.txt".format(basename))
     return text
+
+
+@api_view(['POST'])
+@permission_classes((HasAPIKey, ))
+def save_file(request):
+    """Receive a jsonlines file of scraped data to be stored in the database"""
+    binary_data = request.FILES['file'].read()
+    data = binary_data.decode().splitlines()
+
+    for line in data:
+        item = json.loads(line)
+        process_item(item)
+
+    return HttpResponse('ok')

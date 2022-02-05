@@ -1,6 +1,9 @@
 # -*- coding: utf-8 -*-
+import os
+import time
 
 from scrapy_splash import SplashRequest
+import undetected_chromedriver.v2 as uc
 
 from .spiders import ManoloBaseSpider
 from ..items import ManoloItem
@@ -10,11 +13,21 @@ from ..utils import get_lua_script, make_hash
 
 class MTCSpider(ManoloBaseSpider):
     name = 'mtc'
-    # base_url = 'http://scrv-reporte.mtc.gob.pe/'
-    base_url = 'https://google.com'
-    allowed_domains = ['scrv-reporte.mtc.gob.pe', 'google.com']
+    institution_name = 'mtc'
+    base_url = 'http://scrv-reporte.mtc.gob.pe/'
+    start_url = 'http://scrv-reporte.mtc.gob.pe/'
+    allowed_domains = ['scrv-reporte.mtc.gob.pe']
 
     def initial_request(self, date):
+        cwd = os.path.dirname(os.path.abspath(__file__))
+        chromedriver_path = os.path.join(cwd, 'chromedriver')
+        driver = uc.Chrome(executable_path=chromedriver_path, headless=True)
+
+        driver.get(self.start_url)
+        time.sleep(10)
+        driver.save_screenshot('/tmp/datadome_undetected_webddriver.png')
+        driver.close()
+
         date_str = date.strftime('%d/%m/%Y')
         print(date_str, get_lua_script('mtc.lua'))
         request = SplashRequest(

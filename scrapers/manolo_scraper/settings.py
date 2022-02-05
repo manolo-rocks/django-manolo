@@ -25,6 +25,7 @@ BOT_NAME = 'bingbot'
 
 SPIDER_MODULES = ['manolo_scraper.spiders']
 NEWSPIDER_MODULE = 'manolo_scraper.spiders'
+HTTPERROR_ALLOWED_CODES = [400]
 
 # activate for splash
 # SPIDER_MIDDLEWARES = {
@@ -42,7 +43,7 @@ DOWNLOADER_MIDDLEWARES = {
     'scrapy.downloadermiddlewares.useragent.UserAgentMiddleware': 500,
     'scrapy.downloadermiddlewares.cookies.CookiesMiddleware': 700,
     'scrapy.downloadermiddlewares.httpcompression.HttpCompressionMiddleware': 810,
-    # 'manolo_scraper.middlewares.RetryMiddleware.CustomRetryMiddleware': 710,
+    # 'manolo_scraper.middlewares.CustomRetryMiddleware': 910,
     # 'scrapy_splash.SplashCookiesMiddleware': 723,
     # 'scrapy_splash.SplashMiddleware': 725,
     # 'manolo_scraper.middlewares.ProxyMiddleware': 750,
