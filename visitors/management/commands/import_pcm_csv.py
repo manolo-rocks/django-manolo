@@ -1,11 +1,10 @@
 import csv
-import json
 from copy import copy
 from datetime import datetime
 
 from django.core.management import BaseCommand
 
-from scrapers.manolo_scraper.pipelines import process_item, save_item
+from scrapers.manolo_scraper.pipelines import save_item
 from scrapers.manolo_scraper.utils import get_dni, make_hash
 from visitors.models import Visitor
 
@@ -31,7 +30,6 @@ def save_items(input_file):
             fecha = datetime.strptime(fecha, '%d/%m/%Y')
             id_document, id_number = get_dni(row['Documento'])
 
-            print(row['Funcionario Visitado'])
             triad = [
                 i.strip() for i in row['Funcionario Visitado'].split('-')
             ]
