@@ -10,7 +10,7 @@ bpython==0.13.2
 django-bootstrap-themes==3.3.6
 django-bootstrap4
 django-model-utils==2.2
-djangorestframework==3.11.0
+djangorestframework==3.11.2
 django-registration-redux==2.8
 django-crispy-forms==1.9.1
 drf-yasg
