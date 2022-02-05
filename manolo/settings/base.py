@@ -17,10 +17,10 @@ DEBUG = env.bool("DJANGO_DEBUG", True)
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'manolo_dump',
-        'USER': 'carlosp420',
+        'NAME': 'manolo',
+        'USER': 'postgres',
         'PASSWORD': '',
-        'HOST': 'localhost',
+        'HOST': 'db',
         'PORT': 5432,
     }
 }
