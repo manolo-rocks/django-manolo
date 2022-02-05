@@ -1,28 +1,34 @@
 import csv
-import json
 from copy import copy
 from datetime import datetime
 
 from django.core.management import BaseCommand
 
-from scrapers.manolo_scraper.pipelines import process_item, save_item
+from scrapers.manolo_scraper.pipelines import save_item
 from scrapers.manolo_scraper.utils import get_dni, make_hash
 from visitors.models import Visitor
 
 
 class Command(BaseCommand):
-    help = "Save items from PCM downloaded as CSV. Update them if the are missing DNI"
+    help = "Save items downloaded as CSV. Update them if the are missing DNI"
 
     def add_arguments(self, parser):
-        parser.add_argument('-i', '--input', action='store')
+        parser.add_argument('-f', '--filename', action='store')
+        parser.add_argument(
+            '-i',
+            '--institution',
+            action='store',
+            choices=['pcm', 'minjus']
+        )
 
     def handle(self, *args, **options):
-        input_file = options['input']
-        save_items(input_file)
+        input_file = options['filename']
+        institution = options['institution']
+        save_items(input_file, institution)
 
 
-def save_items(input_file):
-    print(f"processing {input_file}")
+def save_items(input_file, institution):
+    print(f"processing {input_file} {institution}")
 
     with open(input_file) as csvfile:
         csv_reader = csv.DictReader(csvfile)
@@ -31,7 +37,6 @@ def save_items(input_file):
             fecha = datetime.strptime(fecha, '%d/%m/%Y')
             id_document, id_number = get_dni(row['Documento'])
 
-            print(row['Funcionario Visitado'])
             triad = [
                 i.strip() for i in row['Funcionario Visitado'].split('-')
             ]
@@ -42,7 +47,7 @@ def save_items(input_file):
             lugar = row['Lugar']
 
             item = {
-                'institution': 'pcm',
+                'institution': institution,
                 'date': fecha,
                 'full_name': row['Visitante'],
                 'entity': row['Institucion del Visitante'],

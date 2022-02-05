@@ -14,6 +14,7 @@ from ..items import ManoloItem
 from ..item_loaders import ManoloItemLoader
 from ..utils import make_hash, get_dni
 
+
 class ManoloBaseSpider(scrapy.Spider):
 
     def __init__(self, date_start=None, date_end=None, *args, **kwargs):
@@ -224,22 +225,25 @@ class GobSpider(ManoloBaseSpider):
             yield self.get_item(item, date_str)
 
     def get_item(self, item, date_str):
-        funcionario_triad = [i.strip() for i in item['funcionario'].split('-')]
+        triad = [i.strip() for i in item['funcionario'].split('-')]
+
         try:
-            host_name = funcionario_triad[0]
+            host_name = triad[0]
         except IndexError:
             host_name = ''
 
         try:
-            office = funcionario_triad[1]
+            office = " - ".join(triad[1:-1])
         except IndexError:
             office = ''
 
         try:
-            host_title = funcionario_triad[2]
+            host_title = triad[-1]
         except IndexError:
             host_title = ''
 
+        documento = item.get('documento', '') or ''
+        id_document, id_number = get_dni(documento)
         full_name = item.get('visitante', '') or ''
         entity = item.get('rz_empresa', '') or ''
         reason = item.get('motivo', '') or ''
@@ -259,6 +263,8 @@ class GobSpider(ManoloBaseSpider):
             host_title=host_title,
             time_start=time_start.strip(),
             time_end=time_end.strip(),
+            id_number=id_number,
+            id_document=id_document,
         )
         l = make_hash(l)
         return l

@@ -88,19 +88,20 @@ class PcmSpider(ManoloBaseSpider):
             yield self.get_item(item, date_str)
 
     def get_item(self, item, date_str):
-        funcionario_triad = [i.strip() for i in item['funcionario'].split('-')]
+        triad = [i.strip() for i in item['funcionario'].split('-')]
+
         try:
-            host_name = funcionario_triad[0]
+            host_name = triad[0]
         except IndexError:
             host_name = ''
 
         try:
-            office = funcionario_triad[1]
+            office = " - ".join(triad[1:-1])
         except IndexError:
             office = ''
 
         try:
-            host_title = funcionario_triad[2]
+            host_title = triad[-1]
         except IndexError:
             host_title = ''
 
