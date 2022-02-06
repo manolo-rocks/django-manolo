@@ -21,12 +21,17 @@ class Command(BaseCommand):
             choices=[
                 'pcm',
                 'minjus',
-                 # to update,
                 'minedu',
                 'mincetur',
                 'ambiente',
                 'mef',
                 'minagr',
+                # to update,
+                'minem',
+                'vivienda',
+                'min. mujer',
+                'produce',
+                'trabajo',
             ]
         )
 

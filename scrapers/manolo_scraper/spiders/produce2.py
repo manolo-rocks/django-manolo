@@ -9,7 +9,7 @@ from ..items import ManoloItem
 from ..utils import make_hash
 
 
-class ProduceSpider(ManoloBaseSpider):
+class ProduceSpider2(ManoloBaseSpider):
     name = 'produce2'
     allowed_domains = ['www.produce.gob.pe']
 
