@@ -18,7 +18,16 @@ class Command(BaseCommand):
             '-i',
             '--institution',
             action='store',
-            choices=['pcm', 'minjus']
+            choices=[
+                'pcm',
+                'minjus',
+                 # to update,
+                'minedu',
+                'mincetur',
+                'ambiente',
+                'mef',
+                'minagr',
+            ]
         )
 
     def handle(self, *args, **options):
