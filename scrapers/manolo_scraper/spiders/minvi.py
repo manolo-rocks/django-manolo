@@ -1,12 +1,9 @@
 # -*- coding: utf-8 -*-
-from scrapers.manolo_scraper.spiders.spiders import SireviSpider
+from scrapers.manolo_scraper.spiders.spiders import GobSpider
 
 
-class MinviSpider(SireviSpider):
+class MinviSpider(GobSpider):
     name = 'minvi'
-
-    allowed_domains = ['s01pweb001.vivienda.gob.pe']
-
-    base_url = "http://s01pweb001.vivienda.gob.pe/Visitas/controlVisitas/index.php"
-
     institution_name = 'vivienda'
+    institution_ruc = '20504743307'
+    start_url = f'https://visitas.servicios.gob.pe/consultas/index.php?ruc_enti={institution_ruc}'
