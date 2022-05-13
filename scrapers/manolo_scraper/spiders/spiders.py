@@ -250,6 +250,8 @@ class GobSpider(ManoloBaseSpider):
         except IndexError:
             host_name = ''
 
+        host_name = re.sub(r"\s+", " ", host_name)
+
         try:
             office = " - ".join(triad[1:-1])
         except IndexError:
@@ -266,7 +268,10 @@ class GobSpider(ManoloBaseSpider):
 
         documento = item.get('documento', '') or ''
         id_document, id_number = get_dni(documento)
+
         full_name = item.get('visitante', '') or ''
+        full_name = re.sub(r"\s+", " ", full_name)
+
         entity = item.get('rz_empresa', '') or ''
         reason = item.get('motivo', '') or ''
         meeting_place = item.get('no_lugar_r', '') or ''
