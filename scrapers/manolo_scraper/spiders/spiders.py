@@ -154,7 +154,22 @@ class GobSpider(ManoloBaseSpider):
     allowed_domains = ['visitas.servicios.gob.pe']
     base_url = 'https://visitas.servicios.gob.pe/consultas/dataBusqueda.php'
 
-    def initial_request(self, date):
+    def __init__(self, date_start=None, date_end=None, *args, **kwargs):
+        super(GobSpider, self).__init__(*args, **kwargs)
+
+        if date_start is None:
+            raise exceptions.UsageError("date_start must not be none")
+
+        today = datetime.date.today()
+        date_start_obj = datetime.datetime.strptime(date_start, '%Y-%m-%d')
+        self.date_start = date_start_obj.strftime('%d/%m/%Y')
+        self.date_end = today.strftime('%Y-%m-%d')
+
+    def start_requests(self):
+        print(f"SCRAPING: {self.date_start}")
+        yield self.initial_request(self.date_start)
+
+    def initial_request(self, date_start: str):
         """
         Bypass google recaptcha.
         The government page does a request to google's recaptcha when user clicks
@@ -172,6 +187,8 @@ class GobSpider(ManoloBaseSpider):
                 'fecha': '27/08/2021+-+27/08/2021',
                 'token': 'ble',
                 }
+
+        :param date_start: starting date to scrape. Ending date is today's date
         """
         cwd = os.path.dirname(os.path.abspath(__file__))
         chromedriver_path = os.path.join(cwd, 'chromedriver')
@@ -198,19 +215,20 @@ class GobSpider(ManoloBaseSpider):
             "Referer": "https://visitas.servicios.gob.pe/consultas/index.php?ruc_enti=20168999926",
             "Accept-Language": "en-US,en;q=0.5",
         }
-        date_str = date.strftime("%d/%m/%Y")
+        ending_date_str = datetime.date.today().strftime('%d/%m/%Y')
         data = {
             'busqueda': self.institution_ruc,
-            'fecha': f'{date_str} - {date_str}',
+            'fecha': f'{date_start} - {ending_date_str}',
             'token': token,
         }
+        print(data)
         print(urllib.parse.urlencode(data))
         request = scrapy.Request(
             url=self.base_url,
             body=urllib.parse.urlencode(data),
             method='POST',
             headers=headers,
-            meta={'date': date_str},
+            meta={'date': date_start},
             callback=self.parse,
         )
         driver.close()
@@ -222,9 +240,9 @@ class GobSpider(ManoloBaseSpider):
         visitors = response.json().get('data', [])
 
         for item in visitors:
-            yield self.get_item(item, date_str)
+            yield self.get_item(item)
 
-    def get_item(self, item, date_str):
+    def get_item(self, item):
         triad = [i.strip() for i in item['funcionario'].split('-')]
 
         try:
@@ -241,6 +259,10 @@ class GobSpider(ManoloBaseSpider):
             host_title = triad[-1]
         except IndexError:
             host_title = ''
+
+        date_str = item.get('fecha', '') or ''
+        if date_str:
+            date_str = datetime.datetime.strptime(date_str, '%d/%m/%Y').strftime('%Y-%m-%d')
 
         documento = item.get('documento', '') or ''
         id_document, id_number = get_dni(documento)
