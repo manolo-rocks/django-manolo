@@ -49,22 +49,22 @@ def save_items(input_file, institution):
         for row in csv_reader:
             fecha = row['Fecha']
             fecha = datetime.strptime(fecha, '%d/%m/%Y')
-            id_document, id_number = get_dni(row['Documento'])
+            id_document, id_number = get_dni(row['Documento del visitante'])
 
             triad = [
-                i.strip() for i in row['Funcionario Visitado'].split('-')
+                i.strip() for i in row['Funcionario visitado'].split('-')
             ]
             host_name = triad[0]
             office = " - ".join(triad[1:-1])
             host_title = triad[-1]
 
-            lugar = row['Lugar']
+            lugar = row['Lugar específico']
 
             item = {
                 'institution': institution,
                 'date': fecha,
                 'full_name': row['Visitante'],
-                'entity': row['Institucion del Visitante'],
+                'entity': row['Entidad del visitante'],
                 'reason': row['Motivo'],
                 'host_name': host_name,
                 "time_start": row['Hora Ingreso'],
