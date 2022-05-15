@@ -8,7 +8,7 @@ from ..utils import make_hash, get_dni
 
 
 class TrabajoSpiderOld(ManoloBaseSpider):
-    name = 'trabajo'
+    name = 'trabajo_old'
     allowed_domains = ['visitas.trabajo.gob.pe']
     NUMBER_OF_PAGES_PER_PAGE = 10
     base_url = "http://visitas.trabajo.gob.pe/portalvisitas/lista.htm"

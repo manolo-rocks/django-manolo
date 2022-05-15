@@ -11,8 +11,8 @@ from ..item_loaders import ManoloItemLoader
 from ..utils import get_lua_script, make_hash
 
 
-class MTCSpider(ManoloBaseSpider):
-    name = 'mtc'
+class MTCSpiderOld(ManoloBaseSpider):
+    name = 'mtc_old'
     institution_name = 'mtc'
     base_url = 'http://scrv-reporte.mtc.gob.pe/'
     start_url = 'http://scrv-reporte.mtc.gob.pe/'
