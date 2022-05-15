@@ -1,6 +1,6 @@
 pandas
 openpyxl
-Django==3.1.1
+Django==3.1.14
 django-environ==0.4.5
 pyprind==2.9.1
 psycopg2-binary==2.8.6
