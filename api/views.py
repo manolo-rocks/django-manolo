@@ -17,7 +17,7 @@ from rest_framework.pagination import PageNumberPagination
 from rest_framework import permissions
 from rest_framework_api_key.permissions import HasAPIKey
 
-from scrapers.manolo_scraper.pipelines import process_item
+from scrapers.manolo_scraper.pipelines import process_item, process_items
 from .forms import ApiForm
 from .serializers import ManoloSerializer
 from .api_responses import JSONResponse
@@ -158,5 +158,20 @@ def save_file(request):
     for line in data:
         item = json.loads(line)
         process_item(item)
+
+    return HttpResponse('ok')
+
+
+@api_view(['POST'])
+@permission_classes((HasAPIKey, ))
+def save_json(request):
+    """Receive a json file of scraped data to be stored in the database"""
+    name = request.FILES["file"].name.replace(".json", "")
+    binary_data = request.FILES['file'].read()
+    data = binary_data.decode().splitlines()
+
+    for line in data:
+        items = json.loads(line)
+        process_items(items, institution=name)
 
     return HttpResponse('ok')

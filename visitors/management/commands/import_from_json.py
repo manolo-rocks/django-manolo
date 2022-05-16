@@ -1,12 +1,8 @@
 import json
-from copy import copy
-from datetime import datetime
 
 from django.core.management import BaseCommand
 
-from scrapers.manolo_scraper.pipelines import save_item
-from scrapers.manolo_scraper.utils import get_dni, make_hash
-from visitors.models import Visitor
+from scrapers.manolo_scraper.pipelines import process_row
 
 
 class Command(BaseCommand):
@@ -42,33 +38,4 @@ def save_items(input_file, institution):
     with open(input_file) as handle:
         data = json.loads(handle.read())
         for row in data:
-            fecha = row['fecha']
-            fecha = datetime.strptime(fecha, '%d/%m/%Y').date()
-            id_document, id_number = get_dni(row['documento'])
-
-            triad = [
-                i.strip() for i in row['funcionario'].split('-')
-            ]
-            host_name = triad[0]
-            office = " - ".join(triad[1:-1])
-            host_title = triad[-1]
-
-            lugar = row['no_lugar_r']
-
-            item = {
-                'institution': institution,
-                'date': fecha,
-                'full_name': row['visitante'],
-                'entity': row['rz_empresa'],
-                'reason': row['motivo'],
-                'host_name': host_name,
-                "time_start": row['horaIn'],
-                "time_end": row['horaOut'],
-                "id_number": id_number,
-                "id_document": id_document,
-                "office": office,
-                "host_title": host_title,
-                "meeting_place": lugar,
-            }
-            item = make_hash(item)
-            save_item(item)
+            process_row(row, institution)
