@@ -4,9 +4,8 @@
 #
 # Don't forget to add your pipeline to the ITEM_PIPELINES setting
 # See: http://doc.scrapy.org/en/latest/topics/item-pipeline.html
-import datetime
-import re
 from datetime import datetime
+import re
 
 from pytz import timezone
 from scrapy.exceptions import DropItem
@@ -64,10 +63,10 @@ def process_item(item):
 
     item['date'] = item['date'].replace(' 00:00:00', '')
     try:
-        item['date'] = datetime.datetime.strptime(item['date'], '%d/%m/%Y')
+        item['date'] = datetime.strptime(item['date'], '%d/%m/%Y')
     except ValueError:
         try:
-            item['date'] = datetime.datetime.strptime(item['date'], '%Y-%m-%d')
+            item['date'] = datetime.strptime(item['date'], '%Y-%m-%d')
         except ValueError as e:
             print('***', e)
 
@@ -120,8 +119,8 @@ def save_item(item):
         raise Exception(f"Could not search in the database: {e}")
 
     if not visitor_queryset.exists():
-        item['created'] = datetime.datetime.now(lima)
-        item['modified'] = datetime.datetime.now(lima)
+        item['created'] = datetime.now(lima)
+        item['modified'] = datetime.now(lima)
         try:
             Visitor.objects.create(**item)
             print('saving to db item')
