@@ -15,9 +15,11 @@ from rest_framework.decorators import api_view, authentication_classes, \
 from rest_framework.permissions import AllowAny, IsAdminUser
 from rest_framework.pagination import PageNumberPagination
 from rest_framework import permissions
+from rest_framework_api_key.models import APIKey
 from rest_framework_api_key.permissions import HasAPIKey
 
 from scrapers.manolo_scraper.pipelines import process_item, process_items
+from visitors.models import Visitor
 from .forms import ApiForm
 from .serializers import ManoloSerializer
 from .api_responses import JSONResponse
@@ -152,6 +154,9 @@ def ocr_image(file_content):
 @permission_classes((HasAPIKey, ))
 def save_file(request):
     """Receive a jsonlines file of scraped data to be stored in the database"""
+    if is_key_valid(request) is False:
+        return HttpResponse("bad key")
+
     binary_data = request.FILES['file'].read()
     data = binary_data.decode().splitlines()
 
@@ -166,6 +171,9 @@ def save_file(request):
 @permission_classes((HasAPIKey, ))
 def save_json(request):
     """Receive a json file of scraped data to be stored in the database"""
+    if is_key_valid(request) is False:
+        return HttpResponse("bad key")
+
     name = request.FILES["file"].name.replace(".json", "")
     binary_data = request.FILES['file'].read()
     data = binary_data.decode().splitlines()
@@ -175,3 +183,26 @@ def save_json(request):
         process_items(items, institution=name)
 
     return HttpResponse('ok')
+
+
+@permission_classes((HasAPIKey,))
+def count_visits(request, dni_number):
+    if is_key_valid(request) is False:
+        return HttpResponse("bad key")
+
+    count = Visitor.objects.filter(id_number=dni_number).count()
+    return HttpResponse(count)
+
+
+def is_key_valid(request):
+    try:
+        key = request.META["HTTP_AUTHORIZATION"].split()[1]
+    except (KeyError, IndexError):
+        return False
+
+    try:
+        APIKey.objects.get_from_key(key)
+    except APIKey.DoesNotExist:
+        return False
+
+    return True

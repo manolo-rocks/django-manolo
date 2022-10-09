@@ -5,7 +5,37 @@ import pkgutil
 from unicodedata import normalize
 
 
+def update_hash_from_visitor(visitor):
+    sha1_hash = make_hash_from_visitor(visitor)
+    visitor.sha1 = sha1_hash
+    visitor.save()
+
+
+def make_hash_from_visitor(visitor):
+    item = {
+        "institution": visitor.institution,
+        "full_name": visitor.full_name,
+        "id_document": visitor.id_document,
+        "id_number": visitor.id_number,
+        "time_start": visitor.time_start,
+        "date": visitor.date.strftime("%Y-%m-%d")
+    }
+    item = make_hash(item)
+    return item["sha1"]
+
+
 def make_hash(item):
+    """Create a sha1 hash and add it to item
+
+    It requires the following keys:
+
+    institution
+    full_name
+    id_document
+    id_number
+    time_start
+    date: %d/%m/%Y
+    """
     hash_input = ''
     hash_input += str(item['institution'])
 
@@ -21,7 +51,7 @@ def make_hash(item):
     hash_input += str(item['date'])
 
     if 'time_start' in item:
-        # only use time and am or pm, do not include date as this is how whe
+        # only use time and am or pm, do not include date as this is how we
         # have done it in the past to compute the hash
         time_start_items = item['time_start'].split(' ')
         if len(time_start_items) == 3:
