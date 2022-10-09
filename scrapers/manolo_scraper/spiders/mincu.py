@@ -1,12 +1,9 @@
 # -*- coding: utf-8 -*-
-from scrapers.manolo_scraper.spiders.spiders import SireviSpider
+from scrapers.manolo_scraper.spiders.spiders import GobSpider
 
 
-class MincuSpider(SireviSpider):
+class MincuSpider(GobSpider):
     name = 'mincu'
-
-    allowed_domains = ['visitas.cultura.gob.pe']
-
-    base_url = 'https://visitas.cultura.gob.pe'
-
     institution_name = 'mincu'
+    institution_ruc = '20537630222'
+    start_url = f'https://visitas.servicios.gob.pe/consultas/index.php?ruc_enti={institution_ruc}'
