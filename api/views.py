@@ -2,6 +2,7 @@
 import json
 import os
 import subprocess
+import time
 from uuid import uuid4
 
 from django.http.request import QueryDict
@@ -198,11 +199,13 @@ def is_key_valid(request):
     try:
         key = request.META["HTTP_AUTHORIZATION"].split()[1]
     except (KeyError, IndexError):
+        time.sleep(30)
         return False
 
     try:
         APIKey.objects.get_from_key(key)
     except APIKey.DoesNotExist:
+        time.sleep(30)
         return False
 
     return True
