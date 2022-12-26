@@ -19,7 +19,7 @@ drf-yasg
 docutils==0.12
 python-slugify==5.0.2
 six==1.9
-wheel==0.24.0
+wheel==0.38.1
 tqdm==3.7.1
 argon2-cffi==20.1.0  # https://github.com/hynek/argon2_cffi
 Scrapy==2.6.1
