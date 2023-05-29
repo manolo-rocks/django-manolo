@@ -25,6 +25,7 @@ from .forms import ApiForm
 from .serializers import ManoloSerializer
 from .api_responses import JSONResponse
 from visitors.views import do_pagination, data_as_csv, do_sorting
+from .tasks import process_json_request, log_task_error
 
 schema_view = get_schema_view(
     openapi.Info(
@@ -179,9 +180,8 @@ def save_json(request):
     binary_data = request.FILES['file'].read()
     data = binary_data.decode().splitlines()
 
-    for line in data:
-        items = json.loads(line)
-        process_items(items, institution=name)
+    task = process_json_request.s(data, institution_name=name)
+    task.apply_async(link_error=log_task_error.s(name))
 
     return HttpResponse('ok')
 
