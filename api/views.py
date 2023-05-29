@@ -25,7 +25,7 @@ from .forms import ApiForm
 from .serializers import ManoloSerializer
 from .api_responses import JSONResponse
 from visitors.views import do_pagination, data_as_csv, do_sorting
-from .tasks import process_json_request
+from .tasks import process_json_request, log_task_error
 
 schema_view = get_schema_view(
     openapi.Info(
