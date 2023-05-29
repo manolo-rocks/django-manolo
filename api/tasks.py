@@ -28,10 +28,10 @@ def log_task_error(
     institution_name: str
 ) -> None:
     try:
-        subject = f"Uploading {institution_name} failed"
+        subject = f"Manolo: Uploading {institution_name} failed"
         message = f"{request}. {exc}. {traceback}"
         from_email = settings.EMAIL_HOST_USER
         to_emails = ["aniversarioperu1@gmail.com"]
         send_mail(subject, message, from_email, to_emails)
     except SMTPException:
-        log.exception(f"Failed to notify log_task_error for {institution_name}.")
+        log.exception(f"Manolo: Failed to notify log_task_error for {institution_name}.")
