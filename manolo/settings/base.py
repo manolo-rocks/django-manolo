@@ -1,3 +1,5 @@
+import os
+
 import environ
 from pathlib import Path
 
@@ -292,3 +294,10 @@ CELERY_QUEUES = (
 CELERY_DEFAULT_QUEUE = 'default'
 CELERY_DEFAULT_EXCHANGE = 'default'
 CELERY_DEFAULT_ROUTING_KEY = 'default'
+
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = '587'
+EMAIL_HOST_USER = 'aniversarioperu1@gmail.com'
+EMAIL_HOST_PASSWORD = os.getenv('EMAIL_HOST_PASSWORD')
+EMAIL_USE_TLS = True
