@@ -68,7 +68,7 @@ def run_statistics():
     print("Deleting data in Statistics")
     Statistic.objects.all().delete()
 
-    stats = store_total_visitor_count(data_dict)
+    store_total_visitor_count(data_dict)
     stats = Statistic.objects.last()
     store_updated_institutions(stats)
 
