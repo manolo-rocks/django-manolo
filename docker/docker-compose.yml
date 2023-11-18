@@ -9,6 +9,7 @@ services:
       context: ../
       dockerfile: docker/postgres/Dockerfile
     image: manolo/manolo_db
+    shm_size: '1gb'
     volumes:
       - db_data:/srv/postgresql/data/
     expose:
