@@ -1,6 +1,6 @@
 -r testing.txt
 
-Werkzeug==1.0.1
+Werkzeug==2.3.8
 django-extensions==3.0.9
 Sphinx==1.2.3
 django-debug-toolbar
