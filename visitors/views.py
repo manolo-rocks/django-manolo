@@ -112,9 +112,14 @@ def search(request):
         # do dni search
         all_items = do_dni_search(query)
     else:
-        all_items = Visitor.objects.filter(
-            full_search=SearchQuery(query)
-        )
+        if len(query.split()) == 1:
+            all_items = Visitor.objects.filter(
+                full_search=SearchQuery(query)
+            )[0:2000]
+        else:
+            all_items = Visitor.objects.filter(
+                full_search=SearchQuery(query)
+            )
 
     # sort queryset
     all_items = do_sorting(request, all_items)
