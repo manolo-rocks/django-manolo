@@ -107,12 +107,16 @@ def search(request):
     user_profile = get_user_profile(request)
     query = request.GET.get('q') or ''
     query = query.strip()
+    if len(query.split()) == 1:
+        single_word_query = True
+    else:
+        single_word_query = False
 
     if query_is_dni(query):
         # do dni search
         all_items = do_dni_search(query)
     else:
-        if len(query.split()) == 1:
+        if single_word_query:
             all_items = Visitor.objects.filter(
                 full_search=SearchQuery(query)
             )[0:2000]
@@ -122,7 +126,8 @@ def search(request):
             )
 
     # sort queryset
-    all_items = do_sorting(request, all_items)
+    if not single_word_query:
+        all_items = do_sorting(request, all_items)
     # paginate queryset
     paginator, page = do_pagination(request, all_items)
 
