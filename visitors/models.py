@@ -173,6 +173,7 @@ class Developer(models.Model):
     homepage = models.URLField(null=True, blank=True, max_length=200)
     avatar_image_name = models.CharField(null=True, blank=True, max_length=200)
     rank = models.IntegerField()
+    project_leader = models.BooleanField(default=False)
 
     def __str__(self):
         return self.name

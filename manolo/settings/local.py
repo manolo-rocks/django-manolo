@@ -22,6 +22,8 @@ EMAIL_BACKEND = env(
 )
 
 DATABASES['default']['HOST'] = 'localhost'
+DATABASES['default']['USER'] = 'carlosp420'
+DATABASES['default']['NAME'] = 'manolo_dump'
 
 INSTALLED_APPS += ['debug_toolbar']  # noqa F405
 

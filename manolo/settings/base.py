@@ -151,6 +151,7 @@ THIRD_PARTY_APPS = [
     'registration',
     'rest_framework',
     'rest_framework_api_key',
+    'rest_framework_swagger',
     'drf_yasg',
 ]
 DATA_UPLOAD_MAX_MEMORY_SIZE = 5242880
@@ -251,6 +252,7 @@ LOGGING = {
 }
 
 REST_FRAMEWORK = {
+    'DEFAULT_SCHEMA_CLASS': 'rest_framework.schemas.coreapi.AutoSchema',
     # Use Django's standard `django.contrib.auth` permissions,
     # or allow read-only access for unauthenticated users.
     'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
@@ -272,9 +274,6 @@ REST_FRAMEWORK = {
     'UNICODE_JSON': True,
 }
 
-SWAGGER_SETTINGS = {
-    'doc_expansion': 'list',
-}
 CRISPY_TEMPLATE_PACK = 'bootstrap3'
 
 # Django registration redux
@@ -300,3 +299,5 @@ EMAIL_PORT = '587'
 EMAIL_HOST_USER = 'aniversarioperu1@gmail.com'
 EMAIL_HOST_PASSWORD = os.getenv('EMAIL_HOST_PASSWORD')
 EMAIL_USE_TLS = True
+
+DEFAULT_AUTO_FIELD = 'django.db.models.AutoField'

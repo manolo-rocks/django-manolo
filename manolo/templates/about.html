@@ -23,15 +23,60 @@
 
   <div class="row">
     <div class="col-sm-10 col-md-7 col-md-offset-1">
-      <h2>Programadores</h2>
+      <h2>Líder del proyecto</h2>
     </div>
   </div><!-- row -->
+
+  <div class="row ">
+    <div class="col-xs-11 col-sm-6 col-md-3 col-md-offset-1 col-lg-3">
+
+      <div class="panel panel-default">
+        <div class="panel-body">
+          {% with project_leader as developer %}
+          <div class="media">
+            <div class="media-left media-middle">
+              {% with 'img/'|add:developer.avatar_image_name as imagePath %}
+                <img
+                    class="media-object img-circle"
+                    src="{% static imagePath %}"
+                    alt="{{ developer.name }}"
+                    width="90px"
+                />
+              {% endwith %}
+            </div>
+            <div class="media-body">
+              <h4 class="media-heading">{{ developer.name }}</h4>
+              <small> {{ developer.title }}</small>
+              <p>
+                <br />
+                <a href="https://github.com/{{ developer.github }}/"><i class="fa fa-github-alt fa-lg fa-fw"></i></a>
+                <a href="https://twitter.com/{{ developer.twitter }}"> @{{ developer.twitter }} </a>
+                {% if developer.homepage %}
+                  <a href="{{ developer.homepage }}"><i class="fa fa-external-link fa-lg fa-fw"></i></a>
+                {% endif %}
+              </p>
+
+            </div>
+          {% endwith %}
+        </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-xs-11 col-sm-6 col-md-3 col-md-offset-1 col-lg-3">
+      <h2>Colaboradores</h2>
+    </div>
+  </div>
 
   <div class="row ">
     {% for developer in developers %}
     <div class="col-xs-11 col-sm-6 col-md-3 col-md-offset-1 col-lg-3">
       <div class="panel panel-default">
         <div class="panel-body">
+
 
           <div class="media">
             <div class="media-left media-middle">
