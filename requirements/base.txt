@@ -21,3 +21,4 @@ python-slugify==8.0.4
 requests
 scrapy
 tqdm==4.66.2
+twitterbot
