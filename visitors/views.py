@@ -61,7 +61,8 @@ def index(request):
 def about(request):
     developers = Developer.objects.all().order_by('rank')
     context = get_user_profile(request)
-    context['developers'] = developers
+    context['developers'] = developers.exclude(project_leader=True)
+    context['project_leader'] = Developer.objects.get(project_leader=True)
     return render(
         request,
         "about.html",

@@ -2,7 +2,6 @@
 # The Paginator class has lines from the repository "Amy".
 # Copyright (c) 2014-2015 Software Carpentry and contributors
 import base64
-from datetime import date
 import hashlib
 from typing import Union
 

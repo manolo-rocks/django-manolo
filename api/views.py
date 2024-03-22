@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 import json
 import os
 import subprocess
@@ -8,18 +7,18 @@ from uuid import uuid4
 from django.http.request import QueryDict
 from django.shortcuts import HttpResponse
 from django.views.decorators.csrf import csrf_exempt
-from drf_yasg import openapi
-from drf_yasg.views import get_schema_view
+from rest_framework import permissions
 from rest_framework.authentication import BasicAuthentication
 from rest_framework.decorators import api_view, authentication_classes, \
     permission_classes
 from rest_framework.permissions import AllowAny, IsAdminUser
 from rest_framework.pagination import PageNumberPagination
-from rest_framework import permissions
 from rest_framework_api_key.models import APIKey
 from rest_framework_api_key.permissions import HasAPIKey
+from drf_yasg import openapi
+from drf_yasg.views import get_schema_view
 
-from scrapers.manolo_scraper.pipelines import process_item, process_items
+from scrapers.manolo_scraper.pipelines import process_item
 from visitors.models import Visitor
 from .forms import ApiForm
 from .serializers import ManoloSerializer
@@ -27,15 +26,16 @@ from .api_responses import JSONResponse
 from visitors.views import do_pagination, data_as_csv, do_sorting
 from .tasks import process_json_request, log_task_error
 
+
 schema_view = get_schema_view(
     openapi.Info(
         title="Manolo API",
-        default_version='v1',
         description='Documentación del API de Manolo.rocks',
-        contact=openapi.Contact(email='aniversarioperu1@gmail.com'),
+        default_version='v1',
+        contact=openapi.Contact(email='mycalesis@gmail.com'),
     ),
     public=True,
-    permission_classes=(permissions.AllowAny,),
+    permission_classes=[permissions.AllowAny],
 )
 
 
