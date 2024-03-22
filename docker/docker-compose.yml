@@ -38,7 +38,7 @@ services:
       --log-level debug
       --error-logfile=-
       --preload
-      -b 0.0.0.0:8000 manolo.wsgi
+      -b 0.0.0.0:8000 manolo.asgi
     volumes:
       - app_data:/data
       - /logs
