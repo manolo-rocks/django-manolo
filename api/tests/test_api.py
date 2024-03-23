@@ -15,7 +15,10 @@ class TestAPI(TestCase):
             m = Visitor(
                 full_name="Romulo", 
                 id=i, 
-                date=datetime.date(2015, 1, 1))
+                date=datetime.date(2015, 1, 1),
+                created=datetime.datetime.now(tz=datetime.timezone.utc),
+                modified=datetime.datetime.now(tz=datetime.timezone.utc),
+            )
             data.append(m)
         Visitor.objects.bulk_create(data)
         # another query to update full_search explicitly since

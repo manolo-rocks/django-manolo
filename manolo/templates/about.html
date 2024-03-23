@@ -30,6 +30,7 @@
   <div class="row ">
     <div class="col-xs-11 col-sm-6 col-md-3 col-md-offset-1 col-lg-3">
 
+    {% if project_leader %}
       <div class="panel panel-default">
         <div class="panel-body">
           {% with project_leader as developer %}
@@ -61,6 +62,7 @@
         </div>
         </div>
       </div>
+    {% endif %}
 
     </div>
   </div>
