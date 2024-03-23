@@ -1,7 +1,7 @@
 Django-manolo
 =============
 
-|Build Status|
+![Build Status](https://github.com/manolo-rocks/django-manolo/actions/workflows/django.yml/badge.svg)
 
 Manolo, buscador de lobistas
 ============================
@@ -99,5 +99,3 @@ Releases
 
 * 2018-07-22. Changed subscription to credit based
 
-.. |Build Status| image:: https://github.com/manolo-rocks/django-manolo/actions/workflows/django.yml/badge.svg
-   :target: https://github.com/manolo-rocks/django-manolo/actions/workflows/django.yml
