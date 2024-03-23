@@ -25,6 +25,19 @@ DATABASES['default']['HOST'] = 'localhost'
 DATABASES['default']['USER'] = 'carlosp420'
 DATABASES['default']['NAME'] = 'manolo_dump'
 
+
+if os.environ.get('GITHUB_WORKFLOW'):
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.postgresql',
+            'NAME': 'manolo',
+            'USER': 'postgres',
+            'PASSWORD': 'postgres',
+            'HOST': '127.0.0.1',
+            'PORT': '5432',
+        }
+    }
+
 INSTALLED_APPS += ['debug_toolbar']  # noqa F405
 
 # django-debug-toolbar

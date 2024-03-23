@@ -1,7 +1,7 @@
 Django-manolo
 =============
 
-|Pypi index| |Build Status| |Dependencies status| |Cover alls|
+|Build Status|
 
 Manolo, buscador de lobistas
 ============================
@@ -97,13 +97,7 @@ Create a `.env` file locally to keep all private credentials protected:
 Releases
 ========
 
-* 2018-07-22. Changed suscription to credit based
+* 2018-07-22. Changed subscription to credit based
 
-.. |Pypi index| image:: https://badge.fury.io/py/django-manolo.svg
-   :target: https://badge.fury.io/py/django-manolo
-.. |Build Status| image:: https://travis-ci.org/manolo-rocks/django-manolo.png?branch=master
-   :target: https://travis-ci.org/manolo-rocks/django-manolo
-.. |Cover alls| image:: https://coveralls.io/repos/manolo-rocks/django-manolo/badge.svg?branch=master&service=github
-   :target: https://coveralls.io/github/manolo-rocks/django-manolo?branch=master
-.. |Dependencies status| image:: https://gemnasium.com/badges/github.com/manolo-rocks/django-manolo.svg
-   :target: https://gemnasium.com/github.com/manolo-rocks/django-manolo
+.. |Build Status| image:: https://github.com/manolo-rocks/django-manolo/actions/workflows/django.yml/badge.svg
+   :target: https://github.com/manolo-rocks/django-manolo/actions/workflows/django.yml
