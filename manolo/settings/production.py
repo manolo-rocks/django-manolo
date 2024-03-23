@@ -7,7 +7,7 @@ os.environ["DJANGO_ALLOW_ASYNC_UNSAFE"] = "true"
 MEDIA_ROOT = "/data/media/"
 STATIC_ROOT = "/data/static/"
 
-DEBUG = True
+DEBUG = False
 
 SECRET_KEY = env("DJANGO_SECRET_KEY")
 
