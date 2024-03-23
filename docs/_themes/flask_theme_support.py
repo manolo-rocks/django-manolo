@@ -10,9 +10,9 @@ class FlaskyStyle(Style):
 
     styles = {
         # No corresponding class for the following:
-        #Text:                     "", # class:  ''
+        # Text:                     "", # class:  ''
         Whitespace:                "underline #f8f8f8",      # class: 'w'
-        Error:                     "#a40000 border:#ef2929", # class: 'err'
+        Error:                     "#a40000 border:#ef2929",  # class: 'err'
         Other:                     "#000000",                # class 'x'
 
         Comment:                   "italic #8f5902", # class: 'c'

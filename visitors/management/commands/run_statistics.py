@@ -58,8 +58,8 @@ def run_statistics():
                 full_name=i[0],
                 institution=institution[cuenta][0],
             ).values_list("reason").annotate(the_count=Count("reason"))
-            for l in reason:
-                dic_3 = {"name": l[0], "size": l[1]}
+            for reason_item in reason:
+                dic_3 = {"name": reason_item[0], "size": reason_item[1]}
                 nombre[0]['children'][cuenta]['children'].append(dic_3)
             cuenta += 1
     print("Deleting data in Statistics")

@@ -1,11 +1,7 @@
-import csv
-from copy import copy
-from datetime import datetime, date, timedelta
+from datetime import date, timedelta
 
 from django.core.management import BaseCommand
 
-from scrapers.manolo_scraper.pipelines import save_item
-from scrapers.manolo_scraper.utils import get_dni, make_hash
 from visitors.models import Visitor
 
 

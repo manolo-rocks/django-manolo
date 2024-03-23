@@ -13,8 +13,8 @@ class TestAPI(TestCase):
         data = []
         for i in range(500):
             m = Visitor(
-                full_name="Romulo", 
-                id=i, 
+                full_name="Romulo",
+                id=i,
                 date=datetime.date(2015, 1, 1),
                 created=datetime.datetime.now(tz=datetime.timezone.utc),
                 modified=datetime.datetime.now(tz=datetime.timezone.utc),

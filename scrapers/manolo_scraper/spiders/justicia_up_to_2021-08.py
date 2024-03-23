@@ -1,6 +1,6 @@
 import logging
 
-from scrapy.http import FormRequest, Request
+from scrapy.http import FormRequest
 
 from scrapers.manolo_scraper.spiders.spiders import ManoloBaseSpider
 from ..items import ManoloItem

@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 import datetime
 import logging
 import os
@@ -236,7 +235,6 @@ class GobSpider(ManoloBaseSpider):
 
     def parse(self, response, **kwargs):
         print(response.json())
-        date_str = response.meta['date']
         visitors = response.json().get('data', [])
 
         for item in visitors:
