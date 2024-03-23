@@ -7,9 +7,23 @@ on:
     branches: [ "master" ]
 
 jobs:
-  build:
-
+  container-job:
     runs-on: ubuntu-20.04
+
+    container:
+      image: python:3.10-bullseye
+
+    services:
+      postgres:
+        image: postgres:13
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_DB: manolo
+        ports:
+        - 5432:5432
+        options: --health-cmd pg_isready --health-interval 10s --health-timeout 5s --health-retries 5
+
     strategy:
       max-parallel: 4
       matrix:
