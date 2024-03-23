@@ -133,13 +133,12 @@ ROOT_URLCONF = 'manolo.urls'
 WSGI_APPLICATION = 'manolo.wsgi.application'
 
 DJANGO_APPS = [
+    'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
-    'django.contrib.sites',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'django.contrib.admin',
     'django.contrib.humanize',
     'django_extensions',
 ]
@@ -285,10 +284,6 @@ LOGIN_REDIRECT_URL = '/'
 BROKER_URL = 'redis://redis:6379/0'
 CELERY_RESULT_BACKEND = 'redis://redis:6379/0'
 
-default_exchange = Exchange('default', type='direct')
-CELERY_QUEUES = (
-    Queue('default', default_exchange, routing_key='default'),
-)
 CELERY_DEFAULT_QUEUE = 'default'
 CELERY_DEFAULT_EXCHANGE = 'default'
 CELERY_DEFAULT_ROUTING_KEY = 'default'
@@ -302,3 +297,6 @@ EMAIL_HOST_PASSWORD = os.getenv('EMAIL_HOST_PASSWORD')
 EMAIL_USE_TLS = True
 
 DEFAULT_AUTO_FIELD = 'django.db.models.AutoField'
+
+os.environ["DJANGO_ALLOW_ASYNC_UNSAFE"] = "true"
+ASYNC_MODE = True

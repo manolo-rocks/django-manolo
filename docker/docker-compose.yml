@@ -34,7 +34,7 @@ services:
       --max-requests 200
       --max-requests-jitter 50
       --graceful-timeout 30
-      --worker-class gevent
+      --worker-class=manolo.gunicorn_worker.UvicornWorkerLifeSpanOff
       --log-level debug
       --error-logfile=-
       --preload
@@ -84,7 +84,7 @@ services:
       - app_data:/data
   redis:
     restart: always
-    image: redis
+    image: redis:7.0.10
     command: redis-server --appendonly yes
     volumes:
       - app_data:/data
