@@ -1,14 +1,14 @@
-from __future__ import absolute_import
-
-import os
-
 from celery import Celery
-
-os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'manolo.settings.production')
-
 from django.conf import settings  # noqa
+from kombu import Exchange, Queue
 
-app = Celery('manolo_tasks')
+default_exchange = Exchange('default', type='direct')
 
-app.config_from_object('django.conf:settings')
+app = Celery('manolo_tasks', broker=settings.BROKER_URL, backend=settings.CELERY_RESULT_BACKEND)
 app.autodiscover_tasks(lambda: settings.INSTALLED_APPS)
+app.conf.task_track_started = True
+app.conf.task_ignore_result = False
+app.conf.task_queues = (
+    Queue('default', default_exchange, routing_key='default'),
+)
+app.config_from_object('django.conf:settings')

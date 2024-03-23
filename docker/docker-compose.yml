@@ -19,7 +19,6 @@ services:
     command: postgres
       -c max_connections=1000
       -c shared_preload_libraries='pg_stat_statements'
-      -c track_activity_query_size=2048
       -c pg_stat_statements.track=all
   app:
     restart: always
@@ -35,11 +34,11 @@ services:
       --max-requests 200
       --max-requests-jitter 50
       --graceful-timeout 30
-      --worker-class gevent
+      --worker-class=manolo.gunicorn_worker.UvicornWorkerLifeSpanOff
       --log-level debug
       --error-logfile=-
       --preload
-      -b 0.0.0.0:8000 manolo.wsgi
+      -b 0.0.0.0:8000 manolo.asgi
     volumes:
       - app_data:/data
       - /logs
@@ -85,7 +84,7 @@ services:
       - app_data:/data
   redis:
     restart: always
-    image: redis
+    image: redis:7.0.10
     command: redis-server --appendonly yes
     volumes:
       - app_data:/data

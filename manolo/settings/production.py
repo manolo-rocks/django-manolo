@@ -14,6 +14,7 @@ SECRET_KEY = env("DJANGO_SECRET_KEY")
 ALLOWED_HOSTS = [
     '.manolo.rocks',  # Allow domain and subdomains
     '.manolo.rocks.',  # Also allow FQDN and subdomains
+    'localhost',
 ]
 
 DATABASES["default"]["ATOMIC_REQUESTS"] = True  # noqa F405
