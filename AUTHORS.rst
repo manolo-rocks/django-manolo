@@ -5,9 +5,10 @@ Credits
 Development Lead
 ----------------
 
-* AniversarioPeru <aniversarioperu1@gmail.com>
+* Carlos Peña <mycalesis@gmail.com>
 
 Contributors
 ------------
 
-None yet. Why not be the first?
+* Yoni Pacheco <aniversarioperu1@gmail.com>
+* Lisbeth S. <lisbeth.s4.wasp@gmail.com>
