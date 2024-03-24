@@ -1,6 +1,6 @@
 import logging
 
-from scrapy.http import FormRequest, Request
+from scrapy.http import FormRequest
 
 from scrapers.manolo_scraper.spiders.spiders import ManoloBaseSpider
 from ..items import ManoloItem
@@ -94,24 +94,24 @@ class JusticiaUpTo202108Spider(ManoloBaseSpider):
 
         for row in rows:
             warnings = []
-            l = ManoloItemLoader(item=ManoloItem(), selector=row)
+            loader = ManoloItemLoader(item=ManoloItem(), selector=row)
 
-            l.add_value('institution', 'minjus')
-            l.add_value('date', date)
+            loader.add_value('institution', 'minjus')
+            loader.add_value('date', date)
 
-            l.add_xpath('full_name', './/td[4]/br/preceding-sibling::node()/self::text()')
+            loader.add_xpath('full_name', './/td[4]/br/preceding-sibling::node()/self::text()')
 
-            l.add_xpath('entity', './/td[4]/b/following-sibling::node()/self::text()')
+            loader.add_xpath('entity', './/td[4]/b/following-sibling::node()/self::text()')
 
-            l.add_xpath('reason', './/td[6]/br/preceding-sibling::node()/self::text()')
-            l.add_xpath('host_name', './/td[7]/br/preceding-sibling::node()/self::text()')
-            l.add_xpath('office', './/td[7]/b/following-sibling::node()/self::text()')
+            loader.add_xpath('reason', './/td[6]/br/preceding-sibling::node()/self::text()')
+            loader.add_xpath('host_name', './/td[7]/br/preceding-sibling::node()/self::text()')
+            loader.add_xpath('office', './/td[7]/b/following-sibling::node()/self::text()')
 
-            l.add_xpath('location', './/td[1]/text()')
+            loader.add_xpath('location', './/td[1]/text()')
 
-            l.add_xpath('id_document', './/td[5]/br/preceding-sibling::node()/self::text()')
+            loader.add_xpath('id_document', './/td[5]/br/preceding-sibling::node()/self::text()')
             try:
-                l.add_xpath('id_number', './/td[5]/br/following-sibling::node()/self::text()')
+                loader.add_xpath('id_number', './/td[5]/br/following-sibling::node()/self::text()')
             except KeyError as e:
                 warnings.append("No id number, error: {} for item: ".format(e))
 
@@ -122,16 +122,16 @@ class JusticiaUpTo202108Spider(ManoloBaseSpider):
             time_start_time_end = time_start_time_end.split('-')
 
             try:
-                l.add_value('time_start', time_start_time_end[0])
+                loader.add_value('time_start', time_start_time_end[0])
             except IndexError:
                 warnings.append("No time_start for item: ")
 
             try:
-                l.add_value('time_end', time_start_time_end[1])
+                loader.add_value('time_end', time_start_time_end[1])
             except IndexError:
                 warnings.append("No time_end for item: ")
 
-            item = l.load_item()
+            item = loader.load_item()
             item = make_hash(item)
 
             if warnings:

@@ -1,7 +1,6 @@
 import os
 import unittest
 
-from scrapers.manolo_scraper.spiders.congreso import CongresoSpider
 from scrapers.manolo_scraper.spiders.mef import MefSpider
 from scrapers.tests.utils import fake_response_from_file
 

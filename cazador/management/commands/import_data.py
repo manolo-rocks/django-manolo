@@ -7,7 +7,6 @@ from cazador.models import Cazador
 from cazador import shrink_url_in_string
 
 
-
 DBS = ['deudores', 'candidato_2014', 'narcoindultos', 'redam']
 
 
@@ -21,16 +20,14 @@ class Command(BaseCommand):
         parser.add_argument('-db',
                             action='store',
                             dest='database',
-                            help='Enter database, options: {}'.format(
-                            ', '.join(DBS)))
+                            help='Enter database, options: {}'.format(', '.join(DBS)))
 
     def handle(self, *args, **options):
         if not options['input_file']:
             raise CommandError("Input Filename does not exist.")
         if options['database'] not in DBS:
             raise CommandError("Name of database is incorrect. Use one of the "
-                               "following options: {}".format(
-                               ', '.join(DBS)))
+                               "following options: {}".format(', '.join(DBS)))
 
         input_file = options['input_file']
         database = options['database']

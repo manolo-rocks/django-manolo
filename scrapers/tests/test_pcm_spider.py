@@ -24,7 +24,9 @@ class TestPcmSpider(unittest.TestCase):
         self.assertEqual(item.get('reason'), u'MOTIVO INSTITUCIONAL')
         self.assertEqual(item.get('location'), u'PALACIO')
         self.assertEqual(item.get('host_name'), u'Pedro Cateriano Bellido')
-        self.assertEqual(item.get('office'), u'DESPACHO MINISTERIAL [PRESIDENTE DEL CONSEJO DE MINISTROS]')
+        self.assertEqual(
+            item.get('office'), u'DESPACHO MINISTERIAL [PRESIDENTE DEL CONSEJO DE MINISTROS]'
+        )
         self.assertEqual(item.get('meeting_place'), u'SALA TELLO')
         self.assertEqual(item.get('time_start'), u'19:00')
         self.assertEqual(item.get('time_end'), u'19:40')

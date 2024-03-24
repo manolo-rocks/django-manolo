@@ -16,7 +16,9 @@ class TestViews(TestCase):
     def test_index(self):
         c = self.client.get('/')
         self.assertEqual(200, c.status_code, 'Status code')
-        self.assertTrue('0</b></span> registros de visitas' in str(c.content), 'Number of records in db.')
+        self.assertTrue(
+            '0</b></span> registros de visitas' in str(c.content), 'Number of records in db.'
+        )
 
     def test_about(self):
         c = self.client.get('/about/')

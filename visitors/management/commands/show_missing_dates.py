@@ -42,6 +42,3 @@ def search_missing_dates(institution):
 
                 if current_date not in scraped_dates:
                     missing_dates.append(current_date)
-
-
-

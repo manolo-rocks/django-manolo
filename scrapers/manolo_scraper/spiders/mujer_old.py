@@ -1,7 +1,4 @@
-# -*- coding: utf-8 -*-
-import datetime
 import json
-import logging
 
 import scrapy
 from scrapy import Request
@@ -20,7 +17,7 @@ class MujerSpiderOld(ManoloBaseSpider):
         'DOWNLOAD_DELAY': '25',
         'RETRY_TIMES': '10',
     }
-    base_url = 'https://appweb.mimp.gob.pe:8181/visitas-web/faces/reportes/listado/reporteTransparenciaVisitas.xhtml'
+    base_url = 'https://appweb.mimp.gob.pe:8181/visitas-web/faces/reportes/listado/reporteTransparenciaVisitas.xhtml'  # noqa
     NUMBER_OF_ITEMS_PER_PAGE = 20
 
     def initial_request(self, date):
@@ -76,24 +73,24 @@ class MujerSpiderOld(ManoloBaseSpider):
         rows = data['rows']
 
         for row in rows:
-            l = ManoloItemLoader(item=ManoloItem())
+            loader = ManoloItemLoader(item=ManoloItem())
 
             item_date = row.get('fec_fecha', '')
             if item_date:
                 item_date = self.get_date_item(item_date, '%d/%m/%Y')
-            l.add_value('institution', 'min. mujer')
-            l.add_value('date', item_date)
-            l.add_value('full_name', row['txt_nombre_visitante'])
-            l.add_value('id_number', row['txt_dni'])
-            l.add_value('id_document', 'DNI')
-            l.add_value('entity', row['txt_entidad'])
-            l.add_value('reason', row['txt_observacion'])
-            l.add_value('host_name', row['txt_nombre_funcionario'])
-            l.add_value('office', row['txt_unidad'])
-            l.add_value('time_start', row['ingreso'])
-            l.add_value('time_end', row['salida'])
+            loader.add_value('institution', 'min. mujer')
+            loader.add_value('date', item_date)
+            loader.add_value('full_name', row['txt_nombre_visitante'])
+            loader.add_value('id_number', row['txt_dni'])
+            loader.add_value('id_document', 'DNI')
+            loader.add_value('entity', row['txt_entidad'])
+            loader.add_value('reason', row['txt_observacion'])
+            loader.add_value('host_name', row['txt_nombre_funcionario'])
+            loader.add_value('office', row['txt_unidad'])
+            loader.add_value('time_start', row['ingreso'])
+            loader.add_value('time_end', row['salida'])
 
-            item = l.load_item()
+            item = loader.load_item()
 
             item = make_hash(item)
             yield item

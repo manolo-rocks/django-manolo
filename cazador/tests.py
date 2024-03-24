@@ -8,7 +8,7 @@ class TestUtils(unittest.TestCase):
         self.maxDiff = None
 
     def test_shrink_url_in_string(self):
-        my_string = "Carlos Fernando Raffo Arce http://ot.minjus.gob.pe:8080/sisca_web/DeudoresWebAction_verDeudorWeb.action?deudor.id=7683"
-        expected = "Carlos Fernando Raffo Arce  <a href='http://ot.minjus.gob.pe:8080/sisca_web/DeudoresWebAction_verDeudorWeb.action?deudor.id=7683'>http://ot.minjus.gob.pe...</a>"
+        my_string = "Carlos Fernando Raffo Arce http://ot.minjus.gob.pe:8080/sisca_web/DeudoresWebAction_verDeudorWeb.action?deudor.id=7683"  # noqa
+        expected = "Carlos Fernando Raffo Arce  <a href='http://ot.minjus.gob.pe:8080/sisca_web/DeudoresWebAction_verDeudorWeb.action?deudor.id=7683'>http://ot.minjus.gob.pe...</a>"  # noqa
         result = shrink_url_in_string(my_string)
         self.assertEqual(expected, result)

@@ -1,5 +1,5 @@
 from .base import *  # noqa
-from .base import env
+from .base import env, DATABASES, os
 
 DEBUG = True
 
@@ -17,7 +17,7 @@ CACHES = {
 }
 
 EMAIL_BACKEND = env(
-    'DJANGO_EMAIL_BACKEND', 
+    'DJANGO_EMAIL_BACKEND',
     default='django.core.mail.backends.console.EmailBackend'
 )
 

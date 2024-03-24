@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 from scrapy import Request
 
 from scrapers.manolo_scraper.spiders.spiders import ManoloBaseSpider
@@ -33,35 +32,35 @@ class EssaludSpider(ManoloBaseSpider):
         rows = response.xpath('//tr[has-class("even")]')
 
         for row in rows:
-            l = ManoloItemLoader(item=ManoloItem(), selector=row)
-            l.add_value('institution', self.name)
-            l.add_value('date', date)
-            l.add_value('id_document', 'DNI')
+            loader = ManoloItemLoader(item=ManoloItem(), selector=row)
+            loader.add_value('institution', self.name)
+            loader.add_value('date', date)
+            loader.add_value('id_document', 'DNI')
 
-            l.add_xpath('full_name', './/td[3]/text()')
+            loader.add_xpath('full_name', './/td[3]/text()')
 
             id_number = row.xpath('.//td[4]/text()').extract_first(default='')
             if id_number:
                 id_number = id_number.replace('DNI ', '')
-            l.add_value('id_number', id_number)
+            loader.add_value('id_number', id_number)
 
-            l.add_xpath('entity', './/td[5]/text()')
-            l.add_xpath('reason', './/td[6]/text()')
-            l.add_xpath('location', './/td[7]/text()')
-            l.add_xpath('host_name', './/td[8]/text()')
-            l.add_xpath('office', './/td[9]/text()')
-            l.add_xpath('meeting_place', './/td[10]/text()')
+            loader.add_xpath('entity', './/td[5]/text()')
+            loader.add_xpath('reason', './/td[6]/text()')
+            loader.add_xpath('location', './/td[7]/text()')
+            loader.add_xpath('host_name', './/td[8]/text()')
+            loader.add_xpath('office', './/td[9]/text()')
+            loader.add_xpath('meeting_place', './/td[10]/text()')
 
-            l.add_xpath('time_start', './/td[11]/text()')
-            l.add_xpath('time_end', './/td[12]/text()')
+            loader.add_xpath('time_start', './/td[11]/text()')
+            loader.add_xpath('time_end', './/td[12]/text()')
 
-            time_start = l.get_output_value('time_start')
-            time_end = l.get_output_value('time_end')
+            time_start = loader.get_output_value('time_start')
+            time_end = loader.get_output_value('time_end')
 
-            l.replace_value('time_start', self._get_time(time_start))
-            l.replace_value('time_end', self._get_time(time_end))
+            loader.replace_value('time_start', self._get_time(time_start))
+            loader.replace_value('time_end', self._get_time(time_end))
 
-            item = l.load_item()
+            item = loader.load_item()
             item = make_hash(item)
 
             yield item

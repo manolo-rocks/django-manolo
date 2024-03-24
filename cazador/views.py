@@ -12,7 +12,7 @@ from visitors.views import do_pagination
 def index(request):
     try:
         original_query = request.GET['q']
-    except MultiValueDictKeyError as e:
+    except MultiValueDictKeyError:
         return render(request, "cazador/index.html")
 
     all_items = []
