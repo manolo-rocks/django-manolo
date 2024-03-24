@@ -143,7 +143,7 @@ def ocr_image(file_content):
     cmd = "convert {} -threshold 90% {}".format(filename, black_white_image_filename)
     subprocess.call(cmd, shell=True)
 
-    cmd = "tesseract -psm 7 -c tessedit_char_whitelist=ABCDEFGHIJKLMNPQRSTUVWXYabcdefghijkmnpqrstuvwxy23456789 {} {}".format(
+    cmd = "tesseract -psm 7 -c tessedit_char_whitelist=ABCDEFGHIJKLMNPQRSTUVWXYabcdefghijkmnpqrstuvwxy23456789 {} {}".format(  # noqa
         black_white_image_filename, basename)
     subprocess.call(cmd, shell=True)
     with open("{}.txt".format(basename), "r") as handle:

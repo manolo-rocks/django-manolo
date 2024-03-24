@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 import hashlib
 import re
 import pkgutil
@@ -72,7 +71,7 @@ def get_dni(document_identity):
     id_number = ''
 
     document_identity = document_identity.replace(':', ' ')
-    document_identity = re.sub('\s+', ' ', document_identity)
+    document_identity = re.sub(r'\s+', ' ', document_identity)
     document_identity = document_identity.strip()
     document_identity = re.sub('^', ' ', document_identity)
 

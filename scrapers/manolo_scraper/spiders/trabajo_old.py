@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 from scrapy import Request
 
 from scrapers.manolo_scraper.spiders.spiders import ManoloBaseSpider
@@ -42,22 +41,22 @@ class TrabajoSpiderOld(ManoloBaseSpider):
                 dni = data[2].xpath('text()').extract_first()
                 id_document, id_number = get_dni(dni)
 
-                l = ManoloItemLoader(item=ManoloItem(), selector=row)
-                l.add_value('institution', self.name)
-                l.add_value('date', date)
-                l.add_value('full_name', full_name)
+                loader = ManoloItemLoader(item=ManoloItem(), selector=row)
+                loader.add_value('institution', self.name)
+                loader.add_value('date', date)
+                loader.add_value('full_name', full_name)
 
-                l.add_value('id_document', id_document)
-                l.add_value('id_number', id_number)
-                l.add_xpath('entity', './td[4]/text()')
-                l.add_xpath('reason', './td[5]/text()')
-                l.add_xpath('host_name', './td[6]/text()')
-                l.add_xpath('meeting_place', './td[7]/text()')
-                l.add_xpath('office', './td[8]/text()')
-                l.add_xpath('time_start', './td[9]/text()')
-                l.add_xpath('time_end', './td[10]/text()')
+                loader.add_value('id_document', id_document)
+                loader.add_value('id_number', id_number)
+                loader.add_xpath('entity', './td[4]/text()')
+                loader.add_xpath('reason', './td[5]/text()')
+                loader.add_xpath('host_name', './td[6]/text()')
+                loader.add_xpath('meeting_place', './td[7]/text()')
+                loader.add_xpath('office', './td[8]/text()')
+                loader.add_xpath('time_start', './td[9]/text()')
+                loader.add_xpath('time_end', './td[10]/text()')
 
-                item = l.load_item()
+                item = loader.load_item()
                 item = make_hash(item)
 
                 yield item

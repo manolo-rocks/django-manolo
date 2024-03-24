@@ -23,7 +23,10 @@ class TestMinagrSpider(unittest.TestCase):
         self.assertEqual(item.get('entity'), u'MAKA SAC')
         self.assertEqual(item.get('reason'), u'DOCUMENTOS')
         self.assertEqual(item.get('host_name'), u'CARLOS ANTONIO LARA PALACIOS')
-        self.assertEqual(item.get('title'), u'[CONTADOR P\xc3\u0161BLICO PARA ALMAC\xc3\u2030N Y PATRIMONIO]')
+        self.assertEqual(
+            item.get('title'),
+            u'[CONTADOR P\xc3\u0161BLICO PARA ALMAC\xc3\u2030N Y PATRIMONIO]'
+        )
         self.assertEqual(item.get('office'), u'ALMACEN CENTRAL')
         self.assertEqual(item.get('time_end'), u'17:23')
         self.assertEqual(item.get('date'), u'2015-08-18')

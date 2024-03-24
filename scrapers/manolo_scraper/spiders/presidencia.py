@@ -43,43 +43,43 @@ class PresidenciaSpider(ManoloBaseSpider):
         for row in rows:
             if len(row.xpath(".//td")) < 4:
                 continue
-            l = ManoloItemLoader(item=ManoloItem(), selector=row)
+            loader = ManoloItemLoader(item=ManoloItem(), selector=row)
 
-            l.add_value('institution', 'presidencia')
-            l.add_value('date', date)
+            loader.add_value('institution', 'presidencia')
+            loader.add_value('date', date)
 
-            l.add_xpath('full_name', './/td[3]/text()')
+            loader.add_xpath('full_name', './/td[3]/text()')
 
-            l.add_xpath('entity', './/td[5]/text()')
+            loader.add_xpath('entity', './/td[5]/text()')
 
-            l.add_xpath('reason', './/td[6]/text()')
-            l.add_xpath('host_name', './/td[7]/text()')
+            loader.add_xpath('reason', './/td[6]/text()')
+            loader.add_xpath('host_name', './/td[7]/text()')
 
-            l.add_xpath('time_start', './/td[9]/text()')
-            l.add_xpath('time_end', './/td[10]/text()')
-            l.add_xpath('meeting_place', './/td[11]/text()')
+            loader.add_xpath('time_start', './/td[9]/text()')
+            loader.add_xpath('time_end', './/td[10]/text()')
+            loader.add_xpath('meeting_place', './/td[11]/text()')
 
             document_identity = row.xpath('.//td[4]/text()').extract_first(default='')
             id_document, id_number = get_dni(document_identity)
 
-            l.add_value('id_number', id_number)
-            l.add_value('id_document', id_document)
+            loader.add_value('id_number', id_number)
+            loader.add_value('id_document', id_document)
 
             office_title = row.xpath('.//td[8]/text()').extract_first(default='')
             office_title = office_title.split('-')
 
             warnings = []
             try:
-                l.add_value('office', office_title[0])
+                loader.add_value('office', office_title[0])
             except IndexError:
                 warnings.append("No office for item: ")
 
             try:
-                l.add_value('title', office_title[1])
+                loader.add_value('title', office_title[1])
             except IndexError:
                 warnings.append("No title for item: ")
 
-            item = l.load_item()
+            item = loader.load_item()
             item = make_hash(item)
 
             if warnings:

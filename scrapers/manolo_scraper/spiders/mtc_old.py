@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 import os
 import time
 
@@ -50,27 +49,29 @@ class MTCSpiderOld(ManoloBaseSpider):
     def parse(self, response, **kwargs):
         with open("a.html", "w") as handle:
             handle.write(response.body)
-        rows = response.xpath('//table[@id="ctl00_ContentPlaceHolder_gdvReporteVisitasNuevo"]//tr[@class="gridRow"]')
+        rows = response.xpath(
+            '//table[@id="ctl00_ContentPlaceHolder_gdvReporteVisitasNuevo"]//tr[@class="gridRow"]'
+        )
         date = self.get_date_item(response.meta.get('date'), '%d/%m/%Y')
         for row in rows:
-            l = ManoloItemLoader(item=ManoloItem(), selector=row)
+            loader = ManoloItemLoader(item=ManoloItem(), selector=row)
 
-            l.add_value('date', date)
-            l.add_value('institution', 'mtc')
-            l.add_xpath('entity', './/td[@class="clsdetalle"][4]/text()')
+            loader.add_value('date', date)
+            loader.add_value('institution', 'mtc')
+            loader.add_xpath('entity', './/td[@class="clsdetalle"][4]/text()')
 
-            l.add_xpath('reason', './td[9]/text()')
-            l.add_xpath('meeting_place', './td[8]/text()')
-            l.add_xpath('office', './td[1]/text()')
-            l.add_xpath('host_name', './td[3]/text()')
-            l.add_xpath('full_name', './td[7]/text()')
-            l.add_xpath('time_start', './td[4]/text()')
-            l.add_xpath('time_end', './td[5]/text()')
+            loader.add_xpath('reason', './td[9]/text()')
+            loader.add_xpath('meeting_place', './td[8]/text()')
+            loader.add_xpath('office', './td[1]/text()')
+            loader.add_xpath('host_name', './td[3]/text()')
+            loader.add_xpath('full_name', './td[7]/text()')
+            loader.add_xpath('time_start', './td[4]/text()')
+            loader.add_xpath('time_end', './td[5]/text()')
 
-            l.add_value('id_document', 'DNI')
-            l.add_xpath('id_number', './td[6]/text()')
+            loader.add_value('id_document', 'DNI')
+            loader.add_xpath('id_number', './td[6]/text()')
 
-            item = l.load_item()
+            item = loader.load_item()
             item = make_hash(item)
 
             yield item

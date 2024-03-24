@@ -25,7 +25,9 @@ class TestMujerSpider(unittest.TestCase):
         self.assertEqual(item.get('entity'), u'SAN MIGUEL')
         self.assertEqual(item.get('reason'), None)
         self.assertEqual(item.get('host_name'), u'PNCVFS ,')
-        self.assertEqual(item.get('office'), u'PROGRAMA NACIONAL CONTRA LA VIOLENCIA FAMILIAR Y SEXUAL')
+        self.assertEqual(
+            item.get('office'), u'PROGRAMA NACIONAL CONTRA LA VIOLENCIA FAMILIAR Y SEXUAL'
+        )
         self.assertEqual(item.get('time_end'), u'10:42 AM')
         self.assertEqual(item.get('date'), u'2015-08-20')
         self.assertEqual(item.get('sha1'), u'a00e952857d8c86ab3877ee3805bda686bd3a999')

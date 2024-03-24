@@ -14,7 +14,7 @@ sys.path.append(os.path.dirname(os.path.abspath('..')))
 os.environ['DJANGO_SETTINGS_MODULE'] = 'manolo.settings.production'
 
 # This is required only if Django Version > 1.8
-import django
+import django  # noqa
 django.setup()
 
 CONCURRENT_REQUESTS = 1
@@ -35,7 +35,7 @@ HTTPERROR_ALLOWED_CODES = [400]
 # SPLASH_URL = 'http://IP:8050'
 
 # Crawl responsibly by identifying yourself (and your website) on the user-agent
-USER_AGENT = "Mozilla/5.0 (Linux; Android 4.0.4; Galaxy Nexus Build/IMM76B) AppleWebKit/535.19 (KHTML, like Gecko) Chrome/18.0.1025.133 Mobile Safari/535.19"
+USER_AGENT = "Mozilla/5.0 (Linux; Android 4.0.4; Galaxy Nexus Build/IMM76B) AppleWebKit/535.19 (KHTML, like Gecko) Chrome/18.0.1025.133 Mobile Safari/535.19"  # noqa
 
 CRAWLERA_ENABLED = False
 
@@ -61,4 +61,3 @@ ITEM_PIPELINES = {
 DUPEFILTER_DEBUG = True
 COOKIES_DEBUG = True
 COOKIES_ENABLED = True
-
