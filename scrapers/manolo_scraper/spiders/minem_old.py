@@ -22,7 +22,7 @@ class MinemSpiderOld(ManoloBaseSpider):
         return request
 
     def make_form_request(self, date_str, callback, page_number):
-        page_url = 'http://intranet.minem.gob.pe/GESTION/visitas_pcm/Busqueda/DMET_html_SelectMaestraBuscador'  # noqa
+        page_url = 'http://intranet.minem.gob.pe/GESTION/visitas_pcm/Busqueda/DMET_html_SelectMaestraBuscador'
 
         start_from_record = self.NUMBER_OF_PAGES_PER_PAGE * (page_number - 1) + 1
 
