@@ -142,9 +142,8 @@ DJANGO_APPS = [
 ]
 
 THIRD_PARTY_APPS = [
-    'bootstrap4',
-    'bootstrap_themes',
-    'crispy_forms',
+    "crispy_forms",
+    "crispy_bootstrap5",
     'registration',
     'rest_framework',
     'rest_framework_api_key',
@@ -271,7 +270,8 @@ REST_FRAMEWORK = {
     'UNICODE_JSON': True,
 }
 
-CRISPY_TEMPLATE_PACK = 'bootstrap3'
+CRISPY_ALLOWED_TEMPLATE_PACKS = "bootstrap5"
+CRISPY_TEMPLATE_PACK = "bootstrap5"
 
 # Django registration redux
 ACCOUNT_ACTIVATION_DAYS = 7  # One-week activation window; you may, of course, use a different value
