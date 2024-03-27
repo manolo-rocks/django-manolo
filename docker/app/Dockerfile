@@ -21,7 +21,6 @@ ADD requirements/base.txt /base.txt
 ADD requirements/production.txt /pip_requirements.txt
 RUN pip install pip --upgrade
 RUN pip install -r /pip_requirements.txt
-COPY config.json /code/config.json
 COPY .env /code/.env
 
 RUN mkdir -p /code
