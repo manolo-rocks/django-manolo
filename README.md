@@ -2,6 +2,7 @@ Django-manolo
 =============
 
 ![Build Status](https://github.com/manolo-rocks/django-manolo/actions/workflows/django.yml/badge.svg)
+[![codecov](https://codecov.io/gh/manolo-rocks/django-manolo/graph/badge.svg?token=aKdFd6bjIu)](https://codecov.io/gh/manolo-rocks/django-manolo)
 
 Manolo, buscador de lobistas
 ============================
