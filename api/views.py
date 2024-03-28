@@ -1,17 +1,11 @@
 import json
-import os
-import subprocess
 import time
-from uuid import uuid4
 
 from django.http.request import QueryDict
 from django.shortcuts import HttpResponse
-from django.views.decorators.csrf import csrf_exempt
 from rest_framework import permissions
-from rest_framework.authentication import BasicAuthentication
-from rest_framework.decorators import api_view, authentication_classes, \
-    permission_classes
-from rest_framework.permissions import AllowAny, IsAdminUser
+from rest_framework.decorators import api_view, permission_classes
+from rest_framework.permissions import AllowAny
 from rest_framework.pagination import PageNumberPagination
 from rest_framework_api_key.models import APIKey
 from rest_framework_api_key.permissions import HasAPIKey
@@ -101,55 +95,6 @@ def search_tsv(request, query):
     paginator, page = do_pagination(request, all_items)
 
     return data_as_csv(request, paginator)
-
-
-@csrf_exempt
-@api_view(['POST'])
-@authentication_classes((BasicAuthentication,))
-@permission_classes((IsAdminUser,))
-def mef_captcha(request):
-    """Accepts a CAPTCHA image from MEF and returns the text
-
-    Usage:
-
-    import requests
-    from requests.auth import HTTPBasicAuth
-
-    fin = open("images/image_10.jpg", "rb")
-    files = {'file': fin}
-    url = "https://manolo.rocks/api/mef_captcha/"
-
-    auth = HTTPBasicAuth("user", "pass")
-    res = requests.post(url, files=files, auth=auth)
-    print(res.text)
-    """
-    if "file" in request.FILES:
-        myfile = request.FILES["file"]
-        text = ocr_image(myfile.read())
-        return HttpResponse(text)
-    return "hi there"
-
-
-def ocr_image(file_content):
-    filename = "/tmp/" + str(uuid4()) + ".jpg"
-
-    with open(filename, "wb") as handle:
-        handle.write(file_content)
-
-    basename = filename.replace(".jpg", "").replace("/tmp/", "")
-
-    # process
-    black_white_image_filename = "/tmp/{}-1.jpg".format(basename)
-    cmd = "convert {} -threshold 90% {}".format(filename, black_white_image_filename)
-    subprocess.call(cmd, shell=True)
-
-    cmd = "tesseract -psm 7 -c tessedit_char_whitelist=ABCDEFGHIJKLMNPQRSTUVWXYabcdefghijkmnpqrstuvwxy23456789 {} {}".format(  # noqa
-        black_white_image_filename, basename)
-    subprocess.call(cmd, shell=True)
-    with open("{}.txt".format(basename), "r") as handle:
-        text = handle.read().strip().replace(" ", "")
-    os.remove("{}.txt".format(basename))
-    return text
 
 
 @api_view(['POST'])
