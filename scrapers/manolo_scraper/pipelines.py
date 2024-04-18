@@ -138,34 +138,27 @@ def save_item(item):
         print("{0}, date: {1} is found in db, not saving".format(item['sha1'], item['date']))
 
 
-def process_row(row, institution):
-    fecha = row['fecha']
-    fecha = datetime.strptime(fecha, '%d/%m/%Y').date()
-    id_document, id_number = get_dni(row['documento'])
-
-    triad = [
-        i.strip() for i in row['funcionario'].split('-')
-    ]
-    host_name = triad[0]
-    office = " - ".join(triad[1:-1])
-    host_title = triad[-1]
-
-    lugar = row['no_lugar_r']
+def process_row(row):
+    fecha = row['date']
+    fecha = datetime.strptime(fecha, '%Y-%m-%d').date()
+    id_document = row['id_document']
+    id_number = row['id_number']
 
     item = {
-        'institution': institution,
-        'date': fecha,
-        'full_name': row['visitante'],
-        'entity': row['rz_empresa'],
-        'reason': row['motivo'],
-        'host_name': host_name,
-        "time_start": row['horaIn'],
-        "time_end": row['horaOut'],
+        'full_name': row['full_name'],
+        'entity': row['entity'],
         "id_number": id_number,
         "id_document": id_document,
-        "office": office,
-        "host_title": host_title,
-        "meeting_place": lugar,
+        'host_name': row['host_name'],
+        "office": row['office'],
+        "host_title": row['host_title'],
+        'reason': row['reason'],
+        "meeting_place": row['meeting_place'],
+        'institution': row['institution'],
+        "time_start": row['time_start'],
+        "time_end": row['time_end'],
+        "location": row["location"],
+        'date': fecha,
     }
     item = make_hash(item)
     save_item(item)

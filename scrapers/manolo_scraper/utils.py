@@ -33,7 +33,7 @@ def make_hash(item):
     id_document
     id_number
     time_start
-    date: %d/%m/%Y
+    date: %Y-%m-%d  it should be a string
     """
     hash_input = ''
     hash_input += str(item['institution'])
@@ -47,7 +47,10 @@ def make_hash(item):
     if 'id_number' in item:
         hash_input += str(normalize('NFKD', item['id_number']))
 
-    hash_input += str(item['date'])
+    if isinstance(item['date'], str):
+        hash_input += str(item['date'])
+    else:
+        hash_input += str(item['date'].strftime("%Y-%m-%d"))
 
     if 'time_start' in item:
         # only use time and am or pm, do not include date as this is how we
