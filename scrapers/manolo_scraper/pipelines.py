@@ -10,7 +10,7 @@ import re
 from pytz import timezone
 from scrapy.exceptions import DropItem
 
-from scrapers.manolo_scraper.utils import get_dni, make_hash
+from scrapers.manolo_scraper.utils import make_hash
 from visitors.models import Visitor
 
 
