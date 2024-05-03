@@ -25,4 +25,4 @@ pyprind==2.11.3
 python-slugify==8.0.4
 requests
 scrapy
-tqdm==4.66.2
+tqdm==4.66.3
