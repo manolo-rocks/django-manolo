@@ -14,7 +14,7 @@ django-extensions==3.2.3
 django-registration-redux
 django-rest-swagger
 djangorestframework-api-key
-djangorestframework==3.15.0
+djangorestframework==3.15.2
 drf_yasg
 gunicorn[gevent]
 gunicorn[eventlet]
