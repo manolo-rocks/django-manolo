@@ -98,5 +98,5 @@ Create a `.env` file locally to keep all private credentials protected:
 Releases
 ========
 
-* 2018-07-22. Changed subscription to credit based
+* 2018-07-22. Changed subscription to credit based.
 
