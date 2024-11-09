@@ -5,22 +5,47 @@
 <meta name="google-site-verification" content="SJHongQivcIuf-n-pbpbxYuJDMUZv0LCgt3RnF-4WJ0" />
 {% endblock additional_meta %}
 
-{% block content %}
+{% block intro %}
+
+  <!-- Page content -->
+  <div class="page-content">
+
+  <div class="card bg-gradient-primary px-4 py-5">
+    <div class="card-body">
+        <h5 class="h4 text-white">
+          Este es Manolo
+        </h5>
+        <p class="mt-4 mb-0 text-white">
+          <b>Manolo es un buscador de las personas</b> que visitan entidades del
+          Estado peruano.
+          <br />
+          Los datos pueden ser descargados de instituciones que tengan sus
+          registro de visita en línea.
+        </p>
+
+
+      <p class="mt-4 mb-0 text-white">
+        Puedes buscar por nombre o palabra clave. Click en "Buscar" y tipea ROMULO.
+      </p>
+
+      <button class="btn btn-secondary" data-action="omnisearch-open" data-target="#omnisearch">
+        <i class="fa fa-search"></i>
+        Buscar
+      </button>
+    </div>
+</div>
+
+
+
+
+  </div>
+{% endblock intro %}
+
 <div class="container" style="text-align:center; max-width:1200px;">
-  <h2>Este es Manolo</h2>
-    <p>
-      <b>Manolo es un buscador de las personas</b> que visitan entidades del
-      Estado peruano.
-      <br />
-      Los datos pueden ser descargados de instituciones que tengan sus
-      registro de visita en línea.
-    </p>
 
     <div class='well'>
       Puedes buscar por nombre o palabra clave. Por ejemplo tipea
       <b>ROMULO</b> y haz click en "Buscar".
-<!--      <br />-->
-<!--      También puedes usar el <b><a href="/docs/">REST API</a></b>.-->
     </div>
 
 
@@ -92,5 +117,3 @@
 </div><!-- container -->
 
 <br />
-
-{% endblock content %}

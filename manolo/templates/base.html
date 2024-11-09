@@ -7,12 +7,11 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Manolo. Buscador de visitas a
-    entidades del Estado Peruano">
-    <meta name="author" content="Carlos Peña">
+    <meta name="description" content="Manolo. Buscador de visitas a entidades del Estado Peruano">
+    <meta name="author" content="Yoni Pacheco">
     <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:site" content="@carlosp420" />
-    <meta name="twitter:creator" content="@carlosp420" />
+    <meta name="twitter:site" content="@aniversarioperu" />
+    <meta name="twitter:creator" content="@aniversarioperu" />
     {% load static %}
     <link rel="shortcut icon" href="{% static 'img/favicon.ico' %}">
 
@@ -23,10 +22,10 @@
     {% block additional_css %}
     {% endblock additional_css %}
 
-    <link href="{% static 'css/bootstrap.min.css' %}" rel="stylesheet">
-    <link href="//maxcdn.bootstrapcdn.com/bootswatch/3.2.0/readable/bootstrap.min.css" rel="stylesheet">
+{#    <link href="{% static 'css/bootstrap.min.css' %}" rel="stylesheet">#}
+{#    <link href="//maxcdn.bootstrapcdn.com/bootswatch/3.2.0/readable/bootstrap.min.css" rel="stylesheet">#}
     <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
-    <link rel="stylesheet" href="{% static 'css/styles.css' %}?v=1">
+    <link rel="stylesheet" href="{% static 'css/purpose.css' %}">
 
     {% block additional_head_javascript %}
     {% endblock additional_head_javascript %}
@@ -35,102 +34,160 @@
   </head>
 
 {% block body_tag %}
-  <body>
+  <body class="application application-offset sidenav-pinned ready">
 {% endblock body_tag %}
 
-    <!-- Static navbar -->
-    <nav class="navbar navbar-default navbar-static-top">
-      <div class="container">
-        <div class="navbar-header">
-          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
-            <span class="sr-only">Toggle navigation</span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-          </button>
-          <a class="navbar-brand" href="/">
-            <img alt="manolo.rocks" width="46px" src="{% static 'img/manolo_logo.svg' %}" />
-          </a>
-        </div>
-        <div id="navbar" class="navbar-collapse collapse">
-          <ul class="nav navbar-nav navbar-right">
-            <li>
-              <form action="#" class="navbar-form form-inline">
-                <div class="form-group">
-                  {% if request.user.is_authenticated %}
+<div class="container-fluid container-application">
 
-                    {% if user_profile.avatar %}
-                       <img src="data:image/png;base64, {{ user_profile.avatar }}"
-                            class="img-circle"
-                            title="{{ user_profile.first_name }} avatar"
-                            alt="avatar" width="40px" />&nbsp;
-                       <b>{{ user_profile.first_name }}</b>&nbsp;
-                    {% endif %}
-                      <a class="btn btn-danger" href="{% url 'auth_logout' %}">Logout</a>
-                  {% endif %}
-                </div>
-              </form>
+  <!-- Sidenav -->
+  <div class="sidenav show" id="sidenav-main">
+      <!-- Sidenav header -->
+      <div class="sidenav-header d-flex align-items-center">
+        <div class="ml-auto">
+          <!-- Sidenav toggler -->
+          <div class="sidenav-toggler sidenav-toggler-dark d-md-none active" data-action="sidenav-unpin" data-target="#sidenav-main">
+            <div class="sidenav-toggler-inner">
+              <i class="sidenav-toggler-line bg-white"></i>
+              <i class="sidenav-toggler-line bg-white"></i>
+              <i class="sidenav-toggler-line bg-white"></i>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- User mini profile -->
+      <div class="sidenav-user d-flex flex-column align-items-center justify-content-between text-center">
+        <!-- Avatar -->
+        <div>
+          <a href="/" class="avatar rounded-circle avatar-xl">
+            <img alt="manolo.rocks" width="46px" src="{% static 'img/manolo_logo.png' %}" />
+          </a>
+          <div class="mt-4">
+            <h5 class="mb-0 text-white">Manolo Rocks</h5>
+            <span class="d-block text-sm text-white opacity-8 mb-3">Buscador de personas</span>
+          </div>
+        </div>
+      </div>
+  </div>
+
+  <!-- Content -->
+  <div class="main-content position-relative">
+    <!-- Main nav -->
+    <nav id="navbar-main" class="navbar navbar-main navbar-expand-lg navbar-dark bg-primary navbar-border">
+      <div class="container-fluid">
+        <!-- Brand + toggler or mobile devices -->
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar-main-collapse" aria-controls="navbar-main-collapse" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <!-- Navbar nav -->
+        <div id="navbar-main-collapse" class="collapse navbar-collapse navbar-collapse-fade">
+          <ul class="navbar-nav align-items-lg-center">
+            <li class="nav-item">
+              <a class="nav-link pl-lg-0" href="/">Home</a>
             </li>
-            <li><a href="/">Home</a></li>
-            <li><a href="{% url 'statistics' %}">Estadísticas</a></li>
-            <li><a href="{% url 'schema-swagger-ui' %}">API</a></li>
-            <li><a href="{% url 'about' %}">About Manolo</a></li>
+            <li class="nav-item">
+              <a class="nav-link pl-lg-0" href="{% url 'statistics' %}">Estadísticas</a></li>
+            <li class="nav-item">
+              <a class="nav-link pl-lg-0" href="{% url 'schema-swagger-ui' %}">API</a></li>
+            <li class="nav-item">
+              <a class="nav-link pl-lg-0" href="{% url 'about' %}">About Manolo</a></li>
           </ul>
-        </div><!--/.nav-collapse -->
+        </div>
       </div>
     </nav>
 
-
-  {% if user_profile.expired %}
-  <div class="row">
-    <div class="col-xs-10 col-xs-offset-1">
-      <p class="alert alert-danger text-center" role="alert">
-        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-          <i class="fa fa-times" aria-hidden="true"></i>
-        </button>
-        <b>Esta cuenta ha expirado.</b>
-        <br />
-        <b>Contacte a <a href="mailto:aniversarioperu1@gmail.com?Subject=Suscripción a Manolo"
-                         class="alert-link">
-          aniversarioperu1@gmail.com</a> para extender su suscripción</b>
-      </p>
-    </div>
+  <div id="omnisearch" class="omnisearch">
+      <div class="container">
+          <!-- Search form -->
+          <form class="omnisearch-form">
+              <div class="form-group">
+                  <!-- <div class="input-group input-group-merge input-group-flush">
+                      <div class="input-group-prepend">
+                          <span class="input-group-text"><i class="far fa-search"></i></span>
+                      </div>
+                      <input type="text" class="form-control" placeholder="Type and hit enter ...">
+                  </div> -->
+                  <div class="input-group input-group-merge">
+                      <div class="input-group-prepend">
+                          <span class="input-group-text"><i class="fa fa-search"></i></span>
+                      </div>
+                      <input type="text" class="form-control" placeholder="Tipear y enter ...">
+                      <div class="input-group-append">
+                          <span class="input-group-text">
+                              <a href="#" data-action="omnisearch-close" data-target="#omnisearch">
+                                  <i class="fa fa-times"></i>
+                              </a>
+                          </span>
+                      </div>
+                  </div>
+              </div>
+          </form>
+          <div class="omnisearch-suggestions">
+              <h6 class="heading">Sugerencias de búsqueda</h6>
+              <div class="row">
+                  <div class="col-sm-6">
+                      <ul class="list-unstyled mb-0">
+                          <li>
+                              <a class="list-link" href="#">
+                                  <i class="fa fa-search"></i>
+                                  <span>Romulo</span>
+                              </a>
+                          </li>
+                          <li>
+                              <a class="list-link" href="#">
+                                  <i class="fa fa-search"></i>
+                                  <span>Don Bieto</span>
+                              </a>
+                          </li>
+                      </ul>
+                  </div>
+              </div>
+          </div>
+      </div>
   </div>
-  {% endif %}
 
 
-  {% if user_profile.about_to_expire and not user_profile.expired %}
-    <div class="row">
-      <div class="col-xs-10 col-xs-offset-1">
-        <p class="alert alert-warning text-center" role="alert">
-          <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-            <i class="fa fa-times" aria-hidden="true"></i>
-          </button>
-          <b>Esta cuenta expirará luego de usar {{ user_profile.credits }} créditos.</b>
-          <br />
-          <b>Contacte a <a href="mailto:aniversarioperu1@gmail.com?Subject=Suscripción a Manolo"
-             class="alert-link">
-            aniversarioperu1@gmail.com</a> para extender su suscripción</b>
+    {% block intro %}{% endblock intro %}
+
+
+
+
+
+  <!-- Footer -->
+  <div id="footer-main" class="footer pt-5 pb-4 footer-light">
+    <div class="row text-center text-sm-left align-items-sm-center">
+      <div class="alert alert-warning" role="alert">
+        <h5 class="alert-heading">Disclaimer</h5>
+        <p>
+          La info presentada
+          en esta herramienta web (o sea <b>Manolo</b>) es referencial y no tiene valor legal.
+          Para denuncias y otras cuestiones legales debes verificar con las fuentes originales
+          (ej. el registro en línea de la
+          institución estatal correspondiente).
         </p>
       </div>
     </div>
-  {% endif %}
+  </div>
+
+
+
+
+
+
+
+
+
+
 
   {% block content %}{% endblock content %}
 
 
-    <br />
+
+
 
 
 
       <div class="container-fluid">
-        <div class="well"><b>Disclaimer:</b> La info presentada
-            en esta herramienta web (o sea <b>Manolo</b>) es referencial y no tiene valor legal.
-            Para denuncias y otras cuestiones legales debes verificar con las fuentes originales
-            (ej. el registro en línea de la
-            institución estatal correspondiente).
-        </div>
-
 
         <hr>
         <footer>
@@ -153,8 +210,9 @@
 
 
   {% load static %}
-  <script src="//code.jquery.com/jquery-1.11.0.min.js"></script>
-  <script src='{% static "js/bootstrap.min.js" %}'></script>
+{#  <script src="//code.jquery.com/jquery-1.11.0.min.js"></script>#}
+  <script src='{% static "js/purpose.core.js" %}'></script>
+    <script src='{% static "js/purpose.js" %}'></script>
   <script src='{% static "js/highlighter.js" %}'></script>
   <script>$("#contenido").highlight('{{ query }}');</script>
 
