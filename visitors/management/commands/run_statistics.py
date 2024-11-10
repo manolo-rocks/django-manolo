@@ -102,6 +102,7 @@ def store_updated_institutions(stats):
                 'slug': institution.slug,
                 'rank': institution.rank,
                 'last_updated': last_visitor.date.strftime('%Y-%m-%d'),
+                'font_awesome_icon': institution.font_awesome_icon,
             }
             institution_stats.append(item)
 
