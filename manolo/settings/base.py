@@ -26,7 +26,7 @@ DATABASES = {
 }
 DATABASES["default"]["ATOMIC_REQUESTS"] = True
 
-CSRF_TRUSTED_ORIGINS = ['manolo.rocks']
+CSRF_TRUSTED_ORIGINS = ['https://manolo.rocks']
 
 ADMINS = (
     ('AniversarioPeru', 'aniversarioperu1@gmail.com'),
