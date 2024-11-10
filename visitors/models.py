@@ -183,6 +183,7 @@ class Institution(models.Model):
     slug = models.CharField(null=False, max_length=200, unique=True)
     name = models.CharField(null=False, max_length=200, unique=True)
     rank = models.IntegerField()
+    font_awesome_icon = models.CharField(null=True)
 
     def __str__(self):
         return f"{self.slug} ({self.name})"

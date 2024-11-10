@@ -24,7 +24,7 @@
 
 {#    <link href="{% static 'css/bootstrap.min.css' %}" rel="stylesheet">#}
 {#    <link href="//maxcdn.bootstrapcdn.com/bootswatch/3.2.0/readable/bootstrap.min.css" rel="stylesheet">#}
-    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
+    <script src="https://kit.fontawesome.com/e71273195a.js" crossorigin="anonymous"></script>
     <link rel="stylesheet" href="{% static 'css/purpose.css' %}">
 
     {% block additional_head_javascript %}
@@ -99,7 +99,7 @@
   <div id="omnisearch" class="omnisearch">
       <div class="container">
           <!-- Search form -->
-          <form class="omnisearch-form">
+          <form class="omnisearch-form" action="/search" method="get" role="search">
               <div class="form-group">
                   <!-- <div class="input-group input-group-merge input-group-flush">
                       <div class="input-group-prepend">
@@ -148,6 +148,8 @@
 
 
     {% block intro %}{% endblock intro %}
+    {% block general_stats %}{% endblock general_stats %}
+    {% block rebotes %}{% endblock rebotes %}
 
 
 
@@ -210,11 +212,10 @@
 
 
   {% load static %}
-{#  <script src="//code.jquery.com/jquery-1.11.0.min.js"></script>#}
-  <script src='{% static "js/purpose.core.js" %}'></script>
+    <script src='{% static "js/purpose.core.js" %}'></script>
     <script src='{% static "js/purpose.js" %}'></script>
-  <script src='{% static "js/highlighter.js" %}'></script>
-  <script>$("#contenido").highlight('{{ query }}');</script>
+    <script src='{% static "js/highlighter.js" %}'></script>
+    <script>$("#contenido").highlight('{{ query }}');</script>
 
   {% block additional_javascript %}
   {% endblock additional_javascript %}

@@ -1,4 +1,5 @@
 {% extends 'base.html' %}
+{% load static %}
 {% load humanize %}
 
 {% block additional_meta %}
@@ -6,23 +7,20 @@
 {% endblock additional_meta %}
 
 {% block intro %}
-
-  <!-- Page content -->
-  <div class="page-content">
-
+<!-- Page content -->
+<div class="page-content">
   <div class="card bg-gradient-primary px-4 py-5">
     <div class="card-body">
-        <h5 class="h4 text-white">
-          Este es Manolo
-        </h5>
-        <p class="mt-4 mb-0 text-white">
-          <b>Manolo es un buscador de las personas</b> que visitan entidades del
-          Estado peruano.
-          <br />
-          Los datos pueden ser descargados de instituciones que tengan sus
-          registro de visita en línea.
-        </p>
-
+      <h5 class="h4 text-white">
+        Este es Manolo
+      </h5>
+      <p class="mt-4 mb-0 text-white">
+        <b>Manolo es un buscador de las personas</b> que visitan entidades del
+        Estado peruano.
+        <br />
+        Los datos pueden ser descargados de instituciones que tengan sus
+        registro de visita en línea.
+      </p>
 
       <p class="mt-4 mb-0 text-white">
         Puedes buscar por nombre o palabra clave. Click en "Buscar" y tipea ROMULO.
@@ -33,70 +31,149 @@
         Buscar
       </button>
     </div>
-</div>
-
-
-
-
   </div>
+</div>
 {% endblock intro %}
 
-<div class="container" style="text-align:center; max-width:1200px;">
 
-    <div class='well'>
-      Puedes buscar por nombre o palabra clave. Por ejemplo tipea
-      <b>ROMULO</b> y haz click en "Buscar".
+{% block general_stats %}
+  <!-- Page content -->
+  <div class="page-content">
+    <div class="card">
+      <div class="card-body">
+        <div class="delimiter-bottom pb-3 mb-4">
+          <div class="icon bg-gradient-primary text-white rounded-circle icon-shape">
+            <i class="fas fa-alicorn"></i>
+          </div>
+          <h5 class="mt-4">La base de datos de Manolo <i class="fa fa-database"></i></h5>
+        </div>
+        <p class="">
+          Contiene <span class="label label-primary"><b>{{ count|intcomma }}</b></span> registros de visitas de las siguientes instituciones:
+        </p>
+
+      {% for institution in institutions  %}
+      <div class="list-group-item">
+        <div class="d-flex align-items-center justify-content-between">
+          <div>
+            <i class="fa {{ institution.font_awesome_icon }} fa-2xl"></i>
+          </div>
+          <div class="flex-fill pl-3 text-limit">
+            <h6 class="progress-text mb-1 text-sm d-block text-limit">
+              {{ institution.name }}</h6>
+            <div class="progress progress-xs mb-0">
+              <div class="progress-bar bg-success" role="progressbar" style="width: 100%;" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100"></div>
+            </div>
+            <div class="d-flex justify-content-between text-xs text-muted text-right mt-1">
+              <div>
+                <span class="font-weight-bold text-success">Completed</span>
+              </div>
+              <div>
+                Updated {{ institution.last_updated|naturaltime }}
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      {% endfor %}
+
+      </div>
     </div>
+  </div>
+{% endblock general_stats %}
 
 
-  {% include 'search_box.html' %}
+{% block rebotes %}
+<!-- Page content -->
+<div class="page-content">
 
-  <br />
-  <hr>
+  <div class="card">
+    <div class="card-body">
+      <div class="delimiter-bottom pb-3 mb-4">
+        <div class="icon bg-gradient-primary text-white rounded-circle icon-shape">
+          <i class="fas fa-alicorn"></i>
+        </div>
+        <h5 class="mt-4">
+          La información contenida en Manolo ha sido utilizada para estas notas periodísticas:
+        </h5>
+        <p>
+          Tales medios rebotaron la nota periodística de
+          <a href="https://twitter.com/martinhidalgo">Martín Hidalgo</a> publicada en el
+         utero.pe
 
+          <br />
+          <br />
+        </p>
+      </div>
+
+      <div class="row">
+
+        <div class="col-xl-3 col-lg-4 col-sm-6">
+          <div class="card overflow-hidden" data-animate-hover="2">
+            <div class="overflow-hidden">
+              <div class="animate-this">
+                <a href="#">
+                  <img src="{% static 'img/2014-12-01_portadas_1.png' %}" class="card-img-top" />
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-xl-3 col-lg-4 col-sm-6">
+          <div class="card overflow-hidden" data-animate-hover="2">
+            <div class="overflow-hidden">
+              <div class="animate-this">
+                <a href="#">
+                  <img src="{% static 'img/2014-12-01_portadas_2.png' %}" class="card-img-top" />
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-xl-3 col-lg-4 col-sm-6">
+          <div class="card overflow-hidden" data-animate-hover="2">
+            <div class="overflow-hidden">
+              <div class="animate-this">
+                <a href="#">
+                  <img src="{% static 'img/2014-12-01_portadas_3.png' %}" class="card-img-top" />
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-xl-3 col-lg-4 col-sm-6">
+          <div class="card overflow-hidden" data-animate-hover="2">
+            <div class="overflow-hidden">
+              <div class="animate-this">
+                <a href="#">
+                  <img src="{% static 'img/2014-12-01_portadas_4.png' %}" class="card-img-top" />
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+
+
+
+      </div>
+
+
+    </div>
+  </div>
+{% endblock rebotes %}
 
   <div class="row">
     <div class="col-xs-9 col-xs-offset-1  col-sm-8 col-sm-offset-2  col-md-6 col-md-offset-3">
-      <h3 class="text-left">La base de datos de Manolo <i class="fa fa-database"></i></h3>
-
-      <p class="text-left">Contiene <span class="label label-primary"><b>{{ count|intcomma }}</b></span> registros de visitas de las siguientes instituciones:</p>
-      <ul class="list-group text-left">
-        {% for institution in institutions  %}
-          <li class="list-group-item">
-            {{ institution.rank }}. {{ institution.name }}.
-            <small>(Updated {{ institution.last_updated|naturaltime }}</small>)
-          </li>
-        {% endfor %}
-      </ul>
-    </div>
-  </div><!-- row -->
-
-
-  <br />
-  <hr>
-
-
-  <div class="row">
-    <div class="col-xs-9 col-xs-offset-1  col-sm-8 col-sm-offset-2  col-md-6 col-md-offset-3">
-      <h3 class="text-left">La información contenida en Manolo ha sido utilizada para estas notas
-                            periodísticas:
+      <h3 class="text-left">
       </h3>
 
       <p class="text-left">
-        {% load static %}
         <img src="{% static 'img/2014-12-01_portadas.png' %}" />
       </p>
 
       <h4 class="text-left">
-        Tales medios rebotaron la nota periodística de
-        <a href="https://twitter.com/martinhidalgo">Martín Hidalgo</a> publicada en el
-        <a href="http://utero.pe/2014/11/24/exclusivo-chocherin-el-socio-de-martin-belaunde-visito-palacio-de-gobierno-33-veces/">utero.pe</a>:
-
-        <br />
-        <br />
-        <a href="http://utero.pe/2014/11/24/exclusivo-chocherin-el-socio-de-martin-belaunde-visito-palacio-de-gobierno-33-veces/">
-          EXCLUSIVO: “CHOCHERÍN”, EL SOCIO DE MARTÍN BELAUNDE, VISITÓ PALACIO DE GOBIERNO 33 VECES
-        </a>
       </h4>
     </div>
   </div><!-- row -->
