@@ -37,7 +37,9 @@
   <body class="application application-offset sidenav-pinned ready">
 {% endblock body_tag %}
 
-<div class="container-fluid container-application">
+{% block main_container_tag %}
+  <div class="container-fluid container-application">
+{% endblock main_container_tag %}
 
     {% block content %}{% endblock content %}
 

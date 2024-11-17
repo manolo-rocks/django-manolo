@@ -7,9 +7,32 @@
 <meta name="robots" content="noindex">
 {% endblock additional_meta %}
 
+{% block additional_css %}
+  <style>
+    .table td {
+        font-size: 0.7rem !important;
+    }
+    .table th {
+        font-size: 0.7rem !important;
+    }
+    .card .table th {
+        padding-right: 0.3rem !important;
+        padding-left: 0.3rem !important;
+    }
+    .card .table td {
+        padding-right: 0.3rem !important;
+        padding-left: 0.3rem !important;
+    }
+  </style>
+{% endblock additional_css %}
+
+
+{% block main_container_tag %}
+  <div class="container-fluid container-application search-results-wider">
+{% endblock main_container_tag %}
+
+
 {% block content %}
-
-
   <div class="main-content position-relative">
 
     {% include 'main_nav.html' %}
