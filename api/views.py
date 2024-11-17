@@ -62,7 +62,7 @@ def search(request, query):
         type: string
     parameters:
       - name: query
-        description: nombre o palabra clave a busar, por ejemplo Romulo
+        description: nombre o palabra clave a buscar, por ejemplo Romulo
         type: string
         paramType: path
         required: true
