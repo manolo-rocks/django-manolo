@@ -43,7 +43,8 @@
 
     {% block content %}{% endblock content %}
 
-    {% include 'disclaimer.html' %}
+    {% block disclaimer %}
+      {% include 'disclaimer.html' %}
 
       <div class="container-fluid">
 
@@ -54,17 +55,19 @@
               v2.5.0</a>
           </small>
 
-            <small class="pull-right">
+          <small class="pull-right">
 
-                Los datos en Manolo son obtenidos con escrapers construidos con el framework
-                <a href="http://scrapy.org/">Scrapy</a>.
-              <br />
-              &copy; 2015-2024 <a href="{% url 'about' %}">Desarrolladores</a>
-              <br />
-              <br />
-            </small>
+            Los datos en Manolo son obtenidos con escrapers construidos con el framework
+            <a href="http://scrapy.org/">Scrapy</a>.
+            <br />
+            &copy; 2015-2024 <a href="{% url 'about' %}">Desarrolladores</a>
+            <br />
+            <br />
+          </small>
         </footer>
       </div>
+    {% endblock disclaimer %}
+
 </div>
 
 
