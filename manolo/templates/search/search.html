@@ -7,133 +7,156 @@
 <meta name="robots" content="noindex">
 {% endblock additional_meta %}
 
+{% block additional_css %}
+  <style>
+    .table td {
+        font-size: 0.7rem !important;
+    }
+    .table th {
+        font-size: 0.7rem !important;
+    }
+    .card .table th {
+        padding-right: 0.3rem !important;
+        padding-left: 0.3rem !important;
+    }
+    .card .table td {
+        padding-right: 0.3rem !important;
+        padding-left: 0.3rem !important;
+    }
+  </style>
+{% endblock additional_css %}
+
+
+{% block main_container_tag %}
+  <div class="container-fluid container-application search-results-wider">
+{% endblock main_container_tag %}
+
+
 {% block content %}
+  <div class="main-content position-relative">
 
-     <div class="container" style="text-align:center; max-width:1200px;">
-       <h2>Este es <a href="/">Manolo</a></h2>
-       <h4>Manolo es un buscador de personas que visitan entidades del Estado peruano</h4>
-       <br />
+    {% include 'main_nav.html' %}
 
-       {% include 'search_box.html' %}
+    <div class="page-content col-lg-6 mx-auto">
+      {% include 'search_box.html' %}
+    </div>
 
-     </div><!-- container -->
+    <div class="page-content">
+      <div class="card">
+        <div class="card-body">
+          {% if paginator.count > 0 %}
+            También puedes hacer búsquedas haciendo click sobre cada uno de los
+            resultados <span class="badge"><b>{{ paginator.count | intcomma }}</b></span>
 
-     <br />
+            <p>
+              Puedes odernar los resultados de manera ascendente o descendente:
+              <img
+                  src="{% static 'img/sort_example.jpg' %}"
+                  class="img-thumbnail"
+                  width="230px"
+              />
+            </p>
 
-     <div id="contenido" class="container" style="max-width:1200px;">
+            {% load static %}
+            <p class="pull-right">
+              <a href="{% url 'search-tsv' query %}?page={{ page.number }}">
+                <img title="Descarga datos en formato TSV" width="32px" src="{% static 'img/tsv.svg' %}" /></a>
 
-     {% if paginator.count > 0 %}
+              <a href="{% url 'search-json' query %}?page={{ page.number }}">
+                <img title="Descarga datos en formato JSON" width="32px" src="{% static 'img/json.svg' %}" /></a>
+            </p>
 
-       También puedes hacer búsquedas haciendo click sobre cada uno de los
-       resultados <span class="badge"><b>{{ paginator.count | intcomma }}</b></span>
+            <table class='table table-striped table-hover table-bordered table-responsive table-sm'>
+              <tr>
+                <th>{% sort_anchor 'institution' 'Institución' %}</th>
+                <th>{% sort_anchor 'date' 'Fecha' %}</th>
+                <th>{% sort_anchor 'full_name' 'Visitante' %}</th>
+                <th>{% sort_anchor 'id_number' 'Documento' %}</th>
+                <th>Entidad</th>
+                <th>Motivo</th>
+                <th>Empleado público</th>
+                <th>Oficina/Cargo</th>
+                <th>Lugar de reunión</th>
+                <th>Hora ing.</th>
+                <th>Hora sal.</th>
+              </tr>
 
-       <p>
-       Puedes odernar los resultados de manera ascendente o descendente:
-       <img
-         src="{% static 'img/sort_example.jpg' %}"
-         class="img-thumbnail"
-         width="230px"
-       />
-       </p>
+              {% for i in page.object_list %}
+                <tr>
+                  <td>
+                    <a href='{% url 'search_view' %}?q={{ i.institution }}'>
+                      {{ i.institution }}
+                    </a>
+                  </td>
+                  <td>
+                    {{ i.date|date:"d/m/Y" }}
+                  </td>
+                  <td>
+                    <a href='{% url 'search_view' %}?q={{ i.full_name }}'>
+                      {{ i.full_name|upper }}
+                    </a>
+                  </td>
+                  <td>
+                    {% if i.id_number %}
+                      <a href='{% url 'search_view' %}?q={{ i.id_number }}'>
+                        {{ i.id_document }}: {{ i.id_number }}
+                      </a>
+                    {% else %}
+                      &nbsp;
+                    {% endif %}
+                  </td>
+                  <td><a href='{% url 'search_view' %}?q={{ i.entity }}'>
+                    {{ i.entity }}
+                  </a></td>
+                  <td><a href='{% url 'search_view' %}?q={{ i.reason }}'>
+                    {{ i.reason }}
+                  </a></td>
+                  <td><a href='{% url 'search_view' %}?q={{ i.host_name }}'>
+                    {{ i.host_name }}
+                  </a></td>
+                  {% if i.office %}
+                    <td>
+                      <a href='{% url 'search_view' %}?q={{ i.office }}'>
+                        {{ i.office }}
+                      </a>
+                    </td>
+                  {% else %}
+                    <td>
+                      <a href='{% url 'search_view' %}?q={{ i.host_title }}'>
+                        {{ i.host_title }}
+                      </a>
+                    </td>
+                  {% endif %}
 
-       {% load static %}
-       <p class="pull-right">
-         <a href="{% url 'search-tsv' query %}?page={{ page.number }}">
-           <img title="Descarga datos en formato TSV" width="32px" src="{% static 'img/tsv.svg' %}" /></a>
+                  {% if i.meeting_place %}
+                    <td>
+                      <a href='{% url 'search_view' %}?q={{ i.meeting_place }}'>
+                        {{ i.meeting_place }}
+                      </a>
+                    </td>
+                  {% else %}
+                    <td>
+                      <a href='{% url 'search_view' %}?q={{ i.location }}'>
+                        {{ i.location }}
+                      </a>
+                    </td>
+                  {% endif %}
 
-         <a href="{% url 'search-json' query %}?page={{ page.number }}">
-           <img title="Descarga datos en formato JSON" width="32px" src="{% static 'img/json.svg' %}" /></a>
-       </p>
+                  <td>{{ i.time_start }}</td>
+                  <td>{{ i.time_end }}</td>
+                </tr>
+              {% endfor %}
+            </table>
 
-       <table class='table table-hover table-striped table-bordered
-         table-responsive table-condensed' style='font-size: 12px;'>
-         <tr>
-           <th>{% sort_anchor 'institution' 'Institución' %}</th>
-           <th>{% sort_anchor 'date' 'Fecha' %}</th>
-           <th>{% sort_anchor 'full_name' 'Visitante' %}</th>
-           <th>{% sort_anchor 'id_number' 'Documento' %}</th>
-           <th>Entidad</th>
-           <th>Motivo</th>
-           <th>Empleado público</th>
-           <th>Oficina/Cargo</th>
-           <th>Lugar de reunión</th>
-           <th>Hora ing.</th>
-           <th>Hora sal.</th>
-         </tr>
+            {% show_pagination %}
+          {% else %}
+            <h4>No se encontraron resultados. Intenta con otra palabra clave.</h4>
+          {% endif %}
+        </div>
+      </div>
 
-         {% for i in page.object_list %}
-           <tr>
-             <td>
-               <a href='{% url 'search_view' %}?q={{ i.institution }}'>
-                 {{ i.institution }}
-               </a>
-             </td>
-             <td>
-               {{ i.date|date:"d/m/Y" }}
-             </td>
-             <td>
-               <a href='{% url 'search_view' %}?q={{ i.full_name }}'>
-                 {{ i.full_name|upper }}
-               </a>
-             </td>
-             <td>
-               {% if i.id_number %}
-                  <a href='{% url 'search_view' %}?q={{ i.id_number }}'>
-                    {{ i.id_document }}: {{ i.id_number }}
-                  </a>
-               {% else %}
-                 &nbsp;
-               {% endif %}
-             </td>
-             <td><a href='{% url 'search_view' %}?q={{ i.entity }}'>
-               {{ i.entity }}
-             </a></td>
-             <td><a href='{% url 'search_view' %}?q={{ i.reason }}'>
-               {{ i.reason }}
-             </a></td>
-             <td><a href='{% url 'search_view' %}?q={{ i.host_name }}'>
-               {{ i.host_name }}
-             </a></td>
-             {% if i.office %}
-               <td>
-                 <a href='{% url 'search_view' %}?q={{ i.office }}'>
-                   {{ i.office }}
-                 </a>
-               </td>
-             {% else %}
-               <td>
-                 <a href='{% url 'search_view' %}?q={{ i.host_title }}'>
-                   {{ i.host_title }}
-                 </a>
-               </td>
-             {% endif %}
 
-             {% if i.meeting_place %}
-               <td>
-                 <a href='{% url 'search_view' %}?q={{ i.meeting_place }}'>
-                   {{ i.meeting_place }}
-                 </a>
-               </td>
-             {% else %}
-               <td>
-                 <a href='{% url 'search_view' %}?q={{ i.location }}'>
-                   {{ i.location }}
-                 </a>
-               </td>
-             {% endif %}
 
-             <td>{{ i.time_start }}</td>
-             <td>{{ i.time_end }}</td>
-           </tr>
-         {% endfor %}
-       </table>
-
-       {% show_pagination %}
-
-     {% else %}
-       <h4>No se encontraron resultados. Intenta con otra palabra clave.</h4>
-     {% endif %}
-
-     </div><!-- container contenido -->
+    </div>
 
 {% endblock content %}

@@ -1,23 +1,65 @@
-  <div class="row">
-    <div class="col-xs-12 col-md-12 col-lg-12">
-      <form action="/search" method="get" class="form-inline" role="search">
-        <div class="form-group">
-           <label class="sr-only" for="query">Keyword</label>
-           <input
-             style="width:250px;"
-             type="text"
-             id="query"
-             name="q"
-             class="form-control"
-             placeholder="Tipea persona o palabra clave"
-             value="{% if query %}{{ query }}{% endif %}"
-             autofocus
-           />
-        </div>
-          <button type="submit" class="btn btn-info" id="search_button">
-                      <i class="fa fa-search"></i>
-                      Buscar
-          </button>
-      </form>
+{#  <div class="row">#}
+{#    <div class="col-xs-12 col-md-12 col-lg-12">#}
+{#      <form action="/search" method="get" class="form-inline" role="search">#}
+{#        <div class="form-group">#}
+{#           <label class="sr-only" for="query">Keyword</label>#}
+{#           <input#}
+{#             style="width:250px;"#}
+{#             type="text"#}
+{#             id="query"#}
+{#             name="q"#}
+{#             class="form-control"#}
+{#             placeholder="Tipea persona o palabra clave"#}
+{#             value="{% if query %}{{ query }}{% endif %}"#}
+{#             autofocus#}
+{#           />#}
+{#        </div>#}
+{#          <button type="submit" class="btn btn-info" id="search_button">#}
+{#                      <i class="fa fa-search"></i>#}
+{#                      Buscar#}
+{#          </button>#}
+{#      </form>#}
+{#    </div>#}
+{#  </div><!-- row -->#}
+
+<div class="card">
+  <div class="card-body py-5">
+    <div class="d-flex align-items-center">
+      <div class="icon icon-primary rounded-circle icon-shape">
+        <i class="fa fa-bookmark" data-target=""></i>
+      </div>
+      <div class="icon-text pl-4">
+        <h5 class="mb-0">Buscador</h5>
+      </div>
     </div>
-  </div><!-- row -->
+    <p class="mt-4 mb-0">
+      Puedes buscar por nombre o palabra clave. Click en "Buscar" y tipea ROMULO.
+    </p>
+
+    <form action="/search" method="get" class="form-inline" role="search">
+      <div class="form-group mt-4">
+        <label class="sr-only" for="query">Keyword</label>
+        <input
+            style="width:250px;"
+            type="text"
+            id="query"
+            name="q"
+            class="form-control"
+            placeholder="Tipea persona o palabra clave"
+            value="{% if query %}{{ query }}{% endif %}"
+            autofocus
+        />
+      </div>
+
+      <div class="mt-4 ml-2">
+        <button type="submit" class="btn btn-info" id="search_button">
+          <i class="fa fa-search"></i>
+          Buscar
+        </button>
+      </div>
+    </form>
+
+  </div>
+</div>
+
+

@@ -7,12 +7,11 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Manolo. Buscador de visitas a
-    entidades del Estado Peruano">
-    <meta name="author" content="Carlos Peña">
+    <meta name="description" content="Manolo. Buscador de visitas a entidades del Estado Peruano">
+    <meta name="author" content="Yoni Pacheco">
     <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:site" content="@carlosp420" />
-    <meta name="twitter:creator" content="@carlosp420" />
+    <meta name="twitter:site" content="@aniversarioperu" />
+    <meta name="twitter:creator" content="@aniversarioperu" />
     {% load static %}
     <link rel="shortcut icon" href="{% static 'img/favicon.ico' %}">
 
@@ -23,10 +22,10 @@
     {% block additional_css %}
     {% endblock additional_css %}
 
-    <link href="{% static 'css/bootstrap.min.css' %}" rel="stylesheet">
-    <link href="//maxcdn.bootstrapcdn.com/bootswatch/3.2.0/readable/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
-    <link rel="stylesheet" href="{% static 'css/styles.css' %}?v=1">
+{#    <link href="{% static 'css/bootstrap.min.css' %}" rel="stylesheet">#}
+{#    <link href="//maxcdn.bootstrapcdn.com/bootswatch/3.2.0/readable/bootstrap.min.css" rel="stylesheet">#}
+    <script src="https://kit.fontawesome.com/e71273195a.js" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="{% static 'css/purpose.css' %}">
 
     {% block additional_head_javascript %}
     {% endblock additional_head_javascript %}
@@ -35,102 +34,19 @@
   </head>
 
 {% block body_tag %}
-  <body>
+  <body class="application application-offset sidenav-pinned ready">
 {% endblock body_tag %}
 
-    <!-- Static navbar -->
-    <nav class="navbar navbar-default navbar-static-top">
-      <div class="container">
-        <div class="navbar-header">
-          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
-            <span class="sr-only">Toggle navigation</span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-          </button>
-          <a class="navbar-brand" href="/">
-            <img alt="manolo.rocks" width="46px" src="{% static 'img/manolo_logo.svg' %}" />
-          </a>
-        </div>
-        <div id="navbar" class="navbar-collapse collapse">
-          <ul class="nav navbar-nav navbar-right">
-            <li>
-              <form action="#" class="navbar-form form-inline">
-                <div class="form-group">
-                  {% if request.user.is_authenticated %}
+{% block main_container_tag %}
+  <div class="container-fluid container-application">
+{% endblock main_container_tag %}
 
-                    {% if user_profile.avatar %}
-                       <img src="data:image/png;base64, {{ user_profile.avatar }}"
-                            class="img-circle"
-                            title="{{ user_profile.first_name }} avatar"
-                            alt="avatar" width="40px" />&nbsp;
-                       <b>{{ user_profile.first_name }}</b>&nbsp;
-                    {% endif %}
-                      <a class="btn btn-danger" href="{% url 'auth_logout' %}">Logout</a>
-                  {% endif %}
-                </div>
-              </form>
-            </li>
-            <li><a href="/">Home</a></li>
-            <li><a href="{% url 'statistics' %}">Estadísticas</a></li>
-            <li><a href="{% url 'schema-swagger-ui' %}">API</a></li>
-            <li><a href="{% url 'about' %}">About Manolo</a></li>
-          </ul>
-        </div><!--/.nav-collapse -->
-      </div>
-    </nav>
+    {% block content %}{% endblock content %}
 
-
-  {% if user_profile.expired %}
-  <div class="row">
-    <div class="col-xs-10 col-xs-offset-1">
-      <p class="alert alert-danger text-center" role="alert">
-        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-          <i class="fa fa-times" aria-hidden="true"></i>
-        </button>
-        <b>Esta cuenta ha expirado.</b>
-        <br />
-        <b>Contacte a <a href="mailto:aniversarioperu1@gmail.com?Subject=Suscripción a Manolo"
-                         class="alert-link">
-          aniversarioperu1@gmail.com</a> para extender su suscripción</b>
-      </p>
-    </div>
-  </div>
-  {% endif %}
-
-
-  {% if user_profile.about_to_expire and not user_profile.expired %}
-    <div class="row">
-      <div class="col-xs-10 col-xs-offset-1">
-        <p class="alert alert-warning text-center" role="alert">
-          <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-            <i class="fa fa-times" aria-hidden="true"></i>
-          </button>
-          <b>Esta cuenta expirará luego de usar {{ user_profile.credits }} créditos.</b>
-          <br />
-          <b>Contacte a <a href="mailto:aniversarioperu1@gmail.com?Subject=Suscripción a Manolo"
-             class="alert-link">
-            aniversarioperu1@gmail.com</a> para extender su suscripción</b>
-        </p>
-      </div>
-    </div>
-  {% endif %}
-
-  {% block content %}{% endblock content %}
-
-
-    <br />
-
-
+    {% block disclaimer %}
+      {% include 'disclaimer.html' %}
 
       <div class="container-fluid">
-        <div class="well"><b>Disclaimer:</b> La info presentada
-            en esta herramienta web (o sea <b>Manolo</b>) es referencial y no tiene valor legal.
-            Para denuncias y otras cuestiones legales debes verificar con las fuentes originales
-            (ej. el registro en línea de la
-            institución estatal correspondiente).
-        </div>
-
 
         <hr>
         <footer>
@@ -139,24 +55,27 @@
               v2.5.0</a>
           </small>
 
-            <small class="pull-right">
+          <small class="pull-right">
 
-                Los datos en Manolo son obtenidos con escrapers construidos con el framework
-                <a href="http://scrapy.org/">Scrapy</a>.
-              <br />
-              &copy; 2015-2024 <a href="{% url 'about' %}">Desarrolladores</a>
-              <br />
-              <br />
-            </small>
+            Los datos en Manolo son obtenidos con escrapers construidos con el framework
+            <a href="http://scrapy.org/">Scrapy</a>.
+            <br />
+            &copy; 2015-2024 <a href="{% url 'about' %}">Desarrolladores</a>
+            <br />
+            <br />
+          </small>
         </footer>
       </div>
+    {% endblock disclaimer %}
+
+</div>
 
 
   {% load static %}
-  <script src="//code.jquery.com/jquery-1.11.0.min.js"></script>
-  <script src='{% static "js/bootstrap.min.js" %}'></script>
-  <script src='{% static "js/highlighter.js" %}'></script>
-  <script>$("#contenido").highlight('{{ query }}');</script>
+    <script src='{% static "js/purpose.core.js" %}'></script>
+    <script src='{% static "js/purpose.js" %}'></script>
+    <script src='{% static "js/highlighter.js" %}'></script>
+    <script>$("#contenido").highlight('{{ query }}');</script>
 
   {% block additional_javascript %}
   {% endblock additional_javascript %}

@@ -84,8 +84,6 @@ def statistics(request):
         date_str = str(entry.cutoff_date.strftime('%Y'))
         visitor_counts[date_str] = entry.visitor_count
 
-    print(visitor_counts)
-
     return render(
         request,
         "statistics.html",
