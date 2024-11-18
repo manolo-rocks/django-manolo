@@ -1,0 +1,24 @@
+<!-- Main nav -->
+<nav id="navbar-main" class="navbar navbar-main navbar-expand-lg navbar-dark bg-primary navbar-border">
+  <div class="container-fluid">
+    <!-- Brand + toggler or mobile devices -->
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar-main-collapse" aria-controls="navbar-main-collapse" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <!-- Navbar nav -->
+    <div id="navbar-main-collapse" class="collapse navbar-collapse navbar-collapse-fade">
+      <ul class="navbar-nav align-items-lg-center">
+        <li class="nav-item">
+          <a class="nav-link pl-lg-0" href="/">Home</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link pl-lg-0" href="{% url 'statistics' %}">Estadísticas</a></li>
+        <li class="nav-item">
+          <a class="nav-link pl-lg-0" href="{% url 'schema-swagger-ui' %}">API</a></li>
+        <li class="nav-item">
+          <a class="nav-link pl-lg-0" href="{% url 'about' %}">About Manolo</a></li>
+      </ul>
+    </div>
+  </div>
+</nav>
