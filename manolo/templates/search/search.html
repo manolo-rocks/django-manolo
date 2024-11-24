@@ -70,15 +70,15 @@
               <tr>
                 <th>{% sort_anchor 'institution' 'Institución' %}</th>
                 <th>{% sort_anchor 'date' 'Fecha' %}</th>
-                <th>{% sort_anchor 'full_name' 'Visitante' %}</th>
-                <th>{% sort_anchor 'id_number' 'Documento' %}</th>
-                <th>Entidad</th>
-                <th>Motivo</th>
-                <th>Empleado público</th>
-                <th>Oficina/Cargo</th>
-                <th>Lugar de reunión</th>
                 <th>Hora ing.</th>
                 <th>Hora sal.</th>
+                <th>{% sort_anchor 'full_name' 'Visitante' %}</th>
+                <th>{% sort_anchor 'id_number' 'Documento' %}</th>
+                <th>Empleado público</th>
+                <th>Oficina/Cargo</th>
+                <th>Entidad</th>
+                <th>Motivo</th>
+                <th>Lugar de reunión</th>
               </tr>
 
               {% for i in page.object_list %}
@@ -91,6 +91,8 @@
                   <td>
                     {{ i.date|date:"d/m/Y" }}
                   </td>
+                  <td>{{ i.time_start }}</td>
+                  <td>{{ i.time_end }}</td>
                   <td>
                     <a href='{% url 'search_view' %}?q={{ i.full_name }}'>
                       {{ i.full_name|upper }}
@@ -105,15 +107,11 @@
                       &nbsp;
                     {% endif %}
                   </td>
-                  <td><a href='{% url 'search_view' %}?q={{ i.entity }}'>
-                    {{ i.entity }}
-                  </a></td>
-                  <td><a href='{% url 'search_view' %}?q={{ i.reason }}'>
-                    {{ i.reason }}
-                  </a></td>
-                  <td><a href='{% url 'search_view' %}?q={{ i.host_name }}'>
-                    {{ i.host_name }}
-                  </a></td>
+                  <td>
+                    <a href='{% url 'search_view' %}?q={{ i.host_name }}'>
+                      {{ i.host_name }}
+                    </a>
+                  </td>
                   {% if i.office %}
                     <td>
                       <a href='{% url 'search_view' %}?q={{ i.office }}'>
@@ -127,6 +125,13 @@
                       </a>
                     </td>
                   {% endif %}
+
+                  <td><a href='{% url 'search_view' %}?q={{ i.entity }}'>
+                    {{ i.entity }}
+                  </a></td>
+                  <td><a href='{% url 'search_view' %}?q={{ i.reason }}'>
+                    {{ i.reason }}
+                  </a></td>
 
                   {% if i.meeting_place %}
                     <td>
@@ -142,8 +147,6 @@
                     </td>
                   {% endif %}
 
-                  <td>{{ i.time_start }}</td>
-                  <td>{{ i.time_end }}</td>
                 </tr>
               {% endfor %}
             </table>
