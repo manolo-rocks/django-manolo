@@ -23,6 +23,19 @@
         padding-right: 0.3rem !important;
         padding-left: 0.3rem !important;
     }
+
+    .fixed-table {
+      table-layout: fixed !important;
+      width: 100% !important;  /* or whatever total width you want */
+    }
+
+    .fixed-table td {
+      {#width: 222px !important;#}
+      word-wrap: break-word !important;
+      overflow-wrap: break-word !important;
+      white-space: normal !important;
+      padding: 5px !important;  /* optional, for better readability */
+    }
   </style>
 {% endblock additional_css %}
 
@@ -66,7 +79,22 @@
                 <img title="Descarga datos en formato JSON" width="32px" src="{% static 'img/json.svg' %}" /></a>
             </p>
 
-            <table class='table table-striped table-hover table-bordered table-responsive table-sm'>
+            <table class='table table-striped table-hover table-bordered table-responsive table-sm fixed-table'>
+
+              <colgroup>
+                <col style="width: 62px">
+                <col style="width: 72px">
+                <col style="width: 58px">
+                <col style="width: 58px">
+                <col style="width: 200px">
+                <col style="width: 72px">
+                <col style="width: 200px">
+                <col style="width: 200px">
+                <col style="width: 200px">
+                <col style="width: 200px">
+                <col style="width: 200px">
+              </colgroup>
+
               <tr>
                 <th>{% sort_anchor 'institution' 'Institución' %}</th>
                 <th>{% sort_anchor 'date' 'Fecha' %}</th>
