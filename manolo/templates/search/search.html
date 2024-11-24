@@ -36,6 +36,13 @@
       white-space: normal !important;
       padding: 5px !important;  /* optional, for better readability */
     }
+
+    .highlight {
+      background-color: yellow !important;
+      padding: 0 !important;
+      border-radius: 0 !important;
+      color: black !important;
+    }
   </style>
 {% endblock additional_css %}
 
@@ -56,7 +63,7 @@
 
     <div class="page-content">
       <div class="card">
-        <div class="card-body">
+        <div class="card-body" id="contenido">
           {% if paginator.count > 0 %}
             También puedes hacer búsquedas haciendo click sobre cada uno de los
             resultados <span class="badge"><b>{{ paginator.count | intcomma }}</b></span>
