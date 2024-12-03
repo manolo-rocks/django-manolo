@@ -132,6 +132,7 @@ CORS_ALLOWED_ORIGINS = [
     "https://laencerrona.pe"
 ]
 CORS_ALLOW_IFRAME = True
+X_FRAME_OPTIONS = 'ALLOW-FROM https://laencerrona.pe'
 
 ROOT_URLCONF = 'manolo.urls'
 
