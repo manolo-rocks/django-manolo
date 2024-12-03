@@ -131,6 +131,7 @@ MIDDLEWARE = [
 CORS_ALLOWED_ORIGINS = [
     "https://laencerrona.pe"
 ]
+CORS_ALLOW_IFRAME = True
 
 ROOT_URLCONF = 'manolo.urls'
 
