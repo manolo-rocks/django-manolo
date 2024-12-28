@@ -143,21 +143,22 @@ def process_row(row):
     fecha = datetime.strptime(fecha, '%Y-%m-%d').date()
     id_document = row['id_document']
     id_number = row['id_number']
+    host_name, office, host_title = row['host_name'].split(' - ')
 
     item = {
         'full_name': row['full_name'],
         'entity': row['entity'],
         "id_number": id_number,
         "id_document": id_document,
-        'host_name': row['host_name'],
-        "office": row['office'],
-        "host_title": row['host_title'],
+        'host_name': host_name,
+        "office": office,
+        "host_title": host_title,
         'reason': row['reason'],
         "meeting_place": row['meeting_place'],
         'institution': row['institution'],
         "time_start": row['time_start'],
         "time_end": row['time_end'],
-        "location": row["location"],
+        "location": row.get("location"),
         'date': fecha,
     }
     item = make_hash(item)
