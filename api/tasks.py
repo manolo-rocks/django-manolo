@@ -14,10 +14,10 @@ log = logging.getLogger(__name__)
 
 
 @app.task
-def process_json_request(data, institution_name: str) -> None:
+def process_json_request(data) -> None:
     for line in data:
         items = json.loads(line)
-        process_items(items, institution=institution_name)
+        process_items(items)
 
 
 @app.task

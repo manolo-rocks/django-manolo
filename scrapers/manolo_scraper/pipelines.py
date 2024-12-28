@@ -47,9 +47,9 @@ class CleanItemPipeline(object):
         return item
 
 
-def process_items(items, institution):
+def process_items(items):
     for item in items:
-        process_row(item, institution)
+        process_row(item)
 
 
 def process_item(item):
