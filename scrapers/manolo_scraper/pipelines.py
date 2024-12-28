@@ -143,7 +143,16 @@ def process_row(row):
     fecha = datetime.strptime(fecha, '%Y-%m-%d').date()
     id_document = row['id_document']
     id_number = row['id_number']
-    host_name, office, host_title = row['host_name'].split(' - ')
+    try:
+        host_name, office, host_title = row['host_name'].split(' - ')
+    except ValueError:
+        try:
+            host_name, office = row['host_name'].split(' - ')
+            host_title = ''
+        except ValueError:
+            host_name = row['host_name']
+            office = ''
+            host_title = ''
 
     item = {
         'full_name': row['full_name'],
