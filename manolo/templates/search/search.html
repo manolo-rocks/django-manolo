@@ -119,7 +119,7 @@
               {% for i in page.object_list %}
                 <tr>
                   <td>
-                    <a href='{% url 'search_view' %}?q={{ i.institution }}'>
+                    <a href='{% url 'search_view' %}?i={{ i.institution }}'>
                       {{ i.institution }}
                     </a>
                   </td>
