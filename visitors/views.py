@@ -115,7 +115,7 @@ def search(request):
     if institution:
         all_items = Visitor.objects.filter(
             institution=institution,
-        ).order_by("date")
+        ).order_by("-date")
         query = institution
     else:
         query = query.strip()
