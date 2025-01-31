@@ -7,17 +7,16 @@ from django.core.mail import send_mail
 from django.http import HttpRequest
 
 from manolo.celery import app
-from scrapers.manolo_scraper.pipelines import process_items
-
+from scrapers.manolo_scraper.pipelines import process_items, process_row
 
 log = logging.getLogger(__name__)
 
 
 @app.task
-def process_json_request(data, institution_name: str) -> None:
+def process_json_request(data) -> None:
     for line in data:
-        items = json.loads(line)
-        process_items(items, institution=institution_name)
+        item = json.loads(line)
+        process_row(item)
 
 
 @app.task
