@@ -80,6 +80,7 @@ services:
     environment:
       C_FORCE_ROOT: 'True'
       DJANGO_SETTINGS_MODULE: 'manolo.settings.production'
+      TZ: UTC
     volumes:
       - app_data:/data
   redis:
@@ -90,6 +91,8 @@ services:
       - app_data:/data
     expose:
       - '6379'
+    environment:
+      TZ: UTC
   cron:
     restart: always
     build:
