@@ -7,6 +7,7 @@
 <meta name="robots" content="noindex">
 {% endblock additional_meta %}
 
+
 {% block additional_css %}
   <style>
     .table td {
@@ -119,8 +120,13 @@
               {% for i in page.object_list %}
                 <tr>
                   <td>
-                    <a href='{% url 'search_view' %}?i={{ i.institution }}'>
-                      {{ i.institution }}
+                    <a
+                        href='{% url 'search_view' %}?i={{ i.institution2.slug }}'
+                        data-toggle="tooltip"
+                        data-placement="top"
+                        title="{{ i.institution2.name }}"
+                    >
+                      {{ i.institution2.slug }}
                     </a>
                   </td>
                   <td>

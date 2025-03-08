@@ -68,6 +68,7 @@ class Visitor(models.Model):
         null=True,
         db_index=True,
     )
+    institution2 = models.ForeignKey('Institution', on_delete=models.SET_NULL, null=True)
 
     location = models.CharField(
         max_length=250,
@@ -182,8 +183,9 @@ class Developer(models.Model):
 class Institution(models.Model):
     slug = models.CharField(null=False, max_length=200, unique=True)
     name = models.CharField(null=False, max_length=200, unique=True)
-    rank = models.IntegerField()
+    rank = models.IntegerField(default=0)
     font_awesome_icon = models.CharField(null=True)
+    ruc = models.CharField(null=True, max_length=200, unique=True)
 
     def __str__(self):
         return f"{self.slug} ({self.name})"
