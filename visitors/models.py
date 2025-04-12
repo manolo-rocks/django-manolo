@@ -131,6 +131,7 @@ class Visitor(models.Model):
             GinIndex(
                 fields=['full_search'], name='full_search_idx'
             ),
+            models.Index(fields=['institution2'], name='institution2_idx'),
         ]
 
 
