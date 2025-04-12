@@ -68,7 +68,9 @@ class Visitor(models.Model):
         null=True,
         db_index=True,
     )
-    institution2 = models.ForeignKey('Institution', on_delete=models.SET_NULL, null=True)
+    institution2 = models.ForeignKey(
+        'Institution', on_delete=models.SET_NULL, null=True, db_index=True
+    )
 
     location = models.CharField(
         max_length=250,
