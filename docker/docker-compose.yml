@@ -80,6 +80,7 @@ services:
     environment:
       C_FORCE_ROOT: 'True'
       DJANGO_SETTINGS_MODULE: 'manolo.settings.production'
+      TZ: UTC
     volumes:
       - app_data:/data
   redis:
@@ -90,6 +91,8 @@ services:
       - app_data:/data
     expose:
       - '6379'
+    environment:
+      TZ: UTC
   cron:
     restart: always
     build:
@@ -100,5 +103,23 @@ services:
       - app_data:/data
     depends_on:
       - db
+    environment:
+      DJANGO_SETTINGS_MODULE: 'manolo.settings.production'
+  flower:
+    image: manolo/manolo_app
+    command: /wait_for_it.sh redis:6379
+      --timeout=0 --
+      celery
+      --broker=redis://redis:6379/0 flower
+      --basic_auth=manolo:XaEnrM!M849f73
+      --db=/data/flower.db
+      --url_prefix=flower
+    ports:
+      - "55552:5555"
+    depends_on:
+      - redis
+    restart: always
+    volumes:
+      - app_data:/data
     environment:
       DJANGO_SETTINGS_MODULE: 'manolo.settings.production'

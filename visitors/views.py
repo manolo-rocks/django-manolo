@@ -110,28 +110,38 @@ def statistics_api(request):
 def search(request):
     user_profile = get_user_profile(request)
     query = request.GET.get('q') or ''
-    query = query.strip()
-    if len(query.split()) == 1:
-        single_word_query = True
-    else:
-        single_word_query = False
+    institution = request.GET.get('i') or ''
 
-    if query_is_dni(query):
-        # do dni search
-        all_items = do_dni_search(query)
+    if institution:
+        all_items = Visitor.objects.filter(
+            institution=institution,
+        ).order_by("-date")
+        query = institution
     else:
-        if single_word_query:
-            all_items = Visitor.objects.filter(
-                full_search=SearchQuery(query)
-            )[0:2000]
+        query = query.strip()
+
+        if len(query.split()) == 1:
+            single_word_query = True
         else:
-            all_items = Visitor.objects.filter(
-                full_search=SearchQuery(query)
-            )
+            single_word_query = False
 
-    # sort queryset
-    if not single_word_query:
-        all_items = do_sorting(request, all_items)
+        if query_is_dni(query):
+            # do dni search
+            all_items = do_dni_search(query)
+        else:
+            if single_word_query:
+                all_items = Visitor.objects.filter(
+                    full_search=SearchQuery(query)
+                )[0:2000]
+            else:
+                all_items = Visitor.objects.filter(
+                    full_search=SearchQuery(query)
+                )
+
+        # sort queryset
+        if not single_word_query:
+            all_items = do_sorting(request, all_items)
+
     # paginate queryset
     paginator, page = do_pagination(request, all_items)
 

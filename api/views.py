@@ -176,12 +176,12 @@ def save_json(request):
     if is_key_valid(request) is False:
         return HttpResponse("bad key")
 
-    name = request.FILES["file"].name.replace(".json", "")
+    institution_name = request.FILES["file"].name.replace(".json", "")
     binary_data = request.FILES['file'].read()
     data = binary_data.decode().splitlines()
 
-    task = process_json_request.s(data, institution_name=name)
-    task.apply_async(link_error=log_task_error.s(name))
+    task = process_json_request.s(data)
+    task.apply_async(link_error=log_task_error.s(institution_name))
 
     return HttpResponse('ok')
 
