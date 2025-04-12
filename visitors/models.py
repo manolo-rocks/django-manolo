@@ -3,7 +3,7 @@ from django.contrib.postgres.indexes import GinIndex
 from django.contrib.postgres.search import SearchVectorField, SearchVector
 from django.db import models
 from django.contrib.auth.models import User
-from django.db.models import JSONField
+from django.db.models import JSONField, Q
 
 
 class Visitor(models.Model):
@@ -132,6 +132,12 @@ class Visitor(models.Model):
                 fields=['full_search'], name='full_search_idx'
             ),
             models.Index(fields=['institution2'], name='institution2_idx'),
+            # partial index specifically for IS NULL queries
+            models.Index(
+                fields=['institution2'],
+                name='institution2_not_null_idx',
+                condition=Q(institution2__isnull=True)
+            ),
         ]
 
 
