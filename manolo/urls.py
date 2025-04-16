@@ -27,7 +27,6 @@ urlpatterns = [
     path('statistics/', views.statistics, name='statistics'),
     path('statistics_api/', views.statistics_api),
 
-    path('ads.txt', ads_txt_view),
     path('about/', views.about, name='about'),
     path('', include('visitors.urls')),
     path('cazador/', include('cazador.urls')),
