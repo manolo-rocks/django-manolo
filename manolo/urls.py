@@ -1,4 +1,5 @@
 from django.conf import settings
+from django.http import HttpResponse
 from django.urls import include, path
 from django.conf.urls.static import static
 from django.contrib import admin
@@ -8,6 +9,12 @@ from visitors import views
 
 
 admin.autodiscover()
+
+
+def ads_txt_view(request):
+    content = "google.com, pub-5536287228450200, DIRECT, f08c47fec0942fa0"
+    return HttpResponse(content, content_type="text/plain")
+
 
 
 urlpatterns = [
@@ -20,6 +27,7 @@ urlpatterns = [
     path('statistics/', views.statistics, name='statistics'),
     path('statistics_api/', views.statistics_api),
 
+    path('ads.txt', ads_txt_view),
     path('about/', views.about, name='about'),
     path('', include('visitors.urls')),
     path('cazador/', include('cazador.urls')),
