@@ -10,7 +10,9 @@ from django.http import Http404, HttpResponse
 from rest_framework.renderers import JSONRenderer
 from django.views.decorators.csrf import csrf_exempt
 
-from visitors.models import Visitor, Statistic, Statistic_detail, Developer, VisitorScrapeProgress
+from visitors.models import (Visitor, Statistic, Statistic_detail, Developer, VisitorScrapeProgress,
+    Institution
+)
 from visitors.utils import Paginator, get_sort_field, get_user_profile
 
 
@@ -113,8 +115,13 @@ def search(request):
     institution = request.GET.get('i') or ''
 
     if institution:
+        try:
+            institution_obj = Institution.objects.get(slug=institution)
+        except Institution.DoesNotExist:
+            return redirect('/')
+
         all_items = Visitor.objects.filter(
-            institution=institution,
+            institution2=institution_obj,
         ).order_by("-date")
         query = institution
     else:

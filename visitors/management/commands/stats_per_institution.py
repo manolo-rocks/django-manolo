@@ -1,11 +1,8 @@
 import csv
-import json
 
 from django.core.management.base import BaseCommand
-from django.db.models import Count
-from django.utils import timezone
 
-from visitors.models import Visitor, Statistic, Statistic_detail, Institution, VisitorScrapeProgress
+from visitors.models import Visitor, Institution
 
 
 class Command(BaseCommand):
@@ -32,4 +29,3 @@ def run_statistics():
         writer.writeheader()
         for item in all_stats:
             writer.writerow(item)
-
