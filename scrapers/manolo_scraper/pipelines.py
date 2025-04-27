@@ -149,21 +149,21 @@ def process_row(row):
     id_document = row['id_document']
     id_number = row['id_number']
 
-    if row.get('institution') == 'municipalidad de lima':
-        host_name = row['host_name']
-        host_title = row['host_title']
-        office = row['office']
-    else:
+    # if row.get('institution') == 'municipalidad de lima':
+    #     host_name = row['host_name']
+    #     host_title = row['host_title']
+    #     office = row['office']
+    # else:
+    try:
+        host_name, office, host_title = row['host_name'].split(' - ')
+    except ValueError:
         try:
-            host_name, office, host_title = row['host_name'].split(' - ')
+            host_name, office = row['host_name'].split(' - ')
+            host_title = ''
         except ValueError:
-            try:
-                host_name, office = row['host_name'].split(' - ')
-                host_title = ''
-            except ValueError:
-                host_name = row['host_name']
-                office = ''
-                host_title = ''
+            host_name = row['host_name']
+            office = ''
+            host_title = ''
 
     try:
         institution = Institution.objects.get(ruc=row['institution_ruc'])
