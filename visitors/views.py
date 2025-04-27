@@ -61,7 +61,7 @@ def index(request):
 
 
 def about(request):
-    return Http404("This page is not available.")
+    raise Http404("This page is not available.")
     # developers = Developer.objects.all().order_by('rank')
     # context = get_user_profile(request)
     # context['developers'] = developers.exclude(project_leader=True)
