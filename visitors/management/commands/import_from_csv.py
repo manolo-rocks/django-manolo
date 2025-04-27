@@ -4,8 +4,8 @@ from datetime import datetime
 
 from django.core.management import BaseCommand
 
-from scrapers.manolo_scraper.pipelines import save_item
-from scrapers.manolo_scraper.utils import get_dni, make_hash
+from scrapers.manolo_scraper.utils import get_dni
+from api.utils import make_hash, save_item
 from visitors.models import Visitor
 
 

@@ -7,7 +7,8 @@ import undetected_chromedriver.v2 as uc
 from .spiders import ManoloBaseSpider
 from ..items import ManoloItem
 from ..item_loaders import ManoloItemLoader
-from ..utils import get_lua_script, make_hash
+from ..utils import get_lua_script
+from api.utils import make_hash
 
 
 class MTCSpiderOld(ManoloBaseSpider):

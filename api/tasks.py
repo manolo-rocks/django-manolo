@@ -7,7 +7,7 @@ from django.core.mail import send_mail
 from django.http import HttpRequest
 
 from manolo.celery import app
-from scrapers.manolo_scraper.pipelines import process_items, process_row
+from api.utils import process_row
 
 log = logging.getLogger(__name__)
 
