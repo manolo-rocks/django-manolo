@@ -1,4 +1,5 @@
 from django.conf import settings
+from django.http import HttpResponse
 from django.urls import include, path
 from django.conf.urls.static import static
 from django.contrib import admin
@@ -8,6 +9,12 @@ from visitors import views
 
 
 admin.autodiscover()
+
+
+def ads_txt_view(request):
+    content = "google.com, pub-5536287228450200, DIRECT, f08c47fec0942fa0"
+    return HttpResponse(content, content_type="text/plain")
+
 
 
 urlpatterns = [

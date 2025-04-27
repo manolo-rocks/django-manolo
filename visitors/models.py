@@ -3,7 +3,7 @@ from django.contrib.postgres.indexes import GinIndex
 from django.contrib.postgres.search import SearchVectorField, SearchVector
 from django.db import models
 from django.contrib.auth.models import User
-from django.db.models import JSONField
+from django.db.models import JSONField, Q
 
 
 class Visitor(models.Model):
@@ -68,6 +68,9 @@ class Visitor(models.Model):
         null=True,
         db_index=True,
     )
+    institution2 = models.ForeignKey(
+        'Institution', on_delete=models.SET_NULL, null=True, db_index=True
+    )
 
     location = models.CharField(
         max_length=250,
@@ -128,6 +131,13 @@ class Visitor(models.Model):
             GinIndex(
                 fields=['full_search'], name='full_search_idx'
             ),
+            models.Index(fields=['institution2'], name='institution2_idx'),
+            # partial index specifically for IS NULL queries
+            models.Index(
+                fields=['institution2'],
+                name='institution2_not_null_idx',
+                condition=Q(institution2__isnull=True)
+            ),
         ]
 
 
@@ -182,8 +192,9 @@ class Developer(models.Model):
 class Institution(models.Model):
     slug = models.CharField(null=False, max_length=200, unique=True)
     name = models.CharField(null=False, max_length=200, unique=True)
-    rank = models.IntegerField()
+    rank = models.IntegerField(default=0)
     font_awesome_icon = models.CharField(null=True)
+    ruc = models.CharField(null=True, max_length=200, unique=True)
 
     def __str__(self):
         return f"{self.slug} ({self.name})"

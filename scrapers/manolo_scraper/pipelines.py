@@ -11,7 +11,7 @@ from pytz import timezone
 from scrapy.exceptions import DropItem
 
 from scrapers.manolo_scraper.utils import make_hash
-from visitors.models import Visitor
+from visitors.models import Visitor, Institution
 
 
 class DuplicatesPipeline(object):
@@ -121,6 +121,9 @@ def save_item(item):
     if not visitor_queryset.exists():
         item['created'] = datetime.now(lima)
         item['modified'] = datetime.now(lima)
+        institution2 = Institution.objects.get(slug=item['institution'])
+        item['institution2'] = institution2
+
         try:
             Visitor.objects.create(**item)
             print('saving to db item')
@@ -160,21 +163,23 @@ def process_row(row):
                 office = ''
                 host_title = ''
 
+    institution = Institution.objects.get(ruc=row['institution_ruc'])
+
     item = {
-        'full_name': row['full_name'],
-        'entity': row['entity'],
-        "id_number": id_number,
+        'date': fecha,
         "id_document": id_document,
+        "id_number": id_number,
         'host_name': host_name,
         "office": office,
         "host_title": host_title,
         'reason': row.get('reason') or "",
         "meeting_place": row['meeting_place'],
         'institution': row['institution'],
+        'full_name': row['full_name'],
         "time_start": row['time_start'],
         "time_end": row['time_end'],
+        'entity': row['entity'],
         "location": row.get("location"),
-        'date': fecha,
     }
     item = make_hash(item)
     save_item(item)
