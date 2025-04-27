@@ -61,20 +61,21 @@ def index(request):
 
 
 def about(request):
-    developers = Developer.objects.all().order_by('rank')
-    context = get_user_profile(request)
-    context['developers'] = developers.exclude(project_leader=True)
-
-    try:
-        context['project_leader'] = Developer.objects.get(project_leader=True)
-    except Developer.DoesNotExist:
-        context['project_leader'] = None
-
-    return render(
-        request,
-        "about.html",
-        context
-    )
+    return Http404("This page is not available.")
+    # developers = Developer.objects.all().order_by('rank')
+    # context = get_user_profile(request)
+    # context['developers'] = developers.exclude(project_leader=True)
+    #
+    # try:
+    #     context['project_leader'] = Developer.objects.get(project_leader=True)
+    # except Developer.DoesNotExist:
+    #     context['project_leader'] = None
+    #
+    # return render(
+    #     request,
+    #     "about.html",
+    #     context
+    # )
 
 
 def statistics(request):
