@@ -2,6 +2,7 @@ import datetime
 import csv
 import logging
 import re
+from urllib.parse import quote
 
 from django.contrib.postgres.search import SearchQuery
 from django.shortcuts import render, redirect
@@ -155,13 +156,14 @@ def search(request):
 
     json_path = request.get_full_path() + '&json'
     tsv_path = request.get_full_path() + '&tsv'
+    encoded_query = quote(query)
     return render(
         request,
         "search/search.html",
         {
             "paginator": paginator,
             "page": page,
-            "query": query,
+            "query": encoded_query,
             "json_path": json_path,
             "tsv_path": tsv_path,
             'user_profile': user_profile,
