@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-
+import logging
 # Define your item pipelines here
 #
 # Don't forget to add your pipeline to the ITEM_PIPELINES setting
@@ -12,6 +12,8 @@ from scrapy.exceptions import DropItem
 
 from scrapers.manolo_scraper.utils import make_hash
 from visitors.models import Visitor, Institution
+
+log = logging.getLogger(__name__)
 
 
 class DuplicatesPipeline(object):
@@ -163,23 +165,27 @@ def process_row(row):
                 office = ''
                 host_title = ''
 
-    institution = Institution.objects.get(ruc=row['institution_ruc'])
+    try:
+        institution = Institution.objects.get(ruc=row['institution_ruc'])
+    except Institution.DoesNotExist:
+        log.exception(f"Could not find institution with ruc {row['institution_ruc']} {fecha}")
+        return
 
     item = {
         'date': fecha,
         "id_document": id_document,
         "id_number": id_number,
         'host_name': host_name,
-        "office": office,
-        "host_title": host_title,
-        'reason': row.get('reason') or "",
-        "meeting_place": row['meeting_place'],
-        'institution': row['institution'],
         'full_name': row['full_name'],
         "time_start": row['time_start'],
         "time_end": row['time_end'],
+        'reason': row.get('reason') or "",
         'entity': row['entity'],
-        "location": row.get("location"),
+        "location": row.get("location") or "",
+        "office": office,
+        "host_title": host_title,
+        "meeting_place": row['meeting_place'],
+        'institution': institution.slug,
     }
     item = make_hash(item)
     save_item(item)
