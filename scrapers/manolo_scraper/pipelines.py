@@ -149,7 +149,7 @@ def process_row(row):
     id_document = row['id_document']
     id_number = row['id_number']
 
-    if row['institution'] == 'municipalidad de lima':
+    if row.get('institution') == 'municipalidad de lima':
         host_name = row['host_name']
         host_title = row['host_title']
         office = row['office']
