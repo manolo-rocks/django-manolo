@@ -6,15 +6,9 @@ from django.contrib import admin
 
 from api.views import schema_view
 from visitors import views
-
+from visitors.views import ads_txt_view
 
 admin.autodiscover()
-
-
-def ads_txt_view(request):
-    content = "google.com, pub-5536287228450200, DIRECT, f08c47fec0942fa0"
-    return HttpResponse(content, content_type="text/plain")
-
 
 
 urlpatterns = [
@@ -26,6 +20,7 @@ urlpatterns = [
     path('docs/', schema_view.with_ui('swagger', cache_timeout=0), name='schema-swagger-ui'),
     path('statistics/', views.statistics, name='statistics'),
     path('statistics_api/', views.statistics_api),
+    path('ads.txt', ads_txt_view),
 
     path('about/', views.about, name='about'),
     path('', include('visitors.urls')),

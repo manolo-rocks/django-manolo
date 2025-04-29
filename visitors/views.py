@@ -307,3 +307,9 @@ def do_sorting(request, queryset):
     if not ordering:
         return queryset.order_by('-date')
     return queryset.order_by(ordering)
+
+
+def ads_txt_view(request):
+    content = "google.com, pub-5536287228450200, DIRECT, f08c47fec0942fa0"
+    return HttpResponse(content, content_type="text/plain")
+
