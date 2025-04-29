@@ -1,2 +1,4 @@
 User-Agent: *
 Disallow: /api/
+Sitemap: https://manolo.rocks/static/sitemaps/sitemap.xml
+

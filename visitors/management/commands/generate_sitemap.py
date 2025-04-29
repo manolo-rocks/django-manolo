@@ -13,7 +13,7 @@ class Command(BaseCommand):
 
     def add_arguments(self, parser):
         parser.add_argument(
-            '--batch-size', type=int, default=40000,
+            '--batch-size', type=int, default=1000,
             help='Number of URLs per sitemap file (max 50000)'
         )
         parser.add_argument(
