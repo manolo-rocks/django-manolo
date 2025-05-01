@@ -164,6 +164,7 @@ def search(request):
             "paginator": paginator,
             "page": page,
             "query": encoded_query,
+            "plain_query": query,
             "json_path": json_path,
             "tsv_path": tsv_path,
             'user_profile': user_profile,
