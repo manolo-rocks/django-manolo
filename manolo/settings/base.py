@@ -186,7 +186,7 @@ VERBOSE_LOG_FORMAT = '[%(asctime)s] [%(levelname)s] [%(threadName)s] ' \
 
 LOGGING = {
     'version': 1,
-    'disable_existing_loggers': True,
+    'disable_existing_loggers': False,
     'formatters': {
         'verbose': {
             'format': VERBOSE_LOG_FORMAT
@@ -212,10 +212,17 @@ LOGGING = {
             'class': 'logging.StreamHandler',
             'formatter': 'verbose',
         },
+        'console': {
+            'level': 'ERROR',
+            'class': 'logging.StreamHandler',
+            'formatter': 'verbose',
+        },
         'mail_admins': {
             'level': 'ERROR',
             'class': 'django.utils.log.AdminEmailHandler',
             'filters': ['require_debug_false'],
+            'formatter': 'verbose',
+            'include_html': True,
         },
         'file': {
             'level': 'INFO',
@@ -243,12 +250,14 @@ LOGGING = {
             'propagate': False,
         },
         'visitors': {
-            'handlers': ['terminal', 'file', 'mail_admins'],
+            'handlers': ['terminal', 'file', 'mail_admins', 'console'],
             'level': 'DEBUG',
+            'propagate': True,
         },
         'api': {
-            'handlers': ['terminal', 'file', 'mail_admins'],
+            'handlers': ['terminal', 'file', 'mail_admins', 'console'],
             'level': 'DEBUG',
+            'propagate': True,
         },
         'cazador': {
             'handlers': ['terminal', 'file', 'mail_admins'],

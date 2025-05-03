@@ -5,7 +5,7 @@ from scrapy import FormRequest, Request
 from .spiders import ManoloBaseSpider
 from ..items import ManoloItem
 from ..item_loaders import ManoloItemLoader
-from ..utils import make_hash
+from api.utils import make_hash
 
 
 class MinsaSpider(ManoloBaseSpider):

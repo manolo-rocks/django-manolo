@@ -11,7 +11,8 @@ import undetected_chromedriver.v2 as uc
 
 from ..items import ManoloItem
 from ..item_loaders import ManoloItemLoader
-from ..utils import make_hash, get_dni
+from ..utils import get_dni
+from api.utils import make_hash
 
 
 class ManoloBaseSpider(scrapy.Spider):

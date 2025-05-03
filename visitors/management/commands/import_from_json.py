@@ -2,7 +2,7 @@ import json
 
 from django.core.management import BaseCommand
 
-from scrapers.manolo_scraper.pipelines import process_row
+from api.utils import process_row
 
 
 class Command(BaseCommand):

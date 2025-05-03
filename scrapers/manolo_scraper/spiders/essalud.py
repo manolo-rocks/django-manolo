@@ -4,7 +4,7 @@ from scrapers.manolo_scraper.spiders.spiders import ManoloBaseSpider
 from ..errors import ParsingError
 from ..items import ManoloItem
 from ..item_loaders import ManoloItemLoader
-from ..utils import make_hash
+from api.utils import make_hash
 
 
 class EssaludSpider(ManoloBaseSpider):

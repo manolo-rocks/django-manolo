@@ -6,7 +6,7 @@ from scrapy import Request
 
 from scrapers.manolo_scraper.spiders.spiders import ManoloBaseSpider
 from ..items import ManoloItem
-from ..utils import make_hash
+from api.utils import make_hash
 
 
 class CongresoSpider(ManoloBaseSpider):

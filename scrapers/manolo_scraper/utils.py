@@ -1,7 +1,7 @@
-import hashlib
 import re
 import pkgutil
-from unicodedata import normalize
+
+from api.utils import make_hash
 
 
 def update_hash_from_visitor(visitor):
@@ -21,52 +21,6 @@ def make_hash_from_visitor(visitor):
     }
     item = make_hash(item)
     return item["sha1"]
-
-
-def make_hash(item):
-    """Create a sha1 hash and add it to item
-
-    It requires the following keys:
-
-    institution
-    full_name
-    id_document
-    id_number
-    time_start
-    date: %Y-%m-%d  it should be a string
-    """
-    hash_input = ''
-    hash_input += str(item['institution'])
-
-    if 'full_name' in item:
-        hash_input += str(normalize('NFKD', item['full_name']))
-
-    if 'id_document' in item:
-        hash_input += str(normalize('NFKD', item['id_document']))
-
-    if 'id_number' in item:
-        hash_input += str(normalize('NFKD', item['id_number']))
-
-    if isinstance(item['date'], str):
-        hash_input += str(item['date'])
-    else:
-        hash_input += str(item['date'].strftime("%Y-%m-%d"))
-
-    if 'time_start' in item:
-        # only use time and am or pm, do not include date as this is how we
-        # have done it in the past to compute the hash
-        time_start_items = item['time_start'].split(' ')
-        if len(time_start_items) == 3:
-            time_start = f"{time_start_items[1]} {time_start_items[2]}"
-        else:
-            time_start = item['time_start']
-
-        hash_input += str(normalize('NFKD', time_start))
-
-    hash_output = hashlib.sha1()
-    hash_output.update(hash_input.encode("utf-8"))
-    item['sha1'] = hash_output.hexdigest()
-    return item
 
 
 def get_dni(document_identity):

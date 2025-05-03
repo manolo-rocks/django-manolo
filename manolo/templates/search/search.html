@@ -4,8 +4,9 @@
 {% load static %}
 
 {% block additional_meta %}
-<meta name="robots" content="noindex">
+  <meta name="robots" content="index, follow">
 {% endblock additional_meta %}
+
 
 {% block additional_css %}
   <style>
@@ -71,19 +72,20 @@
             <p>
               Puedes odernar los resultados de manera ascendente o descendente:
               <img
-                  src="{% static 'img/sort_example.jpg' %}"
+                  src="{% static 'img/sort_example.webp' %}"
                   class="img-thumbnail"
-                  width="230px"
+                  width="230"
+                  height="73"
               />
             </p>
 
             {% load static %}
             <p class="pull-right">
               <a href="{% url 'search-tsv' query %}?page={{ page.number }}">
-                <img title="Descarga datos en formato TSV" width="32px" src="{% static 'img/tsv.svg' %}" /></a>
+                <img title="Descarga datos en formato TSV" width="32" height="32" src="{% static 'img/tsv.svg' %}" /></a>
 
               <a href="{% url 'search-json' query %}?page={{ page.number }}">
-                <img title="Descarga datos en formato JSON" width="32px" src="{% static 'img/json.svg' %}" /></a>
+                <img title="Descarga datos en formato JSON" width="32" height="32" src="{% static 'img/json.svg' %}" /></a>
             </p>
 
             <table class='table table-striped table-hover table-bordered table-responsive table-sm fixed-table'>
@@ -119,8 +121,13 @@
               {% for i in page.object_list %}
                 <tr>
                   <td>
-                    <a href='{% url 'search_view' %}?i={{ i.institution }}'>
-                      {{ i.institution }}
+                    <a
+                        href='{% url 'search_view' %}?i={{ i.institution2.slug }}'
+                        data-toggle="tooltip"
+                        data-placement="top"
+                        title="{{ i.institution2.name }}"
+                    >
+                      {{ i.institution2.slug }}
                     </a>
                   </td>
                   <td>

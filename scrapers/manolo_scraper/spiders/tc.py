@@ -5,6 +5,7 @@ import sys
 
 import scrapy
 
+import api.utils
 from scrapers.manolo_scraper import utils
 from scrapers.manolo_scraper.items import ManoloItem
 
@@ -92,7 +93,7 @@ class TcSpider(scrapy.Spider):
                     item['institution'] = 'Trib.Const.'
                     item['date'] = response.meta['date']
 
-                    item = utils.make_hash(item)
+                    item = api.utils.make_hash(item)
                     yield item
                 elif datetime.date(2008, 5, 29) <= this_date < datetime.date(2014, 8, 1):
                     item = ManoloItem()
@@ -134,7 +135,7 @@ class TcSpider(scrapy.Spider):
                     item['institution'] = 'Trib.Const.'
                     item['date'] = response.meta['date']
 
-                    item = utils.make_hash(item)
+                    item = api.utils.make_hash(item)
                     yield item
                 else:
                     item = ManoloItem()
@@ -184,5 +185,5 @@ class TcSpider(scrapy.Spider):
                     item['institution'] = 'Trib.Const.'
                     item['date'] = response.meta['date']
 
-                    item = utils.make_hash(item)
+                    item = api.utils.make_hash(item)
                     yield item

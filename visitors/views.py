@@ -2,6 +2,7 @@ import datetime
 import csv
 import logging
 import re
+from urllib.parse import quote
 
 from django.contrib.postgres.search import SearchQuery
 from django.shortcuts import render, redirect
@@ -10,7 +11,9 @@ from django.http import Http404, HttpResponse
 from rest_framework.renderers import JSONRenderer
 from django.views.decorators.csrf import csrf_exempt
 
-from visitors.models import Visitor, Statistic, Statistic_detail, Developer, VisitorScrapeProgress
+from visitors.models import (Visitor, Statistic, Statistic_detail, Developer, VisitorScrapeProgress,
+    Institution
+)
 from visitors.utils import Paginator, get_sort_field, get_user_profile
 
 
@@ -59,20 +62,21 @@ def index(request):
 
 
 def about(request):
-    developers = Developer.objects.all().order_by('rank')
-    context = get_user_profile(request)
-    context['developers'] = developers.exclude(project_leader=True)
-
-    try:
-        context['project_leader'] = Developer.objects.get(project_leader=True)
-    except Developer.DoesNotExist:
-        context['project_leader'] = None
-
-    return render(
-        request,
-        "about.html",
-        context
-    )
+    raise Http404("This page is not available.")
+    # developers = Developer.objects.all().order_by('rank')
+    # context = get_user_profile(request)
+    # context['developers'] = developers.exclude(project_leader=True)
+    #
+    # try:
+    #     context['project_leader'] = Developer.objects.get(project_leader=True)
+    # except Developer.DoesNotExist:
+    #     context['project_leader'] = None
+    #
+    # return render(
+    #     request,
+    #     "about.html",
+    #     context
+    # )
 
 
 def statistics(request):
@@ -113,8 +117,13 @@ def search(request):
     institution = request.GET.get('i') or ''
 
     if institution:
+        try:
+            institution_obj = Institution.objects.get(slug=institution)
+        except Institution.DoesNotExist:
+            return redirect('/')
+
         all_items = Visitor.objects.filter(
-            institution=institution,
+            institution2=institution_obj,
         ).order_by("-date")
         query = institution
     else:
@@ -147,13 +156,15 @@ def search(request):
 
     json_path = request.get_full_path() + '&json'
     tsv_path = request.get_full_path() + '&tsv'
+    encoded_query = quote(query)
     return render(
         request,
         "search/search.html",
         {
             "paginator": paginator,
             "page": page,
-            "query": query,
+            "query": encoded_query,
+            "plain_query": query,
             "json_path": json_path,
             "tsv_path": tsv_path,
             'user_profile': user_profile,
@@ -297,3 +308,9 @@ def do_sorting(request, queryset):
     if not ordering:
         return queryset.order_by('-date')
     return queryset.order_by(ordering)
+
+
+def ads_txt_view(request):
+    content = "google.com, pub-5536287228450200, DIRECT, f08c47fec0942fa0"
+    return HttpResponse(content, content_type="text/plain")
+
