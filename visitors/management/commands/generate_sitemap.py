@@ -13,7 +13,7 @@ class Command(BaseCommand):
 
     def add_arguments(self, parser):
         parser.add_argument(
-            '--batch-size', type=int, default=1000,
+            '--batch-size', type=int, default=5000,
             help='Number of URLs per sitemap file (max 50000)'
         )
         parser.add_argument(
@@ -71,7 +71,7 @@ class Command(BaseCommand):
 
             for dni in dnis:
                 f.write('  <url>\n')
-                f.write(f'    <loc>https://manolo.rocks/search/?q={dni}</loc>\n')
+                f.write(f'    <loc>https://manolo.rocks/visitas/{dni}/</loc>\n')
                 f.write('    <changefreq>monthly</changefreq>\n')
                 f.write('    <priority>0.5</priority>\n')
                 f.write('  </url>\n')
