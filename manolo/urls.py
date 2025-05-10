@@ -16,6 +16,7 @@ urlpatterns = [
     path('accounts/', include('registration.backends.default.urls')),
     path('search_date/', views.search_date),
     path('search/', views.search, name='search_view'),
+    path('visitas/<str:dni>/', views.visitas, name='visitas'),
     path('api/', include('api.urls')),
     path('docs/', schema_view.with_ui('swagger', cache_timeout=0), name='schema-swagger-ui'),
     path('statistics/', views.statistics, name='statistics'),

@@ -69,48 +69,6 @@ class Paginator(DjangoPaginator):
         return pagination
 
 
-def get_user_profile(request):
-    avatar = False
-    first_name = False
-    about_to_expire = False
-    expired = False
-    user = None
-
-    if request.user.is_authenticated:
-        user = request.user
-        try:
-            user.subscriber
-        except AttributeError:
-            return {}
-
-        if not user.subscriber.avatar:
-            fetch_and_save_avatar(user)
-        first_name = user.first_name
-        avatar = user.subscriber.avatar
-
-        if not user.subscriber or not user.subscriber.credits:
-            expired = True
-        elif user.subscriber.credits <= 30:
-            about_to_expire = True
-        elif user.subscriber.credits <= 0:
-            expired = True
-
-    context = {
-        'avatar': avatar,
-        'first_name': first_name,
-        'about_to_expire': about_to_expire,
-        'expired': expired,
-    }
-    if user:
-        context["credits"] = user.subscriber.credits
-        if user and user.subscriber.credits is not None:
-            if context['credits'] < 0:
-                context['credits'] = 0
-    else:
-        context["credits"] = 0
-    return context
-
-
 def fetch_and_save_avatar(user):
     email = user.email.encode("utf-8")
     email_hash = hashlib.md5()

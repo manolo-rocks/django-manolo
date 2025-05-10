@@ -2,6 +2,7 @@ import datetime
 import csv
 import logging
 import re
+from typing import Any, Dict
 from urllib.parse import quote
 
 from django.contrib.postgres.search import SearchQuery
@@ -14,7 +15,7 @@ from django.views.decorators.csrf import csrf_exempt
 from visitors.models import (Visitor, Statistic, Statistic_detail, Developer, VisitorScrapeProgress,
     Institution
 )
-from visitors.utils import Paginator, get_sort_field, get_user_profile
+from visitors.utils import Paginator, get_sort_field
 
 
 logger = logging.getLogger(__name__)
@@ -31,12 +32,13 @@ class JSONResponse(HttpResponse):
 
 
 def index(request):
-    user_profile = get_user_profile(request)
+    context = get_context()
     stats = Statistic.objects.last()
     if stats:
         count = stats.visitor_count
     else:
         count = 0
+    context['count'] = count
 
     if stats and stats.updated_institutions:
         institutions = stats.updated_institutions
@@ -49,15 +51,12 @@ def index(request):
                     institution['last_updated'], '%Y-%m-%d')
     else:
         institutions = []
+    context['institutions'] = institutions
 
     return render(
         request,
         "index.html",
-        {
-            'count': count,
-            'user_profile': user_profile,
-            'institutions': institutions,
-        },
+        context=context,
     )
 
 
@@ -80,7 +79,6 @@ def about(request):
 
 
 def statistics(request):
-    user_profile = get_user_profile(request)
     visitors = Statistic_detail.objects.all()
     visitor_counts = dict()
 
@@ -88,15 +86,15 @@ def statistics(request):
         date_str = str(entry.cutoff_date.strftime('%Y'))
         visitor_counts[date_str] = entry.visitor_count
 
+    context = get_context()
+    context['visitors'] = visitors
+    context['visitor_counts'] = list(visitor_counts.values())
+    context['visitor_counts_start'] = list(visitor_counts.keys())[0]
+
     return render(
         request,
         "statistics.html",
-        {
-            'user_profile': user_profile,
-            'visitors': visitors,
-            'visitor_counts': list(visitor_counts.values()),
-            'visitor_counts_start': list(visitor_counts.keys())[0],
-        },
+        context=context,
     )
 
 
@@ -110,9 +108,80 @@ def statistics_api(request):
     return HttpResponse(data)
 
 
+def get_context() -> Dict[str, Any]:
+    return {
+        "count": "",
+        "full_name": "",
+        'title': 'Búsqueda de Visitas | Manolo - Transparencia Gubernamental Perú',
+        'meta_description': 'Busca registros de visitas a instituciones del Estado Peruano. Base de datos transparente de visitantes gubernamentales.',
+    }
+
+
+@csrf_exempt
+def visitas(request, dni):
+    context = get_context()
+    query = dni.strip()
+
+    if len(query.split()) == 1:
+        single_word_query = True
+    else:
+        single_word_query = False
+
+    if query_is_dni(query):
+        # do dni search
+        all_items = do_dni_search(query)
+    else:
+        if single_word_query:
+            all_items = Visitor.objects.filter(
+                full_search=SearchQuery(query)
+            )[0:2000]
+        else:
+            all_items = Visitor.objects.filter(
+                full_search=SearchQuery(query)
+            )
+
+    if all_items.exists():
+        full_name = all_items.first().full_name
+    else:
+        full_name = ""
+
+    count = all_items.count()
+    # sort queryset
+    if not single_word_query:
+        all_items = do_sorting(request, all_items)
+
+    # paginate queryset
+    paginator, page = do_pagination(request, all_items)
+
+    json_path = request.get_full_path() + '&json'
+    tsv_path = request.get_full_path() + '&tsv'
+    encoded_query = quote(query)
+
+    # Generate dynamic title and description
+    title = f"Registros de visitas para {full_name} {query} | Manolo - Transparencia Gubernamental Perú"
+    description = f"Resultados de búsqueda para el visitante {full_name} {query}. Encuentra registros detallados de visitas a instituciones gubernamentales del Perú."
+
+    context["title"] = title
+    context["meta_description"] = description
+    context["count"] = count
+    context["full_name"] = full_name
+    context["is_visitas_dni_page"] = True
+    context["paginator"] = paginator
+    context["page"] = page
+    context["query"] = encoded_query
+    context["plain_query"] = query
+    context["json_path"] = json_path
+    context["tsv_path"] = tsv_path
+
+    return render(
+        request,
+        "search/search.html",
+        context=context,
+    )
+
+
 @csrf_exempt
 def search(request):
-    user_profile = get_user_profile(request)
     query = request.GET.get('q') or ''
     institution = request.GET.get('i') or ''
 
@@ -157,18 +226,19 @@ def search(request):
     json_path = request.get_full_path() + '&json'
     tsv_path = request.get_full_path() + '&tsv'
     encoded_query = quote(query)
+    context = get_context()
+    context["is_visitas_dni_page"] = False
+    context["paginator"] = paginator
+    context["page"] = page
+    context["query"] = encoded_query
+    context["plain_query"] = query
+    context["json_path"] = json_path
+    context["tsv_path"] = tsv_path
+
     return render(
         request,
         "search/search.html",
-        {
-            "paginator": paginator,
-            "page": page,
-            "query": encoded_query,
-            "plain_query": query,
-            "json_path": json_path,
-            "tsv_path": tsv_path,
-            'user_profile': user_profile,
-        },
+        context=context,
     )
 
 
@@ -186,7 +256,7 @@ def do_dni_search(query):
 
 
 def search_date(request):
-    user_profile = get_user_profile(request)
+    context = get_context()
     if 'q' in request.GET:
         query = request.GET['q']
         if query.strip() == '':
@@ -196,14 +266,13 @@ def search_date(request):
             query_date_obj = datetime.datetime.strptime(query, '%d/%m/%Y')
         except ValueError:
             results = "No se encontraron resultados."
+            context['is_visitas_dni_page'] = False
+            context['items'] = results
+            context['keyword'] = query
             return render(
                 request,
                 "search/search.html",
-                {
-                    'items': results,
-                    'keyword': query,
-                    'user_profile': user_profile,
-                },
+                context=context,
             )
         six_months_ago = datetime.datetime.today() - datetime.timedelta(days=180)
 
@@ -223,11 +292,9 @@ def search_date(request):
         results = []
         paginator, page = do_pagination(request, results)
 
-        context = {
-            "paginator": paginator,
-            "query": query,
-            'user_profile': user_profile,
-        }
+        context["paginator"] = paginator
+        context["query"] = query
+        context["is_visitas_dni_page"] = False
 
         if can_show_results:
             try:
@@ -282,7 +349,7 @@ def do_pagination(request, all_items):
     :param all_items:
     :return: dict containing paginated items and pagination bar
     """
-    results_per_page = 20
+    results_per_page = 2
     results = all_items
 
     try:

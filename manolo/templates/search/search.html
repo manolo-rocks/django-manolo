@@ -3,8 +3,71 @@
 {% load visitors_tags %}
 {% load static %}
 
+{% block title %}
+  <title>{{ title }}</title>
+{% endblock title %}
+
 {% block additional_meta %}
   <meta name="robots" content="index, follow">
+
+  {% if is_visitas_dni_page %}
+  <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "SearchResultsPage",
+      "name": "Búsqueda de visitas: {{ full_name }} - {{ query }}",
+      "description": "Resultados de búsqueda para {{ full_name }} - {{ query }} en instituciones del Estado Peruano",
+      "url": "{{ request.build_absolute_uri }}",
+      "mainEntity": {
+        "@type": "ItemList",
+        "numberOfItems": "{{ count }}",
+        "itemListElement": [
+          {% for result in page.object_list %}
+          {
+            "@type": "ListItem",
+            "position": {{ forloop.counter }},
+            "url": "{{ request.build_absolute_uri }}",
+            "name": "Visita a {{ result.institution2.name }} - {{ result.date|date:"d/m/Y" }}",
+            "description": "{{ result.full_name }} visitó a {{ result.host_name }} en {{ result.institution2.name }} - {{ result.reason }}"
+          }{% if not forloop.last %},{% endif %}
+          {% endfor %}
+        ]
+      },
+      "potentialAction": {
+        "@type": "SearchAction",
+        "target": {
+          "@type": "EntryPoint",
+          "urlTemplate": "https://manolo.rocks/visitas/{search_term_string}/"
+        },
+        "query-input": "required name=search_term_string"
+      }
+    }
+    </script>
+  {% endif %}
+
+  {% if page %}
+    {% if is_visitas_dni_page %}
+      {% if page.has_previous %}
+        <link rel="prev" href="https://manolo.rocks/visitas/{{ query }}/?page={{ page.previous_page_number }}" />
+      {% endif %}
+
+      {% if page.has_next %}
+        <link rel="next" href="https://manolo.rocks/visitas/{{ query }}/?page={{ page.next_page_number }}" />
+      {% endif %}
+      <link rel="canonical" href="{{ request.build_absolute_uri }}" />
+
+    {% else %}
+      {% if page.has_previous %}
+        <link rel="prev" href="https://manolo.rocks/search/?page={{ page.previous_page_number }}&q={{ query }}" />
+      {% endif %}
+
+      {% if page.has_next %}
+        <link rel="next" href="https://manolo.rocks/search/?page={{ page.next_page_number }}&q={{ query }}" />
+      {% endif %}
+      <link rel="canonical" href="{{ request.build_absolute_uri }}" />
+    {% endif %}
+  {% endif %}
+
 {% endblock additional_meta %}
 
 
@@ -88,6 +151,9 @@
                 <img title="Descarga datos en formato JSON" width="32" height="32" src="{% static 'img/json.svg' %}" /></a>
             </p>
 
+            {% if is_visitas_dni_page %}
+              <p>Resultados de búsqueda para DNI: {{ query }}</p>
+            {% endif %}
             <table class='table table-striped table-hover table-bordered table-responsive table-sm fixed-table'>
 
               <colgroup>
@@ -142,7 +208,7 @@
                   </td>
                   <td>
                     {% if i.id_number %}
-                      <a href='{% url 'search_view' %}?q={{ i.id_number }}'>
+                      <a href='{% url 'visitas' i.id_number %}'>
                         {{ i.id_document }}: {{ i.id_number }}
                       </a>
                     {% else %}

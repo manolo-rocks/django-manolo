@@ -7,15 +7,24 @@
 
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+    <meta property="og:title" content="{{ title }}">
+    <meta property="og:description" content="{{ meta_description }}">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="{{ request.build_absolute_uri }}">
+
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:title" content="{{ title }}">
+    <meta name="twitter:description" content="{{ meta_description }}">
+
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Manolo. Buscador de visitas a entidades del Estado Peruano">
-    <meta name="author" content="Yoni Pacheco">
-    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="description" content="{{ meta_description }}">
     <meta name="theme" content="https://themes.getbootstrap.com/product/purpose-application-ui-kit/" />
     <link rel="shortcut icon" href="{% static 'img/favicon.ico' %}">
 
     <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5536287228450200"
        crossorigin="anonymous"></script>
+
 
     {% block title %}
       <title>Manolo. Buscador de visitas a instituciones del Estado</title>
