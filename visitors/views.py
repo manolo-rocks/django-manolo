@@ -183,6 +183,9 @@ def visitas(request, dni):
 @csrf_exempt
 def search(request):
     query = request.GET.get('q') or ''
+    if query_is_dni(query):
+        return redirect('visitas', dni=query, permanent=True)
+
     institution = request.GET.get('i') or ''
 
     if institution:
