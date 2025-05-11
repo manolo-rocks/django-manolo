@@ -349,7 +349,7 @@ def do_pagination(request, all_items):
     :param all_items:
     :return: dict containing paginated items and pagination bar
     """
-    results_per_page = 2
+    results_per_page = 20
     results = all_items
 
     try:
