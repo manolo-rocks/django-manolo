@@ -23,7 +23,7 @@ EMAIL_BACKEND = env(
 
 DATABASES['default']['HOST'] = 'localhost'
 DATABASES['default']['USER'] = 'carlosp420'
-DATABASES['default']['NAME'] = 'manolo_dump'
+DATABASES['default']['NAME'] = 'manolo'
 
 
 if os.environ.get('GITHUB_WORKFLOW'):
