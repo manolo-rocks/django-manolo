@@ -36,7 +36,7 @@ def show_toolbar(request):
 
 # Add debug toolbar middleware
 if 'django_debug_toolbar' not in INSTALLED_APPS:
-    INSTALLED_APPS += ['django_debug_toolbar']
+    INSTALLED_APPS += ['debug_toolbar']
 
 if 'debug_toolbar.middleware.DebugToolbarMiddleware' not in MIDDLEWARE:
     # Insert as early as possible, but after any other middleware that encodes the response's content
