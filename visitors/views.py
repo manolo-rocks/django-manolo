@@ -140,8 +140,8 @@ def visitas(request, dni):
                 full_search=SearchQuery(query)
             )
 
-    if all_items.exists():
-        full_name = all_items.first().full_name
+    if all_items:
+        full_name = all_items[0].full_name
     else:
         full_name = ""
 
