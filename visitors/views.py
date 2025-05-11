@@ -140,12 +140,23 @@ def visitas(request, dni):
                 full_search=SearchQuery(query)
             )
 
-    if all_items:
-        full_name = all_items[0].full_name
+    # Fix for sliced querysets
+    if single_word_query and not query_is_dni(query):
+        # For sliced querysets
+        if all_items:
+            full_name = all_items[0].full_name
+        else:
+            full_name = ""
+        count = len(all_items)  # Use len() for sliced querysets
     else:
-        full_name = ""
+        # For non-sliced querysets
+        first_item = all_items.first()
+        if first_item:
+            full_name = first_item.full_name
+        else:
+            full_name = ""
+        count = all_items.count()  # Use count() for non-sliced querysets
 
-    count = all_items.count()
     # sort queryset
     if not single_word_query:
         all_items = do_sorting(request, all_items)
