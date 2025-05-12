@@ -29,6 +29,7 @@ def show_toolbar(request):
     # Always show to superusers
     if hasattr(request, '_asgi_base_scope'):
         client_addr = request.META.get('REMOTE_ADDR', None)
+        log.info(f"Client address: {client_addr}")
         return client_addr in INTERNAL_IPS
 
     # Show to internal IPs    try:
