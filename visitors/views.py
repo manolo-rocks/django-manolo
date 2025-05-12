@@ -195,7 +195,6 @@ def visitas(request, dni):
 def search(request):
     query = request.GET.get('q') or ''
     institution = request.GET.get('i') or ''
-    logger.info(f"1 XXXXXX {query} {datetime.datetime.now()}")
 
     if institution:
         try:
@@ -223,21 +222,17 @@ def search(request):
                 all_items = Visitor.objects.filter(
                     full_search=SearchQuery(query)
                 )[0:2000]
-                logger.info(f"2 XXXXXX {query} {datetime.datetime.now()}")
             else:
                 all_items = Visitor.objects.filter(
                     full_search=SearchQuery(query)
                 )
-                logger.info(f"3 XXXXXX {query} {datetime.datetime.now()}")
 
         # sort queryset
         if not single_word_query:
             all_items = do_sorting(request, all_items)
-            logger.info(f"4 XXXXXX {query} {datetime.datetime.now()}")
 
     # paginate queryset
     paginator, page = do_pagination(request, all_items)
-    logger.info(f"5 XXXXXX {query} {datetime.datetime.now()}")
 
     json_path = request.get_full_path() + '&json'
     tsv_path = request.get_full_path() + '&tsv'
