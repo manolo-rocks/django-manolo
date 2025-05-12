@@ -27,10 +27,16 @@ INTERNAL_IPS = ["127.0.0.1", "10.0.2.2", "181.66.194.247"]
 # Create a function to determine if debug toolbar should be shown
 def show_toolbar(request):
     # Always show to superusers
-    if request.user.is_authenticated and request.user.is_superuser:
-        return True
+    if hasattr(request, '_asgi_base_scope'):
+        client_addr = request.META.get('REMOTE_ADDR', None)
+        return client_addr in INTERNAL_IPS
 
-    return False
+    # Show to internal IPs    try:
+    try:
+        if hasattr(request, 'user') and request.user.is_authenticated and request.user.is_superuser:
+            return True
+    except Exception:
+        return False
 
 
 # Add debug toolbar middleware
