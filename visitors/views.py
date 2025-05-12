@@ -195,7 +195,7 @@ def visitas(request, dni):
 def search(request):
     query = request.GET.get('q') or ''
     institution = request.GET.get('i') or ''
-    logger.info("1 XXXXXX", datetime.datetime.now())
+    logger.info(f"1 XXXXXX {datetime.datetime.now()}")
 
     if institution:
         try:
@@ -223,21 +223,21 @@ def search(request):
                 all_items = Visitor.objects.filter(
                     full_search=SearchQuery(query)
                 )[0:2000]
-                logger.info("2 XXXXXX", datetime.datetime.now())
+                logger.info(f"2 XXXXXX {datetime.datetime.now()}")
             else:
                 all_items = Visitor.objects.filter(
                     full_search=SearchQuery(query)
                 )
-                logger.info("3 XXXXXX", datetime.datetime.now())
+                logger.info(f"3 XXXXXX {datetime.datetime.now()}")
 
         # sort queryset
         if not single_word_query:
             all_items = do_sorting(request, all_items)
-            logger.info("4 XXXXXX", datetime.datetime.now())
+            logger.info(f"4 XXXXXX {datetime.datetime.now()}")
 
     # paginate queryset
     paginator, page = do_pagination(request, all_items)
-    logger.info("5 XXXXXX", datetime.datetime.now())
+    logger.info(f"5 XXXXXX {datetime.datetime.now()}")
 
     json_path = request.get_full_path() + '&json'
     tsv_path = request.get_full_path() + '&tsv'
@@ -250,7 +250,7 @@ def search(request):
     context["plain_query"] = query
     context["json_path"] = json_path
     context["tsv_path"] = tsv_path
-    logger.info("6 XXXXXX", datetime.datetime.now())
+    logger.info(f"6 XXXXXX {datetime.datetime.now()}")
 
     return render(
         request,
