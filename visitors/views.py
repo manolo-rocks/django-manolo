@@ -250,7 +250,6 @@ def search(request):
     context["plain_query"] = query
     context["json_path"] = json_path
     context["tsv_path"] = tsv_path
-    logger.info(f"6 XXXXXX {query} {datetime.datetime.now()}")
 
     return render(
         request,
