@@ -29,7 +29,7 @@ urlpatterns = [
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
 
-if settings.DEBUG or any(ip in settings.INTERNAL_IPS):
+if settings.DEBUG or any(ip in settings.ALLOWED_HOSTS for ip in settings.INTERNAL_IPS):
     import debug_toolbar
     urlpatterns += [
         path('__debug__/', include(debug_toolbar.urls)),

@@ -30,8 +30,7 @@ def show_toolbar(request):
     if request.user.is_authenticated and request.user.is_superuser:
         return True
 
-    # Show to specific IPs
-    return request.META.get('REMOTE_ADDR') in INTERNAL_IPS
+    return False
 
 
 # Add debug toolbar middleware
