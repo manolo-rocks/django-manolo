@@ -1,6 +1,9 @@
 import os
+import logging
 from .base import *  # noqa
 from .base import env
+
+log = logging.getLogger(__name__)
 
 os.environ["DJANGO_ALLOW_ASYNC_UNSAFE"] = "true"
 
@@ -29,7 +32,8 @@ def show_toolbar(request):
     # Always show to superusers
     if hasattr(request, '_asgi_base_scope'):
         client_addr = request.META.get('REMOTE_ADDR', None)
-        log.info(f"Client address: {client_addr}")
+        log.info(f"XXXXXX Client address: {client_addr}")
+        print(f"XXXXXX Client address: {client_addr}")
         return client_addr in INTERNAL_IPS
 
     # Show to internal IPs    try:
