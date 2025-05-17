@@ -27,7 +27,7 @@
       <!-- Avatar -->
       <div>
         <a href="/" class="avatar rounded-circle avatar-xl">
-          <img alt="manolo.rocks" width="46px" src="{% static 'img/manolo_logo.png' %}" />
+          <img alt="manolo.rocks" width="46px" src="{% static 'img/manolo_logo.webp' %}" />
         </a>
         <div class="mt-4">
           <h5 class="mb-0 text-white">Manolo Rocks</h5>
@@ -77,7 +77,9 @@
           </div> -->
           <div class="input-group input-group-merge">
             <div class="input-group-prepend">
-              <span class="input-group-text"><i class="fa fa-search"></i></span>
+              <span class="input-group-text">
+                <span class="material-symbols-outlined">search</span>
+              </span>
             </div>
             <input
                 type="text"
@@ -88,7 +90,7 @@
             <div class="input-group-append">
                           <span class="input-group-text">
                               <a href="#" data-action="omnisearch-close" data-target="#omnisearch">
-                                  <i class="fa fa-times"></i>
+                                <span class="material-symbols-outlined">close</span>
                               </a>
                           </span>
             </div>
@@ -102,13 +104,13 @@
             <ul class="list-unstyled mb-0">
               <li>
                 <a class="list-link" href="#">
-                  <i class="fa fa-search"></i>
+                  <span class="material-symbols-outlined">search</span>
                   <span>Romulo</span>
                 </a>
               </li>
               <li>
                 <a class="list-link" href="#">
-                  <i class="fa fa-search"></i>
+                  <span class="material-symbols-outlined">search</span>
                   <span>Don Bieto</span>
                 </a>
               </li>
@@ -140,7 +142,7 @@
       <br />
 
       <button class="btn btn-secondary" data-action="omnisearch-open" data-target="#omnisearch">
-        <i class="fa fa-search"></i>
+        <span class="material-symbols-outlined">search</span>
         Buscar
       </button>
     </div>
@@ -156,7 +158,9 @@
           <div class="icon bg-gradient-primary text-white rounded-circle icon-shape">
             <i class="fas fa-alicorn"></i>
           </div>
-          <h5 class="mt-4">La base de datos de Manolo <i class="fa fa-database"></i></h5>
+          <h5 class="mt-4">La base de datos de Manolo
+            <span class="material-symbols-outlined">database</span>
+          </h5>
         </div>
         <p class="">
           Contiene <span class="label label-primary"><b>{{ count|intcomma }}</b></span> registros de visitas de las siguientes instituciones:

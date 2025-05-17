@@ -71,10 +71,13 @@
                     <div class="card-footer">
                       <div class="actions d-flex">
                         <a class="action-item" href="https://github.com/{{ developer.github }}/">
-                          <i class="fa fa-github-alt fa-lg fa-fw"></i></a>
+                          <span class="material-symbols-outlined">code</span>
+                        </a>
                         <a class="action-item" href="https://twitter.com/{{ developer.twitter }}"> @{{ developer.twitter }} </a>
                         {% if developer.homepage %}
-                          <a class="action-item" href="{{ developer.homepage }}"><i class="fa fa-external-link fa-lg fa-fw"></i></a>
+                          <a class="action-item" href="{{ developer.homepage }}">
+                            <span class="material-symbols-outlined">open_in_new</span>
+                          </a>
                         {% endif %}
                       </div>
                     </div>
