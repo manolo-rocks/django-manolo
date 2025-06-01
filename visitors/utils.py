@@ -104,14 +104,14 @@ def is_dni(value: Union[str, int]) -> bool:
 
 def get_sort_field(request):
     """
-    Retrieve field used for sorting a queryset
+    Retrieve the field used for sorting a queryset
     :param request: HTTP request
     :return: the sorted field name, prefixed with "-" if ordering is descending
     """
     allowed_sort_fields = [
         'id', '-id', 'date', '-date', 'full_name', '-full_name',
         'id_number', '-id_number', 'entity', '-entity', 'reason', '-reason',
-        'host_name', '-host_name', 'office', '-office', 'institution', '-institution'
+        'host_name', '-host_name', 'office', '-office',
     ]
     sort_direction = request.GET.get("dir")
     sort_field = (request.GET.get("sort") or "") if sort_direction else ""
@@ -120,5 +120,5 @@ def get_sort_field(request):
         sort_field = 'id'  # Default sort field if not specified or invalid
 
     sort_sign = "-" if sort_direction == "desc" else ""
-    result_field = "{sign}{field}".format(sign=sort_sign, field=sort_field)
+    result_field = f"{sort_sign}{sort_field.lstrip('-')}" if sort_field else "id"
     return result_field
