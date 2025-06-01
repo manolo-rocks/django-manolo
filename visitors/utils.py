@@ -108,8 +108,17 @@ def get_sort_field(request):
     :param request: HTTP request
     :return: the sorted field name, prefixed with "-" if ordering is descending
     """
+    allowed_sort_fields = [
+        'id', '-id', 'date', '-date', 'full_name', '-full_name',
+        'id_number', '-id_number', 'entity', '-entity', 'reason', '-reason',
+        'host_name', '-host_name', 'office', '-office', 'institution', '-institution'
+    ]
     sort_direction = request.GET.get("dir")
-    field_name = (request.GET.get("sort") or "") if sort_direction else ""
+    sort_field = (request.GET.get("sort") or "") if sort_direction else ""
+
+    if sort_field not in allowed_sort_fields:
+        sort_field = 'id'  # Default sort field if not specified or invalid
+
     sort_sign = "-" if sort_direction == "desc" else ""
-    result_field = "{sign}{field}".format(sign=sort_sign, field=field_name)
+    result_field = "{sign}{field}".format(sign=sort_sign, field=sort_field)
     return result_field
