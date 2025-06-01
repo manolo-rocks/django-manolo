@@ -1,9 +1,7 @@
 import csv
-import json
 
 from django.core.management import BaseCommand
 
-from api.utils import process_row
 from visitors.models import Institution
 
 

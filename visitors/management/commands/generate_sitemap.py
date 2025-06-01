@@ -62,8 +62,9 @@ class Command(BaseCommand):
 
     def generate_sitemap_file(self, output_dir, index, batch_size):
         offset = index * batch_size
-        dnis = Visitor.objects.values_list('id_number', flat=True).distinct().order_by('id_number')[
-        offset:offset + batch_size]
+        dnis = Visitor.objects.values_list(
+            'id_number', flat=True
+        ).distinct().order_by('id_number')[offset:offset + batch_size]
 
         with open(os.path.join(output_dir, f'sitemap_{index}.xml'), 'w') as f:
             f.write('<?xml version="1.0" encoding="UTF-8"?>\n')

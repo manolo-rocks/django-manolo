@@ -1,5 +1,3 @@
-from unittest.mock import MagicMock
-
 from django.test import TestCase
 
 from visitors.utils import is_dni, Paginator

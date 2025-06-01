@@ -1,8 +1,5 @@
-from datetime import date, timedelta
 from django.db import connection
-from datetime import datetime, timedelta
 from django.db.models import Q, Min, Max
-from datetime import datetime
 
 from django.core.management import BaseCommand
 
