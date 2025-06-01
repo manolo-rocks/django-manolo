@@ -2,7 +2,6 @@ import datetime
 import csv
 import logging
 import re
-import time
 from typing import Any, Dict
 from urllib.parse import quote
 
