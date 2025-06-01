@@ -24,5 +24,5 @@ DATABASES["default"]["CONN_MAX_AGE"] = env.int("CONN_MAX_AGE", default=60)  # no
 # Axes configuration
 AXES_FAILURE_LIMIT = 5  # Block after 5 failed attempts
 AXES_COOLOFF_TIME = 1   # Block for 1 hour
-AXES_LOCK_OUT_BY_COMBINATION_USER_AND_IP = True
+AXES_LOCKOUT_PARAMETERS = ['ip_address', 'username']
 AXES_ENABLE_ADMIN = True  # See blocked IPs in admin
