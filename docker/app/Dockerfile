@@ -2,7 +2,7 @@ FROM docker.io/python:3.12.3-slim-bullseye as python
 ENV PYTHONUNBUFFERED 1
 
 RUN apt-get update
-RUN apt-get install -y curl
+RUN apt-get install -y curl gpg build-essential jq wget vim libpq-dev
 RUN curl -fsSL https://www.postgresql.org/media/keys/ACCC4CF8.asc | gpg --dearmor -o /etc/apt/trusted.gpg.d/postgresql.gpg
 RUN echo "deb http://apt.postgresql.org/pub/repos/apt/ bullseye-pgdg main" >> /etc/apt/sources.list
 RUN apt-get update
