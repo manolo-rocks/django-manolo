@@ -10,11 +10,11 @@ class Migration(migrations.Migration):
     ]
 
     operations = [
-        migrations.AddField(
-            model_name="institution",
-            name="ruc",
-            field=models.CharField(max_length=200, null=True, unique=True),
-        ),
+        # migrations.AddField(
+        #     model_name="institution",
+        #     name="ruc",
+        #     field=models.CharField(max_length=200, null=True, unique=True),
+        # ),
         migrations.AddField(
             model_name="visitor",
             name="censored",
