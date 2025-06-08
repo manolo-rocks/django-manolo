@@ -1,11 +1,11 @@
-FROM python:3.10-bullseye
+FROM python:3.10-bookworm
 ENV PYTHONUNBUFFERED 1
 
 RUN apt-get update
 RUN apt-get install -y curl
 RUN curl -L https://www.postgresql.org/media/keys/ACCC4CF8.asc | apt-key add -
 
-RUN echo "deb http://apt.postgresql.org/pub/repos/apt/ bullseye-pgdg main" >> /etc/apt/sources.list
+RUN echo "deb http://apt.postgresql.org/pub/repos/apt/ bookworm-pgdg main" >> /etc/apt/sources.list
 RUN apt-get update
 RUN apt-get install -y gcc postgresql-client-14 libpq-dev musl-dev bash postgresql-14 postgresql-contrib-14 && rm -rf /var/lib/apt/lists/*
 
