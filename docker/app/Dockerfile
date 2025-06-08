@@ -7,7 +7,7 @@ RUN curl -fsSL https://www.postgresql.org/media/keys/ACCC4CF8.asc | gpg --dearmo
 RUN echo "deb http://apt.postgresql.org/pub/repos/apt/ bullseye-pgdg main" >> /etc/apt/sources.list
 RUN apt-get update
 RUN apt-get install -y gcc postgresql-client-14 libpq-dev musl-dev bash postgresql-14 postgresql-contrib && rm -rf /var/lib/apt/lists/*
-RUN aptget install -y postgresql-common
+RUN apt-get install -y postgresql-common
 
 # Google Chrome repository
 RUN wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | apt-key add -
