@@ -216,7 +216,7 @@ def search(request):
 
         all_items = Visitor.objects.filter(
             institution2=institution_obj,
-        ).order_by("-date")
+        ).exclude(censored=True).order_by("-date")
         query = institution
     else:
         query = query.strip()
@@ -233,11 +233,11 @@ def search(request):
             if single_word_query:
                 all_items = Visitor.objects.filter(
                     full_search=SearchQuery(query)
-                )[0:2000]
+                ).exclude(censored=True)[0:2000]
             else:
                 all_items = Visitor.objects.filter(
                     full_search=SearchQuery(query)
-                )
+                ).exclude(censored=True)
 
         # sort queryset
         if not single_word_query:
@@ -275,7 +275,7 @@ def query_is_dni(query):
 def do_dni_search(query):
     return Visitor.objects.filter(
         id_number=query,
-    ).order_by('-date')
+    ).exclude(censored=True).order_by('-date')
 
 
 def search_date(request):

@@ -104,6 +104,11 @@ class Visitor(models.Model):
         max_length=250,
         null=True,
     )
+    censored = models.BooleanField(
+        default=False,
+        help_text='If True, the visitor is not shown in the search results.',
+        db_index=True,
+    )
 
     created = models.DateTimeField()
     modified = models.DateTimeField()
