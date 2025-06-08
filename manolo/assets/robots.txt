@@ -1,4 +1,60 @@
-User-Agent: *
+# Allow major search engines
+User-agent: Googlebot
 Disallow: /api/
-Sitemap: https://manolo.rocks/static/sitemaps/sitemap.xml
+Allow: /
 
+User-agent: Bingbot
+Disallow: /api/
+Allow: /
+
+User-agent: DuckDuckBot
+Disallow: /api/
+Allow: /
+
+User-agent: YandexBot
+Disallow: /api/
+Allow: /
+
+User-agent: Baiduspider
+Disallow: /api/
+Allow: /
+
+# Block AI training bots completely
+User-agent: GPTBot
+Disallow: /
+
+User-agent: ChatGPT-User
+Disallow: /
+
+User-agent: CCBot
+Disallow: /
+
+User-agent: anthropic-ai
+Disallow: /
+
+User-agent: Claude-Web
+Disallow: /
+
+User-agent: ClaudeBot
+Disallow: /
+
+User-agent: Google-Extended
+Disallow: /
+
+User-agent: PerplexityBot
+Disallow: /
+
+User-agent: YouBot
+Disallow: /
+
+User-agent: Meta-ExternalAgent
+Disallow: /
+
+User-agent: FacebookBot
+Disallow: /
+
+# Block all other bots by default
+User-agent: *
+Disallow: /
+
+Sitemap: https://manolo.rocks/static/sitemaps/sitemap.xml
