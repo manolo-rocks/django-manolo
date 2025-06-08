@@ -5,6 +5,7 @@ import re
 from typing import Any, Dict
 from urllib.parse import quote
 
+from axes.decorators import axes_dispatch
 from django.contrib.postgres.search import SearchQuery
 from django.shortcuts import render, redirect
 from django.core.paginator import PageNotAnInteger, EmptyPage, InvalidPage
@@ -12,7 +13,8 @@ from django.http import Http404, HttpResponse
 from rest_framework.renderers import JSONRenderer
 from django.views.decorators.csrf import csrf_exempt
 
-from visitors.models import (Visitor, Statistic, Statistic_detail, Developer, VisitorScrapeProgress,
+from visitors.models import (
+    Visitor, Statistic, Statistic_detail, VisitorScrapeProgress,
     Institution
 )
 from visitors.utils import Paginator, get_sort_field
@@ -113,7 +115,10 @@ def get_context() -> Dict[str, Any]:
         "count": "",
         "full_name": "",
         'title': 'Búsqueda de Visitas | Manolo - Transparencia Gubernamental Perú',
-        'meta_description': 'Busca registros de visitas a instituciones del Estado Peruano. Base de datos transparente de visitantes gubernamentales.',
+        'meta_description': (
+            'Busca registros de visitas a instituciones del Estado Peruano. '
+            'Base de datos transparente de visitantes gubernamentales.',
+        )
     }
 
 
@@ -169,8 +174,14 @@ def visitas(request, dni):
     encoded_query = quote(query)
 
     # Generate dynamic title and description
-    title = f"Registros de visitas para {full_name} {query} | Manolo - Transparencia Gubernamental Perú"
-    description = f"Resultados de búsqueda para el visitante {full_name} {query}. Encuentra registros detallados de visitas a instituciones gubernamentales del Perú."
+    title = (
+        f"Registros de visitas para {full_name} {query} | Manolo - Transparencia "
+        "Gubernamental Perú"
+    )
+    description = (
+        f"Resultados de búsqueda para el visitante {full_name} {query}. Encuentra "
+        "registros detallados de visitas a instituciones gubernamentales del Perú."
+    )
 
     context["title"] = title
     context["meta_description"] = description
@@ -191,6 +202,7 @@ def visitas(request, dni):
     )
 
 
+@axes_dispatch
 @csrf_exempt
 def search(request):
     query = request.GET.get('q') or ''
@@ -391,4 +403,3 @@ def do_sorting(request, queryset):
 def ads_txt_view(request):
     content = "google.com, pub-5536287228450200, DIRECT, f08c47fec0942fa0"
     return HttpResponse(content, content_type="text/plain")
-

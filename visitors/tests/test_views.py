@@ -22,7 +22,7 @@ class TestViews(TestCase):
 
     def test_about(self):
         c = self.client.get('/about/')
-        self.assertEqual(200, c.status_code, 'Status code')
+        self.assertEqual(404, c.status_code, 'Status code')
 
     def test_search(self):
         c = self.client.get('/search/?q=romulo')

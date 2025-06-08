@@ -1,5 +1,5 @@
 from django.db import connection
-from django.db.models import Q, Min, Max
+from django.db.models import Min, Max
 
 from django.core.management import BaseCommand
 
@@ -14,9 +14,6 @@ class Command(BaseCommand):
 
     def handle(self, *args, **options):
         analyze_all_institutions()
-
-
-
 
 
 def get_all_institutions():
