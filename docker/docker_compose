@@ -3,4 +3,4 @@
 . docker/get_project_vars
 
 cd docker
-/usr/local/bin/docker-compose ${COMPOSE_OPTS[@]} "$@"
+/usr/local/bin/docker compose ${COMPOSE_OPTS[@]} "$@"
