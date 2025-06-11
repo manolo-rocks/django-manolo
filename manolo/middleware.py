@@ -2,6 +2,7 @@
 import re
 import logging
 from django.http import HttpResponse
+import urllib.parse
 
 logger = logging.getLogger(__name__)
 
@@ -33,7 +34,26 @@ class SecurityMiddleware:
     def __call__(self, request):
         ip = request.META.get('REMOTE_ADDR')
 
-        # Check all GET and POST parameters
+        # Check URL path (this was missing!)
+        url_path = urllib.parse.unquote(request.get_full_path())
+
+        # Check if malicious patterns are in the URL path
+        for pattern in self.attack_patterns:
+            if re.search(pattern, url_path, re.IGNORECASE):
+                attack_type = self._identify_attack_type(pattern, url_path)
+
+                logger.critical(
+                    f"SECURITY BLOCK: {attack_type} in URL from {ip} | "
+                    f"URL: {url_path[:200]} | "
+                    f"UA: {request.META.get('HTTP_USER_AGENT', 'Unknown')[:50]}"
+                )
+
+                return HttpResponse(
+                    'Request blocked for security reasons',
+                    status=403
+                )
+
+        # Check GET and POST parameters
         all_params = {}
         all_params.update(request.GET.dict())
         all_params.update(request.POST.dict())
@@ -41,17 +61,15 @@ class SecurityMiddleware:
         for param_name, param_value in all_params.items():
             for pattern in self.attack_patterns:
                 if re.search(pattern, str(param_value), re.IGNORECASE):
-                    # Identify attack type
                     attack_type = self._identify_attack_type(pattern, param_value)
 
                     logger.critical(
-                        f"SECURITY BLOCK: {attack_type} from {ip} | "
+                        f"SECURITY BLOCK: {attack_type} in params from {ip} | "
                         f"Param: {param_name} | "
                         f"Value: {str(param_value)[:100]} | "
                         f"UA: {request.META.get('HTTP_USER_AGENT', 'Unknown')[:50]}"
                     )
 
-                    # Return blocked response
                     return HttpResponse(
                         'Request blocked for security reasons',
                         status=403
