@@ -124,6 +124,11 @@ def get_context() -> Dict[str, Any]:
 
 @csrf_exempt
 def visitas(request, dni):
+    try:
+        dni = sanitize_query(dni)
+    except Exception as e:
+        return HttpResponse(f"Invalid request: {e}", status=400)
+
     context = get_context()
     query = dni.strip()
 
@@ -207,6 +212,15 @@ def visitas(request, dni):
 def search(request):
     query = request.GET.get('q') or ''
     institution = request.GET.get('i') or ''
+    try:
+        query = sanitize_query(query)
+    except Exception as e:
+        return HttpResponse(f"Invalid request: {e}", status=400)
+
+    try:
+        institution = sanitize_query(institution)
+    except Exception as e:
+        return HttpResponse(f"Invalid request: {e}", status=400)
 
     if institution:
         try:
@@ -282,6 +296,11 @@ def search_date(request):
     context = get_context()
     if 'q' in request.GET:
         query = request.GET['q']
+        try:
+            query = sanitize_query(query)
+        except Exception as e:
+            return HttpResponse(f"Invalid request: {e}", status=400)
+
         if query.strip() == '':
             return redirect('/')
 
@@ -403,3 +422,9 @@ def do_sorting(request, queryset):
 def ads_txt_view(request):
     content = "google.com, pub-5536287228450200, DIRECT, f08c47fec0942fa0"
     return HttpResponse(content, content_type="text/plain")
+
+
+def sanitize_query(query):
+    if '\x00' in query:
+        raise Exception('Invalid request')
+    return query

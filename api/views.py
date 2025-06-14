@@ -23,7 +23,7 @@ from visitors.models import Visitor
 from .forms import ApiForm
 from .serializers import ManoloSerializer
 from .api_responses import JSONResponse
-from visitors.views import do_pagination, data_as_csv, do_sorting
+from visitors.views import do_pagination, data_as_csv, do_sorting, sanitize_query
 from .tasks import process_json_request, log_task_error
 
 
@@ -67,6 +67,11 @@ def search(request, query):
         paramType: path
         required: true
     """
+    try:
+        query = sanitize_query(query)
+    except Exception as e:
+        return HttpResponse(f"Invalid request: {e}", status=400)
+
     query_request = QueryDict('q={}'.format(query))
     form = ApiForm(query_request)
     all_items = form.search()
@@ -91,6 +96,11 @@ def search(request, query):
 @api_view(['GET'])
 @permission_classes((AllowAny, ))
 def search_tsv(request, query):
+    try:
+        query = sanitize_query(query)
+    except Exception as e:
+        return HttpResponse(f"Invalid request: {e}", status=400)
+
     query_request = QueryDict('q={}'.format(query))
     form = ApiForm(query_request)
     all_items = form.search()
@@ -188,8 +198,13 @@ def save_json(request):
 
 @permission_classes((HasAPIKey,))
 def count_visits(request, dni_number):
+    try:
+        dni_number = sanitize_query(dni_number)
+    except Exception as e:
+        return HttpResponse(f"Invalid request: {e}", status=400)
+
     if is_key_valid(request) is False:
-        return HttpResponse("bad key")
+        return HttpResponse("bad key", status=400)
 
     count = Visitor.objects.filter(id_number=dni_number).count()
     return HttpResponse(count)
