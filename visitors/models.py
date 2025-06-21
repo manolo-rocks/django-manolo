@@ -4,6 +4,8 @@ from django.contrib.postgres.search import SearchVectorField, SearchVector
 from django.db import models
 from django.contrib.auth.models import User
 from django.db.models import JSONField, Q
+from django.db.models.signals import post_save
+from django.dispatch import receiver
 
 
 class Visitor(models.Model):
@@ -108,6 +110,9 @@ class Visitor(models.Model):
         default=False,
         help_text='If True, the visitor is not shown in the search results.',
         db_index=True,
+    )
+    is_candidate = models.BooleanField(
+        default=False, db_index=True,
     )
 
     created = models.DateTimeField()
@@ -223,3 +228,15 @@ class KnownCandidate(models.Model):
 
     def __str__(self):
         return f"{self.full_name} ({self.dni})"
+
+
+@receiver(post_save, sender=Visitor)
+def update_candidate_flag(sender, instance, created, **kwargs):
+    """Automatically set is_candidate flag when visitor is saved"""
+    if created and instance.id_document:
+        try:
+            KnownCandidate.objects.get(dni=instance.id_document)
+            instance.is_candidate = True
+            instance.save(update_fields=['is_candidate'])
+        except KnownCandidate.DoesNotExist:
+            pass

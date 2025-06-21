@@ -3,7 +3,7 @@ import json
 import requests
 from django.core.management.base import BaseCommand
 from django.db import transaction
-from visitors.models import KnownCandidate
+from visitors.models import KnownCandidate, Visitor
 
 
 class Command(BaseCommand):
@@ -60,6 +60,27 @@ class Command(BaseCommand):
             self.stdout.write(
                 self.style.SUCCESS(
                     f'Successfully synced candidates: {created_count} created, {updated_count} updated'
+                )
+            )
+
+            self.stdout.write('Updating visitor candidate flags...')
+
+            # Reset all flags
+            Visitor.objects.update(is_candidate=False)
+
+            # Get all candidate DNIs
+            candidate_dnis = set(
+                KnownCandidate.objects.values_list('dni', flat=True)
+            )
+
+            # Update visitors
+            visitor_update_count = Visitor.objects.filter(
+                id_document__in=candidate_dnis  # Change field name as needed
+            ).update(is_candidate=True)
+
+            self.stdout.write(
+                self.style.SUCCESS(
+                    f'Updated {visitor_update_count} visitor records with candidate flags'
                 )
             )
 
