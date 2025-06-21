@@ -203,3 +203,23 @@ class Institution(models.Model):
 
     def __str__(self):
         return f"{self.slug} ({self.name})"
+
+
+class KnownCandidate(models.Model):
+    """Model to store known candidates in otorongo.club with their full name and DNI."""
+    dni = models.CharField(max_length=200, unique=True, db_index=True)
+    full_name = models.TextField(null=False)
+    first_names = models.TextField(null=False)
+    last_names = models.TextField(null=False)
+    last_updated = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        verbose_name = "Known Candidate"
+        verbose_name_plural = "Known Candidates"
+
+    def get_otorongo_url(self):
+        # This is based on the actual URL pattern in Otorongo
+        return f"https://otorongo.club/candidate/{self.dni}/"
+
+    def __str__(self):
+        return f"{self.full_name} ({self.dni})"
