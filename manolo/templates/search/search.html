@@ -110,8 +110,6 @@
 
     .candidate-alert {
       background-color: #e8f4fd;
-      border-left: 4px solid #2196F3;
-      padding: 10px;
       margin: 10px 0;
       border-radius: 4px;
     }
@@ -226,7 +224,7 @@
                         {{ i.id_document }}: {{ i.id_number }}
                       </a>
                       {% if i.is_candidate %}
-                        <a href="https://otorongo.club/candidate/{{ visitor.id_document }}/" target="_blank" class="candidate-alert">
+                        <a href="https://otorongo.club/candidate/{{ i.id_number }}/" target="_blank" class="candidate-alert">
                           🗳️ VER PERFIL POLÍTICO
                         </a>
                       {% endif %}
