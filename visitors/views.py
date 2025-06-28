@@ -207,7 +207,7 @@ def visitas(request, dni):
     )
 
 
-@axes_dispatch
+# @axes_dispatch
 @csrf_exempt
 def search(request):
     query = request.GET.get('q') or ''
