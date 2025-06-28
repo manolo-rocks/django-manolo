@@ -107,6 +107,18 @@
       border-radius: 0 !important;
       color: black !important;
     }
+
+    .candidate-alert {
+      background-color: #e8f4fd;
+      margin: 10px 0;
+      border-radius: 4px;
+    }
+
+    .candidate-alert a {
+      color: #1976D2;
+      font-weight: bold;
+      text-decoration: none;
+    }
   </style>
 {% endblock additional_css %}
 
@@ -211,8 +223,11 @@
                       <a href='{% url 'visitas' i.id_number %}'>
                         {{ i.id_document }}: {{ i.id_number }}
                       </a>
-                    {% else %}
-                      &nbsp;
+                      {% if i.is_candidate %}
+                        <a href="https://otorongo.club/candidate/{{ i.id_number }}/" target="_blank" class="candidate-alert">
+                          🗳️ VER PERFIL POLÍTICO
+                        </a>
+                      {% endif %}
                     {% endif %}
                   </td>
                   <td>
