@@ -23,11 +23,24 @@ class SecurityMiddleware:
 
             # Previous attacks we've seen
             r'\x00',  # Null bytes
-            r'\.\.[\\/]',  # Path traversal
+
+            r'\.\./\.\.',  # ../.. (actual path traversal)
+            r'\.\./[^.]',  # ../ followed by non-dot (actual traversal)
+            r'\.\.\\',  # ..\ (Windows path traversal)
+
             r'etc[\\/]passwd',  # System files
             r'<script',  # XSS
             r'javascript:',  # JS injection
-            r'[\'";].*[\'";]',  # Multiple SQL injection chars
+
+            # Specific SQL injection patterns
+            r"'.*OR.*'",  # ' OR ' attacks
+            r"'.*UNION.*SELECT",  # UNION SELECT attacks
+            r"'.*DROP.*TABLE",  # DROP TABLE attacks
+            r"'.*INSERT.*INTO",  # INSERT attacks
+            r"'.*DELETE.*FROM",  # DELETE attacks
+            r"';.*--",  # Comment-based SQL injection
+            r'".*OR.*"',  # Double quote OR attacks
+
             r'http[s]?://.*\.(exe|bat|sh|php|jsp)',  # Malicious URLs
         ]
 
