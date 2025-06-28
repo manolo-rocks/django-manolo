@@ -117,9 +117,6 @@ TEMPLATES = [
 ]
 
 AUTHENTICATION_BACKENDS = [
-    # AxesStandaloneBackend should be the first backend in the AUTHENTICATION_BACKENDS list.
-    'axes.backends.AxesStandaloneBackend',
-
     # Django ModelBackend is the default authentication backend.
     'django.contrib.auth.backends.ModelBackend',
 ]
@@ -135,7 +132,6 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    'axes.middleware.AxesMiddleware',
 ]
 
 CORS_ALLOWED_ORIGINS = [
@@ -169,7 +165,6 @@ THIRD_PARTY_APPS = [
     'rest_framework_api_key',
     'rest_framework_swagger',
     'drf_yasg',
-    'axes',
 ]
 DATA_UPLOAD_MAX_MEMORY_SIZE = 5242880
 
