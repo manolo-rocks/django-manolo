@@ -19,14 +19,3 @@ ALLOWED_HOSTS = [
 
 DATABASES["default"]["ATOMIC_REQUESTS"] = True  # noqa F405
 DATABASES["default"]["CONN_MAX_AGE"] = env.int("CONN_MAX_AGE", default=60)  # noqa F405
-
-
-# Axes configuration
-AXES_FAILURE_LIMIT = 5  # Block after 5 failed attempts
-AXES_COOLOFF_TIME = 1   # Block for 1 hour
-AXES_LOCKOUT_PARAMETERS = ['ip_address', 'username']
-AXES_ENABLE_ADMIN = True  # See blocked IPs in admin
-AXES_IP_WHITELIST = [
-    '127.0.0.1',
-    '181.66.194.247',
-]
