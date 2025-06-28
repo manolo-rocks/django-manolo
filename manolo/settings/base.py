@@ -118,6 +118,7 @@ TEMPLATES = [
 
 AUTHENTICATION_BACKENDS = [
     # Django ModelBackend is the default authentication backend.
+    'axes.backends.AxesStandaloneBackend',
     'django.contrib.auth.backends.ModelBackend',
 ]
 
@@ -132,6 +133,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'axes.middleware.AxesMiddleware',
 ]
 
 CORS_ALLOWED_ORIGINS = [

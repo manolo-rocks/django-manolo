@@ -16,7 +16,7 @@ class SecurityMiddleware:
             # Command injection
             r'\$\{.*\}',  # Shell variables ${IFS}
             r'nslookup|dig|host',  # DNS commands
-            r'curl|wget|nc',  # Network commands
+            r'curl|wget',  # Network commands
             r'ping|traceroute',  # Network tools
             r'\|\||&&',  # Command chaining
             r'bxss\.me',  # Known security testing domain
@@ -42,7 +42,7 @@ class SecurityMiddleware:
             if re.search(pattern, url_path, re.IGNORECASE):
                 attack_type = self._identify_attack_type(pattern, url_path)
 
-                logger.critical(
+                logger.error(
                     f"SECURITY BLOCK: {attack_type} in URL from {ip} | "
                     f"URL: {url_path[:200]} | "
                     f"UA: {request.META.get('HTTP_USER_AGENT', 'Unknown')[:50]}"
@@ -63,7 +63,7 @@ class SecurityMiddleware:
                 if re.search(pattern, str(param_value), re.IGNORECASE):
                     attack_type = self._identify_attack_type(pattern, param_value)
 
-                    logger.critical(
+                    logger.error(
                         f"SECURITY BLOCK: {attack_type} in params from {ip} | "
                         f"Param: {param_name} | "
                         f"Value: {str(param_value)[:100]} | "

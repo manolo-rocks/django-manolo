@@ -5,6 +5,7 @@ import re
 from typing import Any, Dict
 from urllib.parse import quote
 
+from axes.decorators import axes_dispatch
 from django.contrib.postgres.search import SearchQuery
 from django.shortcuts import render, redirect
 from django.core.paginator import PageNotAnInteger, EmptyPage, InvalidPage
@@ -206,6 +207,7 @@ def visitas(request, dni):
     )
 
 
+@axes_dispatch
 @csrf_exempt
 def search(request):
     query = request.GET.get('q') or ''
