@@ -28,3 +28,4 @@ requests
 scrapy
 tqdm==4.67.0
 flower
+django-axes

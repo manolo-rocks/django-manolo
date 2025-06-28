@@ -165,6 +165,7 @@ THIRD_PARTY_APPS = [
     'rest_framework_api_key',
     'rest_framework_swagger',
     'drf_yasg',
+    'axes',
 ]
 DATA_UPLOAD_MAX_MEMORY_SIZE = 5242880
 
