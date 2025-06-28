@@ -260,9 +260,6 @@ def search(request):
     # paginate queryset
     paginator, page = do_pagination(request, all_items)
 
-    # Get all DNIs from the current page of visitors
-    visitor_dnis = [visitor.id_document for visitor in page.object_list if visitor.id_document]
-
     json_path = request.get_full_path() + '&json'
     tsv_path = request.get_full_path() + '&tsv'
     encoded_query = quote(query)

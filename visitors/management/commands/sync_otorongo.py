@@ -59,7 +59,8 @@ class Command(BaseCommand):
 
             self.stdout.write(
                 self.style.SUCCESS(
-                    f'Successfully synced candidates: {created_count} created, {updated_count} updated'
+                    f'Successfully synced candidates: {created_count} created, '
+                    f'{updated_count} updated'
                 )
             )
 
