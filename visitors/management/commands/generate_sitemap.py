@@ -1,4 +1,5 @@
 # your_app/management/commands/generate_sitemaps.py
+import logging
 import os
 import math
 from datetime import datetime
@@ -7,13 +8,14 @@ from django.conf import settings
 
 from visitors.models import Visitor
 
+log = logging.getLogger(__name__)
 
 class Command(BaseCommand):
     help = 'Generate static XML sitemap files for DNI search pages'
 
     def add_arguments(self, parser):
         parser.add_argument(
-            '--batch-size', type=int, default=5000,
+            '--batch-size', type=int, default=1_000,
             help='Number of URLs per sitemap file (max 50000)'
         )
         parser.add_argument(
@@ -59,6 +61,7 @@ class Command(BaseCommand):
                 f.write('  </sitemap>\n')
 
             f.write('</sitemapindex>')
+        log.info(f"Sitemap index file generated at {os.path.join(output_dir, 'sitemap.xml')}")
 
     def generate_sitemap_file(self, output_dir, index, batch_size):
         offset = index * batch_size
@@ -78,3 +81,4 @@ class Command(BaseCommand):
                 f.write('  </url>\n')
 
             f.write('</urlset>')
+        log.info(f"Sitemap file generated at {os.path.join(output_dir, f'sitemap_{index}.xml')}")
