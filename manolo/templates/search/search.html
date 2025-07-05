@@ -155,13 +155,6 @@
             </p>
 
             {% load static %}
-            <p class="pull-right">
-              <a href="{% url 'search-tsv' query %}?page={{ page.number }}">
-                <img title="Descarga datos en formato TSV" width="32" height="32" src="{% static 'img/tsv.svg' %}" /></a>
-
-              <a href="{% url 'search-json' query %}?page={{ page.number }}">
-                <img title="Descarga datos en formato JSON" width="32" height="32" src="{% static 'img/json.svg' %}" /></a>
-            </p>
 
             {% if is_visitas_dni_page %}
               <p>Resultados de búsqueda para DNI: {{ query }}</p>
