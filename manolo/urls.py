@@ -3,7 +3,6 @@ from django.urls import include, path
 from django.conf.urls.static import static
 from django.contrib import admin
 
-from api.views import schema_view
 from visitors import views
 from visitors.views import ads_txt_view
 
