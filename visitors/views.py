@@ -40,7 +40,6 @@ def index(request):
     else:
         count = 0
 
-
     if stats and stats.updated_institutions:
         institutions = stats.updated_institutions
         for institution in institutions:
@@ -123,13 +122,25 @@ def get_context(query, count=None, institution_name=None, full_name=None) -> Dic
 
     # build meta description
     if full_name and count:
-        meta_desc = f"Encontrados {count} registros de {full_name} en instituciones peruanas. Consulta visitas, contratos y actividad pública."
+        meta_desc = (
+            f"Encontrados {count} registros de {full_name} en instituciones "
+            "peruanas. Consulta visitas, contratos y actividad pública."
+        )
     elif full_name:
-        meta_desc = f"Información pública sobre {full_name} en instituciones del Estado Peruano. Visitas, contratos y datos verificados en Manolo.rocks"
+        meta_desc = (
+            f"Información pública sobre {full_name} en instituciones del Estado "
+            "Peruano. Visitas, contratos y datos verificados en Manolo.rocks"
+        )
     elif institution_name:
-        meta_desc = f'Resultados de búsqueda para {query} en la institución {institution_name}. Transparencia gubernamental del Estado Peruano en Manolo.rocks.'
+        meta_desc = (
+            f'Resultados de búsqueda para {query} en la institución {institution_name}. '
+            'Transparencia gubernamental del Estado Peruano en Manolo.rocks.'
+        )
     else:
-        meta_desc = f'Busca información sobre {query} en instituciones peruanas. Datos transparentes y verificados del Estado - Manolo.rocks.'
+        meta_desc = (
+            f'Busca información sobre {query} en instituciones peruanas. Datos '
+            'transparentes y verificados del Estado - Manolo.rocks.'
+        )
 
     return {
         "count": count or "",
