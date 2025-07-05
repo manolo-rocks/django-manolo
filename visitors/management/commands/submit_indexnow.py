@@ -37,13 +37,14 @@ class Command(BaseCommand):
             help='Number of URLs per sitemap file (max 50000)'
         )
         parser.add_argument(
-            '--total', type=int, default=10_000,
-            help='Number of URLs per sitemap file (max 50000)'
+            '--total', type=int, default=None,
         )
 
     def handle(self, *args, **options):
         batch_size = options['batch_size']
         self.stdout.write(f"Generating sitemaps with {batch_size} URLs per file...")
+
+        total_to_do = options['total']
 
         # Count total DNIs
         self.total_dnis = Visitor.objects.values('id_number').distinct().count()
@@ -60,7 +61,7 @@ class Command(BaseCommand):
                     continue
                 urls.append(f'https://manolo.rocks/visitas/{dni}/')
             self.post_dni_pages(urls)
-            if offset > options['total']:
+            if total_to_do and self.count >= total_to_do:
                 break
 
     def post_dni_pages(self, urls):
