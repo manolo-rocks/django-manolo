@@ -33,7 +33,11 @@ class Command(BaseCommand):
 
     def add_arguments(self, parser):
         parser.add_argument(
-            '--batch-size', type=int, default=1_000,
+            '--batch-size', type=int, default=10_000,
+            help='Number of URLs per sitemap file (max 50000)'
+        )
+        parser.add_argument(
+            '--total', type=int, default=10_000,
             help='Number of URLs per sitemap file (max 50000)'
         )
 
@@ -42,32 +46,33 @@ class Command(BaseCommand):
         self.stdout.write(f"Generating sitemaps with {batch_size} URLs per file...")
 
         # Count total DNIs
-        total_dnis = Visitor.objects.values('id_number').distinct().count()
-        dnis = Visitor.objects.values_list(
-            'id_number', flat=True
-        ).distinct().order_by('id_number')[:batch_size]
+        self.total_dnis = Visitor.objects.values('id_number').distinct().count()
+        self.count = 0
 
-        self.stdout.write(
-            f"Found {total_dnis} unique DNIs. "
-            f"Processing only {len(dnis)} for this run."
-        )
+        for i in range(self.total_dnis):
+            offset = i * batch_size
+            dnis = Visitor.objects.values_list(
+                'id_number', flat=True
+            ).distinct().order_by('id_number')[offset:offset + batch_size]
+            urls = []
+            for dni in dnis:
+                if not dni:
+                    continue
+                urls.append(f'https://manolo.rocks/visitas/{dni}/')
+            self.post_dni_pages(urls)
+            if offset > options['total']:
+                break
 
-        # Generate individual sitemap files
-        for i in dnis:
-            if not i:
-                continue
-            self.post_dni_page(i)
-
-    def post_dni_page(self, dni):
-        target_url = f'https://manolo.rocks/visitas/{dni}/'
+    def post_dni_pages(self, urls):
+        self.count += len(urls)
         url = 'https://api.indexnow.org/indexnow'
         data = {
             "host": "manolo.rocks",
             "key": settings.INDEXNOW_KEY,
             "keyLocation": f"https://manolo.rocks/{settings.INDEXNOW_KEY}.txt",
-            "urlList": [target_url]
+            "urlList": urls
         }
-        print(data)
+        print(f"Posting {self.count}/{self.total_dnis}")
         res = requests.post(
             url,
             json=data,
