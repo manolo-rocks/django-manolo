@@ -34,13 +34,11 @@ class JSONResponse(HttpResponse):
 
 
 def index(request):
-    context = get_context()
     stats = Statistic.objects.last()
     if stats:
         count = stats.visitor_count
     else:
         count = 0
-    context['count'] = count
 
     if stats and stats.updated_institutions:
         institutions = stats.updated_institutions
@@ -53,6 +51,8 @@ def index(request):
                     institution['last_updated'], '%Y-%m-%d')
     else:
         institutions = []
+
+    context = get_context("", count, institution_name=", ".join([i['name'] for i in institutions]))
     context['institutions'] = institutions
 
     return render(
@@ -88,7 +88,8 @@ def statistics(request):
         date_str = str(entry.cutoff_date.strftime('%Y'))
         visitor_counts[date_str] = entry.visitor_count
 
-    context = get_context()
+    context = get_context("")
+    context['title'] = "Estadísticas | Manolo - Transparencia Gubernamental Perú"
     context['visitors'] = visitors
     context['visitor_counts'] = list(visitor_counts.values())
     context['visitor_counts_start'] = list(visitor_counts.keys())[0]
@@ -110,15 +111,43 @@ def statistics_api(request):
     return HttpResponse(data)
 
 
-def get_context() -> Dict[str, Any]:
-    return {
-        "count": "",
-        "full_name": "",
-        'title': 'Búsqueda de Visitas | Manolo - Transparencia Gubernamental Perú',
-        'meta_description': (
-            'Busca registros de visitas a instituciones del Estado Peruano. '
-            'Base de datos transparente de visitantes gubernamentales.',
+def get_context(query, count=None, institution_name=None, full_name=None) -> Dict[str, Any]:
+    if full_name:
+        if count and count > 0:
+            title = f'{full_name} - {count} registros | Manolo'
+        else:
+            title = f'{full_name} | Manolo - Transparencia Perú'
+    else:
+        title = f'Búsqueda: {query} | Manolo - Transparencia Perú'
+
+    # build meta description
+    if full_name and count:
+        meta_desc = (
+            f"Encontrados {count} registros de {full_name} en instituciones "
+            "peruanas. Consulta visitas, contratos y actividad pública."
         )
+    elif full_name:
+        meta_desc = (
+            f"Información pública sobre {full_name} en instituciones del Estado "
+            "Peruano. Visitas, contratos y datos verificados en Manolo.rocks"
+        )
+    elif institution_name:
+        meta_desc = (
+            f'Resultados de búsqueda para {query} en la institución {institution_name}. '
+            'Transparencia gubernamental del Estado Peruano en Manolo.rocks.'
+        )
+    else:
+        meta_desc = (
+            f'Busca información sobre {query} en instituciones peruanas. Datos '
+            'transparentes y verificados del Estado - Manolo.rocks.'
+        )
+
+    return {
+        "count": count or "",
+        "full_name": full_name or "",
+        "institution_name": institution_name or "",
+        'title': title[:60],
+        'meta_description': meta_desc[:160],
     }
 
 
@@ -129,7 +158,6 @@ def visitas(request, dni):
     except Exception as e:
         return HttpResponse(f"Invalid request: {e}", status=400)
 
-    context = get_context()
     query = dni.strip()
 
     if len(query.split()) == 1:
@@ -178,20 +206,7 @@ def visitas(request, dni):
     tsv_path = request.get_full_path() + '&tsv'
     encoded_query = quote(query)
 
-    # Generate dynamic title and description
-    title = (
-        f"Registros de visitas para {full_name} {query} | Manolo - Transparencia "
-        "Gubernamental Perú"
-    )
-    description = (
-        f"Resultados de búsqueda para el visitante {full_name} {query}. Encuentra "
-        "registros detallados de visitas a instituciones gubernamentales del Perú."
-    )
-
-    context["title"] = title
-    context["meta_description"] = description
-    context["count"] = count
-    context["full_name"] = full_name
+    context = get_context(query, full_name=full_name, count=count)
     context["is_visitas_dni_page"] = True
     context["paginator"] = paginator
     context["page"] = page
@@ -212,6 +227,7 @@ def visitas(request, dni):
 def search(request):
     query = request.GET.get('q') or ''
     institution = request.GET.get('i') or ''
+    institution_obj = None
     try:
         query = sanitize_query(query)
     except Exception as e:
@@ -263,7 +279,7 @@ def search(request):
     json_path = request.get_full_path() + '&json'
     tsv_path = request.get_full_path() + '&tsv'
     encoded_query = quote(query)
-    context = get_context()
+    context = get_context(query, institution_name=institution_obj.name if institution_obj else None)
     context["is_visitas_dni_page"] = False
     context["paginator"] = paginator
     context["page"] = page
@@ -293,7 +309,6 @@ def do_dni_search(query):
 
 
 def search_date(request):
-    context = get_context()
     if 'q' in request.GET:
         query = request.GET['q']
         try:
@@ -304,6 +319,7 @@ def search_date(request):
         if query.strip() == '':
             return redirect('/')
 
+        context = get_context(query)
         try:
             query_date_obj = datetime.datetime.strptime(query, '%d/%m/%Y')
         except ValueError:
