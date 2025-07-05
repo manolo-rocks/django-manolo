@@ -397,10 +397,6 @@ def data_as_csv(request, paginator):
     return response
 
 
-def api(request):
-    return render(request, "api.html")
-
-
 def do_pagination(request, all_items):
     """
     :param request: contains the current page requested by user
