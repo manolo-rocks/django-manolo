@@ -1,6 +1,6 @@
 <div class="card">
-  <div class="card-body py-5">
-    <div class="d-flex align-items-center">
+  <div class="card-body py-0 mb-3">
+    <div class="d-flex align-items-center buscador-section mt-3">
       <div class="icon icon-primary rounded-circle icon-shape">
         <span class="material-symbols-outlined" data-target="">bookmark</span>
       </div>
@@ -8,12 +8,12 @@
         <h5 class="mb-0">Buscador</h5>
       </div>
     </div>
-    <p class="mt-4 mb-0">
+    <p class="mt-4 mb-0 buscador-section">
       Puedes buscar por nombre o palabra clave. Click en "Buscar" y tipea ROMULO.
     </p>
 
     <form action="/search" method="get" class="form-inline" role="search">
-      <div class="form-group mt-4">
+      <div class="form-group mt-2">
         <label class="sr-only" for="query">Keyword</label>
         <input
             style="width:250px;"
@@ -27,7 +27,7 @@
         />
       </div>
 
-      <div class="mt-4 ml-2">
+      <div class="mt-2 ml-2">
         <button type="submit" class="btn btn-info" id="search_button">
           <span class="material-symbols-outlined">search</span>
           Buscar
