@@ -1,0 +1,8 @@
+@media (max-width: 768px) {
+  .sorting-instructions {
+    display: none !important;
+  }
+  .buscador-section {
+    display: none !important;
+  }
+}

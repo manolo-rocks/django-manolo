@@ -33,11 +33,10 @@
     {% block additional_css %}
     {% endblock additional_css %}
 
-{#    <link href="{% static 'css/bootstrap.min.css' %}" rel="stylesheet">#}
-{#    <link href="//maxcdn.bootstrapcdn.com/bootswatch/3.2.0/readable/bootstrap.min.css" rel="stylesheet">#}
     <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined&display=block" rel="stylesheet" />
 
     <link rel="stylesheet" href="{% static 'css/purpose.css' %}">
+    <link rel="stylesheet" href="{% static 'css/custom-styles.css' %}">
 
     {% block additional_head_javascript %}
     {% endblock additional_head_javascript %}
@@ -71,7 +70,7 @@
             Los datos en Manolo son obtenidos con escrapers construidos con el framework
             <a href="http://scrapy.org/">Scrapy</a>.
             <br />
-            &copy; 2015-2025 <a href="{% url 'about' %}">Desarrolladores</a>
+            &copy; 2015-2025
             <br />
             <br />
           </small>

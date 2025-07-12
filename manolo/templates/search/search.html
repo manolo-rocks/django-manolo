@@ -141,24 +141,42 @@
       <div class="card">
         <div class="card-body" id="contenido">
           {% if paginator.count > 0 %}
-            También puedes hacer búsquedas haciendo click sobre cada uno de los
-            resultados <span class="badge"><b>{{ paginator.count | intcomma }}</b></span>
+            <span class="sorting-instructions">
+              También puedes hacer búsquedas haciendo click sobre cada uno de los
+              resultados <span class="badge"><b>{{ paginator.count | intcomma }}</b></span>
 
-            <p>
-              Puedes odernar los resultados de manera ascendente o descendente:
-              <img
-                  src="{% static 'img/sort_example.webp' %}"
-                  class="img-thumbnail"
-                  width="230"
-                  height="73"
-                  alt="Ejemplo de cómo ordenar los resultados de búsqueda"
-              />
-            </p>
+              <p>
+                Puedes odernar los resultados de manera ascendente o descendente:
+                <img
+                    src="{% static 'img/sort_example.webp' %}"
+                    class="img-thumbnail"
+                    width="230"
+                    height="73"
+                    alt="Ejemplo de cómo ordenar los resultados de búsqueda"
+                />
+              </p>
+            </span>
 
             {% load static %}
 
             {% if is_visitas_dni_page %}
-              <p>Resultados de búsqueda para DNI: {{ query }}</p>
+              <h1 style="font-size: 1.5rem"> {{ count }}
+                {% if count > 1 %}
+                  Visitas
+                {% else %}
+                  Visita
+                {% endif %}
+                a instituciones peruanas de {{ full_name }}</h1>
+              <h2 style="font-size: 1.3rem">Documento No: {{ query }}</h2>
+
+              {% if is_candidate and dni %}
+                <h3 style="font-size: 1.1rem">Ha sido candidato a elecciones peruanas.
+                  Ver en Club Otorongo:
+                  <a href="https://otorongo.club/candidate/{{ dni }}/" target="_blank" class="candidate-alert">
+                    https://otorongo.club/candidate/{{ dni }}/
+                  </a>
+                </h3>
+              {% endif %}
             {% endif %}
             <table class='table table-striped table-hover table-bordered table-responsive table-sm fixed-table'>
 

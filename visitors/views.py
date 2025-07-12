@@ -111,7 +111,10 @@ def statistics_api(request):
     return HttpResponse(data)
 
 
-def get_context(query, count=None, institution_name=None, full_name=None) -> Dict[str, Any]:
+def get_context(
+    query, count=None, institution_name=None, full_name=None,
+    is_candidate=False
+) -> Dict[str, Any]:
     if full_name:
         if count and count > 0:
             title = f'{full_name} - {count} registros | Manolo'
@@ -142,17 +145,26 @@ def get_context(query, count=None, institution_name=None, full_name=None) -> Dic
             'transparentes y verificados del Estado - Manolo.rocks.'
         )
 
+    if full_name and count and is_candidate:
+        # TODO: meta_desc += " Esta persona es candidata a las elecciones."
+        is_candidate = True
+    else:
+        is_candidate = False
+
     return {
         "count": count or "",
         "full_name": full_name or "",
         "institution_name": institution_name or "",
         'title': title[:60],
         'meta_description': meta_desc[:160],
+        'is_candidate': is_candidate,
     }
 
 
 @csrf_exempt
 def visitas(request, dni):
+    is_dni = False
+
     try:
         dni = sanitize_query(dni)
     except Exception as e:
@@ -168,6 +180,7 @@ def visitas(request, dni):
     if query_is_dni(query):
         # do dni search
         all_items = do_dni_search(query)
+        is_dni = True
     else:
         if single_word_query:
             all_items = Visitor.objects.filter(
@@ -206,7 +219,9 @@ def visitas(request, dni):
     tsv_path = request.get_full_path() + '&tsv'
     encoded_query = quote(query)
 
-    context = get_context(query, full_name=full_name, count=count)
+    is_candidate = all_items.last().is_candidate
+
+    context = get_context(query, full_name=full_name, count=count, is_candidate=is_candidate)
     context["is_visitas_dni_page"] = True
     context["paginator"] = paginator
     context["page"] = page
@@ -214,6 +229,10 @@ def visitas(request, dni):
     context["plain_query"] = query
     context["json_path"] = json_path
     context["tsv_path"] = tsv_path
+    context['dni'] = ""
+
+    if is_dni and context['is_candidate']:
+        context['dni'] = query
 
     return render(
         request,
