@@ -326,3 +326,5 @@ DEFAULT_AUTO_FIELD = 'django.db.models.AutoField'
 
 os.environ["DJANGO_ALLOW_ASYNC_UNSAFE"] = "true"
 ASYNC_MODE = True
+
+INDEXNOW_KEY = 'dc0256884e6b414bb8be5f3e51b93b1f'
