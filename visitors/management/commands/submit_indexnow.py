@@ -1,8 +1,5 @@
 # your_app/management/commands/generate_sitemaps.py
 import logging
-import os
-import math
-from datetime import datetime
 
 import requests
 from django.core.management.base import BaseCommand
@@ -26,8 +23,9 @@ POST /IndexNow HTTP/1.1
                           "https://www.example.org/url3"
                           ]
                     }
-                
 """
+
+
 class Command(BaseCommand):
     help = 'Submit sitemaps to IndexNow'
 
