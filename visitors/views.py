@@ -234,7 +234,6 @@ def visitas(request, dni):
     if is_dni and context['is_candidate']:
         context['dni'] = query
 
-    print("")
     return render(
         request,
         "search/search.html",
