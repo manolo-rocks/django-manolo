@@ -196,16 +196,21 @@ def visitas(request, dni):
         # For sliced querysets
         if all_items:
             full_name = all_items[0].full_name
+            is_candidate = all_items[0].is_candidate
         else:
             full_name = ""
+            is_candidate = False
         count = len(all_items)  # Use len() for sliced querysets
     else:
         # For non-sliced querysets
         first_item = all_items.first()
+        last_item = all_items.last()
         if first_item:
             full_name = first_item.full_name
+            is_candidate = last_item.is_candidate if last_item else False
         else:
             full_name = ""
+            is_candidate = False
         count = all_items.count()  # Use count() for non-sliced querysets
 
     # sort queryset
@@ -218,8 +223,6 @@ def visitas(request, dni):
     json_path = request.get_full_path() + '&json'
     tsv_path = request.get_full_path() + '&tsv'
     encoded_query = quote(query)
-
-    is_candidate = all_items.last().is_candidate
 
     context = get_context(query, full_name=full_name, count=count, is_candidate=is_candidate)
     context["is_visitas_dni_page"] = True
