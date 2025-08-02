@@ -109,15 +109,17 @@ def get_sort_field(request):
     :return: the sorted field name, prefixed with "-" if ordering is descending
     """
     allowed_sort_fields = [
-        'id', '-id', 'date', '-date', 'full_name', '-full_name',
+        'date', '-date', 'full_name', '-full_name',
         'id_number', '-id_number', 'entity', '-entity', 'reason', '-reason',
         'host_name', '-host_name', 'office', '-office',
     ]
     sort_direction = request.GET.get("dir")
     sort_field = (request.GET.get("sort") or "") if sort_direction else ""
 
-    if sort_field not in allowed_sort_fields:
-        sort_field = 'id'  # Default sort field if not specified or invalid
+    if sort_field and sort_field not in allowed_sort_fields:
+        sort_field = '-date'
+    elif not sort_field:
+        sort_field = '-date'
 
     sort_sign = "-" if sort_direction == "desc" else ""
     result_field = f"{sort_sign}{sort_field.lstrip('-')}" if sort_field else "id"
