@@ -1,0 +1,12 @@
+<h1>Debug Results ({{ page|length }} results)</h1>
+<table>
+{% for i in page.object_list %}
+<tr>
+  <td>{{ i.institution2.slug }}</td>
+  <td>{{ i.date|date:"d/m/Y" }}</td>
+  <td>{{ i.full_name|upper }}</td>
+  <td>{{ i.id_number }}</td>
+  <td>{{ i.host_name }}</td>
+</tr>
+{% endfor %}
+</table>
