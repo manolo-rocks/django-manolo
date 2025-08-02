@@ -289,7 +289,7 @@ def search(request):
             else:
                 all_items = Visitor.objects.filter(
                     full_search=SearchQuery(query)
-                ).exclude(censored=True)
+                ).exclude(censored=True)[:2000]
 
         # sort queryset
         if not single_word_query:
