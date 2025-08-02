@@ -2,6 +2,7 @@ import datetime
 import csv
 import logging
 import re
+import time
 from typing import Any, Dict
 from urllib.parse import quote
 
@@ -247,6 +248,8 @@ def visitas(request, dni):
 @axes_dispatch
 @csrf_exempt
 def search(request):
+    start_time = time.time()
+
     query = request.GET.get('q') or ''
     institution = request.GET.get('i') or ''
     institution_obj = None
@@ -278,6 +281,7 @@ def search(request):
         else:
             single_word_query = False
 
+        query_start = time.time()
         if query_is_dni(query):
             # do dni search
             all_items = do_dni_search(query)
@@ -294,12 +298,17 @@ def search(request):
                 all_items = do_sorting(request, all_items)
                 all_items = all_items[:2000]
 
+        print(f"Search query: {query} - Time taken: {time.time() - query_start:.3f} seconds")
+
     # paginate queryset
+    pagination_start = time.time()
     paginator, page = do_pagination(request, all_items)
 
     json_path = request.get_full_path() + '&json'
     tsv_path = request.get_full_path() + '&tsv'
     encoded_query = quote(query)
+
+    context_start = time.time()
     context = get_context(query, institution_name=institution_obj.name if institution_obj else None)
     context["is_visitas_dni_page"] = False
     context["paginator"] = paginator
@@ -309,11 +318,18 @@ def search(request):
     context["json_path"] = json_path
     context["tsv_path"] = tsv_path
 
-    return render(
+    print(f"Pagination time {query}: {time.time() - pagination_start:.3f} seconds")
+    print(f"Context preparation time {query}: {time.time() - context_start:.3f} seconds")
+
+    render_start = time.time()
+    response = render(
         request,
         "search/search.html",
         context=context,
     )
+    print(f"Render time {query}: {time.time() - render_start:.3f} seconds")
+    print(f"Total time for search {query}: {time.time() - start_time:.3f} seconds")
+    return response
 
 
 def query_is_dni(query):
