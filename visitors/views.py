@@ -322,8 +322,8 @@ def search(request):
     render_start = time.time()
     response = render(
         request,
-        "search/search.html",
-        # "search/search_debug.html",
+        # "search/search.html",
+        "search/search_debug.html",
         context=context,
     )
     print(f"Render time {query}: {time.time() - render_start:.3f} seconds")
