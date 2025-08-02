@@ -2,11 +2,10 @@
 <table>
 {% for i in page.object_list %}
 <tr>
-  <td>{{ i.institution2.slug }}</td>
-  <td>{{ i.date|date:"d/m/Y" }}</td>
+  <td>{{ forloop.counter }}</td>
+  <td>{{ i.id }}</td>
   <td>{{ i.full_name|upper }}</td>
   <td>{{ i.id_number }}</td>
-  <td>{{ i.host_name }}</td>
 </tr>
 {% endfor %}
 </table>
