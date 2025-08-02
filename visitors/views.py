@@ -281,7 +281,6 @@ def search(request):
         else:
             single_word_query = False
 
-        query_start = time.time()
         if query_is_dni(query):
             # do dni search
             all_items = do_dni_search(query)
@@ -298,7 +297,9 @@ def search(request):
                 all_items = do_sorting(request, all_items)
                 all_items = all_items[:2000]
 
-        print(f"Search query: {query} - Time taken: {time.time() - query_start:.3f} seconds")
+        query_start = time.time()
+        all_items = list(all_items)
+        print(f"Queryset evaluation time: {time.time() - query_start:.3f} seconds")
 
     # paginate queryset
     pagination_start = time.time()
@@ -324,8 +325,8 @@ def search(request):
     render_start = time.time()
     response = render(
         request,
-        # "search/search.html",
-        "search/search_debug.html",
+        "search/search.html",
+        # "search/search_debug.html",
         context=context,
     )
     print(f"Render time {query}: {time.time() - render_start:.3f} seconds")
