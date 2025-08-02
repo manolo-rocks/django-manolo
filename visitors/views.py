@@ -289,11 +289,10 @@ def search(request):
             else:
                 all_items = Visitor.objects.filter(
                     full_search=SearchQuery(query)
-                ).exclude(censored=True)[:2000]
+                ).exclude(censored=True)
 
-        # sort queryset
-        if not single_word_query:
-            all_items = do_sorting(request, all_items)
+                all_items = do_sorting(request, all_items)
+                all_items = all_items[:2000]
 
     # paginate queryset
     paginator, page = do_pagination(request, all_items)
