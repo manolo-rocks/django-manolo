@@ -9,7 +9,9 @@ from urllib.parse import quote
 from axes.decorators import axes_dispatch
 from django.contrib.postgres.search import SearchQuery
 from django.shortcuts import render, redirect
-from django.core.paginator import PageNotAnInteger, EmptyPage, InvalidPage
+from django.core.paginator import (
+    PageNotAnInteger, EmptyPage, InvalidPage, Paginator as DjangoPaginator
+)
 from django.http import Http404, HttpResponse
 from rest_framework.renderers import JSONRenderer
 from django.views.decorators.csrf import csrf_exempt
@@ -18,7 +20,7 @@ from visitors.models import (
     Visitor, Statistic, Statistic_detail, VisitorScrapeProgress,
     Institution
 )
-from visitors.utils import Paginator, get_sort_field
+from visitors.utils import get_sort_field
 
 
 logger = logging.getLogger(__name__)
@@ -442,7 +444,8 @@ def do_pagination(request, all_items):
     :return: dict containing paginated items and pagination bar
     """
     results_per_page = 20
-    results = all_items
+
+    paginator = DjangoPaginator(all_items, results_per_page)
 
     try:
         page_no = int(request.GET.get('page', 1))
@@ -451,8 +454,6 @@ def do_pagination(request, all_items):
 
     if page_no < 1:
         raise Http404("Pages should be 1 or greater.")
-
-    paginator = Paginator(results, results_per_page)
 
     try:
         page = paginator.page(page_no)
