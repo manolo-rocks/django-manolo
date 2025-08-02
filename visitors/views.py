@@ -273,31 +273,27 @@ def search(request):
 
         all_items = Visitor.objects.filter(
             institution2=institution_obj,
-        ).exclude(censored=True).order_by("-date")
+        ).exclude(censored=True).select_related("institution2").order_by("-date")[:500]
         query = institution
     else:
         query = query.strip()
-
-        if len(query.split()) == 1:
-            single_word_query = True
-        else:
-            single_word_query = False
+        single_word_query = len(query.split()) == 1
 
         if query_is_dni(query):
             # do dni search
             all_items = do_dni_search(query)
         else:
-            if single_word_query:
-                all_items = Visitor.objects.filter(
-                    full_search=SearchQuery(query)
-                ).exclude(censored=True)[0:2000]
-            else:
-                all_items = Visitor.objects.filter(
-                    full_search=SearchQuery(query)
-                ).exclude(censored=True)
+            base_query = Visitor.objects.filter(
+                full_search=SearchQuery(query)
+            ).exclude(censored=True).select_related("institution2")
 
-                all_items = do_sorting(request, all_items)
-                all_items = all_items[:2000]
+            if single_word_query:
+                all_items = base_query[:800]
+            else:
+                word_count = len(query.split())
+                limit = max(100, 500 - (word_count * 50))
+                all_items = do_sorting(request, base_query)
+                all_items = all_items[:limit]
 
     query_start = time.time()
     print(f"Queryset evaluation time: {time.time() - query_start:.3f} seconds")
