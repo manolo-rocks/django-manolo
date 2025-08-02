@@ -298,7 +298,6 @@ def search(request):
                 all_items = all_items[:2000]
 
     query_start = time.time()
-    all_items = list(all_items)
     print(f"Queryset evaluation time: {time.time() - query_start:.3f} seconds")
 
     # paginate queryset
