@@ -293,6 +293,7 @@ def search(request):
                 word_count = len(query.split())
                 limit = max(100, 500 - (word_count * 50))
                 all_items = do_sorting(request, base_query)
+                # all_items = all_items[:limit]
                 all_items = list(all_items[:limit])
 
     query_start = time.time()
