@@ -296,12 +296,12 @@ def search(request):
                 all_items = all_items[:limit]
 
     query_start = time.time()
-    print(f"Queryset evaluation time {query}: {time.time() - query_start:.3f} seconds")
+    logger.info(f"Queryset evaluation time {query}: {time.time() - query_start:.3f} seconds")
 
     # paginate queryset
     pagination_start = time.time()
     paginator, page = do_pagination(request, all_items)
-    print(f"Pagination time {query}: {time.time() - pagination_start:.3f} seconds")
+    logger.info(f"Pagination time {query}: {time.time() - pagination_start:.3f} seconds")
 
     json_path = request.get_full_path() + '&json'
     tsv_path = request.get_full_path() + '&tsv'
@@ -317,7 +317,7 @@ def search(request):
     context["json_path"] = json_path
     context["tsv_path"] = tsv_path
 
-    print(f"Context preparation time {query}: {time.time() - context_start:.3f} seconds")
+    logger.info(f"Context preparation time {query}: {time.time() - context_start:.3f} seconds")
 
     render_start = time.time()
     response = render(
@@ -326,8 +326,8 @@ def search(request):
         # "search/search_debug.html",
         context=context,
     )
-    print(f"Render time {query}: {time.time() - render_start:.3f} seconds")
-    print(f"Total time for search {query}: {time.time() - start_time:.3f} seconds")
+    logger.info(f"Render time {query}: {time.time() - render_start:.3f} seconds")
+    logger.info(f"Total time for search {query}: {time.time() - start_time:.3f} seconds")
     return response
 
 
