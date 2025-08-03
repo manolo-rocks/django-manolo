@@ -12,10 +12,16 @@ class SecurityMiddleware:
         self.get_response = get_response
 
         # All dangerous patterns to block
+        dns_commands_pattern = r'\b(?:' \
+                               r'nslookup|dig|host|whois|ping|traceroute|tracert|' \
+                               r'nmap|netstat|arp|route|drill|kdig|delv|' \
+                               r'curl|wget|nc|netcat|telnet|ssh' \
+                               r')\b'
+
         self.attack_patterns = [
             # Command injection
             r'\$\{.*\}',  # Shell variables ${IFS}
-            r'nslookup|dig|host',  # DNS commands
+            dns_commands_pattern,
             r'curl|wget',  # Network commands
             r'ping|traceroute',  # Network tools
             r'\|\||&&',  # Command chaining
