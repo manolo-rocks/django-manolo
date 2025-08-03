@@ -301,7 +301,10 @@ def search(request):
     # paginate queryset
     pagination_start = time.time()
     paginator, page = do_pagination(request, all_items)
-    logger.info(f"Pagination time {query}: {time.time() - pagination_start:.3f} seconds")
+    logger.info(
+        f"Pagination time {query}: {time.time() - pagination_start:.3f} seconds "
+        f"{len(page.object_list)} items"
+    )
 
     json_path = request.get_full_path() + '&json'
     tsv_path = request.get_full_path() + '&tsv'
