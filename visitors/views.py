@@ -10,7 +10,7 @@ from axes.decorators import axes_dispatch
 from django.contrib.postgres.search import SearchQuery
 from django.shortcuts import render, redirect
 from django.core.paginator import (
-    PageNotAnInteger, EmptyPage, InvalidPage, Paginator as DjangoPaginator
+    PageNotAnInteger, EmptyPage, InvalidPage, Paginator
 )
 from django.http import Http404, HttpResponse
 from rest_framework.renderers import JSONRenderer
@@ -293,7 +293,7 @@ def search(request):
                 word_count = len(query.split())
                 limit = max(100, 500 - (word_count * 50))
                 all_items = do_sorting(request, base_query)
-                all_items = all_items[:limit]
+                all_items = list(all_items[:limit])
 
     query_start = time.time()
     logger.info(f"Queryset evaluation time {query}: {time.time() - query_start:.3f} seconds")
@@ -444,7 +444,7 @@ def do_pagination(request, all_items):
     """
     results_per_page = 20
 
-    paginator = DjangoPaginator(all_items, results_per_page)
+    paginator = Paginator(all_items, results_per_page)
 
     try:
         page_no = int(request.GET.get('page', 1))
