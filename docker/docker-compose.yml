@@ -31,8 +31,8 @@ services:
       --workers 5
       --threads 2
       --timeout 3600
-      --max-requests 200
-      --max-requests-jitter 50
+      --max-requests 2000
+      --max-requests-jitter 200
       --graceful-timeout 30
       --worker-class=manolo.gunicorn_worker.UvicornWorkerLifeSpanOff
       --log-level debug
