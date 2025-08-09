@@ -53,6 +53,11 @@ class SecurityMiddleware:
     def __call__(self, request):
         ip = request.META.get('REMOTE_ADDR')
 
+        original_path = request.path
+        cleaned_path = self.sanitize_path(original_path)
+        request.path = cleaned_path
+        request.path_info = cleaned_path
+
         # Check URL path (this was missing!)
         url_path = urllib.parse.unquote(request.get_full_path())
 
@@ -105,7 +110,7 @@ class SecurityMiddleware:
             return "Command Injection"
         elif '\x00' in str(value):
             return "Null Byte Injection"
-        elif '..' in value_lower and ('/' in value_lower or '\\' in value_lower):
+        elif '../' in value_lower or '..\\' in value_lower:
             return "Path Traversal"
         elif 'script' in value_lower:
             return "XSS Attempt"
@@ -117,3 +122,21 @@ class SecurityMiddleware:
             return "Security Scanner"
         else:
             return "Malicious Pattern"
+
+    def sanitize_path(self, path):
+        # Remove consecutive dots from path segments
+        segments = path.split('/')
+        cleaned_segments = []
+        for segment in segments:
+            # Remove excessive dots but keep legitimate patterns
+            if segment and not segment.startswith('..'):
+                # Remove consecutive dots (keeping single dots)
+                cleaned_segment = re.sub(r'\.{2,}', '', segment)
+                cleaned_segments.append(cleaned_segment)
+            else:
+                cleaned_segments.append(segment)
+        return '/'.join(cleaned_segments)
+
+    def sanitize_value(self, value):
+        # Remove consecutive dots from parameter values
+        return re.sub(r'\.{2,}', '', value)
