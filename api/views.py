@@ -198,6 +198,7 @@ def save_json(request):
     if institution_ruc:
         new_data = []
         for line in data:
+            print(line)
             item = json.loads(line)
             item['institution_ruc'] = institution_ruc
             new_data.append(json.dumps(item))
