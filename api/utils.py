@@ -10,11 +10,15 @@ from visitors.models import Institution, Visitor
 log = logging.getLogger(__name__)
 
 
-def process_row(row):
+def process_row(row, censored_ids=None):
     fecha = row['date']
     fecha = datetime.strptime(fecha, '%Y-%m-%d').date()
     id_document = row['id_document']
     id_number = row['id_number']
+
+    if str(id_number) in censored_ids:
+        log.info(f"Skipping censored id_number {id_number}")
+        return
 
     # if row.get('institution') == 'municipalidad de lima':
     #     host_name = row['host_name']

@@ -8,23 +8,27 @@ from django.http import HttpRequest
 
 from manolo.celery import app
 from api.utils import process_row
+from visitors.models import Visitor
 
 log = logging.getLogger(__name__)
 
 
 @app.task
 def process_json_request(data) -> None:
+    censored_ids = list(
+        Visitor.objects.filter(censored=True)
+        .distinct("id_number")
+        .values_list("id_number", flat=True)
+    )
+
     for line in data:
         item = json.loads(line)
-        process_row(item)
+        process_row(item, censored_ids)
 
 
 @app.task
 def log_task_error(
-    request: HttpRequest,
-    exc: Exception,
-    traceback: str,
-    institution_name: str
+    request: HttpRequest, exc: Exception, traceback: str, institution_name: str
 ) -> None:
     try:
         subject = f"Manolo: Uploading {institution_name} failed"
