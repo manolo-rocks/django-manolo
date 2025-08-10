@@ -193,13 +193,11 @@ def save_json(request):
         institution_ruc = request.FILES["file"].name.split("_")[3]
 
     binary_data = request.FILES["file"].read()
-    data = binary_data.decode().splitlines()
+    data = json.loads(binary_data.decode())
 
     if institution_ruc:
         new_data = []
-        for line in data:
-            print(line)
-            item = json.loads(line)
+        for item in data:
             item['institution_ruc'] = institution_ruc
             new_data.append(json.dumps(item))
         data = new_data
