@@ -328,3 +328,7 @@ os.environ["DJANGO_ALLOW_ASYNC_UNSAFE"] = "true"
 ASYNC_MODE = True
 
 INDEXNOW_KEY = 'dc0256884e6b414bb8be5f3e51b93b1f'
+
+USE_TLS = True
+SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+SECURE_SSL_REDIRECT = True  # Optional: redirects all HTTP to HTTPS
