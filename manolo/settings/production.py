@@ -29,3 +29,6 @@ AXES_IP_WHITELIST = [
     '127.0.0.1',
     '181.66.194.247',
 ]
+USE_TLS = True
+SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+SECURE_SSL_REDIRECT = True  # Optional: redirects all HTTP to HTTPS
