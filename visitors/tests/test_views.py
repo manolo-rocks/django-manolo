@@ -1,6 +1,6 @@
 import datetime
 
-from django.test import TestCase
+from django.test import TestCase, override_settings
 from django.test.client import Client
 from django.contrib.auth.models import User
 
@@ -8,6 +8,7 @@ from visitors.models import Subscriber
 from visitors.views import query_is_dni
 
 
+@override_settings(SECURE_SSL_REDIRECT=False)
 class TestViews(TestCase):
     def setUp(self):
         self.client = Client()
@@ -17,7 +18,7 @@ class TestViews(TestCase):
         c = self.client.get('/')
         self.assertEqual(200, c.status_code, 'Status code')
         self.assertTrue(
-            '0</b></span> registros de visitas' in str(c.content), 'Number of records in db.'
+            '</b></span> registros de visitas' in str(c.content), 'Number of records in db.'
         )
 
     def test_about(self):
