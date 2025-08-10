@@ -1,24 +1,3 @@
-# Allow major search engines
-User-agent: Googlebot
-Disallow: /api/
-Allow: /
-
-User-agent: Bingbot
-Disallow: /api/
-Allow: /
-
-User-agent: DuckDuckBot
-Disallow: /api/
-Allow: /
-
-User-agent: YandexBot
-Disallow: /api/
-Allow: /
-
-User-agent: Baiduspider
-Disallow: /api/
-Allow: /
-
 # Block AI training bots completely
 User-agent: GPTBot
 Disallow: /
@@ -53,8 +32,30 @@ Disallow: /
 User-agent: FacebookBot
 Disallow: /
 
+# Allow major search engines
+User-agent: Googlebot
+Disallow: /api/
+Allow: /
+
+User-agent: Bingbot
+Disallow: /api/
+Allow: /
+
+User-agent: DuckDuckBot
+Disallow: /api/
+Allow: /
+
+User-agent: YandexBot
+Disallow: /api/
+Allow: /
+
+User-agent: Baiduspider
+Disallow: /api/
+Allow: /
+
 # Block all other bots by default
 User-agent: *
-Disallow: /
+Disallow: /api/
+Allow: /
 
 Sitemap: https://manolo.rocks/static/sitemaps/sitemap.xml
