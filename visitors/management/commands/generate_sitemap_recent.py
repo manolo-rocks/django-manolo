@@ -42,7 +42,7 @@ class Command(BaseCommand):
 
         # Count total DNIs
         visitors = Visitor.objects.filter(
-            created_at__gte=datetime.now() - timedelta(days=int(options["number_days"]))
+            created__gte=datetime.now() - timedelta(days=int(options["number_days"]))
         )
 
         total_dnis = visitors.values("id_number").distinct().count()
