@@ -9,8 +9,7 @@ from django.shortcuts import HttpResponse
 from django.views.decorators.csrf import csrf_exempt
 from rest_framework import permissions
 from rest_framework.authentication import BasicAuthentication
-from rest_framework.decorators import api_view, authentication_classes, \
-    permission_classes
+from rest_framework.decorators import api_view, authentication_classes, permission_classes
 from rest_framework.permissions import AllowAny, IsAdminUser
 from rest_framework.pagination import PageNumberPagination
 from rest_framework_api_key.models import APIKey
@@ -30,17 +29,17 @@ from .tasks import process_json_request, log_task_error
 schema_view = get_schema_view(
     openapi.Info(
         title="Manolo API",
-        description='Documentación del API de Manolo.rocks',
-        default_version='v1',
-        contact=openapi.Contact(email='mycalesis@gmail.com'),
+        description="Documentación del API de Manolo.rocks",
+        default_version="v1",
+        contact=openapi.Contact(email="mycalesis@gmail.com"),
     ),
     public=True,
     permission_classes=[permissions.AllowAny],
 )
 
 
-@api_view(['GET'])
-@permission_classes((AllowAny, ))
+@api_view(["GET"])
+@permission_classes((AllowAny,))
 def search(request, query):
     """
     Lista resultados de búsqueda de palabra clave. Usa paginación y muestra
@@ -72,7 +71,7 @@ def search(request, query):
     except Exception as e:
         return HttpResponse(f"Invalid request: {e}", status=400)
 
-    query_request = QueryDict('q={}'.format(query))
+    query_request = QueryDict("q={}".format(query))
     form = ApiForm(query_request)
     all_items = form.search()
 
@@ -85,23 +84,23 @@ def search(request, query):
     serializer = ManoloSerializer(paginated_results, many=True)
 
     data = {
-        'count': pagination.page.paginator.count,
-        'next': pagination.get_next_link(),
-        'previous': pagination.get_previous_link(),
-        'results': serializer.data,
+        "count": pagination.page.paginator.count,
+        "next": pagination.get_next_link(),
+        "previous": pagination.get_previous_link(),
+        "results": serializer.data,
     }
     return JSONResponse(data)
 
 
-@api_view(['GET'])
-@permission_classes((AllowAny, ))
+@api_view(["GET"])
+@permission_classes((AllowAny,))
 def search_tsv(request, query):
     try:
         query = sanitize_query(query)
     except Exception as e:
         return HttpResponse(f"Invalid request: {e}", status=400)
 
-    query_request = QueryDict('q={}'.format(query))
+    query_request = QueryDict("q={}".format(query))
     form = ApiForm(query_request)
     all_items = form.search()
 
@@ -114,7 +113,7 @@ def search_tsv(request, query):
 
 
 @csrf_exempt
-@api_view(['POST'])
+@api_view(["POST"])
 @authentication_classes((BasicAuthentication,))
 @permission_classes((IsAdminUser,))
 def mef_captcha(request):
@@ -154,7 +153,8 @@ def ocr_image(file_content):
     subprocess.call(cmd, shell=True)
 
     cmd = "tesseract -psm 7 -c tessedit_char_whitelist=ABCDEFGHIJKLMNPQRSTUVWXYabcdefghijkmnpqrstuvwxy23456789 {} {}".format(  # noqa
-        black_white_image_filename, basename)
+        black_white_image_filename, basename
+    )
     subprocess.call(cmd, shell=True)
     with open("{}.txt".format(basename), "r") as handle:
         text = handle.read().strip().replace(" ", "")
@@ -162,38 +162,38 @@ def ocr_image(file_content):
     return text
 
 
-@api_view(['POST'])
-@permission_classes((HasAPIKey, ))
+@api_view(["POST"])
+@permission_classes((HasAPIKey,))
 def save_file(request):
     """Receive a jsonlines file of scraped data to be stored in the database"""
     if is_key_valid(request) is False:
         return HttpResponse("bad key")
 
-    binary_data = request.FILES['file'].read()
+    binary_data = request.FILES["file"].read()
     data = binary_data.decode().splitlines()
 
     for line in data:
         item = json.loads(line)
         process_item(item)
 
-    return HttpResponse('ok')
+    return HttpResponse("ok")
 
 
-@api_view(['POST'])
-@permission_classes((HasAPIKey, ))
+@api_view(["POST"])
+@permission_classes((HasAPIKey,))
 def save_json(request):
     """Receive a json file of scraped data to be stored in the database"""
     if is_key_valid(request) is False:
         return HttpResponse("bad key")
 
     institution_name = request.FILES["file"].name.replace(".json", "")
-    binary_data = request.FILES['file'].read()
+    binary_data = request.FILES["file"].read()
     data = binary_data.decode().splitlines()
 
     task = process_json_request.s(data)
     task.apply_async(link_error=log_task_error.s(institution_name))
 
-    return HttpResponse('ok')
+    return HttpResponse("ok")
 
 
 @permission_classes((HasAPIKey,))
