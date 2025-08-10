@@ -2,6 +2,7 @@ import json
 import os
 import subprocess
 import time
+from datetime import datetime
 from uuid import uuid4
 
 from django.http.request import QueryDict
@@ -190,20 +191,31 @@ def save_json_single_inst(request):
         return HttpResponse("bad key")
 
     institution_name = request.FILES["file"].name.replace(".json", "")
-    institution_ruc = ""
 
-    if "visitas_gob_pe_" in request.FILES["file"].name:
-        institution_ruc = request.FILES["file"].name.split("_")[3]
+    if "visitas_gob_pe_" in institution_name:
+        institution_ruc = institution_name.split("_")[3]
+    else:
+        raise ValueError(
+            "Institution name does not match expected format: "
+            "'visitas_gob_pe_<institution_ruc>.json'"
+        )
 
     binary_data = request.FILES["file"].read()
     data = json.loads(binary_data.decode())
 
-    if institution_ruc:
-        new_data = []
-        for item in data:
-            item["institution_ruc"] = institution_ruc
-            new_data.append(json.dumps(item))
-        data = new_data
+    for item in data:
+        item["institution_ruc"] = institution_ruc
+        item["date"] = datetime.strptime(item["fecha"], "%d/%m/%Y").strftime("%Y-%m-%d")
+        item["id_document"] = item["documento"].split()[0]
+        item["id_number"] = " ".join(item["documento"].split()[1:]).strip()
+        item["host_name"] = item["funcionario"]
+        item["full_name"] = item["visitante"]
+        item["time_start"] = item["horaIn"]
+        item["time_end"] = item["horaOut"]
+        item["reason"] = item.get("motivo", "")
+        item["entity"] = item["rz_empresa"]
+        item["location"] = item.get("no_lugar_r", "").split(" - ")[0]
+        item["meeting_place"] = " ".join(item.get("no_lugar_r", "").split(" - ")[1:]).strip()
 
     task = process_json_request.s(data)
     task.apply_async(link_error=log_task_error.s(institution_name))
@@ -219,7 +231,6 @@ def save_json(request):
         return HttpResponse("bad key")
 
     institution_name = request.FILES["file"].name.replace(".json", "")
-
     binary_data = request.FILES["file"].read()
     data = binary_data.decode().splitlines()
 
