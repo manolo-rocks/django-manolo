@@ -219,20 +219,9 @@ def save_json(request):
         return HttpResponse("bad key")
 
     institution_name = request.FILES["file"].name.replace(".json", "")
-    institution_ruc = ""
-
-    if "visitas_gob_pe_" in request.FILES["file"].name:
-        institution_ruc = request.FILES["file"].name.split("_")[3]
 
     binary_data = request.FILES["file"].read()
-    data = json.loads(binary_data.decode())
-
-    if institution_ruc:
-        new_data = []
-        for item in data:
-            item["institution_ruc"] = institution_ruc
-            new_data.append(json.dumps(item))
-        data = new_data
+    data = binary_data.decode().splitlines()
 
     task = process_json_request.s(data)
     task.apply_async(link_error=log_task_error.s(institution_name))
