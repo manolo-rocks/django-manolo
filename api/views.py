@@ -202,6 +202,7 @@ def save_json_single_inst(request):
 
     binary_data = request.FILES["file"].read()
     data = json.loads(binary_data.decode())
+    new_data = []
 
     for item in data:
         if item.get("obs_det") and "No se recibieron visitas" in item.get("obs_det"):
@@ -218,8 +219,9 @@ def save_json_single_inst(request):
         item["entity"] = item["rz_empresa"]
         item["location"] = item.get("no_lugar_r", "").split(" - ")[0]
         item["meeting_place"] = " ".join(item.get("no_lugar_r", "").split(" - ")[1:]).strip()
+        new_data.append(json.dumps(item))
 
-    task = process_json_request.s(data)
+    task = process_json_request.s(new_data)
     task.apply_async(link_error=log_task_error.s(institution_name))
 
     return HttpResponse("ok")
