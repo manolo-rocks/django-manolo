@@ -181,15 +181,18 @@ def save_file(request):
 
 @api_view(["POST"])
 @permission_classes((HasAPIKey,))
-def save_json(request):
-    """Receive a json file of scraped data to be stored in the database"""
+def save_json_single_inst(request):
+    """Save a json file of scraped data from a single institution
+
+    Download is done month by month on a single institution basis
+    """
     if is_key_valid(request) is False:
         return HttpResponse("bad key")
 
     institution_name = request.FILES["file"].name.replace(".json", "")
     institution_ruc = ""
 
-    if 'visitas_gob_pe_' in request.FILES["file"].name:
+    if "visitas_gob_pe_" in request.FILES["file"].name:
         institution_ruc = request.FILES["file"].name.split("_")[3]
 
     binary_data = request.FILES["file"].read()
@@ -198,7 +201,36 @@ def save_json(request):
     if institution_ruc:
         new_data = []
         for item in data:
-            item['institution_ruc'] = institution_ruc
+            item["institution_ruc"] = institution_ruc
+            new_data.append(json.dumps(item))
+        data = new_data
+
+    task = process_json_request.s(data)
+    task.apply_async(link_error=log_task_error.s(institution_name))
+
+    return HttpResponse("ok")
+
+
+@api_view(["POST"])
+@permission_classes((HasAPIKey,))
+def save_json(request):
+    """Receive a json file of scraped data to be stored in the database"""
+    if is_key_valid(request) is False:
+        return HttpResponse("bad key")
+
+    institution_name = request.FILES["file"].name.replace(".json", "")
+    institution_ruc = ""
+
+    if "visitas_gob_pe_" in request.FILES["file"].name:
+        institution_ruc = request.FILES["file"].name.split("_")[3]
+
+    binary_data = request.FILES["file"].read()
+    data = json.loads(binary_data.decode())
+
+    if institution_ruc:
+        new_data = []
+        for item in data:
+            item["institution_ruc"] = institution_ruc
             new_data.append(json.dumps(item))
         data = new_data
 
