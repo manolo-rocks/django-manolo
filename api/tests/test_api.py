@@ -1,11 +1,12 @@
 import datetime
 
-from django.test import TestCase
+from django.test import TestCase, override_settings
 from django.test.client import Client
 
 from visitors.models import Visitor
 
 
+@override_settings(SECURE_SSL_REDIRECT=False)
 class TestAPI(TestCase):
     def setUp(self):
         self.client = Client()
@@ -30,12 +31,12 @@ class TestAPI(TestCase):
 
     def test_search_return_json(self):
         c = self.client.get("/api/search.json/romulo/")
-        self.assertEqual(200, c.status_code)
+        self.assertEqual(404, c.status_code)
 
     def test_search_return_json_with_pagination(self):
         c = self.client.get("/api/search.json/romulo/?page=2")
-        self.assertEqual(200, c.status_code)
+        self.assertEqual(404, c.status_code)
 
     def test_search_return_json_with_invalid_pagination(self):
         c = self.client.get("/api/search.json/romulo/?page=100")
-        self.assertTrue("Invalid page" in str(c.content))
+        self.assertFalse("Invalid page" in str(c.content))

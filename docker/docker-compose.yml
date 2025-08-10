@@ -30,9 +30,9 @@ services:
       /wait_for_it.sh db:5432 -t 0 -- gunicorn
       --workers 5
       --threads 2
-      --timeout 3600
-      --max-requests 200
-      --max-requests-jitter 50
+      --timeout 120
+      --max-requests 2000
+      --max-requests-jitter 200
       --graceful-timeout 30
       --worker-class=manolo.gunicorn_worker.UvicornWorkerLifeSpanOff
       --log-level debug

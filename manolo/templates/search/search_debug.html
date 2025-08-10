@@ -1,0 +1,11 @@
+<h1>Debug Results ({{ page|length }} results)</h1>
+<table>
+{% for i in page.object_list %}
+<tr>
+  <td>{{ forloop.counter }}</td>
+  <td>{{ i.id }}</td>
+  <td>{{ i.full_name|upper }}</td>
+  <td>{{ i.id_number }}</td>
+</tr>
+{% endfor %}
+</table>

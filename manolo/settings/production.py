@@ -17,8 +17,8 @@ ALLOWED_HOSTS = [
     'localhost',
 ]
 
-DATABASES["default"]["ATOMIC_REQUESTS"] = True  # noqa F405
-DATABASES["default"]["CONN_MAX_AGE"] = env.int("CONN_MAX_AGE", default=60)  # noqa F405
+DATABASES["default"]["ATOMIC_REQUESTS"] = False  # noqa F405
+DATABASES["default"]["CONN_MAX_AGE"] = 300  # noqa F405
 
 # Axes configuration
 AXES_FAILURE_LIMIT = 5  # Block after 5 failed attempts

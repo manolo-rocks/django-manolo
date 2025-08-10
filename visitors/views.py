@@ -2,13 +2,16 @@ import datetime
 import csv
 import logging
 import re
+import time
 from typing import Any, Dict
 from urllib.parse import quote
 
 from axes.decorators import axes_dispatch
 from django.contrib.postgres.search import SearchQuery
 from django.shortcuts import render, redirect
-from django.core.paginator import PageNotAnInteger, EmptyPage, InvalidPage
+from django.core.paginator import (
+    PageNotAnInteger, EmptyPage, InvalidPage, Paginator
+)
 from django.http import Http404, HttpResponse
 from rest_framework.renderers import JSONRenderer
 from django.views.decorators.csrf import csrf_exempt
@@ -17,7 +20,7 @@ from visitors.models import (
     Visitor, Statistic, Statistic_detail, VisitorScrapeProgress,
     Institution
 )
-from visitors.utils import Paginator, get_sort_field
+from visitors.utils import get_sort_field
 
 
 logger = logging.getLogger(__name__)
@@ -247,6 +250,8 @@ def visitas(request, dni):
 @axes_dispatch
 @csrf_exempt
 def search(request):
+    start_time = time.time()
+
     query = request.GET.get('q') or ''
     institution = request.GET.get('i') or ''
     institution_obj = None
@@ -268,38 +273,45 @@ def search(request):
 
         all_items = Visitor.objects.filter(
             institution2=institution_obj,
-        ).exclude(censored=True).order_by("-date")
+        ).exclude(censored=True).select_related("institution2").order_by("-date")[:500]
         query = institution
     else:
         query = query.strip()
-
-        if len(query.split()) == 1:
-            single_word_query = True
-        else:
-            single_word_query = False
+        single_word_query = len(query.split()) == 1
 
         if query_is_dni(query):
             # do dni search
             all_items = do_dni_search(query)
         else:
-            if single_word_query:
-                all_items = Visitor.objects.filter(
-                    full_search=SearchQuery(query)
-                ).exclude(censored=True)[0:2000]
-            else:
-                all_items = Visitor.objects.filter(
-                    full_search=SearchQuery(query)
-                ).exclude(censored=True)
+            base_query = Visitor.objects.filter(
+                full_search=SearchQuery(query)
+            ).exclude(censored=True).select_related("institution2")
 
-                all_items = do_sorting(request, all_items)
-                all_items = all_items[:2000]
+            if single_word_query:
+                all_items = base_query[:800]
+            else:
+                word_count = len(query.split())
+                limit = max(100, 500 - (word_count * 50))
+                all_items = do_sorting(request, base_query)
+                # all_items = all_items[:limit]
+                all_items = list(all_items[:limit])
+
+    query_start = time.time()
+    logger.info(f"Queryset evaluation time {query}: {time.time() - query_start:.3f} seconds")
 
     # paginate queryset
+    pagination_start = time.time()
     paginator, page = do_pagination(request, all_items)
+    logger.info(
+        f"Pagination time {query}: {time.time() - pagination_start:.3f} seconds "
+        f"{len(page.object_list)} items"
+    )
 
     json_path = request.get_full_path() + '&json'
     tsv_path = request.get_full_path() + '&tsv'
     encoded_query = quote(query)
+
+    context_start = time.time()
     context = get_context(query, institution_name=institution_obj.name if institution_obj else None)
     context["is_visitas_dni_page"] = False
     context["paginator"] = paginator
@@ -309,11 +321,18 @@ def search(request):
     context["json_path"] = json_path
     context["tsv_path"] = tsv_path
 
-    return render(
+    logger.info(f"Context preparation time {query}: {time.time() - context_start:.3f} seconds")
+
+    render_start = time.time()
+    response = render(
         request,
         "search/search.html",
+        # "search/search_debug.html",
         context=context,
     )
+    logger.info(f"Render time {query}: {time.time() - render_start:.3f} seconds")
+    logger.info(f"Total time for search {query}: {time.time() - start_time:.3f} seconds")
+    return response
 
 
 def query_is_dni(query):
@@ -425,7 +444,8 @@ def do_pagination(request, all_items):
     :return: dict containing paginated items and pagination bar
     """
     results_per_page = 20
-    results = all_items
+
+    paginator = Paginator(all_items, results_per_page)
 
     try:
         page_no = int(request.GET.get('page', 1))
@@ -434,8 +454,6 @@ def do_pagination(request, all_items):
 
     if page_no < 1:
         raise Http404("Pages should be 1 or greater.")
-
-    paginator = Paginator(results, results_per_page)
 
     try:
         page = paginator.page(page_no)

@@ -10,13 +10,11 @@ class ApiForm(Form):
         if not self.is_valid():
             return None
 
-        query = self.data['q'].strip()
+        query = self.data["q"].strip()
         if not query:
             return None
 
         if query_is_dni(query):
             return do_dni_search(query)
         else:
-            return Visitor.objects.filter(
-                full_search=SearchQuery(query)
-            )
+            return Visitor.objects.filter(full_search=SearchQuery(query))
