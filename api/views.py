@@ -204,7 +204,7 @@ def save_json_single_inst(request):
     data = json.loads(binary_data.decode())
 
     for item in data:
-        if "No se recibieron visitas" in item.get("obs_det", "") or "":
+        if item.get("obs_det") and "No se recibieron visitas" in item.get("obs_det"):
             continue
         item["institution_ruc"] = institution_ruc
         item["date"] = datetime.strptime(item["fecha"], "%d/%m/%Y").strftime("%Y-%m-%d")
