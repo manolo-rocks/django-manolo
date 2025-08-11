@@ -5,7 +5,6 @@ import math
 from datetime import datetime, timedelta
 from django.core.management.base import BaseCommand
 from django.conf import settings
-import xml.etree.ElementTree as ET
 
 from visitors.models import Visitor
 
@@ -94,38 +93,43 @@ class Command(BaseCommand):
 
     def add_to_sitemap_index(self, sitemap_name, output_dir):
         """Add a new sitemap entry to the sitemap index file"""
-        index_file_path = os.path.join(output_dir, "sitemap.xml")
-        today = datetime.now().strftime("%Y-%m-%d")
+        index_file_path = os.path.join(output_dir, 'sitemap.xml')
+        today = datetime.now().strftime('%Y-%m-%d')
+        new_sitemap_url = f'https://manolo.rocks/static/sitemaps/{sitemap_name}'
 
-        # Check if sitemap index exists
         if os.path.exists(index_file_path):
-            # Parse existing sitemap index
-            try:
-                tree = ET.parse(index_file_path)
-                root = tree.getroot()
-            except ET.ParseError:
-                # If parsing fails, create a new index
-                log.error(f"Failed to parse {index_file_path}")
+            # Read existing content
+            with open(index_file_path, 'r', encoding='utf-8') as f:
+                content = f.read()
+
+            # Check if sitemap already exists
+            if new_sitemap_url in content:
+                log.info(f"Sitemap {sitemap_name} already exists in index")
                 return
-        else:
-            log.error(f"Sitemap index file {index_file_path} does not exist")
-            return
 
-        # Check if this sitemap already exists in the index
-        namespace = {"ns": "http://www.sitemaps.org/schemas/sitemap/0.9"}
-        existing_locs = [loc.text for loc in root.findall(".//ns:loc", namespace)]
-        new_sitemap_url = f"https://manolo.rocks/static/sitemaps/{sitemap_name}"
+            # Create properly indented new entry
+            new_entry = f'''  <ns0:sitemap>
+            <ns0:loc>{new_sitemap_url}</ns0:loc>
+            <ns0:lastmod>{today}</ns0:lastmod>
+          </ns0:sitemap>
+        </ns0:sitemapindex>'''
 
-        if new_sitemap_url not in existing_locs:
-            # Create new sitemap element
-            sitemap_elem = ET.SubElement(root, "sitemap")
-            loc_elem = ET.SubElement(sitemap_elem, "loc")
-            loc_elem.text = new_sitemap_url
-            lastmod_elem = ET.SubElement(sitemap_elem, "lastmod")
-            lastmod_elem.text = today
+            # Replace closing tag with new entry + closing tag
+            content = content.replace('</ns0:sitemapindex>', new_entry)
 
             # Write back to file
-            tree.write(index_file_path, encoding="utf-8", xml_declaration=True)
+            with open(index_file_path, 'w', encoding='utf-8') as f:
+                f.write(content)
+
             log.info(f"Added {sitemap_name} to sitemap index")
         else:
-            log.info(f"Sitemap {sitemap_name} already exists in index")
+            # Create new sitemap index with proper indentation
+            with open(index_file_path, 'w', encoding='utf-8') as f:
+                f.write('<?xml version="1.0" encoding="UTF-8"?>\n')
+                f.write('<sitemapindex xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n')
+                f.write('  <sitemap>\n')
+                f.write(f'    <loc>{new_sitemap_url}</loc>\n')
+                f.write(f'    <lastmod>{today}</lastmod>\n')
+                f.write('  </sitemap>\n')
+                f.write('</sitemapindex>')
+            log.info(f"Created new sitemap index with {sitemap_name}")
