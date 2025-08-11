@@ -108,14 +108,14 @@ class Command(BaseCommand):
                 return
 
             # Create properly indented new entry
-            new_entry = f'''  <ns0:sitemap>
-            <ns0:loc>{new_sitemap_url}</ns0:loc>
-            <ns0:lastmod>{today}</ns0:lastmod>
-          </ns0:sitemap>
-        </ns0:sitemapindex>'''
+            new_entry = f'''  <sitemap>
+            <loc>{new_sitemap_url}</loc>
+            <lastmod>{today}</lastmod>
+          </sitemap>
+        </sitemapindex>'''
 
             # Replace closing tag with new entry + closing tag
-            content = content.replace('</ns0:sitemapindex>', new_entry)
+            content = content.replace('</sitemapindex>', new_entry)
 
             # Write back to file
             with open(index_file_path, 'w', encoding='utf-8') as f:
